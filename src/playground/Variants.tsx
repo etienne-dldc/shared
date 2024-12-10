@@ -1,8 +1,8 @@
 import { Plus } from "@phosphor-icons/react";
 import { Fragment, useCallback, useId, useMemo } from "react";
-import { useLatestRef } from "../hooks/useLatestRef";
-import { useLocalStorageState } from "../hooks/useLocalStorageState";
-import { cn, tw } from "../styles/utils";
+import { useLatestRef } from "../shared/hooks/useLatestRef";
+import { useLocalStorageState } from "../shared/hooks/useLocalStorageState";
+import { cn, tw } from "../shared/styles/utils";
 
 export type TDimensions = Record<string, Record<string, unknown>>;
 

@@ -2,9 +2,12 @@ import * as Ariakit from "@ariakit/react";
 import { IconContext } from "@phosphor-icons/react";
 import { forwardRef, useMemo } from "react";
 import { cn, pick, tw } from "../../styles/utils";
-import { DesignContext, TDesignSize } from "../DesignContext";
-import { DynamicColorProvider, TDynamicColor } from "../DynamicColorProvider";
 import { ButtonContent } from "../button/ButtonContent";
+import { DesignContext, TDesignSize } from "../core/DesignContext";
+import {
+  DynamicColorProvider,
+  TDynamicColor,
+} from "../core/DynamicColorProvider";
 
 interface MenuItemProps extends Omit<Ariakit.MenuItemProps, "title" | "color"> {
   color?: TDynamicColor;
@@ -18,38 +21,50 @@ interface MenuItemProps extends Omit<Ariakit.MenuItemProps, "title" | "color"> {
   loading?: boolean;
 }
 
-export const MenuItem = forwardRef<HTMLDivElement, MenuItemProps>(function MenuItem(inProps, ref) {
-  const {
-    color,
-    size,
-    disabled,
+export const MenuItem = forwardRef<HTMLDivElement, MenuItemProps>(
+  function MenuItem(inProps, ref) {
+    const {
+      color,
+      size,
+      disabled,
 
-    title,
-    icon,
-    endIcon,
-    details,
-    loading,
-    children = <ButtonContent {...{ title, icon, endIcon, details, loading }} />,
+      title,
+      icon,
+      endIcon,
+      details,
+      loading,
+      children = (
+        <ButtonContent {...{ title, icon, endIcon, details, loading }} />
+      ),
 
-    className,
-    ...props
-  } = DesignContext.useProps(inProps);
+      className,
+      ...props
+    } = DesignContext.useProps(inProps);
 
-  const mainClass = useMemo(() => dropdownItemClassName(size), [size]);
-  const iconProps = useMemo(() => ({ size: pick(size, { xs: 16, sm: 16, md: 20, lg: 26 }) }), [size]);
+    const mainClass = useMemo(() => dropdownItemClassName(size), [size]);
+    const iconProps = useMemo(
+      () => ({ size: pick(size, { xs: 16, sm: 16, md: 20, lg: 26 }) }),
+      [size]
+    );
 
-  return (
-    <DesignContext.Provider size={size} disabled={disabled}>
-      <IconContext.Provider value={iconProps}>
-        <DynamicColorProvider color={color}>
-          <Ariakit.MenuItem disabled={disabled} ref={ref} className={cn(mainClass, className)} {...props}>
-            {children}
-          </Ariakit.MenuItem>
-        </DynamicColorProvider>
-      </IconContext.Provider>
-    </DesignContext.Provider>
-  );
-});
+    return (
+      <DesignContext.Provider size={size} disabled={disabled}>
+        <IconContext.Provider value={iconProps}>
+          <DynamicColorProvider color={color}>
+            <Ariakit.MenuItem
+              disabled={disabled}
+              ref={ref}
+              className={cn(mainClass, className)}
+              {...props}
+            >
+              {children}
+            </Ariakit.MenuItem>
+          </DynamicColorProvider>
+        </IconContext.Provider>
+      </DesignContext.Provider>
+    );
+  }
+);
 
 function dropdownItemClassName(size: TDesignSize) {
   const sizeClass = pick(size, {
@@ -67,6 +82,6 @@ function dropdownItemClassName(size: TDesignSize) {
     tw`outline-none cursor-pointer`,
     tw`aria-disabled:text-dynamic-200/50 aria-disabled:cursor-not-allowed`,
 
-    sizeClass,
+    sizeClass
   );
 }

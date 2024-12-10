@@ -1,5 +1,5 @@
-import { cn } from "../styles/utils";
-import { IconBox } from "./IconBox";
+import { cn } from "../../styles/utils";
+import { IconBox } from "../common/IconBox";
 
 interface PageTitleProps {
   icon?: React.ReactNode;

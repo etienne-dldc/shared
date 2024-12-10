@@ -1,13 +1,12 @@
 import * as Ariakit from "@ariakit/react";
 import { X } from "@phosphor-icons/react";
 import { Fragment, forwardRef, useCallback } from "react";
-
-import { cn, pick, tw } from "../styles/utils";
+import { cn, pick, tw } from "../../styles/utils";
+import { Button } from "../button/Button";
+import { Paper } from "../common/Paper";
+import { DynamicColorProvider } from "../core/DynamicColorProvider";
+import { PageTitle } from "../layouts/PageTitle";
 import { Backdrop } from "./Backdrop";
-import { Button } from "./button/Button";
-import { DynamicColorProvider } from "./DynamicColorProvider";
-import { PageTitle } from "./PageTitle";
-import { Paper } from "./Paper";
 
 interface ModalProps {
   children?: React.ReactElement;

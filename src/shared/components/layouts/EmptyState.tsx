@@ -1,4 +1,4 @@
-import { IconBox } from "./IconBox";
+import { IconBox } from "../common/IconBox";
 
 interface EmptyStateProps {
   icon: React.ReactElement;

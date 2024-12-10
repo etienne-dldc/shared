@@ -1,6 +1,6 @@
 import { IconContext, IconProps } from "@phosphor-icons/react";
 import { Fragment, useContext } from "react";
-import { pick } from "../styles/utils";
+import { pick } from "../../styles/utils";
 
 export function LoadingIcon(props: IconProps) {
   const iconProps = useContext(IconContext);
@@ -46,7 +46,15 @@ export function LoadingIcon(props: IconProps) {
               strokeWidth={strokeWidth}
               d="M 128 32 A 96 96 0 0 1 224 128"
             />
-            <circle cx="128" cy="128" r="96" stroke={color} strokeWidth={bgStrokeWidth} fill={bgFill} opacity={0.2} />
+            <circle
+              cx="128"
+              cy="128"
+              r="96"
+              stroke={color}
+              strokeWidth={bgStrokeWidth}
+              fill={bgFill}
+              opacity={0.2}
+            />
           </Fragment>
         )}
       </svg>

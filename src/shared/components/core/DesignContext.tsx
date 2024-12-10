@@ -1,4 +1,4 @@
-import { createPropsContext } from "../utils/propsContext";
+import { createPropsContext } from "../../utils/propsContext";
 
 export type TDesignSize = "xs" | "sm" | "md" | "lg";
 export type TDesignVariant = "primary" | "secondary" | "tertiary" | "outline";

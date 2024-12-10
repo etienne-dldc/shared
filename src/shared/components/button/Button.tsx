@@ -8,8 +8,11 @@ import {
   TDesignRounded,
   TDesignSize,
   TDesignVariant,
-} from "../DesignContext";
-import { DynamicColorProvider, TDynamicColor } from "../DynamicColorProvider";
+} from "../core/DesignContext";
+import {
+  DynamicColorProvider,
+  TDynamicColor,
+} from "../core/DynamicColorProvider";
 import { ButtonContent } from "./ButtonContent";
 import { BUTTON_ICON_SIZE, buttonClassName } from "./styles";
 

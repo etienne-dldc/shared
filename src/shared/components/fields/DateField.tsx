@@ -2,16 +2,15 @@ import * as Ariakit from "@ariakit/react";
 import { fr } from "date-fns/locale/fr";
 import { ForwardedRef, forwardRef, useState } from "react";
 import { DayPicker as ReactDayPicker } from "react-day-picker";
-
-import "react-day-picker/dist/style.css";
-
 import { cn, tw } from "../../styles/utils";
 import { capitalize } from "../../utils/capitalize";
-import { Paper } from "../Paper";
+import { Paper } from "../common/Paper";
 import { FieldError } from "../form/FieldError";
 import { Label } from "../form/Label";
 import { TextInput } from "../form/TextInput";
 import { StringLike } from "./utils";
+
+import "react-day-picker/dist/style.css";
 
 interface DateFieldProps {
   name: StringLike;
@@ -21,7 +20,7 @@ interface DateFieldProps {
 
 export const DateField = forwardRef(function DateField(
   { name, label, disabled = false }: DateFieldProps,
-  ref: ForwardedRef<HTMLInputElement>,
+  ref: ForwardedRef<HTMLInputElement>
 ) {
   const store = Ariakit.useFormContext();
   if (!store) {
@@ -33,7 +32,11 @@ export const DateField = forwardRef(function DateField(
 
   const [pickerOpen, setPickerOpen] = useState(false);
 
-  const popoverStore = Ariakit.usePopoverStore({ open: pickerOpen, setOpen: setPickerOpen, placement: "bottom-start" });
+  const popoverStore = Ariakit.usePopoverStore({
+    open: pickerOpen,
+    setOpen: setPickerOpen,
+    placement: "bottom-start",
+  });
 
   return (
     <Ariakit.PopoverProvider store={popoverStore}>
@@ -65,7 +68,11 @@ export const DateField = forwardRef(function DateField(
         />
         <Ariakit.FormError name={name} render={<FieldError />} />
       </div>
-      <Ariakit.Popover gutter={4} portal render={<Paper level="popover" className="" />}>
+      <Ariakit.Popover
+        gutter={4}
+        portal
+        render={<Paper level="popover" className="" />}
+      >
         <div>
           <ReactDayPicker
             mode="single"

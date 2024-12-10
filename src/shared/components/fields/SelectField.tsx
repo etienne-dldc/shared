@@ -1,5 +1,4 @@
 import * as Ariakit from "@ariakit/react";
-
 import { FieldError } from "../form/FieldError";
 import { Select, TSelectItem } from "../form/Select";
 import { StringLike } from "./utils";
@@ -20,7 +19,11 @@ export interface SelectFieldProps<Value extends string> {
   className?: string;
 }
 
-export function SelectField<Value extends string>({ name, label, ...selectProps }: SelectFieldProps<Value>) {
+export function SelectField<Value extends string>({
+  name,
+  label,
+  ...selectProps
+}: SelectFieldProps<Value>) {
   const store = Ariakit.useFormContext();
   if (!store) {
     throw new Error("DateField must be used inside a Form");

@@ -1,17 +1,24 @@
 import * as Ariakit from "@ariakit/react";
 import { ArrowCounterClockwise, Check, Warning } from "@phosphor-icons/react";
-import { ForwardedRef, forwardRef, Fragment, useCallback, useEffect, useMemo, useState } from "react";
-
+import {
+  ForwardedRef,
+  forwardRef,
+  Fragment,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { tw } from "../../styles/utils";
-import { DesignContext } from "../DesignContext";
-import { Paper } from "../Paper";
-import { Tooltip } from "../Tooltip";
 import { Button } from "../button/Button";
+import { Paper } from "../common/Paper";
+import { DesignContext } from "../core/DesignContext";
 import { TextInput, TextInputProps } from "./TextInput";
 
 export type TNumberInputParse = (value: string) => number;
 
-export interface NumberInputProps extends Omit<TextInputProps, "value" | "onChange"> {
+export interface NumberInputProps
+  extends Omit<TextInputProps, "value" | "onChange"> {
   value: number | null;
   onChange?: (value: number | null) => void;
   format?: (value: number) => string;
@@ -29,15 +36,22 @@ type TEditState =
   | { state: "EditedSuggest"; value: number };
 
 export const NumberInput = forwardRef(function NumberInput(
-  { value, onChange, format: formatNum, parse: parseNum, className, ...inputProps }: NumberInputProps,
-  ref: ForwardedRef<HTMLInputElement>,
+  {
+    value,
+    onChange,
+    format: formatNum,
+    parse: parseNum,
+    className,
+    ...inputProps
+  }: NumberInputProps,
+  ref: ForwardedRef<HTMLInputElement>
 ) {
   const parse = useCallback(
     (value: string): number | null => {
       if (value === "") return null;
       return (parseNum ?? DEFAULT_PARSE)(value);
     },
-    [parseNum],
+    [parseNum]
   );
 
   const format = useCallback(
@@ -45,7 +59,7 @@ export const NumberInput = forwardRef(function NumberInput(
       if (value === null) return "";
       return (formatNum ?? DEFAULT_FORMAT)(value);
     },
-    [formatNum],
+    [formatNum]
   );
 
   const [inputFocused, setInputFocused] = useState(false);
@@ -79,7 +93,8 @@ export const NumberInput = forwardRef(function NumberInput(
     return { state: "EditedSuggest", value: editedParsed };
   }, [editedRaw, format, parse, value, valueStr]);
 
-  const invalidEdit = state.state === "EditedSuggest" || state.state === "Invalid";
+  const invalidEdit =
+    state.state === "EditedSuggest" || state.state === "Invalid";
 
   const focused = inputFocused || popoverFocused;
   const showPopover = focused && invalidEdit;
@@ -143,7 +158,7 @@ export const NumberInput = forwardRef(function NumberInput(
       }
       setEditedRaw(value);
     },
-    [onChange],
+    [onChange]
   );
 
   return (
@@ -171,11 +186,11 @@ export const NumberInput = forwardRef(function NumberInput(
             endActions={
               !focused &&
               invalidEdit && (
-                <Tooltip content="Valeur modifiée">
+                <Ariakit.Tooltip content="Valeur modifiée">
                   <div className="w-10 flex items-center justify-center">
                     <Warning className="w-5 h-5 text-orange-600" />
                   </div>
-                </Tooltip>
+                </Ariakit.Tooltip>
               )
             }
             onKeyDown={(e) => {
@@ -207,21 +222,30 @@ export const NumberInput = forwardRef(function NumberInput(
           {state.state === "EditedSuggest" ? (
             <Fragment>
               <p className="px-2">
-                Voulez-vous dire <span className="font-mono px-2">{format(state.value)}</span> ?
+                Voulez-vous dire{" "}
+                <span className="font-mono px-2">{format(state.value)}</span> ?
               </p>
-              <Tooltip content="Accepter">
+              <Ariakit.Tooltip content="Accepter">
                 <Button icon={<Check />} color="green" onClick={accept} />
-              </Tooltip>
-              <Tooltip content="Réinitialiser">
-                <Button icon={<ArrowCounterClockwise />} color="red" onClick={reset} />
-              </Tooltip>
+              </Ariakit.Tooltip>
+              <Ariakit.Tooltip content="Réinitialiser">
+                <Button
+                  icon={<ArrowCounterClockwise />}
+                  color="red"
+                  onClick={reset}
+                />
+              </Ariakit.Tooltip>
             </Fragment>
           ) : (
             <Fragment>
               <p className="px-2">Nombre invalide</p>
-              <Tooltip content="Réinitialiser">
-                <Button icon={<ArrowCounterClockwise />} color="red" onClick={reset} />
-              </Tooltip>
+              <Ariakit.Tooltip content="Réinitialiser">
+                <Button
+                  icon={<ArrowCounterClockwise />}
+                  color="red"
+                  onClick={reset}
+                />
+              </Ariakit.Tooltip>
             </Fragment>
           )}
         </DesignContext.Provider>

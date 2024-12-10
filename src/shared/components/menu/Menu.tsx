@@ -1,10 +1,9 @@
 import * as Ariakit from "@ariakit/react";
-import { cn } from "../../styles/utils";
-
 import { forwardRef } from "react";
-import { Backdrop } from "../Backdrop";
-import { DesignContext } from "../DesignContext";
-import { Paper } from "../Paper";
+import { cn } from "../../styles/utils";
+import { Paper } from "../common/Paper";
+import { DesignContext } from "../core/DesignContext";
+import { Backdrop } from "../popovers/Backdrop";
 
 export interface MenuProps extends Ariakit.MenuProviderProps {
   trigger: React.ReactElement | ((open: boolean) => React.ReactElement);
@@ -16,14 +15,23 @@ export interface MenuProps extends Ariakit.MenuProviderProps {
 }
 
 export const Menu = forwardRef<HTMLDivElement, MenuProps>(function Menu(
-  { trigger, content, className, portal, sameWidth, backdrop = false, ...props },
-  ref,
+  {
+    trigger,
+    content,
+    className,
+    portal,
+    sameWidth,
+    backdrop = false,
+    ...props
+  },
+  ref
 ) {
   const localStore = Ariakit.useMenuStore({ ...props });
   const store = (props.store ?? localStore) as Ariakit.MenuStore;
 
   const open = store.useState((s) => s.open);
-  const triggertRender = typeof trigger === "function" ? trigger(open) : trigger;
+  const triggertRender =
+    typeof trigger === "function" ? trigger(open) : trigger;
 
   return (
     <Ariakit.MenuProvider store={props.store ?? store}>

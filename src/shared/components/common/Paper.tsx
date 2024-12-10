@@ -1,7 +1,7 @@
 import { ComponentPropsWithoutRef, ForwardedRef, forwardRef } from "react";
-import { cn, tw } from "../styles/utils";
-import { DesignContext } from "./DesignContext";
-import { DynamicColorProvider } from "./DynamicColorProvider";
+import { cn, tw } from "../../styles/utils";
+import { DesignContext } from "../core/DesignContext";
+import { DynamicColorProvider } from "../core/DynamicColorProvider";
 
 export type TPaperLevel = "background" | "card" | "dialog" | "popover";
 
@@ -19,13 +19,17 @@ const PAPER_LEVEL_STYLES = {
 
 export const Paper = forwardRef(function Paper(
   { level, darkerBackground = false, className, ...divProps }: PaperProps,
-  ref: ForwardedRef<HTMLDivElement>,
+  ref: ForwardedRef<HTMLDivElement>
 ) {
   return (
     <DesignContext.Provider rounded="all">
       <DynamicColorProvider force={level === "dialog" || level === "popover"}>
         <div
-          className={cn(PAPER_LEVEL_STYLES[level], darkerBackground && tw`bg-zinc-950`, className)}
+          className={cn(
+            PAPER_LEVEL_STYLES[level],
+            darkerBackground && tw`bg-zinc-950`,
+            className
+          )}
           {...divProps}
           ref={ref}
         />

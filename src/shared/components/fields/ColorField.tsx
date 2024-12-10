@@ -1,14 +1,18 @@
 import * as Ariakit from "@ariakit/react";
 import { CaretDown, CaretUp } from "@phosphor-icons/react";
 import { useEffect } from "react";
-
-import { COLOR_NAMES, colors, toColor, VALID_COLORS } from "../../styles/colors";
+import {
+  COLOR_NAMES,
+  colors,
+  toColor,
+  VALID_COLORS,
+} from "../../styles/colors";
 import { Button } from "../button/Button";
 import { ButtonContent } from "../button/ButtonContent";
-import { DynamicColorProvider } from "../DynamicColorProvider";
+import { Paper } from "../common/Paper";
+import { DynamicColorProvider } from "../core/DynamicColorProvider";
 import { FieldError } from "../form/FieldError";
 import { Label } from "../form/Label";
-import { Paper } from "../Paper";
 import { StringLike } from "./utils";
 
 interface ColorFieldProps {
@@ -19,7 +23,13 @@ interface ColorFieldProps {
   colorLevel?: 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900;
 }
 
-export function ColorField({ name, label, disabled = false, required = false, colorLevel = 500 }: ColorFieldProps) {
+export function ColorField({
+  name,
+  label,
+  disabled = false,
+  required = false,
+  colorLevel = 500,
+}: ColorFieldProps) {
   const store = Ariakit.useFormContext();
   if (!store) {
     throw new Error("DateField must be used inside a Form");
@@ -57,11 +67,23 @@ export function ColorField({ name, label, disabled = false, required = false, co
             name={name}
             required={required}
             render={
-              <Ariakit.Select render={<Button className="cursor-pointer" />} disabled={disabled}>
+              <Ariakit.Select
+                render={<Button className="cursor-pointer" />}
+                disabled={disabled}
+              >
                 <ButtonContent
-                  icon={<span className="w-5 h-5 rounded" style={{ background: colors[valueColor][colorLevel] }} />}
+                  icon={
+                    <span
+                      className="w-5 h-5 rounded"
+                      style={{ background: colors[valueColor][colorLevel] }}
+                    />
+                  }
                   title={COLOR_NAMES[valueColor]}
-                  endIcon={<Ariakit.SelectArrow render={selectOpen ? <CaretUp /> : <CaretDown />} />}
+                  endIcon={
+                    <Ariakit.SelectArrow
+                      render={selectOpen ? <CaretUp /> : <CaretDown />}
+                    />
+                  }
                 />
               </Ariakit.Select>
             }
@@ -83,7 +105,10 @@ export function ColorField({ name, label, disabled = false, required = false, co
                   className="flex flex-row px-2 py-1 gap-2 items-center cursor-pointer data-active-item:bg-white/5"
                   value={color}
                 >
-                  <span className="w-5 h-5 rounded" style={{ background: colors[color][colorLevel] }} />
+                  <span
+                    className="w-5 h-5 rounded"
+                    style={{ background: colors[color][colorLevel] }}
+                  />
                   <span className="text-base">{COLOR_NAMES[color]}</span>
                 </Ariakit.SelectItem>
               ))}

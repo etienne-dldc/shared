@@ -1,5 +1,4 @@
 import { ForwardedRef, forwardRef } from "react";
-
 import { StringLike } from "./utils";
 
 export interface TextareaFieldProps {
@@ -24,8 +23,14 @@ export interface TextareaFieldProps {
 }
 
 export const TextareaField = forwardRef(function TextareaField(
-  { name, label, labelHidden = false, disabled = false, ...inputProps }: TextareaFieldProps,
-  ref: ForwardedRef<HTMLTextAreaElement>,
+  {
+    name,
+    label,
+    labelHidden = false,
+    disabled = false,
+    ...inputProps
+  }: TextareaFieldProps,
+  ref: ForwardedRef<HTMLTextAreaElement>
 ) {
   console.log({
     name,

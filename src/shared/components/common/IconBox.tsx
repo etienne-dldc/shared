@@ -1,6 +1,6 @@
 import { IconContext, IconWeight } from "@phosphor-icons/react";
 import { useContext, useMemo } from "react";
-import { cn } from "../styles/utils";
+import { cn } from "../../styles/utils";
 
 interface IconBoxProps {
   icon: React.ReactNode;
@@ -12,7 +12,15 @@ interface IconBoxProps {
   className?: string;
 }
 
-export function IconBox({ icon, alt, color, size, weight, mirrored, className }: IconBoxProps) {
+export function IconBox({
+  icon,
+  alt,
+  color,
+  size,
+  weight,
+  mirrored,
+  className,
+}: IconBoxProps) {
   const parentIconProps = useContext(IconContext);
   const mergedProps = useMemo(
     () => ({
@@ -23,7 +31,7 @@ export function IconBox({ icon, alt, color, size, weight, mirrored, className }:
       weight: weight || parentIconProps.weight,
       mirrored: mirrored || parentIconProps.mirrored,
     }),
-    [parentIconProps, alt, color, size, weight, mirrored],
+    [parentIconProps, alt, color, size, weight, mirrored]
   );
 
   return (
