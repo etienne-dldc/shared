@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@ariakit/core':
+        specifier: ^0.4.14
+        version: 0.4.14
       '@ariakit/react':
         specifier: ^0.4.15
         version: 0.4.15(react-dom@18.3.1(react@18.3.1))(react@18.3.1)

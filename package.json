@@ -12,6 +12,7 @@
     "typecheck:watch": "tsc -b --watch"
   },
   "dependencies": {
+    "@ariakit/core": "^0.4.14",
     "@ariakit/react": "^0.4.15",
     "@phosphor-icons/react": "^2.1.7",
     "clsx": "^2.1.1",
