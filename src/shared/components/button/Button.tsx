@@ -32,6 +32,9 @@ export type ButtonProps = Merge<
     title?: React.ReactNode;
     details?: string | React.ReactNode;
     loading?: boolean;
+
+    // Forward to Button
+    render?: React.ReactElement;
   }
 >;
 

@@ -1,8 +1,7 @@
 import { createBrowserHistory } from "history";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Route, routes } from "../routes/routes";
-import { buttonClassName } from "../shared/components/button/styles";
-import { cn } from "../shared/styles/utils";
+import { Button } from "../shared/components/button/Button";
 
 const history = createBrowserHistory();
 
@@ -57,20 +56,13 @@ function NavItem({ route, active }: { route: Route; active: boolean }) {
   );
 
   return (
-    <a
-      href={`/${route}`}
-      onClick={onClick}
-      className={cn(
-        buttonClassName({
-          size: "md",
-          variant: active ? "primary" : "secondary",
-          rounded: "all",
-          interactive: true,
-        }),
-        "uppercase font-bold tracking-wider"
-      )}
-    >
-      {route}
-    </a>
+    <Button
+      size="md"
+      variant={active ? "primary" : "secondary"}
+      rounded="all"
+      title={route}
+      render={<a href={`/${route}`} onClick={onClick} />}
+      className="uppercase font-bold tracking-wider"
+    />
   );
 }
