@@ -24,7 +24,7 @@ export function Playground() {
 
   return (
     <div
-      className="grid px-4 gap-4 py-4"
+      className="grid px-4 gap-4 py-4 min-h-screen"
       style={{
         gridTemplateColumns: "200px 1fr",
       }}
@@ -38,7 +38,7 @@ export function Playground() {
           />
         ))}
       </nav>
-      <div className="px-2">{route}</div>
+      <div className="px-2 relative overflow-hidden">{route}</div>
     </div>
   );
 }
