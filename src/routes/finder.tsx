@@ -20,21 +20,44 @@ export function FinderRoute() {
   };
 
   return (
-    <Finder className="h-full w-full rounded-lg shadow-lg absolute inset-0">
-      {keys.map((key, i) => (
-        <FinderPanel
-          key={key}
-          className="w-full md:w-[600px]"
-          isActive={i === keys.length - 1}
-        >
-          <p>{key}</p>
-          <div className="flex flex-col gap-2 p-2">
-            <Button onClick={open(i)}>Open</Button>
-            <Button onClick={reset(i)}>Reset</Button>
-            {i > 0 && <Button onClick={close(i)}>Close</Button>}
-          </div>
-        </FinderPanel>
-      ))}
-    </Finder>
+    <div className="absolute inset-0">
+      <Finder className="h-full w-full rounded-lg shadow-lg absolute inset-0">
+        {keys.map((key, i) => (
+          <FinderPanel
+            key={key}
+            className="w-full md:w-[600px]"
+            isActive={i === keys.length - 1}
+          >
+            <p>{key}</p>
+            <div className="flex flex-col gap-2 p-2">
+              <Button onClick={open(i)} title="Open" />
+              <Button onClick={reset(i)} title="Reset" />
+              {i > 0 && <Button onClick={close(i)} title="Close" />}
+            </div>
+            <PanelContent />
+          </FinderPanel>
+        ))}
+      </Finder>
+    </div>
+  );
+}
+
+function PanelContent() {
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <div className="flex flex-col gap-2 p-2">
+      <Button
+        onClick={() => setExpanded((prev) => !prev)}
+        title={expanded ? "Collapse" : "Expand"}
+      />
+      {expanded && (
+        <div className="flex flex-col gap-2">
+          {Array.from({ length: 10 }).map((_, i) => (
+            <div key={i} className="bg-white/10 rounded-md h-40" />
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
