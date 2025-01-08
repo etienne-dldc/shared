@@ -39,16 +39,11 @@ export function Variants<Dims extends TDimensions>({
   cellMinWidth,
 }: VariantsProps<Dims>) {
   const axisKey = localStorageKey ? `variants-${localStorageKey}-axis` : null;
-  const [axis, setAxis] = useLocalStorageState(
-    axisKey,
-    (prev) => (prev as TAxis<keyof Dims>) || initialAxis
-  );
-  const selectedKey = localStorageKey
-    ? `variants-${localStorageKey}-selected`
-    : null;
+  const [axis, setAxis] = useLocalStorageState(axisKey, (prev) => (prev as TAxis<keyof Dims>) || initialAxis);
+  const selectedKey = localStorageKey ? `variants-${localStorageKey}-selected` : null;
   const [selected, setSelected] = useLocalStorageState(
     selectedKey,
-    (prev) => (prev as TSelected<Dims>) || defaultSelected
+    (prev) => (prev as TSelected<Dims>) || defaultSelected,
   );
 
   const cols = useMemo(() => {
@@ -90,18 +85,14 @@ export function Variants<Dims extends TDimensions>({
               label="column"
               selected={axis.column}
               options={Object.keys(dimensions)}
-              onChange={(selected) =>
-                setAxis((prev) => ({ ...prev, column: selected }))
-              }
+              onChange={(selected) => setAxis((prev) => ({ ...prev, column: selected }))}
             />
             <MultiSelect<keyof Dims>
               highlight
               label="row"
               selected={axis.row}
               options={Object.keys(dimensions)}
-              onChange={(selected) =>
-                setAxis((prev) => ({ ...prev, row: selected }))
-              }
+              onChange={(selected) => setAxis((prev) => ({ ...prev, row: selected }))}
             />
             <Button onClick={() => setAxis(initialAxis)}>Reset</Button>
           </div>
@@ -110,18 +101,14 @@ export function Variants<Dims extends TDimensions>({
       <div className="flex flex-row gap-8">
         <div className="flex flex-col gap-4 pt-6">
           {Object.entries(dimensions)
-            .filter(
-              ([key]) => !axis.column.includes(key) && !axis.row.includes(key)
-            )
+            .filter(([key]) => !axis.column.includes(key) && !axis.row.includes(key))
             .map(([dimKey, dim]) => (
               <Select
                 key={dimKey}
                 label={dimKey}
                 selected={selected[dimKey] as string}
                 options={Object.keys(dim)}
-                onChange={(value) =>
-                  setSelected({ ...selected, [dimKey]: value })
-                }
+                onChange={(value) => setSelected({ ...selected, [dimKey]: value })}
               />
             ))}
           <Button onClick={() => setSelected(defaultSelected)}>Reset</Button>
@@ -156,15 +143,12 @@ export function Variants<Dims extends TDimensions>({
               <Fragment key={`col-${colIndex}`}>
                 {rows.map((row, rowIndex) => {
                   const selectedResolved = { ...selected, ...col, ...row };
-                  const data = Object.entries(selectedResolved).reduce(
-                    (acc, [dimKey, value]) => {
-                      return {
-                        ...acc,
-                        [dimKey]: (dimensions as any)[dimKey][value],
-                      };
-                    },
-                    {}
-                  );
+                  const data = Object.entries(selectedResolved).reduce((acc, [dimKey, value]) => {
+                    return {
+                      ...acc,
+                      [dimKey]: (dimensions as any)[dimKey][value],
+                    };
+                  }, {});
                   const key = `cell-${colIndex}-${rowIndex}`;
                   return (
                     <div
@@ -197,25 +181,11 @@ interface SelectProps<T> {
   highlight?: boolean;
 }
 
-function Select<T extends string>({
-  label,
-  onChange,
-  options,
-  selected,
-  highlight = false,
-}: SelectProps<T>) {
+function Select<T extends string>({ label, onChange, options, selected, highlight = false }: SelectProps<T>) {
   const id = useId();
   return (
-    <div
-      className={cn(
-        tw`bg-white/5 py-1 px-4 rounded flex flex-row gap-1`,
-        highlight && tw`bg-blue-500 text-white`
-      )}
-    >
-      <label
-        htmlFor={id}
-        className="uppercase font-bold text-sm text-white/40 flex-1"
-      >
+    <div className={cn(tw`bg-white/5 py-1 px-4 rounded flex flex-row gap-1`, highlight && tw`bg-blue-500 text-white`)}>
+      <label htmlFor={id} className="uppercase font-bold text-sm text-white/40 flex-1">
         {label}
       </label>
       <select
@@ -242,13 +212,7 @@ interface MultiSelectProps<T> {
   highlight?: boolean;
 }
 
-function MultiSelect<T>({
-  label,
-  onChange,
-  options,
-  selected,
-  highlight = false,
-}: MultiSelectProps<T>) {
+function MultiSelect<T>({ label, onChange, options, selected, highlight = false }: MultiSelectProps<T>) {
   const id = useId();
 
   const selectedLatest = useLatestRef(selected);
@@ -263,14 +227,14 @@ function MultiSelect<T>({
       }
       onChange(copy);
     },
-    [onChange, selectedLatest]
+    [onChange, selectedLatest],
   );
 
   return (
     <div
       className={cn(
         tw`bg-white/5 py-1 px-2 rounded flex flex-row items-center gap-2`,
-        highlight && tw`bg-blue-500 text-white`
+        highlight && tw`bg-blue-500 text-white`,
       )}
     >
       <label htmlFor={id} className="uppercase font-bold text-sm mr-1">
@@ -295,9 +259,7 @@ function MultiSelect<T>({
       <button
         className=""
         onClick={() => {
-          const available = options.filter(
-            (option) => !selected.includes(option)
-          );
+          const available = options.filter((option) => !selected.includes(option));
           onChange([...selected, available[0]]);
         }}
       >

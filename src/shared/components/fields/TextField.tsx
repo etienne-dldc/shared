@@ -27,7 +27,7 @@ export const TextField = forwardRef(function TextField(
     defaultValue,
     ...inputProps
   }: TextFieldProps,
-  ref: ForwardedRef<HTMLInputElement>
+  ref: ForwardedRef<HTMLInputElement>,
 ) {
   const store = Ariakit.useFormContext();
   if (!store) {
@@ -55,11 +55,7 @@ export const TextField = forwardRef(function TextField(
 
   return (
     <div className={cn("flex flex-col", className)}>
-      <Label
-        hidden={labelHidden}
-        disabled={disabled}
-        render={<Ariakit.FormLabel name={name} />}
-      >
+      <Label hidden={labelHidden} disabled={disabled} render={<Ariakit.FormLabel name={name} />}>
         {label}
       </Label>
       <TextInput
@@ -70,10 +66,7 @@ export const TextField = forwardRef(function TextField(
         {...inputProps}
         renderInput={<Ariakit.FormInput name={name} />}
       />
-      <Ariakit.FormError
-        name={name}
-        render={error ? <FieldError /> : <Ariakit.VisuallyHidden />}
-      />
+      <Ariakit.FormError name={name} render={error ? <FieldError /> : <Ariakit.VisuallyHidden />} />
     </div>
   );
 });

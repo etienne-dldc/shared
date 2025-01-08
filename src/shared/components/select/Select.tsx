@@ -62,23 +62,12 @@ export function Select<Value extends string>({
 
   const storeValue = Ariakit.useStoreState(selectStore, (s) => s.value);
 
-  const selectedItem = useMemo(
-    () => items.find((item) => item.value === storeValue),
-    [items, storeValue]
-  );
+  const selectedItem = useMemo(() => items.find((item) => item.value === storeValue), [items, storeValue]);
 
   return (
     <div className={cn("flex flex-col", className)}>
       <Ariakit.SelectProvider store={selectStore}>
-        <Ariakit.SelectLabel
-          render={
-            labelHidden ? (
-              <Ariakit.VisuallyHidden />
-            ) : (
-              <Label disabled={disabled} />
-            )
-          }
-        >
+        <Ariakit.SelectLabel render={labelHidden ? <Ariakit.VisuallyHidden /> : <Label disabled={disabled} />}>
           {label}
         </Ariakit.SelectLabel>
         <Ariakit.Select disabled={disabled} name={name} render={<Button />}>
@@ -88,9 +77,7 @@ export function Select<Value extends string>({
             ) : (
               <ButtonContent
                 details={selectedItem.details}
-                endIcon={
-                  caret && <Ariakit.SelectArrow render={<CaretDown />} />
-                }
+                endIcon={caret && <Ariakit.SelectArrow render={<CaretDown />} />}
                 icon={selectedItem.icon}
                 title={selectedItem.title}
               />
@@ -118,35 +105,28 @@ interface SelectItemProps extends Ariakit.SelectItemProps {
   item: TSelectItem<string>;
 }
 
-const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
-  function SelectItem({ item, ...props }, ref) {
-    const size = DesignContext.useProp("size");
+const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(function SelectItem({ item, ...props }, ref) {
+  const size = DesignContext.useProp("size");
 
-    const className = cn(
-      tw`flex flex-row items-center justify-center text-left group overflow-hidden relative`,
-      tw`outline-none cursor-pointer`,
-      buttonRoundedClass("all"),
-      buttonSizeClass(size),
-      tw`disabled:cursor-not-allowed`,
-      tw`data-active-item:bg-dynamic-600 data-active-item:text-white`,
-      item.hidden && tw`hidden`
-    );
+  const className = cn(
+    tw`flex flex-row items-center justify-center text-left group overflow-hidden relative`,
+    tw`outline-none cursor-pointer`,
+    buttonRoundedClass("all"),
+    buttonSizeClass(size),
+    tw`disabled:cursor-not-allowed`,
+    tw`data-active-item:bg-dynamic-600 data-active-item:text-white`,
+    item.hidden && tw`hidden`,
+  );
 
-    return (
-      <Ariakit.SelectItem
-        ref={ref}
-        {...props}
-        className={className}
-        disabled={item.disabled || item.hidden}
-        value={item.value}
-      >
-        <ButtonContent
-          details={item.details}
-          endIcon={item.endIcon}
-          icon={item.icon}
-          title={item.title}
-        />
-      </Ariakit.SelectItem>
-    );
-  }
-);
+  return (
+    <Ariakit.SelectItem
+      ref={ref}
+      {...props}
+      className={className}
+      disabled={item.disabled || item.hidden}
+      value={item.value}
+    >
+      <ButtonContent details={item.details} endIcon={item.endIcon} icon={item.icon} title={item.title} />
+    </Ariakit.SelectItem>
+  );
+});

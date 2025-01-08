@@ -4,8 +4,7 @@ import { forwardRef, useId, useMemo, useRef } from "react";
 import { useMergeRefs } from "../../hooks/useMergeRefs";
 import { cn, pick, tw } from "../../styles/utils";
 
-interface TextareaProps
-  extends Omit<ComponentPropsWithoutRef<"textarea">, "size"> {
+interface TextareaProps extends Omit<ComponentPropsWithoutRef<"textarea">, "size"> {
   renderTextarea?: React.ReactElement;
   textareaClassName?: string;
   size?: "xs" | "sm" | "md";
@@ -35,7 +34,7 @@ export const Textarea = forwardRef(function Textarea(
     placeholder,
     ...textareaProps
   }: TextareaProps,
-  ref: ForwardedRef<HTMLTextAreaElement>
+  ref: ForwardedRef<HTMLTextAreaElement>,
 ) {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -44,19 +43,18 @@ export const Textarea = forwardRef(function Textarea(
   const inputContainerClasses = cn(
     tw`appearance-none relative w-full flex flex-row items-center rounded-md sm:text-sm`,
     tw`autofill:bg-transparent`,
-    !noHightlight &&
-      tw`focus:outline-none focus-within:ring-2 focus-within:ring-purple-400/40`,
+    !noHightlight && tw`focus:outline-none focus-within:ring-2 focus-within:ring-purple-400/40`,
     isError && tw`ring-2 ring-red-500/40`,
     colored
       ? disabled
         ? tw`text-dynamic-300/50`
         : tw`text-dynamic-200`
       : disabled
-      ? tw`text-stone-700`
-      : tw`text-white`,
+        ? tw`text-stone-700`
+        : tw`text-white`,
     !noBackground && (disabled ? tw`bg-black/10` : tw`bg-black/30`),
     !disabled && !noBackground && tw`hover:bg-black/20`,
-    className
+    className,
   );
 
   const sizeClasses = pick(size, {
@@ -76,7 +74,7 @@ export const Textarea = forwardRef(function Textarea(
     sizeClasses,
     // !noHorizontalPadding && hPaddingClass,
     disabled && tw`cursor-not-allowed placeholder-white/20 text-stone-400`,
-    textareaClassName
+    textareaClassName,
   );
 
   const id = useId();

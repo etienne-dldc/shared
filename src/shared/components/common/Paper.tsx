@@ -19,17 +19,13 @@ const PAPER_LEVEL_STYLES = {
 
 export const Paper = forwardRef(function Paper(
   { level, darkerBackground = false, className, ...divProps }: PaperProps,
-  ref: ForwardedRef<HTMLDivElement>
+  ref: ForwardedRef<HTMLDivElement>,
 ) {
   return (
     <DesignContext.Provider rounded="all">
       <DynamicColorProvider force={level === "dialog" || level === "popover"}>
         <div
-          className={cn(
-            PAPER_LEVEL_STYLES[level],
-            darkerBackground && tw`bg-zinc-950`,
-            className
-          )}
+          className={cn(PAPER_LEVEL_STYLES[level], darkerBackground && tw`bg-zinc-950`, className)}
           {...divProps}
           ref={ref}
         />

@@ -11,9 +11,7 @@ export function historyAtom<LocationState>() {
 
   const $locationInternal = atom(history.location);
 
-  const $location = atom(
-    (get) => get($locationInternal) as TLocationWithState<LocationState>
-  );
+  const $location = atom((get) => get($locationInternal) as TLocationWithState<LocationState>);
 
   const $effect = atomEffect((_get, set) => {
     set($locationInternal, history.location);

@@ -9,21 +9,11 @@ interface PageTitleProps {
   endActions?: React.ReactNode;
 }
 
-export function PageTitle({
-  icon,
-  title,
-  details,
-  className,
-  endActions,
-}: PageTitleProps) {
+export function PageTitle({ icon, title, details, className, endActions }: PageTitleProps) {
   return (
-    <div
-      className={cn("flex flex-row items-center justify-between", className)}
-    >
+    <div className={cn("flex flex-row items-center justify-between", className)}>
       <div className="flex flex-row pl-1 gap-2">
-        {icon && (
-          <IconBox size={28} icon={icon} className="p-0.5" weight="bold" />
-        )}
+        {icon && <IconBox size={28} icon={icon} className="p-0.5" weight="bold" />}
         <h1 className="text-2xl font-semibold">
           {title}
           {details && (
@@ -34,9 +24,7 @@ export function PageTitle({
           )}
         </h1>
       </div>
-      {endActions && (
-        <div className="flex flex-row gap-2 ml-auto">{endActions}</div>
-      )}
+      {endActions && <div className="flex flex-row gap-2 ml-auto">{endActions}</div>}
     </div>
   );
 }

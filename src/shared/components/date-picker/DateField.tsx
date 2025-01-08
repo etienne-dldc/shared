@@ -22,14 +22,8 @@ interface DateFieldProps {
 }
 
 export const DateField = forwardRef(function DateField(
-  {
-    name,
-    label,
-    disabled = false,
-    startMonth = new Date(2000, 0),
-    endMonth = new Date(2050, 11),
-  }: DateFieldProps,
-  ref: ForwardedRef<HTMLInputElement>
+  { name, label, disabled = false, startMonth = new Date(2000, 0), endMonth = new Date(2050, 11) }: DateFieldProps,
+  ref: ForwardedRef<HTMLInputElement>,
 ) {
   const store = Ariakit.useFormContext();
   if (!store) {
@@ -77,11 +71,7 @@ export const DateField = forwardRef(function DateField(
         />
         <Ariakit.FormError name={name} render={<FieldError />} />
       </div>
-      <Ariakit.Popover
-        gutter={4}
-        portal
-        render={<Paper level="popover" className="" />}
-      >
+      <Ariakit.Popover gutter={4} portal render={<Paper level="popover" className="" />}>
         <div>
           <ReactDayPicker
             mode="single"

@@ -29,10 +29,7 @@ export function formatAge(date: Temporal.PlainDate) {
   return `${age} ans`;
 }
 
-export function formatPhoneNumber(
-  phoneNumber: string,
-  options: { dot?: boolean } = {}
-) {
+export function formatPhoneNumber(phoneNumber: string, options: { dot?: boolean } = {}) {
   const phoneClean = phoneNumber.replace(/\D/g, "");
   // 06... or 07...
   if (phoneClean.length === 10 && phoneClean.match(/^0(6|7)/)) {

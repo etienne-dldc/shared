@@ -1,16 +1,8 @@
 import { ComponentPropsWithoutRef, forwardRef, useMemo } from "react";
 import { Merge } from "type-fest";
 import { cn } from "../../styles/utils";
-import {
-  DesignContext,
-  TDesignRounded,
-  TDesignSize,
-  TDesignVariant,
-} from "../core/DesignContext";
-import {
-  DynamicColorProvider,
-  TDynamicColor,
-} from "../core/DynamicColorProvider";
+import { DesignContext, TDesignRounded, TDesignSize, TDesignVariant } from "../core/DesignContext";
+import { DynamicColorProvider, TDynamicColor } from "../core/DynamicColorProvider";
 import { ButtonContent } from "./ButtonContent";
 import { buttonClassName } from "./styles";
 
@@ -32,40 +24,36 @@ export type ButtonLinkProps = Merge<
   }
 >;
 
-export const ButtonLink = forwardRef(
-  (inProps: ButtonLinkProps, ref: React.Ref<HTMLAnchorElement>) => {
-    const {
-      dynamicColor,
-      rounded,
-      size,
-      variant,
+export const ButtonLink = forwardRef((inProps: ButtonLinkProps, ref: React.Ref<HTMLAnchorElement>) => {
+  const {
+    dynamicColor,
+    rounded,
+    size,
+    variant,
 
-      title,
-      icon,
-      endIcon,
-      details,
-      loading,
-      children = (
-        <ButtonContent {...{ title, icon, endIcon, details, loading }} />
-      ),
+    title,
+    icon,
+    endIcon,
+    details,
+    loading,
+    children = <ButtonContent {...{ title, icon, endIcon, details, loading }} />,
 
-      className,
-      ...divProps
-    } = DesignContext.useProps(inProps);
+    className,
+    ...divProps
+  } = DesignContext.useProps(inProps);
 
-    const mainClass = useMemo(
-      () => buttonClassName({ size, variant, rounded, interactive: true }),
-      [size, variant, rounded]
-    );
+  const mainClass = useMemo(
+    () => buttonClassName({ size, variant, rounded, interactive: true }),
+    [size, variant, rounded],
+  );
 
-    return (
-      <DesignContext.Provider {...{ rounded, size, variant }}>
-        <DynamicColorProvider color={dynamicColor}>
-          <a ref={ref} className={cn(mainClass, className)} {...divProps}>
-            {children}
-          </a>
-        </DynamicColorProvider>
-      </DesignContext.Provider>
-    );
-  }
-);
+  return (
+    <DesignContext.Provider {...{ rounded, size, variant }}>
+      <DynamicColorProvider color={dynamicColor}>
+        <a ref={ref} className={cn(mainClass, className)} {...divProps}>
+          {children}
+        </a>
+      </DynamicColorProvider>
+    </DesignContext.Provider>
+  );
+});

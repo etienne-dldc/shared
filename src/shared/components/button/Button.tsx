@@ -3,16 +3,8 @@ import { IconContext } from "@phosphor-icons/react";
 import { ComponentPropsWithoutRef, forwardRef, useMemo } from "react";
 import { Merge } from "type-fest";
 import { cn, pick } from "../../styles/utils";
-import {
-  DesignContext,
-  TDesignRounded,
-  TDesignSize,
-  TDesignVariant,
-} from "../core/DesignContext";
-import {
-  DynamicColorProvider,
-  TDynamicColor,
-} from "../core/DynamicColorProvider";
+import { DesignContext, TDesignRounded, TDesignSize, TDesignVariant } from "../core/DesignContext";
+import { DynamicColorProvider, TDynamicColor } from "../core/DynamicColorProvider";
 import { ButtonContent } from "./ButtonContent";
 import { BUTTON_ICON_SIZE, buttonClassName } from "./styles";
 
@@ -38,62 +30,50 @@ export type ButtonProps = Merge<
   }
 >;
 
-export const Button = forwardRef(
-  (inProps: ButtonProps, ref: React.Ref<HTMLButtonElement>) => {
-    const {
-      color,
-      rounded,
-      size,
-      variant,
-      disabled,
+export const Button = forwardRef((inProps: ButtonProps, ref: React.Ref<HTMLButtonElement>) => {
+  const {
+    color,
+    rounded,
+    size,
+    variant,
+    disabled,
 
-      title,
-      icon,
-      endIcon,
-      details,
-      loading,
-      children,
+    title,
+    icon,
+    endIcon,
+    details,
+    loading,
+    children,
 
-      className,
-      type = "button",
-      ...buttonProps
-    } = DesignContext.useProps(inProps);
+    className,
+    type = "button",
+    ...buttonProps
+  } = DesignContext.useProps(inProps);
 
-    const childrenResolved = children ?? (
-      <ButtonContent {...{ title, icon, endIcon, details, loading }} />
-    );
+  const childrenResolved = children ?? <ButtonContent {...{ title, icon, endIcon, details, loading }} />;
 
-    const mainClass = useMemo(
-      () => buttonClassName({ size, variant, rounded, interactive: true }),
-      [size, variant, rounded]
-    );
+  const mainClass = useMemo(
+    () => buttonClassName({ size, variant, rounded, interactive: true }),
+    [size, variant, rounded],
+  );
 
-    const iconProps = useMemo(
-      () => ({ size: pick(size, BUTTON_ICON_SIZE) }),
-      [size]
-    );
+  const iconProps = useMemo(() => ({ size: pick(size, BUTTON_ICON_SIZE) }), [size]);
 
-    return (
-      <DesignContext.Provider
-        rounded={rounded}
-        size={size}
-        variant={variant}
-        disabled={disabled}
-      >
-        <IconContext.Provider value={iconProps}>
-          <DynamicColorProvider color={color}>
-            <Ariakit.Button
-              ref={ref}
-              className={cn(mainClass, className)}
-              disabled={disabled}
-              type={type}
-              {...buttonProps}
-            >
-              {childrenResolved}
-            </Ariakit.Button>
-          </DynamicColorProvider>
-        </IconContext.Provider>
-      </DesignContext.Provider>
-    );
-  }
-);
+  return (
+    <DesignContext.Provider rounded={rounded} size={size} variant={variant} disabled={disabled}>
+      <IconContext.Provider value={iconProps}>
+        <DynamicColorProvider color={color}>
+          <Ariakit.Button
+            ref={ref}
+            className={cn(mainClass, className)}
+            disabled={disabled}
+            type={type}
+            {...buttonProps}
+          >
+            {childrenResolved}
+          </Ariakit.Button>
+        </DynamicColorProvider>
+      </IconContext.Provider>
+    </DesignContext.Provider>
+  );
+});

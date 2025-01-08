@@ -7,12 +7,7 @@ interface NonEmptyListProps<T> {
   nonEmptyFooter?: React.ReactNode;
 }
 
-export const NonEmptyList = function NonEmptyList<T>({
-  items,
-  render,
-  empty,
-  nonEmptyFooter,
-}: NonEmptyListProps<T>) {
+export const NonEmptyList = function NonEmptyList<T>({ items, render, empty, nonEmptyFooter }: NonEmptyListProps<T>) {
   if (items.length === 0) {
     return <Fragment>{empty}</Fragment>;
   }

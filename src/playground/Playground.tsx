@@ -31,11 +31,7 @@ export function Playground() {
     >
       <nav className="flex flex-col gap-2">
         {Object.keys(routes).map((route) => (
-          <NavItem
-            key={route}
-            route={route as Route}
-            active={route === routeName}
-          />
+          <NavItem key={route} route={route as Route} active={route === routeName} />
         ))}
       </nav>
       <div className="px-2 relative overflow-hidden">{route}</div>
@@ -52,7 +48,7 @@ function NavItem({ route, active }: { route: Route; active: boolean }) {
       event.preventDefault();
       history.push(`/${route}`);
     },
-    [route]
+    [route],
   );
 
   return (

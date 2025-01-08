@@ -19,11 +19,7 @@ export interface SelectFieldProps<Value extends string> {
   className?: string;
 }
 
-export function SelectField<Value extends string>({
-  name,
-  label,
-  ...selectProps
-}: SelectFieldProps<Value>) {
+export function SelectField<Value extends string>({ name, label, ...selectProps }: SelectFieldProps<Value>) {
   const store = Ariakit.useFormContext();
   if (!store) {
     throw new Error("DateField must be used inside a Form");

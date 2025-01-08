@@ -47,7 +47,7 @@ export const Modal = forwardRef<HTMLButtonElement, ModalProps>(
       endActions,
       // actions,
     },
-    ref
+    ref,
   ) => {
     const widthClass = pick(width, {
       xs: tw`max-w-[460px]`,
@@ -71,7 +71,7 @@ export const Modal = forwardRef<HTMLButtonElement, ModalProps>(
           onClose?.();
         }
       },
-      [onClose, setOpen]
+      [onClose, setOpen],
     );
 
     return (
@@ -81,19 +81,13 @@ export const Modal = forwardRef<HTMLButtonElement, ModalProps>(
           backdrop={<Backdrop />}
           hideOnEscape={hideOnEscape}
           unmountOnHide={unmountOnHide}
-          className={cn(
-            "fixed inset-0 overflow-x-hidden z-50",
-            innerScroll ? "overflow-y-hidden" : "overflow-y-auto"
-          )}
+          className={cn("fixed inset-0 overflow-x-hidden z-50", innerScroll ? "overflow-y-hidden" : "overflow-y-auto")}
           modal
           portal
         >
           <DynamicColorProvider force>
             <div
-              className={cn(
-                "w-full grid p-5",
-                innerScroll ? "h-full" : "min-h-full"
-              )}
+              className={cn("w-full grid p-5", innerScroll ? "h-full" : "min-h-full")}
               style={{ gridTemplateRows: `1fr`, gridTemplateColumns: `auto` }}
             >
               <Paper
@@ -104,23 +98,15 @@ export const Modal = forwardRef<HTMLButtonElement, ModalProps>(
                   widthClass,
                   heightClass,
                   className,
-                  innerScroll && tw`h-full`
+                  innerScroll && tw`h-full`,
                 )}
               >
                 <PageTitle
-                  title={
-                    <Ariakit.DialogHeading render={<span />}>
-                      {title}
-                    </Ariakit.DialogHeading>
-                  }
+                  title={<Ariakit.DialogHeading render={<span />}>{title}</Ariakit.DialogHeading>}
                   endActions={
                     <Fragment>
                       {endActions}
-                      {!noCloseButton && (
-                        <Ariakit.DialogDismiss
-                          render={<Button icon={<X />} />}
-                        />
-                      )}
+                      {!noCloseButton && <Ariakit.DialogDismiss render={<Button icon={<X />} />} />}
                     </Fragment>
                   }
                   // actions={actions}
@@ -132,5 +118,5 @@ export const Modal = forwardRef<HTMLButtonElement, ModalProps>(
         </Ariakit.Dialog>
       </Ariakit.DialogProvider>
     );
-  }
+  },
 );

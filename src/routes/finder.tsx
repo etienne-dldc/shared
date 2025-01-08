@@ -23,11 +23,7 @@ export function FinderRoute() {
     <div className="absolute inset-0">
       <Finder className="h-full w-full rounded-lg shadow-lg absolute inset-0">
         {keys.map((key, i) => (
-          <FinderPanel
-            key={key}
-            className="w-full md:w-[600px]"
-            isActive={i === keys.length - 1}
-          >
+          <FinderPanel key={key} className="w-full md:w-[600px]" isActive={i === keys.length - 1}>
             <p>{key}</p>
             <div className="flex flex-col gap-2 p-2">
               <Button onClick={open(i)} title="Open" />
@@ -47,10 +43,7 @@ function PanelContent() {
 
   return (
     <div className="flex flex-col gap-2 p-2">
-      <Button
-        onClick={() => setExpanded((prev) => !prev)}
-        title={expanded ? "Collapse" : "Expand"}
-      />
+      <Button onClick={() => setExpanded((prev) => !prev)} title={expanded ? "Collapse" : "Expand"} />
       {expanded && (
         <div className="flex flex-col gap-2">
           {Array.from({ length: 10 }).map((_, i) => (

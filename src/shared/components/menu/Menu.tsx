@@ -15,23 +15,14 @@ export interface MenuProps extends Ariakit.MenuProviderProps {
 }
 
 export const Menu = forwardRef<HTMLDivElement, MenuProps>(function Menu(
-  {
-    trigger,
-    content,
-    className,
-    portal,
-    sameWidth,
-    backdrop = false,
-    ...props
-  },
-  ref
+  { trigger, content, className, portal, sameWidth, backdrop = false, ...props },
+  ref,
 ) {
   const localStore = Ariakit.useMenuStore({ ...props });
   const store = (props.store ?? localStore) as Ariakit.MenuStore;
 
   const open = store.useState((s) => s.open);
-  const triggertRender =
-    typeof trigger === "function" ? trigger(open) : trigger;
+  const triggertRender = typeof trigger === "function" ? trigger(open) : trigger;
 
   return (
     <Ariakit.MenuProvider store={props.store ?? store}>

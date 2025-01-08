@@ -11,11 +11,7 @@ interface SearchInputProps {
   placeholder?: string;
 }
 
-export function SearchInput({
-  value,
-  onValueChange,
-  ...inputProps
-}: SearchInputProps) {
+export function SearchInput({ value, onValueChange, ...inputProps }: SearchInputProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   return (

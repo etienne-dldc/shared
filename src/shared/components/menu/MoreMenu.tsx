@@ -13,30 +13,21 @@ interface MoreMenuProps extends Omit<MenuProps, "trigger"> {
   className?: string;
 }
 
-export const MoreMenu = forwardRef<HTMLDivElement, MoreMenuProps>(
-  function MoreMenu(
-    { variant, size, color, content, className, ...props },
-    ref
-  ) {
-    const [open, setOpen] = useState(false);
+export const MoreMenu = forwardRef<HTMLDivElement, MoreMenuProps>(function MoreMenu(
+  { variant, size, color, content, className, ...props },
+  ref,
+) {
+  const [open, setOpen] = useState(false);
 
-    return (
-      <Menu
-        open={open}
-        setOpen={setOpen}
-        className={className}
-        trigger={
-          <Button
-            variant={variant}
-            size={size}
-            icon={open ? <CaretUp /> : <CaretDown />}
-            color={color}
-          />
-        }
-        content={content}
-        {...props}
-        ref={ref}
-      />
-    );
-  }
-);
+  return (
+    <Menu
+      open={open}
+      setOpen={setOpen}
+      className={className}
+      trigger={<Button variant={variant} size={size} icon={open ? <CaretUp /> : <CaretDown />} color={color} />}
+      content={content}
+      {...props}
+      ref={ref}
+    />
+  );
+});

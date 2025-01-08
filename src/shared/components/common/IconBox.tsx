@@ -12,15 +12,7 @@ interface IconBoxProps {
   className?: string;
 }
 
-export function IconBox({
-  icon,
-  alt,
-  color,
-  size,
-  weight,
-  mirrored,
-  className,
-}: IconBoxProps) {
+export function IconBox({ icon, alt, color, size, weight, mirrored, className }: IconBoxProps) {
   const parentIconProps = useContext(IconContext);
   const mergedProps = useMemo(
     () => ({
@@ -31,7 +23,7 @@ export function IconBox({
       weight: weight || parentIconProps.weight,
       mirrored: mirrored || parentIconProps.mirrored,
     }),
-    [parentIconProps, alt, color, size, weight, mirrored]
+    [parentIconProps, alt, color, size, weight, mirrored],
   );
 
   return (

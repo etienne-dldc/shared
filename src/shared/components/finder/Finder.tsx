@@ -21,9 +21,7 @@ export function Finder({ children, className }: FinderProps) {
     elem.style.setProperty("--finder-panel-max-width", `${val}px`);
   }, []);
 
-  const [contentMinSizeVarName] = useState(
-    () => `--resizable-panel-size-${nanoid()}`
-  );
+  const [contentMinSizeVarName] = useState(() => `--resizable-panel-size-${nanoid()}`);
 
   const updateContentMinSize = useCallback(
     (instance: OverlayScrollbars) => {
@@ -32,7 +30,7 @@ export function Finder({ children, className }: FinderProps) {
       const visibleMax = elementWith + element.scrollLeft;
       element.style.setProperty(contentMinSizeVarName, `${visibleMax}px`);
     },
-    [contentMinSizeVarName]
+    [contentMinSizeVarName],
   );
 
   const onInitUpdate = useCallback(
@@ -40,7 +38,7 @@ export function Finder({ children, className }: FinderProps) {
       setScrollWidth(instance.state().overflowEdge.x);
       updateContentMinSize(instance);
     },
-    [setScrollWidth, updateContentMinSize]
+    [setScrollWidth, updateContentMinSize],
   );
 
   return (

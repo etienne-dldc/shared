@@ -6,5 +6,5 @@ import { Playground } from "./playground/Playground";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Playground />
-  </StrictMode>
+  </StrictMode>,
 );

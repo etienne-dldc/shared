@@ -7,24 +7,23 @@ interface TooltipProps extends Omit<Ariakit.TooltipProviderProps, "children"> {
   content?: React.ReactNode;
 }
 
-export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
-  function Tooltip({ children, showTimeout = 300, content, ...props }, ref) {
-    if (!content) {
-      return <>{children}</>;
-    }
-
-    return (
-      <Ariakit.TooltipProvider showTimeout={showTimeout} {...props}>
-        <Ariakit.TooltipAnchor ref={ref} render={children} />
-        <Ariakit.Tooltip
-          className={cn(
-            "bg-stone-950 px-3 py-1.5 rounded leading-relaxed shadow-xl text-stone-200 select-none"
-          )}
-          unmountOnHide
-        >
-          {content}
-        </Ariakit.Tooltip>
-      </Ariakit.TooltipProvider>
-    );
+export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip(
+  { children, showTimeout = 300, content, ...props },
+  ref,
+) {
+  if (!content) {
+    return <>{children}</>;
   }
-);
+
+  return (
+    <Ariakit.TooltipProvider showTimeout={showTimeout} {...props}>
+      <Ariakit.TooltipAnchor ref={ref} render={children} />
+      <Ariakit.Tooltip
+        className={cn("bg-stone-950 px-3 py-1.5 rounded leading-relaxed shadow-xl text-stone-200 select-none")}
+        unmountOnHide
+      >
+        {content}
+      </Ariakit.Tooltip>
+    </Ariakit.TooltipProvider>
+  );
+});

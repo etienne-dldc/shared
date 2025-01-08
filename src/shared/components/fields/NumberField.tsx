@@ -6,8 +6,7 @@ import { Label } from "../form/Label";
 import { NumberInput, NumberInputProps } from "../form/NumberInput";
 import { StringLike } from "./utils";
 
-export interface NumberFieldProps
-  extends Omit<NumberInputProps, "name" | "value" | "onChange"> {
+export interface NumberFieldProps extends Omit<NumberInputProps, "name" | "value" | "onChange"> {
   name: StringLike;
   label: string;
   labelHidden?: boolean;
@@ -16,15 +15,8 @@ export interface NumberFieldProps
 }
 
 export const NumberField = forwardRef(function NumberField(
-  {
-    name,
-    label,
-    labelHidden = false,
-    disabled = false,
-    className,
-    ...inputProps
-  }: NumberFieldProps,
-  ref: ForwardedRef<HTMLInputElement>
+  { name, label, labelHidden = false, disabled = false, className, ...inputProps }: NumberFieldProps,
+  ref: ForwardedRef<HTMLInputElement>,
 ) {
   const store = Ariakit.useFormContext();
   if (!store) {
@@ -43,11 +35,7 @@ export const NumberField = forwardRef(function NumberField(
 
   return (
     <div className={cn("flex flex-col", className)}>
-      <Label
-        hidden={labelHidden}
-        disabled={disabled}
-        render={<Ariakit.FormLabel name={name} />}
-      >
+      <Label hidden={labelHidden} disabled={disabled} render={<Ariakit.FormLabel name={name} />}>
         {label}
       </Label>
       <Ariakit.FormControl
@@ -65,10 +53,7 @@ export const NumberField = forwardRef(function NumberField(
           />
         }
       />
-      <Ariakit.FormError
-        name={name}
-        render={error ? <FieldError /> : <Ariakit.VisuallyHidden />}
-      />
+      <Ariakit.FormError name={name} render={error ? <FieldError /> : <Ariakit.VisuallyHidden />} />
     </div>
   );
 });

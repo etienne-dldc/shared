@@ -6,25 +6,20 @@ import * as v from "valibot";
 
 type TFormStorePropsBase<Data extends Core.FormStoreValues> = PickRequired<
   Ariakit.FormStoreProps<Data>,
-  | "values"
-  | "defaultValues"
-  | "errors"
-  | "defaultErrors"
-  | "touched"
-  | "defaultTouched"
+  "values" | "defaultValues" | "errors" | "defaultErrors" | "touched" | "defaultTouched"
 >;
 
 export type TUseValibotFormStoreOptions<
   StoreData extends Core.FormStoreValues,
-  Output
+  Output,
 > = TFormStorePropsBase<StoreData> & {
   schema: v.BaseSchema<StoreData, Output, v.BaseIssue<unknown>>;
 };
 
-export function useValibotFormStore<
-  StoreData extends Core.FormStoreValues,
-  Output
->({ schema, ...storeProps }: TUseValibotFormStoreOptions<StoreData, Output>) {
+export function useValibotFormStore<StoreData extends Core.FormStoreValues, Output>({
+  schema,
+  ...storeProps
+}: TUseValibotFormStoreOptions<StoreData, Output>) {
   const baseStore = Ariakit.useFormStore(storeProps);
 
   const { setError, useSubmit } = baseStore;
@@ -50,7 +45,7 @@ export function useValibotFormStore<
       }
       return null;
     },
-    [setError, schema]
+    [setError, schema],
   );
 
   baseStore.useValidate((state) => {
@@ -58,12 +53,7 @@ export function useValibotFormStore<
   });
 
   const useSafeSubmit = useCallback(
-    function useSafeSubmit(
-      callback: (
-        data: Output,
-        state: Core.FormStoreState<StoreData>
-      ) => void | Promise<void>
-    ) {
+    function useSafeSubmit(callback: (data: Output, state: Core.FormStoreState<StoreData>) => void | Promise<void>) {
       return useSubmit(async (state) => {
         const parsed = validate(state.values);
         if (parsed) {
@@ -71,7 +61,7 @@ export function useValibotFormStore<
         }
       });
     },
-    [useSubmit, validate]
+    [useSubmit, validate],
   );
 
   return useMemo(
@@ -79,6 +69,6 @@ export function useValibotFormStore<
       ...baseStore,
       useSafeSubmit,
     }),
-    [baseStore, useSafeSubmit]
+    [baseStore, useSafeSubmit],
   );
 }
