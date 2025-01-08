@@ -36,6 +36,9 @@ function hexToSpaceSeparated(hex: string) {
   return `${r} ${g} ${b}`;
 }
 
-export function pick<T extends string, Out>(value: T, options: Record<T, Out>): Out {
+export function pick<T extends string, Out>(
+  value: T,
+  options: Record<T, Out>
+): Out {
   return options[value];
 }
