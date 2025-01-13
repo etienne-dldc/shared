@@ -50,3 +50,7 @@ export interface ProviderPropsBase<PanelStates extends TPanelStatesBase> {
   panels: TPanelsDefsBase<PanelStates>;
   matchLocation: TMatchLocation<PanelStates>;
 }
+
+export interface FinderLinkProps<PanelStates extends TPanelStatesBase> extends React.ComponentPropsWithoutRef<"a"> {
+  toPanel: TPanelStateBase<PanelStates>;
+}

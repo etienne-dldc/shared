@@ -2,13 +2,14 @@ import { parsePath, Path, To } from "history";
 import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
 import { atomEffect } from "jotai-effect";
 import { atomWithDefault } from "jotai/utils";
-import { createElement, ReactNode, useCallback, useMemo } from "react";
+import { createElement, forwardRef, ReactNode, useCallback, useMemo } from "react";
 import { historyAtom } from "../atoms/history";
 import { FinderPanelProps, FinderPanel as PanelBase } from "../components/finder/FinderPanel";
 import { useAtomFromValue } from "../hooks/useAtomFromValue";
 import { useMemoRecord } from "../hooks/useMemoRecord";
 import { createHookProvider } from "../utils/hookProvider";
 import {
+  FinderLinkProps,
   ProviderPropsBase,
   TFinderPanelDefBase,
   TInternalState,
@@ -43,6 +44,26 @@ export function createFinderStore<PanelStates extends TPanelStatesBase>() {
         return { pathname: "/", search: "", hash: "", ...parsePath(history.createHref(pathTo)) };
       },
       [history],
+    );
+
+    const findPanelsLocation = useCallback(
+      function findPanelsLocation<PanelStates extends Record<string, any>>(
+        panelsDefs: readonly TFinderPanelDefBase<PanelStates>[],
+        panels: readonly TPanelStateBase<PanelStates>[],
+      ): Path {
+        const panelsReverse = [...panels].reverse();
+        for (const panel of panelsReverse) {
+          const def = panelsDefs.find((def) => def.key === panel.key);
+          if (!def) {
+            throw new Error(`Panel definition not found for key ${String(panel.key)}`);
+          }
+          if (def.toLocation) {
+            return toPath(def.toLocation(panel.state));
+          }
+        }
+        throw new Error("No location found for panels");
+      },
+      [toPath],
     );
 
     const $matchLocationWithTools = useMemo(
@@ -158,7 +179,7 @@ export function createFinderStore<PanelStates extends TPanelStatesBase>() {
           controller.abort();
         };
       });
-    }, [$panelsDefs, $requestedPanelStates, history]);
+    }, [$panelsDefs, $requestedPanelStates, findPanelsLocation, history]);
     useAtom($loaderEffect);
 
     // Active panel is the second to last panel
@@ -196,17 +217,17 @@ export function createFinderStore<PanelStates extends TPanelStatesBase>() {
         atom(null, (get, set, fromIndex: number, panel: TPanelState) => {
           const panels = get($panelStates);
           const base = panels.slice(0, fromIndex + 1);
-          const stateDef = get($panelsDefs).find((def) => def.key === panel.key);
-          if (!stateDef) {
-            throw new Error(`Panel definition not found for key ${String(panel.key)}`);
-          }
-          if (!stateDef.toLocation) {
-            throw new Error(`Panel definition ${String(panel.key)} has no toLocation method`);
-          }
+          // const stateDef = get($panelsDefs).find((def) => def.key === panel.key);
+          // if (!stateDef) {
+          //   throw new Error(`Panel definition not found for key ${String(panel.key)}`);
+          // }
+          // if (!stateDef.toLocation) {
+          //   throw new Error(`Panel definition ${String(panel.key)} has no toLocation method`);
+          // }
           const nextPanels = [...base, panel];
           set($navigate, "push", nextPanels);
         }),
-      [$navigate, $panelStates, $panelsDefs],
+      [$navigate, $panelStates],
     );
 
     const $updateStateByIndex = useMemo(
@@ -247,6 +268,7 @@ export function createFinderStore<PanelStates extends TPanelStatesBase>() {
       history,
       $location,
       $loading,
+      $panelsDefs,
       $panelStates,
       $activeIndex,
       navigate,
@@ -254,6 +276,7 @@ export function createFinderStore<PanelStates extends TPanelStatesBase>() {
       openPanelFromIndex,
       updateStateByIndex,
       closePanelsAfterIndex,
+      findPanelsLocation,
     });
   });
 
@@ -335,6 +358,51 @@ export function createFinderStore<PanelStates extends TPanelStatesBase>() {
     return state.state as PanelStates[K];
   }
 
+  function usePanelLinkProps(
+    panel: TPanelState,
+    linkProps: React.ComponentPropsWithoutRef<"a">,
+  ): React.ComponentPropsWithoutRef<"a"> {
+    const { $panelStates, $panelsDefs, findPanelsLocation } = useFinderOrFail();
+    const { openPanel, panelIndex } = usePanelOrFail();
+
+    const $nextPanels = useMemo(
+      () =>
+        atom((get) => {
+          const panels = get($panelStates);
+          const base = panels.slice(0, panelIndex + 1);
+          const nextPanels = [...base, panel];
+          return nextPanels;
+        }),
+      [$panelStates, panel, panelIndex],
+    );
+
+    const $nextLocation = useMemo(
+      () =>
+        atom((get) => {
+          return findPanelsLocation(get($panelsDefs), get($nextPanels));
+        }),
+      [$nextPanels, $panelsDefs, findPanelsLocation],
+    );
+
+    const nextLocation = useAtomValue($nextLocation);
+
+    return useMemo(() => {
+      return {
+        href: nextLocation.pathname,
+        onClick: (event) => {
+          linkProps.onClick?.(event);
+          if (event.defaultPrevented) {
+            return;
+          }
+          if (shouldProcessLinkClick(event, linkProps.target)) {
+            event.preventDefault();
+            openPanel(panel);
+          }
+        },
+      };
+    }, [linkProps, nextLocation.pathname, openPanel, panel]);
+  }
+
   /**
    * Renders a panel with the correct isActive and resizeLocalStorageKey props
    */
@@ -353,33 +421,30 @@ export function createFinderStore<PanelStates extends TPanelStatesBase>() {
     return createElement(PanelBase, nextProps, children);
   }
 
+  const FinderLink = forwardRef<HTMLAnchorElement, FinderLinkProps<PanelStates>>(function FinderLink(
+    { toPanel, ...rest },
+    ref,
+  ): ReactNode {
+    const props = usePanelLinkProps(toPanel, rest);
+
+    return createElement("a", {
+      ...rest,
+      ...props,
+      ref,
+    });
+  });
+
   return {
     FinderProvider,
+    FinderLink,
+    PanelProvider,
     useFinderMaybe,
     useFinderOrFail,
-    PanelProvider,
     usePanelMaybe,
     usePanelOrFail,
     usePanelState,
     Panel,
   };
-}
-
-function findPanelsLocation<PanelStates extends Record<string, any>>(
-  panelsDefs: readonly TFinderPanelDefBase<PanelStates>[],
-  panels: readonly TPanelStateBase<PanelStates>[],
-): To {
-  const panelsReverse = [...panels].reverse();
-  for (const panel of panelsReverse) {
-    const def = panelsDefs.find((def) => def.key === panel.key);
-    if (!def) {
-      throw new Error(`Panel definition not found for key ${String(panel.key)}`);
-    }
-    if (def.toLocation) {
-      return def.toLocation(panel.state);
-    }
-  }
-  throw new Error("No location found for panels");
 }
 
 function resolvePanelParents<PanelStates extends Record<string, any>>(
@@ -398,4 +463,18 @@ function resolvePanelParents<PanelStates extends Record<string, any>>(
     return [panelState];
   }
   return [...resolvePanelParents(panelsDefs, parentPanel), parentPanel];
+}
+
+type LimitedMouseEvent = Pick<MouseEvent, "button" | "metaKey" | "altKey" | "ctrlKey" | "shiftKey">;
+
+function isModifiedEvent(event: LimitedMouseEvent) {
+  return !!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);
+}
+
+function shouldProcessLinkClick(event: LimitedMouseEvent, target?: string) {
+  return (
+    event.button === 0 && // Ignore everything but left clicks
+    (!target || target === "_self") && // Let browser handle "target=_blank" etc.
+    !isModifiedEvent(event) // Ignore clicks with modifier keys
+  );
 }
