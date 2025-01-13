@@ -34,7 +34,8 @@ export function createFinderStore<PanelStates extends TPanelStatesBase>() {
     }, []);
     useAtom($historyEffect);
 
-    const $matchLocation = useAtomFromValue(matchLocation);
+    // Need object because jotai does not like functions as values
+    const $matchLocationObj = useAtomFromValue(useMemo(() => ({ matchLocation }), [matchLocation]));
     const $panelsDefs = useAtomFromValue(panelsDefs);
 
     const toPath = useCallback(
@@ -47,7 +48,7 @@ export function createFinderStore<PanelStates extends TPanelStatesBase>() {
     const $matchLocationWithTools = useMemo(
       () =>
         atom((get) => {
-          const matchLocation = get($matchLocation);
+          const matchLocationObj = get($matchLocationObj);
           const panelsDefs = get($panelsDefs);
 
           const withParents = (panel: TPanelState) => {
@@ -55,10 +56,10 @@ export function createFinderStore<PanelStates extends TPanelStatesBase>() {
           };
 
           return (location: Path) => {
-            return matchLocation(location, { withParents });
+            return matchLocationObj.matchLocation(location, { withParents });
           };
         }),
-      [$matchLocation, $panelsDefs],
+      [$matchLocationObj, $panelsDefs],
     );
 
     const $panelStates = useMemo(
