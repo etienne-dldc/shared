@@ -52,6 +52,8 @@ export function createFinderStore<PanelStates extends TPanelStatesBase>() {
           const panelsDefs = get($panelsDefs);
 
           const withParents = (panel: TPanelState) => {
+            console.log({ panel }, resolvePanelParents(panelsDefs, panel));
+
             return resolvePanelParents(panelsDefs, panel);
           };
 
@@ -96,8 +98,6 @@ export function createFinderStore<PanelStates extends TPanelStatesBase>() {
           return;
         }
         const { action, panels } = requestedPanels;
-        console.log({ action, panels });
-
         const resolved = panels.map((panel) => {
           const def = panelsDefs.find((def) => def.key === panel.key);
           if (!def) {
@@ -114,7 +114,6 @@ export function createFinderStore<PanelStates extends TPanelStatesBase>() {
           if (action === "init") {
             return;
           }
-          console.log(panels);
           const location = findPanelsLocation(get($panelsDefs), panels);
           if (action === "push") {
             history.push(location, { panels });
@@ -392,11 +391,11 @@ function resolvePanelParents<PanelStates extends Record<string, any>>(
     throw new Error(`Panel definition not found for key ${String(panelState.key)}`);
   }
   if (!def.parentPanels) {
-    return [];
+    return [panelState];
   }
   const parentPanel = def.parentPanels(panelState.state);
   if (!parentPanel) {
-    return [];
+    return [panelState];
   }
   return [...resolvePanelParents(panelsDefs, parentPanel), parentPanel];
 }
