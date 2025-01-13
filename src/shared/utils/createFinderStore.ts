@@ -8,53 +8,13 @@ import { FinderPanelProps, FinderPanel as PanelBase } from "../components/finder
 import { useAtomFromValue } from "../hooks/useAtomFromValue";
 import { useMemoRecord } from "../hooks/useMemoRecord";
 import { createHookProvider } from "../utils/hookProvider";
-
-export type TPanelStatesBase = Record<string, any>;
-
-export interface TPanelDef<Key, State, AnyState> {
-  key: Key;
-  toLocation?: (state: State) => To;
-  parentPanels?: (state: State) => AnyState | null;
-  /**
-   * Called when the panel is about to be opened
-   * This will block the navigation until the promise
-   */
-  preload?: (state: State) => Promise<void> | void;
-  /**
-   * If return true, the preload will be skipped
-   */
-  preloaded?: (state: State) => boolean;
-}
-
-export type TFinderPanelDefBase<PanelStates extends TPanelStatesBase> = {
-  [K in keyof PanelStates]: TPanelDef<K, PanelStates[K], TPanelStateBase<PanelStates>>;
-}[keyof PanelStates];
-
-export type TPanelStateBase<PanelStates extends TPanelStatesBase> = {
-  [K in keyof PanelStates]: { key: K; state: PanelStates[K] };
-}[keyof PanelStates];
-
-export interface TInternalState<PanelStates extends TPanelStatesBase> {
-  panels: readonly TPanelStateBase<PanelStates>[];
-}
-
-export type TPanelsStateBase<PanelStates extends TPanelStatesBase> = readonly TPanelStateBase<PanelStates>[];
-
-export type TMatchLocationTools<PanelStates extends TPanelStatesBase> = {
-  withParents: (panel: TPanelStateBase<PanelStates>) => TPanelsStateBase<PanelStates>;
-};
-
-export type TMatchLocation<PanelStates extends TPanelStatesBase> = (
-  location: Path,
-  tools: TMatchLocationTools<PanelStates>,
-) => TPanelsStateBase<PanelStates>;
-
-export type TPanelsDefsBase<PanelStates extends TPanelStatesBase> = readonly TFinderPanelDefBase<PanelStates>[];
-
-export interface ProviderPropsBase<PanelStates extends TPanelStatesBase> {
-  panels: TPanelsDefsBase<PanelStates>;
-  matchLocation: TMatchLocation<PanelStates>;
-}
+import {
+  ProviderPropsBase,
+  TFinderPanelDefBase,
+  TInternalState,
+  TPanelStateBase,
+  TPanelStatesBase,
+} from "./createFinderStore.types";
 
 export function createFinderStore<PanelStates extends TPanelStatesBase>() {
   type TPanelState = TPanelStateBase<PanelStates>;
@@ -69,20 +29,31 @@ export function createFinderStore<PanelStates extends TPanelStatesBase>() {
       history,
       $effect: $historyEffect,
       $location,
-    } = useMemo(() => historyAtom<Partial<TInternalState<PanelStates>>>(), []);
+    } = useMemo(() => {
+      return historyAtom<Partial<TInternalState<PanelStates>>>();
+    }, []);
     useAtom($historyEffect);
 
     const $matchLocation = useAtomFromValue(matchLocation);
     const $panelsDefs = useAtomFromValue(panelsDefs);
+
+    const toPath = useCallback(
+      (pathTo: To): Path => {
+        return { pathname: "/", search: "", hash: "", ...parsePath(history.createHref(pathTo)) };
+      },
+      [history],
+    );
 
     const $matchLocationWithTools = useMemo(
       () =>
         atom((get) => {
           const matchLocation = get($matchLocation);
           const panelsDefs = get($panelsDefs);
+
           const withParents = (panel: TPanelState) => {
             return resolvePanelParents(panelsDefs, panel);
           };
+
           return (location: Path) => {
             return matchLocation(location, { withParents });
           };
@@ -214,16 +185,10 @@ export function createFinderStore<PanelStates extends TPanelStatesBase>() {
     const $navigateTo = useMemo(
       () =>
         atom(null, (get, set, action: "push" | "replace", pathTo: To) => {
-          const path: Path = {
-            pathname: "/",
-            search: "",
-            hash: "",
-            ...parsePath(history.createHref(pathTo)),
-          };
-          const panels = get($matchLocationWithTools)(path);
+          const panels = get($matchLocationWithTools)(toPath(pathTo));
           set($navigate, action, panels);
         }),
-      [$matchLocationWithTools, $navigate, history],
+      [$matchLocationWithTools, $navigate, toPath],
     );
 
     const $openPanelFromIndex = useMemo(
