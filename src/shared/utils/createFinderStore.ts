@@ -73,9 +73,7 @@ export function createFinderStore<PanelStates extends TPanelStatesBase>() {
           const panelsDefs = get($panelsDefs);
 
           const withParents = (panel: TPanelState) => {
-            console.log({ panel }, resolvePanelParents(panelsDefs, panel));
-
-            return resolvePanelParents(panelsDefs, panel);
+            return [...resolvePanelParents(panelsDefs, panel), panel];
           };
 
           return (location: Path) => {
@@ -456,11 +454,11 @@ function resolvePanelParents<PanelStates extends Record<string, any>>(
     throw new Error(`Panel definition not found for key ${String(panelState.key)}`);
   }
   if (!def.parentPanels) {
-    return [panelState];
+    return [];
   }
   const parentPanel = def.parentPanels(panelState.state);
   if (!parentPanel) {
-    return [panelState];
+    return [];
   }
   return [...resolvePanelParents(panelsDefs, parentPanel), parentPanel];
 }
