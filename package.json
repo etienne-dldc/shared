@@ -15,6 +15,7 @@
     "@ariakit/core": "^0.4.14",
     "@ariakit/react": "^0.4.15",
     "@phosphor-icons/react": "^2.1.7",
+    "@react-hookz/deep-equal": "^3.0.3",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "history": "^5.3.0",

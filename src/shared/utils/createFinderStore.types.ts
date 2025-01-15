@@ -33,16 +33,14 @@ export interface TInternalState<PanelStates extends TPanelStatesBase> {
 
 export type TPanelsStateBase<PanelStates extends TPanelStatesBase> = readonly TPanelStateBase<PanelStates>[];
 
-export type TMatchLocationResult<PanelStates extends TPanelStatesBase> = TPanelsStateBase<PanelStates>;
-
 export type TMatchLocationTools<PanelStates extends TPanelStatesBase> = {
-  withParents: (panel: TPanelStateBase<PanelStates>) => TMatchLocationResult<PanelStates>;
+  withParents: (panel: TPanelStateBase<PanelStates>) => TPanelsStateBase<PanelStates>;
 };
 
 export type TMatchLocation<PanelStates extends TPanelStatesBase> = (
   location: Path,
   tools: TMatchLocationTools<PanelStates>,
-) => TMatchLocationResult<PanelStates>;
+) => TPanelsStateBase<PanelStates>;
 
 export type TPanelsDefsBase<PanelStates extends TPanelStatesBase> = readonly TFinderPanelDefBase<PanelStates>[];
 
@@ -51,6 +49,24 @@ export interface ProviderPropsBase<PanelStates extends TPanelStatesBase> {
   matchLocation: TMatchLocation<PanelStates>;
 }
 
-export interface FinderLinkProps<PanelStates extends TPanelStatesBase> extends React.ComponentPropsWithoutRef<"a"> {
-  toPanel: TPanelStateBase<PanelStates>;
+export interface FinderLinkProps<PanelStates extends TPanelStatesBase>
+  extends React.ComponentPropsWithoutRef<"a">,
+    TNavigateOptions<PanelStates> {}
+
+export interface TNavigateOptions<PanelStates extends TPanelStatesBase> {
+  fromIndex?: number;
+  /**
+   * Null will do slice from the currentIndex
+   * If single panel or array, will replace the panels from the currentIndex
+   * If function, will replace the panels (ignoring the currentIndex)
+   */
+  panels:
+    | null
+    | TPanelsStateBase<PanelStates>
+    | TPanelStateBase<PanelStates>
+    | ((panels: TPanelsStateBase<PanelStates>) => TPanelsStateBase<PanelStates>);
+  /**
+   * Do history.replace instead of history.push
+   */
+  replace?: boolean;
 }
