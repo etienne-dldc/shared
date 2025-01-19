@@ -32,7 +32,6 @@ interface SelectProps<Value extends string> {
   open?: boolean;
   renderSelected?: (item: TSelectItem<Value>) => React.ReactNode;
   setOpen?: (open: boolean) => void;
-  // touchedIssues?: TAnyIssue[] | null;
   value?: Value;
 }
 
@@ -96,7 +95,6 @@ export function Select<Value extends string>({
           ))}
         </Ariakit.SelectPopover>
       </Ariakit.SelectProvider>
-      {/* {touchedIssues && <IssuesBox issues={touchedIssues} />} */}
     </div>
   );
 }
