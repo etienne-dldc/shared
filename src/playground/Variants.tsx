@@ -1,5 +1,6 @@
 import { Plus } from "@phosphor-icons/react";
 import { Fragment, useCallback, useId, useMemo } from "react";
+import { Button } from "../shared/components/button/Button";
 import { useLatestRef } from "../shared/hooks/useLatestRef";
 import { useLocalStorageState } from "../shared/hooks/useLocalStorageState";
 import { cn, tw } from "../shared/styles/utils";
@@ -74,6 +75,9 @@ export function Variants<Dims extends TDimensions>({
     return result;
   }, [axis.row, dimensions]);
 
+  const colOffset = rows.length > 1 ? 1 : 0;
+  const rowOffset = cols.length > 1 ? 1 : 0;
+
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-row gap-4 items-center">
@@ -94,7 +98,7 @@ export function Variants<Dims extends TDimensions>({
               options={Object.keys(dimensions)}
               onChange={(selected) => setAxis((prev) => ({ ...prev, row: selected }))}
             />
-            <Button onClick={() => setAxis(initialAxis)}>Reset</Button>
+            <Button title="Reset" onClick={() => setAxis(initialAxis)} color="red" size="sm" />
           </div>
         </div>
       </div>
@@ -111,34 +115,36 @@ export function Variants<Dims extends TDimensions>({
                 onChange={(value) => setSelected({ ...selected, [dimKey]: value })}
               />
             ))}
-          <Button onClick={() => setSelected(defaultSelected)}>Reset</Button>
+          <Button onClick={() => setSelected(defaultSelected)} title="Reset" color="red" size="sm" />
         </div>
         <div className="max-h-[90vh] overflow-auto flex-1">
           <div className="grid gap-4 py-4">
-            {cols.map((col, colIndex) => {
-              const colName = Object.values(col).join(" & ");
-              return (
-                <div
-                  key={`col-${colIndex}`}
-                  style={{ gridColumn: colIndex + 2, gridRow: 1 }}
-                  className="text-center bg-white/5 rounded uppercase font-bold p-1"
-                >
-                  {colName}
-                </div>
-              );
-            })}
-            {rows.map((row, rowIndex) => {
-              const rowName = Object.values(row).join(" & ");
-              return (
-                <div
-                  key={`row-${rowIndex}`}
-                  style={{ gridColumn: 1, gridRow: rowIndex + 2 }}
-                  className="text-center bg-white/5 rounded uppercase font-bold p-1 flex items-center justify-center"
-                >
-                  {rowName}
-                </div>
-              );
-            })}
+            {cols.length > 1 &&
+              cols.map((col, colIndex) => {
+                const colName = Object.values(col).join(" & ");
+                return (
+                  <div
+                    key={`col-${colIndex}`}
+                    style={{ gridColumn: 1 + colOffset + colIndex, gridRow: 1 }}
+                    className="text-center bg-white/5 rounded uppercase font-bold p-1"
+                  >
+                    {colName}
+                  </div>
+                );
+              })}
+            {rows.length > 1 &&
+              rows.map((row, rowIndex) => {
+                const rowName = Object.values(row).join(" & ");
+                return (
+                  <div
+                    key={`row-${rowIndex}`}
+                    style={{ gridColumn: 1, gridRow: 1 + rowOffset + rowIndex }}
+                    className="text-center bg-white/5 rounded uppercase font-bold p-1 flex items-center justify-center"
+                  >
+                    {rowName}
+                  </div>
+                );
+              })}
             {cols.map((col, colIndex) => (
               <Fragment key={`col-${colIndex}`}>
                 {rows.map((row, rowIndex) => {
@@ -153,8 +159,8 @@ export function Variants<Dims extends TDimensions>({
                   return (
                     <div
                       style={{
-                        gridColumn: colIndex + 2,
-                        gridRow: rowIndex + 2,
+                        gridColumn: 1 + colOffset + colIndex,
+                        gridRow: 1 + rowOffset + rowIndex,
                         minWidth: cellMinWidth,
                       }}
                       className="flex flex-col items-start"
@@ -266,21 +272,5 @@ function MultiSelect<T>({ label, onChange, options, selected, highlight = false 
         <Plus size={18} />
       </button>
     </div>
-  );
-}
-
-interface ButtonProps {
-  children: React.ReactNode;
-  onClick?: () => void;
-}
-
-function Button({ children, onClick }: ButtonProps) {
-  return (
-    <button
-      className="py-1 px-2 rounded flex flex-row items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white uppercase font-bold text-sm"
-      onClick={onClick}
-    >
-      {children}
-    </button>
   );
 }
