@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Variants } from "../playground/Variants";
-import { CheckBox } from "../shared/components/form/CheckBox";
-import { cn } from "../shared/styles/utils";
+import { Variants } from "../../playground/Variants";
+import { cn } from "../styles/utils";
+import { CheckBox } from "./form/CheckBox";
 
 const CHECKED_VARIANTS = {
   yes: true,
@@ -11,7 +11,7 @@ const CHECKED_VARIANTS = {
 
 const SIZE_VARIANTS = { xs: "xs", sm: "sm", md: "md", lg: "lg" } as const;
 
-export function FormRoute() {
+export default function FormPlayground() {
   const [globalCheched, setGlobalChecked] = useState(false);
 
   return (

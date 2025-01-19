@@ -1,10 +1,10 @@
 import { nanoid } from "nanoid";
 import { useState } from "react";
-import { Button } from "../shared/components/button/Button";
-import { Finder } from "../shared/components/finder/Finder";
-import { FinderPanel } from "../shared/components/finder/FinderPanel";
+import { Button } from "../button/Button";
+import { Finder } from "./Finder";
+import { FinderPanel } from "./FinderPanel";
 
-export function FinderRoute() {
+export default function FinderPlayground() {
   const [keys, setKeys] = useState<string[]>([nanoid()]);
 
   const open = (fromIndex: number) => () => {
@@ -24,7 +24,6 @@ export function FinderRoute() {
       <Finder className="h-full w-full rounded-lg shadow-lg absolute inset-0">
         {keys.map((key, i) => (
           <FinderPanel key={key} className="w-full md:w-[600px]" isActive={i === keys.length - 1}>
-            <p>{key}</p>
             <div className="flex flex-col gap-2 p-2">
               <Button onClick={open(i)} title="Open" />
               <Button onClick={reset(i)} title="Reset" />

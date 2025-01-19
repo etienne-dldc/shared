@@ -1,7 +1,17 @@
+import * as Ariakit from "@ariakit/react";
+import { CaretDown, CaretRight, CircleDashed, Folder, List, SquaresFour } from "@phosphor-icons/react";
 import { createBrowserHistory } from "history";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { Route, routes } from "../routes/routes";
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "../shared/components/button/Button";
+import { ButtonGroup } from "../shared/components/button/ButtonGroup";
+import { ButtonLike } from "../shared/components/button/ButtonLike";
+import { LoadingBlock } from "../shared/components/common/LoadingBlock";
+import { Paper } from "../shared/components/common/Paper";
+import { DesignContext } from "../shared/components/core/DesignContext";
+import { EmptyState } from "../shared/components/layouts/EmptyState";
+import { MenuItem } from "../shared/components/menu/MenuItem";
+import { cn } from "../shared/styles/utils";
+import { routes, TRoute, TRouteFolder, TRouteItem } from "./routes";
 
 const history = createBrowserHistory();
 
@@ -12,53 +22,137 @@ export function Playground() {
     return history.listen((e) => setLocation(e.location));
   }, []);
 
-  const routeName = useMemo(() => {
-    const path = location.pathname.replace("/", "");
-    if (path in routes) {
-      return path as Route;
+  const routeMatch = useMemo(() => {
+    const parts = location.pathname.split("/").filter(Boolean);
+    if (parts.length === 0) {
+      return null;
     }
-    return null;
+    const parentsParts = parts.slice(0, -1);
+    const routePart = parts[parts.length - 1];
+    let current = routes;
+    const parents: TRouteFolder[] = [];
+    for (const part of parentsParts) {
+      const match = current.find((r) => r.kind === "folder" && r.name === part);
+      if (!match || match.kind !== "folder") {
+        return null;
+      }
+      current = match.routes;
+      parents.push(match);
+    }
+    const match = current.find((r) => r.kind === "route" && r.name === routePart);
+    if (!match || match.kind !== "route") {
+      return null;
+    }
+    return { match, parents };
   }, [location.pathname]);
 
-  const route = routeName ? routes[routeName] : <p>Not found</p>;
-
   return (
-    <div
-      className="grid px-4 gap-4 py-4 min-h-screen"
-      style={{
-        gridTemplateColumns: "200px 1fr",
-      }}
-    >
-      <nav className="flex flex-col gap-2">
-        {Object.keys(routes).map((route) => (
-          <NavItem key={route} route={route as Route} active={route === routeName} />
-        ))}
-      </nav>
-      <div className="px-2 relative overflow-hidden">{route}</div>
+    <div className="grid min-h-screen gap-4 p-4" style={{ gridTemplateRows: "auto 1fr" }}>
+      <div className="flex flex-row">
+        <ButtonGroup variant="primary">
+          <RouteMenu items={routes} icon={<List />} />
+          {routeMatch?.parents.map((parent) => {
+            return (
+              <RouteMenu
+                key={parent.name}
+                items={parent.routes}
+                title={parent.name}
+                icon={<Folder />}
+                endIcon={<CaretDown />}
+              />
+            );
+          })}
+          {routeMatch?.match && <ButtonLike title={routeMatch?.match.name} icon={<SquaresFour />} />}
+        </ButtonGroup>
+      </div>
+      <div className="relative">
+        <Suspense fallback={<LoadingBlock />}>
+          {routeMatch ? <routeMatch.match.component /> : <EmptyState text="Route not found" icon={<CircleDashed />} />}
+        </Suspense>
+      </div>
     </div>
   );
 }
 
-function NavItem({ route, active }: { route: Route; active: boolean }) {
+interface RouteMenuProps {
+  title?: string;
+  icon?: React.ReactNode;
+  endIcon?: React.ReactNode;
+  items: TRouteItem[];
+}
+
+function RouteMenu({ items, title, icon, endIcon }: RouteMenuProps) {
+  const topMenuRef = useRef<HTMLDivElement | null>(null);
+
+  return (
+    <Ariakit.MenuProvider>
+      <Ariakit.MenuButton render={<Button title={title} icon={icon} endIcon={endIcon} />} />
+      <Ariakit.Menu
+        gutter={8}
+        ref={topMenuRef}
+        render={<Paper level="popover" />}
+        className={cn("p-2 outline-none h-[300px] min-w-36")}
+        portal={true}
+        unmountOnHide
+      >
+        <DesignContext.Provider rounded="all">
+          {items.map((item) => renderItem(item, topMenuRef))}
+        </DesignContext.Provider>
+      </Ariakit.Menu>
+    </Ariakit.MenuProvider>
+  );
+}
+
+interface NestedMenuProps {
+  item: TRouteFolder;
+  parentRef?: React.MutableRefObject<HTMLDivElement | null>;
+}
+
+function NestedMenu({ item, parentRef }: NestedMenuProps) {
+  const menuRef = useRef<HTMLDivElement | null>(null);
+
+  return (
+    <Ariakit.MenuProvider>
+      <MenuItem render={<Ariakit.MenuButton />} title={item.name} icon={<Folder />} endIcon={<CaretRight />} />
+      <Ariakit.Menu
+        gutter={4}
+        getAnchorRect={parentRef ? () => parentRef.current?.getBoundingClientRect() ?? null : undefined}
+        render={<Paper level="popover" />}
+        className={cn("p-2 outline-none h-[300px] min-w-36")}
+        ref={menuRef}
+      >
+        {item.routes.map((item) => renderItem(item, menuRef))}
+      </Ariakit.Menu>
+    </Ariakit.MenuProvider>
+  );
+}
+
+interface NavItemProps {
+  item: TRoute;
+}
+
+function NavItem({ item }: NavItemProps) {
+  const menuStore = Ariakit.useMenuContext();
+
   const onClick = useCallback(
     (event: React.MouseEvent<HTMLAnchorElement>) => {
       if (event.metaKey || event.ctrlKey) {
         return;
       }
       event.preventDefault();
-      history.push(`/${route}`);
+      history.push(item.path);
+      menuStore?.hideAll();
     },
-    [route],
+    [item.path, menuStore],
   );
 
-  return (
-    <Button
-      size="md"
-      variant={active ? "primary" : "secondary"}
-      rounded="all"
-      title={route}
-      render={<a href={`/${route}`} onClick={onClick} />}
-      className="uppercase font-bold tracking-wider"
-    />
-  );
+  return <MenuItem title={item.name} icon={<SquaresFour />} render={<a href={item.path} onClick={onClick} />} />;
+}
+
+function renderItem(item: TRouteItem, parentRef?: React.MutableRefObject<HTMLDivElement | null>) {
+  const key = `${item.kind}-${item.name}`;
+  if (item.kind === "route") {
+    return <NavItem item={item} key={key} />;
+  }
+  return <NestedMenu item={item} parentRef={parentRef} key={key} />;
 }

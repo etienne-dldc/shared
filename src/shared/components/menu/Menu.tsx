@@ -21,7 +21,7 @@ export const Menu = forwardRef<HTMLDivElement, MenuProps>(function Menu(
   const localStore = Ariakit.useMenuStore({ ...props });
   const store = (props.store ?? localStore) as Ariakit.MenuStore;
 
-  const open = store.useState((s) => s.open);
+  const open = Ariakit.useStoreState(store, (s) => s.open);
   const triggertRender = typeof trigger === "function" ? trigger(open) : trigger;
 
   return (

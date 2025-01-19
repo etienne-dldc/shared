@@ -1,5 +1,5 @@
-import { Variants } from "../playground/Variants";
-import { Paper } from "../shared/components/common/Paper";
+import { Variants } from "../../../playground/Variants";
+import { Paper } from "./Paper";
 
 const LEVEL_VARIANTS = {
   background: "background",
@@ -8,7 +8,7 @@ const LEVEL_VARIANTS = {
   popover: "popover",
 } as const;
 
-export function PaperRoute() {
+export default function PaperPlayground() {
   return (
     <Variants
       initialAxis={{ row: [], column: [] }}
