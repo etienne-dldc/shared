@@ -61,7 +61,7 @@ const LOADING_VARIANTS = { no: undefined, yes: true } as const;
 
 const FULL_WIDTH_VARIANTS = { no: false, yes: true } as const;
 
-export function ButtonsRoute() {
+export default function ButtonPlayground() {
   return (
     <Variants
       localStorageKey="button"
