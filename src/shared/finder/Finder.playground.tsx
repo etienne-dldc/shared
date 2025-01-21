@@ -1,6 +1,6 @@
 import { nanoid } from "nanoid";
 import { useState } from "react";
-import { Button } from "../button/Button";
+import { Button } from "../components/button/Button";
 import { Finder } from "./Finder";
 import { FinderPanel } from "./FinderPanel";
 

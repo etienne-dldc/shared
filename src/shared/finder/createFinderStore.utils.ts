@@ -29,7 +29,7 @@ export function toPath(history: History, pathTo: To): Path {
 
 export function findPanelsLocation<PanelStates extends TPanelStatesBase>(
   history: History,
-  panelsDefs: readonly TFinderPanelDefBase<PanelStates>[],
+  panelsDefs: readonly TFinderPanelDefBase<PanelStates, any>[],
   panels: TPanelsStateBase<PanelStates>,
 ): Path {
   const panelsReverse = [...panels].reverse();
@@ -46,7 +46,7 @@ export function findPanelsLocation<PanelStates extends TPanelStatesBase>(
 }
 
 export function resolvePanelParents<PanelStates extends Record<string, any>>(
-  panelsDefs: readonly TFinderPanelDefBase<PanelStates>[],
+  panelsDefs: readonly TFinderPanelDefBase<PanelStates, any>[],
   panelState: TPanelStateBase<PanelStates>,
 ): readonly TPanelStateBase<PanelStates>[] {
   const def = panelsDefs.find((def) => def.key === panelState.key);

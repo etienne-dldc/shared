@@ -4,7 +4,7 @@ export type { Path, To };
 
 export type TPanelStatesBase = Record<string, any>;
 
-export interface TPanelDef<Key, State, AnyState> {
+export interface TPanelDef<Key, State, AnyState, PanelContext> {
   key: Key;
   toLocation?: (state: State) => To;
   parentPanels?: (state: State) => AnyState | null;
@@ -12,15 +12,15 @@ export interface TPanelDef<Key, State, AnyState> {
    * Called when the panel is about to be opened
    * This will block the navigation until the promise
    */
-  preload?: (state: State) => Promise<void> | void;
+  preload?: (state: State, context: PanelContext) => Promise<void> | void;
   /**
    * If return true, the preload will be skipped
    */
-  preloaded?: (state: State) => boolean;
+  preloaded?: (state: State, context: PanelContext) => boolean;
 }
 
-export type TFinderPanelDefBase<PanelStates extends TPanelStatesBase> = {
-  [K in keyof PanelStates]: TPanelDef<K, PanelStates[K], TPanelStateBase<PanelStates>>;
+export type TFinderPanelDefBase<PanelStates extends TPanelStatesBase, PanelContext> = {
+  [K in keyof PanelStates]: TPanelDef<K, PanelStates[K], TPanelStateBase<PanelStates>, PanelContext>;
 }[keyof PanelStates];
 
 export type TPanelStateBase<PanelStates extends TPanelStatesBase> = {
@@ -42,10 +42,14 @@ export type TMatchLocation<PanelStates extends TPanelStatesBase> = (
   tools: TMatchLocationTools<PanelStates>,
 ) => TPanelsStateBase<PanelStates>;
 
-export type TPanelsDefsBase<PanelStates extends TPanelStatesBase> = readonly TFinderPanelDefBase<PanelStates>[];
+export type TPanelsDefsBase<PanelStates extends TPanelStatesBase, PanelContext> = readonly TFinderPanelDefBase<
+  PanelStates,
+  PanelContext
+>[];
 
-export interface ProviderPropsBase<PanelStates extends TPanelStatesBase> {
-  panels: TPanelsDefsBase<PanelStates>;
+export interface ProviderPropsBase<PanelStates extends TPanelStatesBase, PanelContext> {
+  panels: TPanelsDefsBase<PanelStates, PanelContext>;
+  context: PanelContext;
   matchLocation: TMatchLocation<PanelStates>;
 }
 

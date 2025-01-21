@@ -2,13 +2,14 @@ import { ClickScrollPlugin, OverlayScrollbars } from "overlayscrollbars";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import { ForwardedRef, forwardRef, useEffect, useMemo, useRef } from "react";
 import scrollIntoView from "smooth-scroll-into-view-if-needed";
-import { TUseResizeWidth, useResize } from "../../hooks/useResize";
-import { cn } from "../../styles/utils";
-import { onDoubleTap } from "../../utils/onDoubleTap";
 
 import "overlayscrollbars/overlayscrollbars.css";
-import { useMergeRefs } from "../../hooks/useMergeRefs";
 import "./panel-scrollbar.css";
+
+import { useMergeRefs } from "../hooks/useMergeRefs";
+import { TUseResizeWidth, useResize } from "../hooks/useResize";
+import { cn } from "../styles/utils";
+import { onDoubleTap } from "../utils/onDoubleTap";
 
 OverlayScrollbars.plugin(ClickScrollPlugin);
 
