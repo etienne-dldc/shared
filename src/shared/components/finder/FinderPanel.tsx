@@ -1,12 +1,13 @@
 import { ClickScrollPlugin, OverlayScrollbars } from "overlayscrollbars";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
-import { useEffect, useMemo, useRef } from "react";
+import { ForwardedRef, forwardRef, useEffect, useMemo, useRef } from "react";
 import scrollIntoView from "smooth-scroll-into-view-if-needed";
 import { TUseResizeWidth, useResize } from "../../hooks/useResize";
 import { cn } from "../../styles/utils";
 import { onDoubleTap } from "../../utils/onDoubleTap";
 
 import "overlayscrollbars/overlayscrollbars.css";
+import { useMergeRefs } from "../../hooks/useMergeRefs";
 import "./panel-scrollbar.css";
 
 OverlayScrollbars.plugin(ClickScrollPlugin);
@@ -21,14 +22,12 @@ export interface FinderPanelProps extends React.ComponentPropsWithoutRef<"div"> 
   isActive?: boolean;
 }
 
-export function FinderPanel({
-  children,
-  className,
-  isActive = false,
-  resizeLocalStorageKey,
-  ...rest
-}: FinderPanelProps) {
+export const FinderPanel = forwardRef(function FinderPanel(
+  { children, className, isActive = false, resizeLocalStorageKey, ...rest }: FinderPanelProps,
+  ref: ForwardedRef<HTMLDivElement>,
+) {
   const panelRef = useRef<HTMLDivElement | null>(null);
+  const mergedRef = useMergeRefs(ref, panelRef);
 
   const resizer = useResize(panelRef, {
     direction: "left",
@@ -54,7 +53,7 @@ export function FinderPanel({
 
   return (
     <div
-      ref={panelRef}
+      ref={mergedRef}
       className={cn("shrink-0 relative max-w-[var(--finder-panel-max-width)]", className)}
       style={{
         width: resizer.dynamicSize,
@@ -93,7 +92,7 @@ export function FinderPanel({
       />
     </div>
   );
-}
+});
 
 function MiniHandle({ className, ...rest }: React.ComponentPropsWithoutRef<"div">) {
   return (

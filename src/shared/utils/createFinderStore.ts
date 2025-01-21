@@ -2,7 +2,7 @@ import { Path, To } from "history";
 import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
 import { atomEffect } from "jotai-effect";
 import { atomWithDefault } from "jotai/utils";
-import { createElement, forwardRef, ReactNode, useCallback, useMemo } from "react";
+import { createElement, ForwardedRef, forwardRef, ReactNode, useCallback, useMemo } from "react";
 import { historyAtom } from "../atoms/history";
 import { FinderPanelProps, FinderPanel as PanelBase } from "../components/finder/FinderPanel";
 import { useAtomFromValue } from "../hooks/useAtomFromValue";
@@ -178,33 +178,6 @@ export function createFinderStore<PanelStates extends TPanelStatesBase>() {
       [$panelStates, $requestedPanelStates],
     );
 
-    // const $navigateTo = useMemo(
-    //   () =>
-    //     atom(null, (get, set, action: "push" | "replace", pathTo: To) => {
-    //       const panels = get($matchLocationWithTools)(toPath(pathTo));
-    //       set($navigate, action, panels);
-    //     }),
-    //   [$matchLocationWithTools, $navigate, toPath],
-    // );
-
-    // const $openPanelFromIndex = useMemo(
-    //   () =>
-    //     atom(null, (get, set, fromIndex: number, panel: TPanelState) => {
-    //       const panels = get($panelStates);
-    //       const base = panels.slice(0, fromIndex + 1);
-    //       // const stateDef = get($panelsDefs).find((def) => def.key === panel.key);
-    //       // if (!stateDef) {
-    //       //   throw new Error(`Panel definition not found for key ${String(panel.key)}`);
-    //       // }
-    //       // if (!stateDef.toLocation) {
-    //       //   throw new Error(`Panel definition ${String(panel.key)} has no toLocation method`);
-    //       // }
-    //       const nextPanels = [...base, panel];
-    //       set($navigate, "push", nextPanels);
-    //     }),
-    //   [$navigate, $panelStates],
-    // );
-
     const $updateStateByIndex = useMemo(
       () =>
         atom(null, (get, set, panelIndex: number, key: string, update: React.SetStateAction<TPanelState>) => {
@@ -367,7 +340,10 @@ export function createFinderStore<PanelStates extends TPanelStatesBase>() {
   /**
    * Renders a panel with the correct isActive and resizeLocalStorageKey props
    */
-  function Panel({ children, ...props }: FinderPanelProps): ReactNode {
+  const Panel = forwardRef(function Panel(
+    { children, ...props }: FinderPanelProps,
+    ref: ForwardedRef<HTMLDivElement>,
+  ): ReactNode {
     const { $isLast, $currentPanelKey } = usePanelOrFail();
 
     const isActive = useAtomValue($isLast);
@@ -379,8 +355,8 @@ export function createFinderStore<PanelStates extends TPanelStatesBase>() {
       ...props,
     };
 
-    return createElement(PanelBase, nextProps, children);
-  }
+    return createElement(PanelBase, { ...nextProps, ref }, children);
+  });
 
   const FinderLink = forwardRef<HTMLAnchorElement, FinderLinkProps<PanelStates>>(function FinderLink(
     { panels, replace, fromIndex, ...rest },
