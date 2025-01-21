@@ -1,9 +1,12 @@
 import { Plus } from "@phosphor-icons/react";
-import { Fragment, useCallback, useId, useMemo } from "react";
+import { Fragment, useCallback, useMemo } from "react";
 import { Button } from "../shared/components/button/Button";
+import { ButtonContent } from "../shared/components/button/ButtonContent";
+import { ButtonGroup } from "../shared/components/button/ButtonGroup";
+import { ButtonLike } from "../shared/components/button/ButtonLike";
+import { Select } from "../shared/components/form/Select";
 import { useLatestRef } from "../shared/hooks/useLatestRef";
 import { useLocalStorageState } from "../shared/hooks/useLocalStorageState";
-import { cn, tw } from "../shared/styles/utils";
 
 export type TDimensions = Record<string, Record<string, unknown>>;
 
@@ -84,35 +87,39 @@ export function Variants<Dims extends TDimensions>({
         {title && <h2 className="text-2xl px-6">{title}</h2>}
         <div className="flex flex-col gap-4">
           <div className="flex flex-row gap-4 items-center">
-            <MultiSelect<keyof Dims>
-              highlight
+            <MultiSelect<keyof Dims & string>
               label="column"
-              selected={axis.column}
+              selected={axis.column as string[]}
               options={Object.keys(dimensions)}
               onChange={(selected) => setAxis((prev) => ({ ...prev, column: selected }))}
             />
-            <MultiSelect<keyof Dims>
-              highlight
+            <MultiSelect<keyof Dims & string>
               label="row"
-              selected={axis.row}
+              selected={axis.row as string[]}
               options={Object.keys(dimensions)}
               onChange={(selected) => setAxis((prev) => ({ ...prev, row: selected }))}
             />
-            <Button title="Reset" onClick={() => setAxis(initialAxis)} color="red" size="sm" />
+            <Button title="Reset" onClick={() => setAxis(initialAxis)} color="red" size="xs" />
           </div>
         </div>
       </div>
       <div className="flex flex-row gap-8">
-        <div className="flex flex-col gap-4 pt-6">
+        <div className="flex flex-col gap-3 pt-4">
           {Object.entries(dimensions)
             .filter(([key]) => !axis.column.includes(key) && !axis.row.includes(key))
             .map(([dimKey, dim]) => (
-              <Select
+              <Select<string>
                 key={dimKey}
-                label={dimKey}
-                selected={selected[dimKey] as string}
-                options={Object.keys(dim)}
+                label={<ButtonContent title={dimKey} className="uppercase font-bold" />}
+                value={selected[dimKey] as string}
+                items={Object.keys(dim).map((key) => ({
+                  value: key,
+                  title: key,
+                }))}
                 onChange={(value) => setSelected({ ...selected, [dimKey]: value })}
+                renderSelect={<Button className="flex-1" />}
+                renderWrapper={<ButtonGroup size="sm" color="teal" />}
+                renderLabel={<ButtonLike title={dimKey} className="flex-1" />}
               />
             ))}
           <Button onClick={() => setSelected(defaultSelected)} title="Reset" color="red" size="sm" />
@@ -179,48 +186,14 @@ export function Variants<Dims extends TDimensions>({
   );
 }
 
-interface SelectProps<T> {
-  options: T[];
-  selected: T;
-  onChange: (value: T) => void;
-  label: string;
-  highlight?: boolean;
-}
-
-function Select<T extends string>({ label, onChange, options, selected, highlight = false }: SelectProps<T>) {
-  const id = useId();
-  return (
-    <div className={cn(tw`bg-white/5 py-1 px-4 rounded flex flex-row gap-1`, highlight && tw`bg-blue-500 text-white`)}>
-      <label htmlFor={id} className="uppercase font-bold text-sm text-white/40 flex-1">
-        {label}
-      </label>
-      <select
-        value={selected}
-        onChange={(e) => onChange(e.target.value as T)}
-        className="rounded px-1 bg-transparent text-right"
-        id={id}
-      >
-        {options.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
-    </div>
-  );
-}
-
-interface MultiSelectProps<T> {
+interface MultiSelectProps<T extends string> {
   options: T[];
   selected: T[];
   onChange: (selected: T[]) => void;
   label: string;
-  highlight?: boolean;
 }
 
-function MultiSelect<T>({ label, onChange, options, selected, highlight = false }: MultiSelectProps<T>) {
-  const id = useId();
-
+function MultiSelect<T extends string>({ label, onChange, options, selected }: MultiSelectProps<T>) {
   const selectedLatest = useLatestRef(selected);
 
   const onSelectChange = useCallback(
@@ -237,40 +210,37 @@ function MultiSelect<T>({ label, onChange, options, selected, highlight = false 
   );
 
   return (
-    <div
-      className={cn(
-        tw`bg-white/5 py-1 px-2 rounded flex flex-row items-center gap-2`,
-        highlight && tw`bg-blue-500 text-white`,
-      )}
-    >
-      <label htmlFor={id} className="uppercase font-bold text-sm mr-1">
-        {label}
-      </label>
-      {selected.map((selectedItem, index) => (
-        <select
-          key={index}
-          value={selectedItem as string}
-          onChange={(e) => onSelectChange(e.target.value as any, index)}
-          className="rounded px-1 bg-black/10"
-          id={id}
-        >
-          {options.map((option) => (
-            <option key={option as string} value={option as string}>
-              {option as string}
-            </option>
-          ))}
-          <option value="REMOVE">--REMOVE--</option>
-        </select>
-      ))}
-      <button
-        className=""
+    <ButtonGroup size="xs" variant="primary">
+      <ButtonLike title={label} className="uppercase font-bold" />
+      {selected.map((selectedItem, index) => {
+        return (
+          <Select<T | "REMOVE">
+            key={index}
+            value={selectedItem}
+            renderSelect={<Button className="min-w-[100px]" />}
+            items={[
+              ...options.map((option) => ({
+                value: option,
+                title: option,
+              })),
+              {
+                value: "REMOVE",
+                title: "--REMOVE--",
+              },
+            ]}
+            label={label}
+            labelHidden
+            onChange={(value) => onSelectChange(value, index)}
+          />
+        );
+      })}
+      <Button
+        icon={<Plus />}
         onClick={() => {
           const available = options.filter((option) => !selected.includes(option));
           onChange([...selected, available[0]]);
         }}
-      >
-        <Plus size={18} />
-      </button>
-    </div>
+      />
+    </ButtonGroup>
   );
 }

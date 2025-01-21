@@ -3,10 +3,10 @@ import { TDesignRounded, TDesignSize, TDesignVariant } from "../core/DesignConte
 
 export function buttonSizeClass(size: TDesignSize) {
   return pick(size, {
-    xs: tw`text-sm min-h-[28px] min-w-[28px]`,
-    sm: tw`text-sm min-h-[32px] min-w-[32px]`,
-    md: tw`text-base min-h-[40px] min-w-[40px]`,
-    lg: tw`text-lg min-h-[54px] min-w-[54px]`,
+    xs: tw`text-sm min-h-7 min-w-7`,
+    sm: tw`text-sm min-h-8 min-w-8`,
+    md: tw`text-base min-h-10 min-w-10`,
+    lg: tw`text-lg min-h-14 min-w-14`,
   });
 }
 
@@ -24,34 +24,45 @@ export interface ButtonStylesParams {
   variant: TDesignVariant;
   rounded: TDesignRounded;
   interactive: boolean;
+  forceHover: boolean;
+  forceActive: boolean;
 }
 
-export function buttonClassName({ size, variant, rounded, interactive }: ButtonStylesParams) {
-  const variantClass = pick(variant, {
+export function buttonClassName({ size, variant, rounded, interactive, forceHover, forceActive }: ButtonStylesParams) {
+  const variantClassBase = pick(variant, {
+    primary: cn(tw`bg-dynamic-600 text-white`),
+    secondary: cn(tw`bg-white/5 text-dynamic-200`),
+    tertiary: cn(tw`bg-transparent text-white`),
+  });
+
+  const variantClassInteractive = pick(variant, {
     primary: cn(
-      tw`bg-dynamic-600 text-white`,
-      interactive && tw`hover:bg-dynamic-500 ring-dynamic-500/30`,
+      tw`hover:bg-dynamic-500`,
+      forceHover && tw`bg-dynamic-500`,
+      tw`active:bg-dynamic-700`,
+      forceActive && tw`bg-dynamic-700`,
+      tw`data-focus-visible:ring-dynamic-100 data-focus-visible:ring-2`,
       tw`aria-disabled:bg-dynamic-700 aria-disabled:text-white/50 aria-disabled:ring-dynamic-500/30`,
-      interactive && tw`data-focus-visible:ring-dynamic-300 data-focus-visible:ring-2`,
     ),
     secondary: cn(
-      tw`bg-white/5 text-dynamic-200`,
-      interactive && tw`hover:bg-dynamic-600 hover:text-white ring-dynamic-500/50`,
+      tw`hover:bg-dynamic-600 hover:text-white`,
+      forceHover && tw`bg-dynamic-600 text-white`,
+      tw`active:bg-dynamic-700 active:text-white`,
+      forceActive && tw`bg-dynamic-700 text-white`,
+      tw`data-focus-visible:ring-dynamic-400 data-focus-visible:ring-2`,
       tw`aria-disabled:bg-white/5 aria-disabled:text-dynamic-200/50 aria-disabled:ring-dynamic-500/50`,
-      interactive && tw`data-focus-visible:ring-dynamic-400/40 data-focus-visible:ring-2`,
     ),
     tertiary: cn(
-      tw`bg-transparent text-white`,
-      interactive && tw`hover:bg-white/5 hover:text-dynamic-300 ring-dynamic-500/50`,
+      tw`hover:bg-white/5 hover:text-dynamic-300`,
+      forceHover && tw`bg-white/5 text-dynamic-300`,
+      tw`active:bg-dynamic-700 active:text-white`,
+      forceActive && tw`bg-dynamic-700 text-white`,
+      tw`data-focus-visible:ring-dynamic-400 data-focus-visible:ring-2`,
+      // Focus style is same as hover
+      tw`data-focus-visible:bg-white/5 data-focus-visible:text-dynamic-300`,
+      // We need to also apply active style
+      tw`data-focus-visible:active:bg-dynamic-700 data-focus-visible:active:text-white`,
       tw`aria-disabled:text-dynamic-200/40 aria-disabled:ring-dynamic-700/50`,
-      interactive &&
-        tw`data-focus-visible:ring-dynamic-400/40 data-focus-visible:ring-2 data-focus-visible:bg-white/5 data-focus-visible:text-dynamic-300`,
-    ),
-    outline: cn(
-      tw`bg-transparent text-dynamic-200 ring-dynamic-200 ring-inset ring-0 ring-offset-0`,
-      interactive && tw`hover:ring-2 hover:dynamic-200/10`,
-      tw`data-focus-visible:ring-2`,
-      interactive && tw`aria-disabled:text-dynamic-200/40 aria-disabled:ring-white/50`,
     ),
   });
 
@@ -60,14 +71,15 @@ export function buttonClassName({ size, variant, rounded, interactive }: ButtonS
     tw`outline-none`,
     buttonRoundedClass(rounded),
     buttonSizeClass(size),
-    variantClass,
+    variantClassBase,
+    interactive && variantClassInteractive,
     tw`disabled:cursor-not-allowed data-focus-visible:z-10`,
   );
 }
 
 export const BUTTON_ICON_SIZE: Record<TDesignSize, number> = {
   xs: 16,
-  sm: 16,
+  sm: 18,
   md: 20,
   lg: 26,
 };

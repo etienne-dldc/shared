@@ -27,13 +27,17 @@ interface SelectProps<Value extends string> {
   items: TSelectItem<Value>[];
   label: React.ReactNode;
   name?: string;
+  labelHidden?: boolean;
   onChange?: (value: Value) => void;
   open?: boolean;
   renderSelected?: (item: TSelectItem<Value>) => React.ReactNode;
-  renderLabel?: React.ReactElement;
   setOpen?: (open: boolean) => void;
   issues?: React.ReactNode;
   value?: Value;
+
+  renderSelect?: React.ReactElement;
+  renderLabel?: React.ReactElement;
+  renderWrapper?: React.ReactElement;
 }
 
 const SelectAny = forwardRef(function Select(
@@ -43,15 +47,19 @@ const SelectAny = forwardRef(function Select(
     value,
     disabled,
     label,
+    name,
+    labelHidden,
     open,
     setOpen,
     renderSelected,
     caret = true,
     className,
-    name,
-    renderLabel,
     issues = null,
     defaultValue,
+
+    renderLabel,
+    renderSelect,
+    renderWrapper,
   }: SelectProps<string>,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
@@ -68,10 +76,14 @@ const SelectAny = forwardRef(function Select(
   const selectedItem = useMemo(() => items.find((item) => item.value === storeValue), [items, storeValue]);
 
   return (
-    <div className={cn("flex flex-col", className)} ref={ref}>
-      <Ariakit.SelectProvider store={selectStore}>
-        <Ariakit.SelectLabel render={<Label disabled={disabled} render={renderLabel} />}>{label}</Ariakit.SelectLabel>
-        <Ariakit.Select disabled={disabled} name={name} render={<Button />}>
+    <Ariakit.SelectProvider store={selectStore}>
+      <Ariakit.Role render={renderWrapper ?? <div className={cn("flex flex-col", className)} />} ref={ref}>
+        <Ariakit.SelectLabel
+          render={labelHidden ? <Ariakit.VisuallyHidden /> : (renderLabel ?? <Label disabled={disabled} />)}
+        >
+          {label}
+        </Ariakit.SelectLabel>
+        <Ariakit.Select disabled={disabled} name={name} render={renderSelect ?? <Button />}>
           {selectedItem ? (
             renderSelected ? (
               renderSelected(selectedItem)
@@ -85,20 +97,20 @@ const SelectAny = forwardRef(function Select(
             )
           ) : null}
         </Ariakit.Select>
-        <Ariakit.SelectPopover
-          gutter={4}
-          portal
-          render={<Paper className="p-2 outline-none" level="popover" />}
-          sameWidth
-          unmountOnHide
-        >
-          {items.map((item) => (
-            <SelectItem item={item} key={item.value} />
-          ))}
-        </Ariakit.SelectPopover>
-      </Ariakit.SelectProvider>
-      {issues}
-    </div>
+        {issues}
+      </Ariakit.Role>
+      <Ariakit.SelectPopover
+        gutter={4}
+        portal
+        render={<Paper className="p-2 outline-none" level="popover" />}
+        sameWidth
+        unmountOnHide
+      >
+        {items.map((item) => (
+          <SelectItem item={item} key={item.value} />
+        ))}
+      </Ariakit.SelectPopover>
+    </Ariakit.SelectProvider>
   );
 });
 

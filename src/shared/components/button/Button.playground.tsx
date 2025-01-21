@@ -55,6 +55,13 @@ const BACKGROUND_COLORS = {
   slate: "bg-slate-900",
 } as const;
 
+const INTERACTIVE_STATE = {
+  base: null,
+  hover: "hover",
+  active: "active",
+  focus: "focus",
+} as const;
+
 const DISABLED_VARIANTS = { no: undefined, yes: true } as const;
 
 const LOADING_VARIANTS = { no: undefined, yes: true } as const;
@@ -79,6 +86,7 @@ export default function ButtonPlayground() {
         endIcon: ICON_VARIANTS,
         background: BACKGROUND_COLORS,
         fullWidth: FULL_WIDTH_VARIANTS,
+        state: INTERACTIVE_STATE,
       }}
       defaultSelected={{
         color: "blue",
@@ -93,11 +101,12 @@ export default function ButtonPlayground() {
         endIcon: "none",
         background: "none",
         fullWidth: "no",
+        state: "base",
       }}
       initialAxis={{ column: [], row: [] }}
-      render={({ fullWidth, background, ...props }) => (
+      render={({ fullWidth, background, state, ...props }) => (
         <div className={cn("w-full h-full", background)}>
-          <Button {...props} className={fullWidth ? "w-full" : ""} />
+          <Button {...props} className={cn(fullWidth ? "w-full" : "")} __forceState={state} />
         </div>
       )}
     />

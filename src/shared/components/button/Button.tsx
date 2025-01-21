@@ -2,7 +2,7 @@ import * as Ariakit from "@ariakit/react";
 import { IconContext } from "@phosphor-icons/react";
 import { ComponentPropsWithoutRef, forwardRef, useMemo } from "react";
 import { Merge } from "type-fest";
-import { cn, pick } from "../../styles/utils";
+import { cn, pick, TInteractiveState } from "../../styles/utils";
 import { DesignContext, TDesignRounded, TDesignSize, TDesignVariant } from "../core/DesignContext";
 import { DynamicColorProvider, TDynamicColor } from "../core/DynamicColorProvider";
 import { ButtonContent } from "./ButtonContent";
@@ -17,6 +17,7 @@ export type ButtonProps = Merge<
     variant?: TDesignVariant;
     rounded?: TDesignRounded;
     disabled?: boolean;
+    __forceState?: null | TInteractiveState;
 
     // For content
     icon?: React.ReactNode;
@@ -37,6 +38,7 @@ export const Button = forwardRef((inProps: ButtonProps, ref: React.Ref<HTMLButto
     size,
     variant,
     disabled,
+    __forceState,
 
     title,
     icon,
@@ -52,9 +54,13 @@ export const Button = forwardRef((inProps: ButtonProps, ref: React.Ref<HTMLButto
 
   const childrenResolved = children ?? <ButtonContent {...{ title, icon, endIcon, details, loading }} />;
 
+  const forceHover = __forceState === "hover";
+  const forceActive = __forceState === "active";
+  const forceFocus = __forceState === "focus";
+
   const mainClass = useMemo(
-    () => buttonClassName({ size, variant, rounded, interactive: true }),
-    [size, variant, rounded],
+    () => buttonClassName({ size, variant, rounded, interactive: true, forceActive, forceHover }),
+    [size, variant, rounded, forceActive, forceHover],
   );
 
   const iconProps = useMemo(() => ({ size: pick(size, BUTTON_ICON_SIZE) }), [size]);
@@ -68,6 +74,7 @@ export const Button = forwardRef((inProps: ButtonProps, ref: React.Ref<HTMLButto
             className={cn(mainClass, className)}
             disabled={disabled}
             type={type}
+            {...(forceFocus ? { "data-focus-visible": true } : {})}
             {...buttonProps}
           >
             {childrenResolved}
