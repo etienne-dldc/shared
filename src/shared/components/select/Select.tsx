@@ -7,7 +7,7 @@ import { ButtonContent } from "../button/ButtonContent";
 import { buttonRoundedClass, buttonSizeClass } from "../button/styles";
 import { Paper } from "../common/Paper";
 import { DesignContext } from "../core/DesignContext";
-import { Label } from "./Label";
+import { Label } from "../form/Label";
 
 export interface TSelectItem<Value extends string> {
   value: Value;

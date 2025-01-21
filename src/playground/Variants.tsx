@@ -4,7 +4,7 @@ import { Button } from "../shared/components/button/Button";
 import { ButtonContent } from "../shared/components/button/ButtonContent";
 import { ButtonGroup } from "../shared/components/button/ButtonGroup";
 import { ButtonLike } from "../shared/components/button/ButtonLike";
-import { Select } from "../shared/components/form/Select";
+import { Select } from "../shared/components/select/Select";
 import { useLatestRef } from "../shared/hooks/useLatestRef";
 import { useLocalStorageState } from "../shared/hooks/useLocalStorageState";
 
