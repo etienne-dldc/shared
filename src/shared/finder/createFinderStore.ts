@@ -2,7 +2,8 @@ import { Path, To } from "history";
 import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
 import { atomEffect } from "jotai-effect";
 import { atomWithDefault } from "jotai/utils";
-import { createElement, ForwardedRef, forwardRef, ReactNode, useCallback, useMemo } from "react";
+import { nanoid } from "nanoid";
+import { createElement, ForwardedRef, forwardRef, ReactNode, useCallback, useMemo, useState } from "react";
 import { historyAtom } from "../atoms/history";
 import { useAtomFromValue } from "../hooks/useAtomFromValue";
 import { useMemoEqual } from "../hooks/useMemoEqual";
@@ -50,16 +51,17 @@ export function createFinderStore<PanelStates extends TPanelStatesBase, PanelCon
           atom((get) => {
             const matchLocationObj = get($matchLocationObj);
             const panelsDefs = get($panelsDefs);
+            const context = get($context);
 
             const withParents = (panel: TPanelState) => {
               return [...resolvePanelParents(panelsDefs, panel), panel];
             };
 
             return (location: Path) => {
-              return matchLocationObj.matchLocation(location, { withParents });
+              return matchLocationObj.matchLocation(location, context, { withParents });
             };
           }),
-        [$matchLocationObj, $panelsDefs],
+        [$context, $matchLocationObj, $panelsDefs],
       );
 
       const $panelsFromLocation = useMemo(
@@ -73,18 +75,24 @@ export function createFinderStore<PanelStates extends TPanelStatesBase, PanelCon
       );
       const panelsFromLocation = useSetAtom($panelsFromLocation);
 
+      const routingId = useState(() => nanoid())[0];
+
       const $panelStates = useMemo(
         () =>
           atom((get): TPanelsState => {
             const location = get($location);
-            if (location.state && location.state.panels) {
-              return location.state.panels;
+            if (location.state && location.state.routingId && location.state.panels) {
+              if (location.state.routingId === routingId) {
+                return location.state.panels;
+              }
+              // TODO: Allow user to restore panels ?
             }
             // if no state, we need to find the panels from the path
             return get($matchLocationWithTools)(location);
           }),
-        [$location, $matchLocationWithTools],
+        [$location, $matchLocationWithTools, routingId],
       );
+      console.log(useAtomValue($panelStates));
 
       const $requestedPanelStates = useMemo(
         () =>
@@ -127,11 +135,11 @@ export function createFinderStore<PanelStates extends TPanelStatesBase, PanelCon
             }
             const location = findPanelsLocation(history, get($panelsDefs), panels);
             if (action === "push") {
-              history.push(location, { panels });
+              history.push(location, { panels, routingId });
               return;
             }
             if (action === "replace") {
-              history.replace(location, { panels });
+              history.replace(location, { panels, routingId });
               return;
             }
             action satisfies never;
@@ -169,7 +177,7 @@ export function createFinderStore<PanelStates extends TPanelStatesBase, PanelCon
             controller.abort();
           };
         });
-      }, [$context, $panelsDefs, $requestedPanelStates, history]);
+      }, [$context, $panelsDefs, $requestedPanelStates, history, routingId]);
       useAtom($loaderEffect);
 
       const $navigate = useMemo(
@@ -198,7 +206,7 @@ export function createFinderStore<PanelStates extends TPanelStatesBase, PanelCon
             set($navigate, {
               replace: true,
               panels: nextPanels,
-              fromIndex: 0, // Replace all panels
+              fromIndex: -1, // Replace all panels
             });
           }),
         [$navigate, $panelStates],
@@ -215,10 +223,27 @@ export function createFinderStore<PanelStates extends TPanelStatesBase, PanelCon
       // );
 
       const navigate = useSetAtom($navigate);
+      const navigateTo = useCallback(
+        (options: TNavigateOptions<PanelStates>) => {
+          return navigate({ fromIndex: -1, ...options });
+        },
+        [navigate],
+      );
       // const navigateTo = useSetAtom($navigateTo);
       // const openPanelFromIndex = useSetAtom($openPanelFromIndex);
       const updateStateByIndex = useSetAtom($updateStateByIndex);
       // const closePanelsAfterIndex = useSetAtom($closePanelsAfterIndex);
+
+      const refreshLocation = useCallback(
+        ({ replace }: { replace?: boolean } = {}) => {
+          console.log("refreshLocation");
+          navigateTo({
+            replace,
+            panels: panelsFromLocation(history.location),
+          });
+        },
+        [history, navigateTo, panelsFromLocation],
+      );
 
       return useMemoRecord({
         history,
@@ -227,8 +252,10 @@ export function createFinderStore<PanelStates extends TPanelStatesBase, PanelCon
         $panelsDefs,
         $panelStates,
         navigate,
+        navigateTo,
         updateStateByIndex,
         panelsFromLocation,
+        refreshLocation,
       });
     },
   );

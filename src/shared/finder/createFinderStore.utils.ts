@@ -11,7 +11,7 @@ export function resolveNavigateParams<PanelStates extends TPanelStatesBase>(
   currentPanels: TPanelsStateBase<PanelStates>,
   options: TNavigateOptions<PanelStates>,
 ): TPanelsStateBase<PanelStates> {
-  const { fromIndex: currentIndex = 0, panels } = options;
+  const { fromIndex: currentIndex = -1, panels } = options;
   if (typeof panels === "function") {
     return panels(currentPanels);
   }

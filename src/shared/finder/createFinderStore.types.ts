@@ -28,6 +28,7 @@ export type TPanelStateBase<PanelStates extends TPanelStatesBase> = {
 }[keyof PanelStates];
 
 export interface TInternalState<PanelStates extends TPanelStatesBase> {
+  routingId: string;
   panels: readonly TPanelStateBase<PanelStates>[];
 }
 
@@ -37,8 +38,9 @@ export type TMatchLocationTools<PanelStates extends TPanelStatesBase> = {
   withParents: (panel: TPanelStateBase<PanelStates>) => TPanelsStateBase<PanelStates>;
 };
 
-export type TMatchLocation<PanelStates extends TPanelStatesBase> = (
+export type TMatchLocation<PanelStates extends TPanelStatesBase, PanelContext> = (
   location: Path,
+  context: PanelContext,
   tools: TMatchLocationTools<PanelStates>,
 ) => TPanelsStateBase<PanelStates>;
 
@@ -50,7 +52,7 @@ export type TPanelsDefsBase<PanelStates extends TPanelStatesBase, PanelContext> 
 export interface ProviderPropsBase<PanelStates extends TPanelStatesBase, PanelContext> {
   panels: TPanelsDefsBase<PanelStates, PanelContext>;
   context: PanelContext;
-  matchLocation: TMatchLocation<PanelStates>;
+  matchLocation: TMatchLocation<PanelStates, PanelContext>;
 }
 
 export interface FinderLinkProps<PanelStates extends TPanelStatesBase>
@@ -58,6 +60,10 @@ export interface FinderLinkProps<PanelStates extends TPanelStatesBase>
     TNavigateOptions<PanelStates> {}
 
 export interface TNavigateOptions<PanelStates extends TPanelStatesBase> {
+  /**
+   * Will keep the the panel and replace the panels after it
+   * Set to -1 to replace all panels
+   */
   fromIndex?: number;
   /**
    * Null will do slice from the currentIndex
