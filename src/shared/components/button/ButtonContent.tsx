@@ -83,10 +83,10 @@ export const ButtonContent = forwardRef<HTMLDivElement, ButtonContentProps>(func
   return (
     <div className={cn("flex-1 flex flex-row items-center max-w-full", sizeClass, className)} ref={ref} {...props}>
       {hasIcon && <IconBox size={iconSize} className={startIconClass} icon={loading ? <LoadingIcon /> : icon} />}
-      {title && (
+      {Boolean(title) && (
         <div className={contentClass}>
           <div className={titleClass}>{title}</div>
-          {details && <div className={detailsClass}>{details}</div>}
+          {Boolean(details) && <div className={detailsClass}>{details}</div>}
         </div>
       )}
       {endIcon && <IconBox size={iconSize} className={endIconClass} icon={endIcon} />}
