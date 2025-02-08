@@ -92,7 +92,6 @@ export function createFinderStore<PanelStates extends TPanelStatesBase, PanelCon
           }),
         [$location, $matchLocationWithTools, routingId],
       );
-      console.log(useAtomValue($panelStates));
 
       const $requestedPanelStates = useMemo(
         () =>
@@ -236,7 +235,6 @@ export function createFinderStore<PanelStates extends TPanelStatesBase, PanelCon
 
       const refreshLocation = useCallback(
         ({ replace }: { replace?: boolean } = {}) => {
-          console.log("refreshLocation");
           navigateTo({
             replace,
             panels: panelsFromLocation(history.location),

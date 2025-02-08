@@ -17,8 +17,6 @@ export const ButtonGroup = forwardRef(function ButtonGroup(
   ref: ForwardedRef<HTMLDivElement>,
 ) {
   const childrenFiltered = Children.toArray(children).filter((c) => c);
-  console.log(childrenFiltered);
-
   const childrenLength = Children.count(childrenFiltered);
   const { color, size, variant, disabled, ...divProps } = DesignContext.useProps(props);
 
