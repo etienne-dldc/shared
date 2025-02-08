@@ -61,7 +61,7 @@ export const TextInput = forwardRef(function TextInput(
   const inputContainerClasses = cn(
     tw`appearance-none relative w-full flex flex-row items-center sm:text-sm`,
     tw`autofill:bg-transparent`,
-    !noHightlight && tw`focus:outline-none focus-within:ring-2 focus-within:ring-purple-400/40`,
+    !noHightlight && tw`focus:outline-hidden focus-within:ring-2 focus-within:ring-purple-400/40`,
     isError && tw`ring-2 ring-red-500/40`,
     !noBackground && (disabled ? tw`bg-black/10` : tw`bg-black/30`),
     !noBackground && tw`rounded-md`,
@@ -84,7 +84,7 @@ export const TextInput = forwardRef(function TextInput(
   });
 
   const inputClasses = cn(
-    tw`block grow bg-transparent outline-none border-none text-left w-10 autofill:bg-transparent`,
+    tw`block grow bg-transparent outline-hidden border-none text-left w-10 autofill:bg-transparent`,
     sizeClasses,
     // !noHorizontalPadding && hPaddingClass,
     disabled && tw`cursor-not-allowed`,

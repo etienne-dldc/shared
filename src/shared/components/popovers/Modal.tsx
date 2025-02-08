@@ -94,7 +94,7 @@ export const Modal = forwardRef<HTMLButtonElement, ModalProps>(
                 level="dialog"
                 darkerBackground={darkerBackground}
                 className={cn(
-                  tw`flex flex-col gap-4 outline-none p-4 place-self-center w-full overflow-hidden`,
+                  tw`flex flex-col gap-4 outline-hidden p-4 place-self-center w-full overflow-hidden`,
                   widthClass,
                   heightClass,
                   className,

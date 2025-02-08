@@ -68,7 +68,7 @@ export function buttonClassName({ size, variant, rounded, interactive, forceHove
 
   return cn(
     tw`flex flex-row items-center justify-center text-left group overflow-hidden relative`,
-    tw`outline-none`,
+    tw`outline-hidden`,
     buttonRoundedClass(rounded),
     buttonSizeClass(size),
     variantClassBase,

@@ -61,10 +61,10 @@ function dropdownItemClassName(size: TDesignSize) {
 
   return cn(
     tw`flex flex-row items-center text-left group overflow-hidden relative`,
-    tw`rounded-sm text-dynamic-200`,
+    tw`rounded-xs text-dynamic-200`,
     tw`data-active-item:bg-dynamic-600 data-active-item:text-white`,
 
-    tw`outline-none cursor-pointer`,
+    tw`outline-hidden cursor-pointer`,
     tw`aria-disabled:text-dynamic-200/50 aria-disabled:cursor-not-allowed`,
 
     sizeClass,

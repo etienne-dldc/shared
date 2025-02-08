@@ -11,13 +11,28 @@ const TEXT_VARIANTS = {
 } as const;
 
 const DYNAMIC_COLOR_VARIANTS = {
+  red: "red",
+  orange: "orange",
+  amber: "amber",
+  yellow: "yellow",
+  lime: "lime",
+  green: "green",
+  emerald: "emerald",
+  teal: "teal",
+  cyan: "cyan",
+  sky: "sky",
   blue: "blue",
   indigo: "indigo",
-  green: "green",
-  orange: "orange",
-  teal: "teal",
-  red: "red",
+  violet: "violet",
+  purple: "purple",
+  fuchsia: "fuchsia",
+  pink: "pink",
+  rose: "rose",
   slate: "slate",
+  gray: "gray",
+  zinc: "zinc",
+  neutral: "neutral",
+  stone: "stone",
 } as const;
 
 const ICON_VARIANTS = {

@@ -31,7 +31,7 @@ export const Menu = forwardRef<HTMLDivElement, MenuProps>(function Menu(
         gutter={8}
         ref={ref}
         render={<Paper level="popover" />}
-        className={cn("p-2 outline-none", className)}
+        className={cn("p-2 outline-hidden", className)}
         portal={portal}
         unmountOnHide
         sameWidth={sameWidth}

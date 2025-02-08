@@ -1,18 +1,19 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-/* set default dynamic colors as blue */
-:root {
-  --color-dynamic-50: 239 246 255;
-  --color-dynamic-100: 219 234 254;
-  --color-dynamic-200: 191 219 254;
-  --color-dynamic-300: 147 197 253;
-  --color-dynamic-400: 96 165 250;
-  --color-dynamic-500: 59 130 246;
-  --color-dynamic-600: 37 99 235;
-  --color-dynamic-700: 29 78 216;
-  --color-dynamic-800: 30 64 175;
-  --color-dynamic-900: 30 58 138;
-  --color-dynamic-950: 23 37 84;
+@theme {
+  --color-dynamic-50: var(--color-blue-50);
+  --color-dynamic-100: var(--color-blue-100);
+  --color-dynamic-200: var(--color-blue-200);
+  --color-dynamic-300: var(--color-blue-300);
+  --color-dynamic-400: var(--color-blue-400);
+  --color-dynamic-500: var(--color-blue-500);
+  --color-dynamic-600: var(--color-blue-600);
+  --color-dynamic-700: var(--color-blue-700);
+  --color-dynamic-800: var(--color-blue-800);
+  --color-dynamic-900: var(--color-blue-900);
+  --color-dynamic-950: var(--color-blue-950);
 }
+
+@custom-variant data-active (&[data-active]);
+@custom-variant data-focus-visible (&[data-focus-visible]);
+@custom-variant data-active-item (&[data-active-item]);

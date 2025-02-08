@@ -43,7 +43,7 @@ export const Textarea = forwardRef(function Textarea(
   const inputContainerClasses = cn(
     tw`appearance-none relative w-full flex flex-row items-center rounded-md sm:text-sm`,
     tw`autofill:bg-transparent`,
-    !noHightlight && tw`focus:outline-none focus-within:ring-2 focus-within:ring-purple-400/40`,
+    !noHightlight && tw`focus:outline-hidden focus-within:ring-2 focus-within:ring-purple-400/40`,
     isError && tw`ring-2 ring-red-500/40`,
     colored
       ? disabled
@@ -70,7 +70,7 @@ export const Textarea = forwardRef(function Textarea(
   });
 
   const textareaClasses = cn(
-    tw`block grow bg-transparent rounded outline-none border-none placeholder-white/30 text-left w-10 autofill:bg-transparent`,
+    tw`block grow bg-transparent rounded-sm outline-hidden border-none placeholder-white/30 text-left w-10 autofill:bg-transparent`,
     sizeClasses,
     // !noHorizontalPadding && hPaddingClass,
     disabled && tw`cursor-not-allowed placeholder-white/20 text-stone-400`,

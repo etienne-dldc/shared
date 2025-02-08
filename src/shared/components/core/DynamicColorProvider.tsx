@@ -1,4 +1,5 @@
 import {
+  CSSProperties,
   ReactElement,
   Ref,
   RefAttributes,
@@ -11,11 +12,31 @@ import {
   useMemo,
   useRef,
 } from "react";
-import colors from "tailwindcss/colors";
 import { useMergeRefs } from "../../hooks/useMergeRefs";
-import { dynamicColors } from "../../styles/utils";
 
-export type TDynamicColor = "blue" | "indigo" | "green" | "orange" | "teal" | "red" | "slate" | "rose" | "purple";
+export type TDynamicColor =
+  | "red"
+  | "orange"
+  | "amber"
+  | "yellow"
+  | "lime"
+  | "green"
+  | "emerald"
+  | "teal"
+  | "cyan"
+  | "sky"
+  | "blue"
+  | "indigo"
+  | "violet"
+  | "purple"
+  | "fuchsia"
+  | "pink"
+  | "rose"
+  | "slate"
+  | "gray"
+  | "zinc"
+  | "neutral"
+  | "stone";
 
 const DynamicColorContext = createContext<TDynamicColor>("blue");
 
@@ -46,7 +67,7 @@ export const DynamicColorProvider = forwardRef<HTMLElement, DynamicColorProvider
     if (!shouldSetColor) return;
     const elem = localRef.current;
     if (!elem) return;
-    const colorsVariables = dynamicColors(colors[currentColor]);
+    const colorsVariables = dynamicColors(currentColor);
     Object.entries(colorsVariables).forEach(([key, value]) => {
       elem.style.setProperty(key, value);
     });
@@ -74,4 +95,20 @@ function isValidElementWithRef<P>(element: unknown): element is ReactElement<P> 
   if (!isValidElement(element)) return false;
   if (!("ref" in element)) return false;
   return true;
+}
+
+function dynamicColors(color: TDynamicColor): CSSProperties {
+  return {
+    "--color-dynamic-50": `var(--color-${color}-50)`,
+    "--color-dynamic-100": `var(--color-${color}-100)`,
+    "--color-dynamic-200": `var(--color-${color}-200)`,
+    "--color-dynamic-300": `var(--color-${color}-300)`,
+    "--color-dynamic-400": `var(--color-${color}-400)`,
+    "--color-dynamic-500": `var(--color-${color}-500)`,
+    "--color-dynamic-600": `var(--color-${color}-600)`,
+    "--color-dynamic-700": `var(--color-${color}-700)`,
+    "--color-dynamic-800": `var(--color-${color}-800)`,
+    "--color-dynamic-900": `var(--color-${color}-900)`,
+    "--color-dynamic-950": `var(--color-${color}-950)`,
+  } as CSSProperties;
 }

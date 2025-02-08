@@ -5,5 +5,5 @@ export const Backdrop = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivE
   { className, ...props },
   ref,
 ) {
-  return <div ref={ref} className={cn("absolute inset-0 bg-black/30 backdrop-blur-sm", className)} {...props} />;
+  return <div ref={ref} className={cn("absolute inset-0 bg-black/30 backdrop-blur-xs", className)} {...props} />;
 });

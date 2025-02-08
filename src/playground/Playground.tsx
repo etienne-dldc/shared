@@ -91,7 +91,7 @@ function RouteMenu({ items, title, icon, endIcon }: RouteMenuProps) {
         gutter={8}
         ref={topMenuRef}
         render={<Paper level="popover" />}
-        className={cn("p-2 outline-none h-[300px] min-w-36")}
+        className={cn("p-2 outline-hidden h-[300px] min-w-36")}
         portal={true}
         unmountOnHide
       >
@@ -118,7 +118,7 @@ function NestedMenu({ item, parentRef }: NestedMenuProps) {
         gutter={4}
         getAnchorRect={parentRef ? () => parentRef.current?.getBoundingClientRect() ?? null : undefined}
         render={<Paper level="popover" />}
-        className={cn("p-2 outline-none h-[300px] min-w-36")}
+        className={cn("p-2 outline-hidden h-[300px] min-w-36")}
         ref={menuRef}
       >
         {item.routes.map((item) => renderItem(item, menuRef))}
