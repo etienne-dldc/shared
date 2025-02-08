@@ -1,5 +1,6 @@
 import { ComponentPropsWithoutRef, forwardRef } from "react";
 import { cn, pick, tw } from "../../styles/utils";
+import { isNotNil } from "../../utils/nil";
 import { IconBox } from "../common/IconBox";
 import { LoadingIcon } from "../common/LoadingIcon";
 import { DesignContext } from "../core/DesignContext";
@@ -83,10 +84,10 @@ export const ButtonContent = forwardRef<HTMLDivElement, ButtonContentProps>(func
   return (
     <div className={cn("flex-1 flex flex-row items-center max-w-full", sizeClass, className)} ref={ref} {...props}>
       {hasIcon && <IconBox size={iconSize} className={startIconClass} icon={loading ? <LoadingIcon /> : icon} />}
-      {Boolean(title) && (
+      {isNotNil(title) && (
         <div className={contentClass}>
           <div className={titleClass}>{title}</div>
-          {Boolean(details) && <div className={detailsClass}>{details}</div>}
+          {isNotNil(details) && <div className={detailsClass}>{details}</div>}
         </div>
       )}
       {endIcon && <IconBox size={iconSize} className={endIconClass} icon={endIcon} />}
