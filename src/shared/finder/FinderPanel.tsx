@@ -1,6 +1,7 @@
+/* eslint-disable react-refresh/only-export-components */
 import { ClickScrollPlugin, OverlayScrollbars } from "overlayscrollbars";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
-import { ForwardedRef, forwardRef, useEffect, useMemo, useRef } from "react";
+import { createContext, ForwardedRef, forwardRef, useContext, useEffect, useMemo, useRef } from "react";
 import scrollIntoView from "smooth-scroll-into-view-if-needed";
 
 import "overlayscrollbars/overlayscrollbars.css";
@@ -12,6 +13,12 @@ import { cn } from "../styles/utils";
 import { onDoubleTap } from "../utils/onDoubleTap";
 
 OverlayScrollbars.plugin(ClickScrollPlugin);
+
+const PanelSizeContext = createContext<TUseResizeWidth>(0);
+
+export function useFinderPanelSize() {
+  return useContext(PanelSizeContext);
+}
 
 const GUTTER_WIDTH = 11;
 const MINI_HANDLE_HEIGHT = 20;
@@ -63,21 +70,23 @@ export const FinderPanel = forwardRef(function FinderPanel(
       }}
       {...rest}
     >
-      <OverlayScrollbarsComponent
-        defer
-        className={cn("h-full w-full")}
-        style={{ paddingRight: GUTTER_WIDTH }}
-        options={{
-          scrollbars: {
-            theme: "os-theme-dark os-panel-theme",
-            autoHide: "scroll",
-            clickScroll: true,
-          },
-          overflow: { x: "scroll", y: "scroll" },
-        }}
-      >
-        {children}
-      </OverlayScrollbarsComponent>
+      <PanelSizeContext.Provider value={resizer.size}>
+        <OverlayScrollbarsComponent
+          defer
+          className={cn("h-full w-full")}
+          style={{ paddingRight: GUTTER_WIDTH }}
+          options={{
+            scrollbars: {
+              theme: "os-theme-dark os-panel-theme",
+              autoHide: "scroll",
+              clickScroll: true,
+            },
+            overflow: { x: "scroll", y: "scroll" },
+          }}
+        >
+          {children}
+        </OverlayScrollbarsComponent>
+      </PanelSizeContext.Provider>
       <div className="absolute inset-y-0 right-0 w-[var(--gutter-width)] pointer-events-none bg-neutral-900 z-10" />
       <MiniHandle
         onPointerDown={resizer.onPointerDown}
