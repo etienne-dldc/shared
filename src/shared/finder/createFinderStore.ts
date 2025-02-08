@@ -299,7 +299,10 @@ export function createFinderStore<PanelStates extends TPanelStatesBase, PanelCon
     );
 
     const updateState = useCallback(
-      <K extends keyof PanelStates>(key: K, update: React.SetStateAction<Extract<TPanelState, { key: K }>>) => {
+      <K extends keyof PanelStates>(
+        key: K,
+        update: React.SetStateAction<Extract<TPanelState, { key: K }>["state"]>,
+      ) => {
         return updateStateByIndex(
           panelIndex,
           key as string,
