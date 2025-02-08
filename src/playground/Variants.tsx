@@ -133,7 +133,7 @@ export function Variants<Dims extends TDimensions>({
                   <div
                     key={`col-${colIndex}`}
                     style={{ gridColumn: 1 + colOffset + colIndex, gridRow: 1 }}
-                    className="text-center bg-white/5 rounded uppercase font-bold p-1"
+                    className="text-center bg-white/5 rounded-sm uppercase font-bold p-1"
                   >
                     {colName}
                   </div>
@@ -146,7 +146,7 @@ export function Variants<Dims extends TDimensions>({
                   <div
                     key={`row-${rowIndex}`}
                     style={{ gridColumn: 1, gridRow: 1 + rowOffset + rowIndex }}
-                    className="text-center bg-white/5 rounded uppercase font-bold p-1 flex items-center justify-center"
+                    className="text-center bg-white/5 rounded-sm uppercase font-bold p-1 flex items-center justify-center"
                   >
                     {rowName}
                   </div>
@@ -209,6 +209,8 @@ function MultiSelect<T extends string>({ label, onChange, options, selected }: M
     [onChange, selectedLatest],
   );
 
+  const available = options.filter((option) => !selected.includes(option));
+
   return (
     <ButtonGroup size="xs" variant="primary">
       <ButtonLike title={label} className="uppercase font-bold" />
@@ -234,13 +236,14 @@ function MultiSelect<T extends string>({ label, onChange, options, selected }: M
           />
         );
       })}
-      <Button
-        icon={<Plus />}
-        onClick={() => {
-          const available = options.filter((option) => !selected.includes(option));
-          onChange([...selected, available[0]]);
-        }}
-      />
+      {available.length > 0 && (
+        <Button
+          icon={<Plus />}
+          onClick={() => {
+            onChange([...selected, available[0]]);
+          }}
+        />
+      )}
     </ButtonGroup>
   );
 }

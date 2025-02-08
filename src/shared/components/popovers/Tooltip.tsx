@@ -19,7 +19,7 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip
     <Ariakit.TooltipProvider showTimeout={showTimeout} {...props}>
       <Ariakit.TooltipAnchor ref={ref} render={children} />
       <Ariakit.Tooltip
-        className={cn("bg-stone-950 px-3 py-1.5 rounded leading-relaxed shadow-xl text-stone-200 select-none")}
+        className={cn("bg-stone-950 px-3 py-1.5 rounded-sm leading-relaxed shadow-xl text-stone-200 select-none")}
         unmountOnHide
       >
         {content}

@@ -34,7 +34,7 @@ export const ButtonContent = forwardRef<HTMLDivElement, ButtonContentProps>(func
     md: tw`p-1`,
     lg: tw`p-1`,
   });
-  const iconClass = cn(tw`flex items-center justify-center rounded`, iconSizeClass);
+  const iconClass = cn(tw`flex items-center justify-center rounded-sm`, iconSizeClass);
 
   const startIconClass = cn(iconClass, tw`mr-auto`);
   const endIconClass = cn(iconClass, tw`ml-auto`);
@@ -67,7 +67,7 @@ export const ButtonContent = forwardRef<HTMLDivElement, ButtonContentProps>(func
     contentSizeClass,
   );
 
-  const titleClass = cn(tw`text-ellipsis whitespace-nowrap overflow-hidden flex-grow`);
+  const titleClass = cn(tw`text-ellipsis whitespace-nowrap overflow-hidden grow`);
 
   const detailsSizeClass = pick(size, {
     xs: tw``,

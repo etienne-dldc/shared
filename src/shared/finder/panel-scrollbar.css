@@ -3,15 +3,15 @@
   --os-padding-axis: 4px;
   --os-padding-perpendicular: 2px;
 
-  --os-handle-bg: theme(colors.neutral.500);
-  --os-handle-bg-hover: theme(colors.neutral.400);
-  --os-handle-bg-active: theme(colors.neutral.300);
+  --os-handle-bg: var(--colors-neutral-500);
+  --os-handle-bg-hover: var(--colors-neutral-400);
+  --os-handle-bg-active: var(--colors-neutral-300);
 }
 
 .os-panel-theme.os-scrollbar-vertical.os-scrollbar-auto-hide-hidden {
   opacity: 1;
   visibility: visible;
-  --os-handle-bg: theme(colors.neutral.800);
+  --os-handle-bg: var(--colors-neutral-800);
 }
 
 .os-panel-theme.os-scrollbar-vertical {
