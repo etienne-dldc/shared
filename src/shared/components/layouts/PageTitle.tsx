@@ -18,7 +18,7 @@ export function PageTitle({ icon, title, details, className, startActions, endAc
         {icon && <IconBox size={28} icon={icon} className="p-0.5" weight="bold" />}
         <h1 className="text-2xl font-semibold">
           {title}
-          {details && (
+          {Boolean(details) && (
             <>
               {" "}
               <span className="font-normal text-white/60">{details}</span>
