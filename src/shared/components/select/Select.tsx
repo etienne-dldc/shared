@@ -34,6 +34,7 @@ interface SelectProps<Value extends string> {
   setOpen?: (open: boolean) => void;
   issues?: React.ReactNode;
   value?: Value;
+  emptyValue?: Value;
 
   renderSelect?: React.ReactElement;
   renderLabel?: React.ReactElement;
@@ -45,6 +46,7 @@ const SelectAny = forwardRef(function Select(
     items,
     onChange,
     value,
+    emptyValue,
     disabled,
     label,
     name,
@@ -74,6 +76,11 @@ const SelectAny = forwardRef(function Select(
   const storeValue = Ariakit.useStoreState(selectStore, (s) => s.value);
 
   const selectedItem = useMemo(() => items.find((item) => item.value === storeValue), [items, storeValue]);
+  if (!selectedItem) {
+    console.warn(`Select: value "${storeValue}" not found in items`);
+  }
+
+  const selectedIsEmpty = emptyValue !== undefined && storeValue === emptyValue;
 
   return (
     <Ariakit.SelectProvider store={selectStore}>
@@ -92,7 +99,7 @@ const SelectAny = forwardRef(function Select(
                 details={selectedItem.details}
                 endIcon={caret && <Ariakit.SelectArrow render={<CaretDown />} />}
                 icon={selectedItem.icon}
-                title={selectedItem.title}
+                title={<span className={selectedIsEmpty ? "opacity-50" : ""}>{selectedItem.title}</span>}
               />
             )
           ) : null}
