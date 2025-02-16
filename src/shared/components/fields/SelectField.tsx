@@ -14,6 +14,7 @@ export interface SelectFieldProps<Value extends string> {
   placeholderItem?: TSelectItem<Value>;
   disabled?: boolean;
   value?: Value;
+  emptyValue?: Value;
   caret?: boolean;
   renderSelected?: (item: TSelectItem<Value>) => React.ReactNode;
   className?: string;
