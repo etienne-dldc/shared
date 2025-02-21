@@ -1,5 +1,6 @@
 import * as Ariakit from "@ariakit/react";
 import { FieldError } from "../form/FieldError";
+import { Label } from "../form/Label";
 import { Select, TSelectItem } from "../select/Select";
 import { StringLike } from "./utils";
 
@@ -35,7 +36,7 @@ export function SelectField<Value extends string>({ name, label, ...selectProps 
         render={
           <Select
             label={label}
-            renderLabel={<Ariakit.FormLabel name={name} />}
+            renderLabel={<Ariakit.FormLabel name={name} render={<Label disabled={selectProps.disabled} />} />}
             issues={<Ariakit.FormError name={name} render={<FieldError />} />}
             name={`${name}`}
             value={value}
