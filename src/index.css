@@ -1,7 +1,5 @@
 @import "tailwindcss";
 
-@source "./src/shared/finder/panel-scrollbar.css";
-
 @theme static {
   --color-red-50: oklch(0.971 0.013 17.38);
   --color-red-100: oklch(0.936 0.032 17.717);
