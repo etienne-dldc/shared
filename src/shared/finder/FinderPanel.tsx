@@ -5,7 +5,6 @@ import { createContext, ForwardedRef, forwardRef, useContext, useEffect, useMemo
 import scrollIntoView from "smooth-scroll-into-view-if-needed";
 
 import "overlayscrollbars/overlayscrollbars.css";
-import "./panel-scrollbar.css";
 
 import { useMergeRefs } from "../hooks/useMergeRefs";
 import { TUseResizeWidth, useResize } from "../hooks/useResize";

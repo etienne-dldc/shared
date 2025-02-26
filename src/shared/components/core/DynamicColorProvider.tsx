@@ -5,7 +5,6 @@ import {
   RefAttributes,
   cloneElement,
   createContext,
-  forwardRef,
   isValidElement,
   useContext,
   useLayoutEffect,
@@ -44,12 +43,10 @@ interface DynamicColorProviderProps {
   color?: TDynamicColor;
   force?: boolean; // Force the color to be applied, usefull for portal
   children: React.ReactElement<any>; // children must be a single element with a ref pointing to an html element
+  ref?: Ref<HTMLElement>;
 }
 
-export const DynamicColorProvider = forwardRef<HTMLElement, DynamicColorProviderProps>(function DynamicColorProvider(
-  { color, force, children },
-  ref,
-) {
+export function DynamicColorProvider({ color, force, children, ref }: DynamicColorProviderProps) {
   const localRef = useRef<HTMLElement | null>(null);
   const mergedRef = useMergeRefs(ref, localRef, getRefProperty(children));
 
@@ -83,11 +80,11 @@ export const DynamicColorProvider = forwardRef<HTMLElement, DynamicColorProvider
   }
 
   return childrenWithRef;
-});
+}
 
 function getRefProperty(element: unknown) {
   if (!isValidElementWithRef(element)) return null;
-  return element.ref as Ref<any> | undefined;
+  return ((element.props as any).ref ?? element.ref) as Ref<any> | undefined;
 }
 
 function isValidElementWithRef<P>(element: unknown): element is ReactElement<P> & RefAttributes<any> {
