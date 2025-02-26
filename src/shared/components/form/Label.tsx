@@ -3,7 +3,7 @@ import { ForwardedRef, forwardRef } from "react";
 import { cn, tw } from "../../styles/utils";
 
 interface LabelProps {
-  render?: React.ReactElement;
+  render?: React.ReactElement<any>;
   children?: React.ReactNode;
   htmlFor?: string;
   className?: string;

@@ -1,6 +1,6 @@
 import * as Ariakit from "@ariakit/react";
 import { CaretDown } from "@phosphor-icons/react";
-import { ForwardedRef, forwardRef, useMemo } from "react";
+import { ForwardedRef, forwardRef, useMemo, type JSX } from "react";
 import { cn, tw } from "../../styles/utils";
 import { Button } from "../button/Button";
 import { ButtonContent } from "../button/ButtonContent";
@@ -36,9 +36,9 @@ interface SelectProps<Value extends string> {
   value?: Value;
   emptyValue?: Value;
 
-  renderSelect?: React.ReactElement;
-  renderLabel?: React.ReactElement;
-  renderWrapper?: React.ReactElement;
+  renderSelect?: React.ReactElement<any>;
+  renderLabel?: React.ReactElement<any>;
+  renderWrapper?: React.ReactElement<any>;
 }
 
 const SelectAny = forwardRef(function Select(

@@ -9,7 +9,7 @@ import { PageTitle } from "../layouts/PageTitle";
 import { Backdrop } from "./Backdrop";
 
 interface ModalProps {
-  children?: React.ReactElement;
+  children?: React.ReactElement<any>;
   title: string;
   content: React.ReactNode;
   darkerBackground?: boolean;

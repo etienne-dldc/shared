@@ -3,7 +3,7 @@ import { forwardRef } from "react";
 import { cn } from "../../styles/utils";
 
 interface TooltipProps extends Omit<Ariakit.TooltipProviderProps, "children"> {
-  children: React.ReactElement;
+  children: React.ReactElement<any>;
   content?: React.ReactNode;
 }
 

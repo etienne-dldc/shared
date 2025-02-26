@@ -43,7 +43,7 @@ const DynamicColorContext = createContext<TDynamicColor>("blue");
 interface DynamicColorProviderProps {
   color?: TDynamicColor;
   force?: boolean; // Force the color to be applied, usefull for portal
-  children: React.ReactElement; // children must be a single element with a ref pointing to an html element
+  children: React.ReactElement<any>; // children must be a single element with a ref pointing to an html element
 }
 
 export const DynamicColorProvider = forwardRef<HTMLElement, DynamicColorProviderProps>(function DynamicColorProvider(

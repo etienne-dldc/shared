@@ -1,4 +1,4 @@
-import { ForwardedRef, forwardRef } from "react";
+import { ForwardedRef, forwardRef, type JSX } from "react";
 
 interface FieldErrorProps {
   children?: React.ReactNode;

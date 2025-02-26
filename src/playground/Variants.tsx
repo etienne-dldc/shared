@@ -1,5 +1,5 @@
 import { Plus } from "@phosphor-icons/react";
-import { Fragment, useCallback, useMemo } from "react";
+import { Fragment, useCallback, useMemo, type JSX } from "react";
 import { Button } from "../shared/components/button/Button";
 import { ButtonContent } from "../shared/components/button/ButtonContent";
 import { ButtonGroup } from "../shared/components/button/ButtonGroup";

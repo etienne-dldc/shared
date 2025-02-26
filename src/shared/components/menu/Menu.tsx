@@ -6,7 +6,7 @@ import { DesignContext } from "../core/DesignContext";
 import { Backdrop } from "../popovers/Backdrop";
 
 export interface MenuProps extends Ariakit.MenuProviderProps {
-  trigger: React.ReactElement | ((open: boolean) => React.ReactElement);
+  trigger: React.ReactElement<any> | ((open: boolean) => React.ReactElement<any>);
   content: React.ReactNode;
   className?: string;
   backdrop?: boolean;

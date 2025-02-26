@@ -7,7 +7,7 @@ import { useTextWidth } from "../../hooks/useTextWidth";
 import { cn, pick, tw } from "../../styles/utils";
 
 export interface TextInputProps extends Omit<ComponentPropsWithoutRef<"input">, "type" | "size"> {
-  renderInput?: React.ReactElement;
+  renderInput?: React.ReactElement<any>;
   innerClassName?: string;
   inputClassName?: string;
   startActions?: React.ReactNode;

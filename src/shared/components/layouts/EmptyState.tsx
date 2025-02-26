@@ -1,9 +1,9 @@
 import { IconBox } from "../common/IconBox";
 
 interface EmptyStateProps {
-  icon: React.ReactElement;
+  icon: React.ReactElement<any>;
   text: string;
-  action?: React.ReactElement;
+  action?: React.ReactElement<any>;
 }
 
 export function EmptyState({ icon, text, action }: EmptyStateProps) {

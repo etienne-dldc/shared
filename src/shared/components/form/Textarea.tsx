@@ -5,7 +5,7 @@ import { useMergeRefs } from "../../hooks/useMergeRefs";
 import { cn, pick, tw } from "../../styles/utils";
 
 interface TextareaProps extends Omit<ComponentPropsWithoutRef<"textarea">, "size"> {
-  renderTextarea?: React.ReactElement;
+  renderTextarea?: React.ReactElement<any>;
   textareaClassName?: string;
   size?: "xs" | "sm" | "md";
   noHightlight?: boolean;
