@@ -1,6 +1,6 @@
 import { CaretDown, CirclesFour, User } from "@phosphor-icons/react";
 import { Variants } from "../../../playground/Variants";
-import { cn } from "../../styles/utils";
+import { cn, tw } from "../../styles/utils";
 import { Button } from "./Button";
 
 const TEXT_VARIANTS = {
@@ -52,22 +52,22 @@ const VARIANT_VARIANTS = {
 
 const ROUND_VARIANTS = {
   all: "all",
-  start: "start",
-  end: "end",
+  left: "left",
+  right: "right",
+  top: "top",
+  bottom: "bottom",
   none: "none",
 } as const;
 
 const BACKGROUND_COLORS = {
   none: "",
-  paper: `bg-paper`,
-  background: `bg-background`,
-  blue: "bg-blue-900",
-  indigo: "bg-indigo-900",
-  green: "bg-green-900",
-  orange: "bg-orange-900",
-  teal: "bg-teal-900",
-  red: "bg-red-900",
-  slate: "bg-slate-900",
+  blue: tw`bg-blue-950`,
+  indigo: tw`bg-indigo-950`,
+  green: tw`bg-green-950`,
+  orange: tw`bg-orange-950`,
+  teal: tw`bg-teal-950`,
+  red: tw`bg-red-950`,
+  slate: tw`bg-slate-950`,
 } as const;
 
 const INTERACTIVE_STATE = {

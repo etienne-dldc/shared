@@ -12,8 +12,10 @@ export function buttonSizeClass(size: TDesignSize) {
 
 export function buttonRoundedClass(rounded: TDesignRounded) {
   return pick(rounded, {
-    start: tw`rounded-l-md`,
-    end: tw`rounded-r-md`,
+    left: tw`rounded-l-md`,
+    right: tw`rounded-r-md`,
+    top: tw`rounded-t-md`,
+    bottom: tw`rounded-b-md`,
     none: tw``,
     all: tw`rounded-md`,
   });

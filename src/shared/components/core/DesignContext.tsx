@@ -2,7 +2,7 @@ import { createPropsContext } from "../../utils/propsContext";
 
 export type TDesignSize = "xs" | "sm" | "md" | "lg";
 export type TDesignVariant = "primary" | "secondary" | "tertiary";
-export type TDesignRounded = "start" | "end" | "none" | "all";
+export type TDesignRounded = "left" | "right" | "top" | "bottom" | "none" | "all";
 
 export interface DesignContextProps {
   size: TDesignSize;
