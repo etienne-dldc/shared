@@ -105,7 +105,7 @@ export default function ButtonPlayground() {
           <ButtonGroup {...props}>
             <Button title="text" />
             <Button title="text and icon" icon={<House />} />
-            <Button icon={<House />} />
+            <Button icon={<House />} filled={true} />
             <Button title="text and 2 icon" icon={<House />} endIcon={<CaretRight />} />
           </ButtonGroup>
         </div>

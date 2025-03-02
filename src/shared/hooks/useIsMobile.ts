@@ -1,7 +1,7 @@
 import { useMediaQuery } from "./useMediaQuery";
 
-export function useIsMobile() {
-  const isDesktop = useMediaQuery("(min-width: 768px)");
+export function useIsMobile(size: number = 768) {
+  const isDesktop = useMediaQuery(`(min-width: ${size}px)`);
   const isMobile = !isDesktop;
   return isMobile;
 }
