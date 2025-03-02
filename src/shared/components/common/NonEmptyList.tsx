@@ -1,8 +1,10 @@
+import * as Ariakit from "@ariakit/react";
 import { Fragment } from "react";
 
 interface NonEmptyListProps<T> {
   items: T[];
   renderItem: (item: T, index: number) => React.ReactNode;
+  renderList?: React.ReactElement;
   empty?: React.ReactNode;
   nonEmptyFooter?: React.ReactNode;
 }
@@ -10,6 +12,7 @@ interface NonEmptyListProps<T> {
 export const NonEmptyList = function NonEmptyList<T>({
   items,
   renderItem,
+  renderList,
   empty,
   nonEmptyFooter,
 }: NonEmptyListProps<T>) {
@@ -18,7 +21,7 @@ export const NonEmptyList = function NonEmptyList<T>({
   }
   return (
     <Fragment>
-      {items.map(renderItem)}
+      {items.length > 0 && <Ariakit.Role render={renderList}>{items.map(renderItem)}</Ariakit.Role>}
       {nonEmptyFooter}
     </Fragment>
   );
