@@ -11,10 +11,11 @@ interface ButtonGroupProps extends ComponentPropsWithoutRef<"div"> {
   children?: React.ReactNode;
   disabled?: boolean;
   direction?: "horizontal" | "vertical";
+  rounded?: boolean;
 }
 
 export const ButtonGroup = forwardRef(function ButtonGroup(
-  { className, children, direction = "horizontal", ...props }: ButtonGroupProps,
+  { className, children, direction = "horizontal", rounded = true, ...props }: ButtonGroupProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
   const childrenFiltered = Children.toArray(children).filter((c) => c);
@@ -47,9 +48,10 @@ export const ButtonGroup = forwardRef(function ButtonGroup(
 
           const isFirst = i === 0;
           const isLast = i === childrenLength - 1;
-          const roundedBase = isFirst && isLast ? "all" : isFirst ? "start" : isLast ? "end" : "none";
+          const roundedBase =
+            rounded === false ? "none" : isFirst && isLast ? "all" : isFirst ? "start" : isLast ? "end" : "none";
 
-          const rounded: TDesignRounded = pick(roundedBase, {
+          const childRounded: TDesignRounded = pick(roundedBase, {
             all: "all",
             none: "none",
             start: pick(direction, {
@@ -63,7 +65,7 @@ export const ButtonGroup = forwardRef(function ButtonGroup(
           });
 
           return (
-            <DesignContext.Provider size={size} variant={variant} disabled={disabled} rounded={rounded}>
+            <DesignContext.Provider size={size} variant={variant} disabled={disabled} rounded={childRounded}>
               {!isFirst && <span className={separatorClass} />}
               {child}
             </DesignContext.Provider>
