@@ -1,7 +1,8 @@
 import { nanoid } from "nanoid";
-import type { MutableRefObject } from "react";
+import type { RefObject } from "react";
 import { useCallback, useMemo, useState } from "react";
 import { flushSync } from "react-dom";
+import { useLatestRef } from "./useLatestRef";
 
 export type TUseResizeWidth = number | "auto";
 
@@ -54,9 +55,11 @@ const SIZE_DIFF = {
  * Handle resizing logic for a panel.
  */
 export function useResize(
-  ref: MutableRefObject<HTMLDivElement | null>,
+  ref: RefObject<HTMLDivElement | null>,
   { initialSize, direction, localStorageKey }: TUseResizeConfig,
 ): TUseResizeResult {
+  const initialSizeRef = useLatestRef(initialSize);
+
   const [size, setSizeInternal] = useState<TUseResizeWidth>(() => {
     if (!localStorageKey) {
       return initialSize;
@@ -122,8 +125,9 @@ export function useResize(
         upEvent.preventDefault();
         document.removeEventListener("pointermove", onPointerMove, true);
         document.removeEventListener("pointerup", onPointerUp, true);
-        // Update the actual size after the pointer up event (take min/max size into account)
-        setSize(getActualSize());
+        // Update the actual size after the pointer up event
+        const size = getActualSize();
+        setSize(size === initialSizeRef.current ? "auto" : size);
         setActive(false);
         flushSync(() => {
           elem.style.removeProperty(varName);
@@ -133,7 +137,7 @@ export function useResize(
       document.addEventListener("pointermove", onPointerMove, true);
       document.addEventListener("pointerup", onPointerUp, true);
     },
-    [direction, ref, setSize, varName],
+    [direction, initialSizeRef, ref, setSize, varName],
   );
 
   const resetSize = useCallback(() => {
