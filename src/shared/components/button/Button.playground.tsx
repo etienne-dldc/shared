@@ -44,11 +44,9 @@ const ICON_VARIANTS = {
 
 const SIZE_VARIANTS = { xs: "xs", sm: "sm", md: "md", lg: "lg" } as const;
 
-const VARIANT_VARIANTS = {
-  primary: "primary",
-  secondary: "secondary",
-  tertiary: "tertiary",
-} as const;
+const PRIMARY_VARIANTS = { default: undefined, base: false, primary: true } as const;
+
+const FILLED_VARIANTS = { default: undefined, filled: true, base: false } as const;
 
 const ROUND_VARIANTS = {
   all: "all",
@@ -91,7 +89,8 @@ export default function ButtonPlayground() {
       dimensions={{
         color: DYNAMIC_COLOR_VARIANTS,
         size: SIZE_VARIANTS,
-        variant: VARIANT_VARIANTS,
+        primary: PRIMARY_VARIANTS,
+        filled: FILLED_VARIANTS,
         rounded: ROUND_VARIANTS,
         disabled: DISABLED_VARIANTS,
         title: TEXT_VARIANTS,
@@ -110,7 +109,8 @@ export default function ButtonPlayground() {
         rounded: "all",
         disabled: "no",
         size: "md",
-        variant: "primary",
+        primary: "default",
+        filled: "default",
         loading: "no",
         icon: "user",
         endIcon: "none",

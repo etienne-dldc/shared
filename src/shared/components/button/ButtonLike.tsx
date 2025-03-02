@@ -1,10 +1,10 @@
 import { ComponentPropsWithoutRef, forwardRef, useMemo } from "react";
 import { Merge } from "type-fest";
 import { cn, TInteractiveState } from "../../styles/utils";
-import { DesignContext, TDesignRounded, TDesignSize, TDesignVariant } from "../core/DesignContext";
+import { DesignContext, TDesignRounded, TDesignSize } from "../core/DesignContext";
 import { DynamicColorProvider, TDynamicColor } from "../core/DynamicColorProvider";
 import { ButtonContent } from "./ButtonContent";
-import { buttonClassName } from "./styles";
+import { buttonClassName, mapPrimaryFilledProps } from "./styles";
 
 export type ButtonLikeProps = Merge<
   ComponentPropsWithoutRef<"div">,
@@ -12,8 +12,11 @@ export type ButtonLikeProps = Merge<
     // Design
     color?: TDynamicColor;
     size?: TDesignSize;
-    variant?: TDesignVariant;
     rounded?: TDesignRounded;
+
+    filled?: boolean;
+    primary?: boolean;
+
     __forceState?: null | TInteractiveState;
 
     // For content
@@ -34,6 +37,7 @@ export const ButtonLike = forwardRef((inProps: ButtonLikeProps, ref: React.Ref<H
     rounded,
     size,
     variant,
+    priority,
     __forceState,
 
     title,
@@ -45,15 +49,15 @@ export const ButtonLike = forwardRef((inProps: ButtonLikeProps, ref: React.Ref<H
 
     className,
     ...divProps
-  } = DesignContext.useProps(inProps);
+  } = DesignContext.useProps(mapPrimaryFilledProps(inProps));
 
   const forceHover = __forceState === "hover";
   const forceActive = __forceState === "active";
   const forceFocus = __forceState === "focus";
 
   const mainClass = useMemo(
-    () => buttonClassName({ size, variant, rounded, interactive: false, forceActive, forceHover }),
-    [size, variant, rounded, forceActive, forceHover],
+    () => buttonClassName({ size, variant, priority, rounded, interactive: false, forceActive, forceHover }),
+    [size, variant, priority, rounded, forceActive, forceHover],
   );
 
   return (

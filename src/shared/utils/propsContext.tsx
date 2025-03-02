@@ -3,7 +3,7 @@ import { ComponentType, Fragment, PropsWithChildren, createContext, useContext, 
 export interface TPropsContext<Props extends Record<string, any>> {
   Provider: ComponentType<PropsWithChildren<Partial<Props>>>;
   useProp<K extends keyof Props>(key: K): Props[K];
-  useProps<P extends Partial<Props>>(directProps: P): P & Props;
+  useProps<P>(directProps: P & Partial<Props>): P & Props;
 }
 
 export function createPropsContext<Props extends Record<string, any>>(

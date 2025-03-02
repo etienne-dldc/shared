@@ -1,31 +1,57 @@
+import * as Ariakit from "@ariakit/react";
 import { Children, ComponentPropsWithoutRef, ForwardedRef, forwardRef } from "react";
+import { Merge } from "type-fest";
 import { cn, pick, tw } from "../../styles/utils";
-import { DesignContext, TDesignRounded, TDesignSize, TDesignVariant } from "../core/DesignContext";
+import { DesignContext, TDesignRounded, TDesignSize } from "../core/DesignContext";
 import { DynamicColorProvider, TDynamicColor } from "../core/DynamicColorProvider";
+import { mapPrimaryFilledProps } from "./styles";
 
-interface ButtonGroupProps extends ComponentPropsWithoutRef<"div"> {
-  variant?: TDesignVariant;
-  color?: TDynamicColor;
-  size?: TDesignSize;
-  className?: string;
-  children?: React.ReactNode;
-  disabled?: boolean;
-  direction?: "horizontal" | "vertical";
-  rounded?: boolean;
-}
+export type ButtonGroupProps = Merge<
+  ComponentPropsWithoutRef<"div">,
+  {
+    color?: TDynamicColor;
+    size?: TDesignSize;
+    filled?: boolean;
+    primary?: boolean;
+    disabled?: boolean;
+
+    roundedGroup?: boolean;
+
+    direction?: "horizontal" | "vertical";
+    outerDividers?: "start" | "end" | "both" | "none";
+    innerDividers?: boolean;
+  }
+>;
 
 export const ButtonGroup = forwardRef(function ButtonGroup(
-  { className, children, direction = "horizontal", rounded = true, ...props }: ButtonGroupProps,
+  inProps: ButtonGroupProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
+  const {
+    color,
+    size,
+    variant,
+    disabled,
+    priority,
+    className,
+    children,
+    direction = "horizontal",
+    roundedGroup = true,
+    outerDividers = "none",
+    innerDividers = true,
+    ...divProps
+  } = DesignContext.useProps(mapPrimaryFilledProps(inProps));
+
   const childrenFiltered = Children.toArray(children).filter((c) => c);
   const childrenLength = Children.count(childrenFiltered);
-  const { color, size, variant, disabled, ...divProps } = DesignContext.useProps(props);
 
-  const separatorColorClass = pick(variant, {
-    primary: tw`bg-dynamic-700`,
-    secondary: tw``,
-    tertiary: tw`bg-white/10`,
+  const variant_priority = `${variant}_${priority}` as const;
+
+  const separatorColorClass = pick(variant_priority, {
+    filled_base: tw``,
+    filled_primary: tw`bg-dynamic-700`,
+    transparent_base: tw`bg-white/10`,
+    transparent_primary: tw`bg-white/10`,
   });
 
   const separatorDirClass = pick(direction, {
@@ -38,18 +64,22 @@ export const ButtonGroup = forwardRef(function ButtonGroup(
   const dirClass = direction === "horizontal" ? "flex-row" : "flex-col";
   const groupClass = cn("flex", dirClass, className);
 
+  const dividerBefore = outerDividers === "start" || outerDividers === "both";
+  const dividerAfter = outerDividers === "end" || outerDividers === "both";
+
   if (childrenLength === 0) return null;
 
   return (
     <DynamicColorProvider color={color}>
-      <div ref={ref} className={groupClass} {...divProps}>
+      <Ariakit.Role ref={ref} className={groupClass} {...divProps}>
+        {dividerBefore && <span className={separatorClass} />}
         {Children.map(childrenFiltered, (child, i) => {
           if (!child) return null;
 
           const isFirst = i === 0;
           const isLast = i === childrenLength - 1;
           const roundedBase =
-            rounded === false ? "none" : isFirst && isLast ? "all" : isFirst ? "start" : isLast ? "end" : "none";
+            roundedGroup === false ? "none" : isFirst && isLast ? "all" : isFirst ? "start" : isLast ? "end" : "none";
 
           const childRounded: TDesignRounded = pick(roundedBase, {
             all: "all",
@@ -65,13 +95,20 @@ export const ButtonGroup = forwardRef(function ButtonGroup(
           });
 
           return (
-            <DesignContext.Provider size={size} variant={variant} disabled={disabled} rounded={childRounded}>
-              {!isFirst && <span className={separatorClass} />}
+            <DesignContext.Provider
+              size={size}
+              variant={variant}
+              priority={priority}
+              disabled={disabled}
+              rounded={childRounded}
+            >
+              {innerDividers && !isFirst && <span className={separatorClass} />}
               {child}
             </DesignContext.Provider>
           );
         })}
-      </div>
+        {dividerAfter && <span className={separatorClass} />}
+      </Ariakit.Role>
     </DynamicColorProvider>
   );
 });

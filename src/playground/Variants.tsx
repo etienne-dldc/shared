@@ -1,4 +1,4 @@
-import { Plus } from "@phosphor-icons/react";
+import { ArrowsLeftRight, Plus } from "@phosphor-icons/react";
 import { Fragment, useCallback, useMemo, type JSX } from "react";
 import { Button } from "../shared/components/button/Button";
 import { ButtonContent } from "../shared/components/button/ButtonContent";
@@ -50,19 +50,28 @@ export function Variants<Dims extends TDimensions>({
     (prev) => (prev as TSelected<Dims>) || defaultSelected,
   );
 
+  const dimensionsWithoutDefaults = useMemo(() => {
+    const result = {} as Dims;
+    for (const [key, value] of Object.entries(dimensions)) {
+      (result as any)[key] = { ...value };
+      delete result[key]["default"];
+    }
+    return result;
+  }, [dimensions]);
+
   const cols = useMemo(() => {
     let result: TSelectedPartial<Dims>[] = [{}];
     for (const colDim of axis.column) {
       const prev = result;
       result = [];
       for (const item of prev) {
-        for (const colVal of Object.keys(dimensions[colDim])) {
+        for (const colVal of Object.keys(dimensionsWithoutDefaults[colDim])) {
           result.push({ ...item, [colDim]: colVal });
         }
       }
     }
     return result;
-  }, [axis.column, dimensions]);
+  }, [axis.column, dimensionsWithoutDefaults]);
 
   const rows = useMemo(() => {
     let result: TSelectedPartial<Dims>[] = [{}];
@@ -70,13 +79,13 @@ export function Variants<Dims extends TDimensions>({
       const prev = result;
       result = [];
       for (const item of prev) {
-        for (const rowVal of Object.keys(dimensions[rowDim])) {
+        for (const rowVal of Object.keys(dimensionsWithoutDefaults[rowDim])) {
           result.push({ ...item, [rowDim]: rowVal });
         }
       }
     }
     return result;
-  }, [axis.row, dimensions]);
+  }, [axis.row, dimensionsWithoutDefaults]);
 
   const colOffset = rows.length > 1 ? 1 : 0;
   const rowOffset = cols.length > 1 ? 1 : 0;
@@ -92,6 +101,14 @@ export function Variants<Dims extends TDimensions>({
               selected={axis.column as string[]}
               options={Object.keys(dimensions)}
               onChange={(selected) => setAxis((prev) => ({ ...prev, column: selected }))}
+            />
+            <Button
+              color="purple"
+              size="xs"
+              icon={<ArrowsLeftRight />}
+              onClick={() => {
+                setAxis((prev) => ({ column: prev.row, row: prev.column }));
+              }}
             />
             <MultiSelect<keyof Dims & string>
               label="row"
@@ -212,7 +229,7 @@ function MultiSelect<T extends string>({ label, onChange, options, selected }: M
   const available = options.filter((option) => !selected.includes(option));
 
   return (
-    <ButtonGroup size="xs" variant="primary">
+    <ButtonGroup size="xs" primary>
       <ButtonLike title={label} className="uppercase font-bold" />
       {selected.map((selectedItem, index) => {
         return (

@@ -49,7 +49,7 @@ export function Playground() {
   return (
     <div className="grid min-h-screen gap-4 p-4" style={{ gridTemplateRows: "auto 1fr" }}>
       <div className="flex flex-row">
-        <ButtonGroup variant="primary">
+        <ButtonGroup primary>
           <RouteMenu items={routes} icon={<List />} />
           {routeMatch?.parents.map((parent) => {
             return (

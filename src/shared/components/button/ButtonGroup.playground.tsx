@@ -38,12 +38,9 @@ const SIZE_VARIANTS = {
   lg: "lg",
 } as const;
 
-const VARIANT_VARIANTS = {
-  default: undefined,
-  primary: "primary",
-  secondary: "secondary",
-  tertiary: "tertiary",
-} as const;
+const PRIMARY_VARIANTS = { default: undefined, base: false, primary: true } as const;
+
+const FILLED_VARIANTS = { default: undefined, filled: true, base: false } as const;
 
 const BACKGROUND_COLORS = {
   none: "",
@@ -60,6 +57,11 @@ const DISABLED_VARIANTS = { no: undefined, yes: true } as const;
 
 const MARGIN_VARIANTS = { no: undefined, yes: "p-4" } as const;
 
+const ROUNDED_GROUP_VARIANTS = { default: undefined, yes: true, no: false } as const;
+
+const INNER_DIVIDERS_VARIANTS = { no: false, yes: true } as const;
+const OUTER_DIVIDERS_VARIANTS = { none: "none", start: "start", end: "end", both: "both" } as const;
+
 const DIRECT_VARIANTS = {
   default: undefined,
   vertical: "vertical",
@@ -74,20 +76,28 @@ export default function ButtonPlayground() {
       dimensions={{
         color: DYNAMIC_COLOR_VARIANTS,
         size: SIZE_VARIANTS,
-        variant: VARIANT_VARIANTS,
+        primary: PRIMARY_VARIANTS,
+        filled: FILLED_VARIANTS,
         disabled: DISABLED_VARIANTS,
         background: BACKGROUND_COLORS,
         margin: MARGIN_VARIANTS,
         direction: DIRECT_VARIANTS,
+        roundedGroup: ROUNDED_GROUP_VARIANTS,
+        innerDividers: INNER_DIVIDERS_VARIANTS,
+        outerDividers: OUTER_DIVIDERS_VARIANTS,
       }}
       defaultSelected={{
         color: "blue",
         size: "md",
-        variant: "primary",
+        primary: "default",
+        filled: "default",
         disabled: "no",
         background: "none",
         margin: "no",
         direction: "default",
+        roundedGroup: "default",
+        innerDividers: "yes",
+        outerDividers: "none",
       }}
       initialAxis={{ column: [], row: [] }}
       render={({ background, margin, ...props }) => (

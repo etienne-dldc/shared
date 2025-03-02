@@ -26,7 +26,7 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(fu
       endActions={
         value.length > 0 && (
           <Ariakit.ComboboxCancel
-            render={<Button variant="tertiary" size="xs" rounded="all" className="mr-1.5" color="red" />}
+            render={<Button filled={false} size="xs" rounded="all" className="mr-1.5" color="red" />}
             onClick={onClear}
           >
             <ButtonContent icon={<Backspace />} />

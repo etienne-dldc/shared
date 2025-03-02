@@ -23,7 +23,7 @@ export function SearchInput({ value, onValueChange, ...inputProps }: SearchInput
         value.length > 0 && (
           <Tooltip content="Effacer">
             <Button
-              variant="tertiary"
+              filled={false}
               size="xs"
               rounded="all"
               className="mr-1.5"
