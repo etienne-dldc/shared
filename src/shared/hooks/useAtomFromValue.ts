@@ -8,6 +8,7 @@ export function useAtomFromValue<T>(value: T) {
         "useAtomFromValue should not be used with a function as argument, wrap your function in a useMemo(() => ({ fn }), [])",
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const initialValuRef = useRef(value);
@@ -19,4 +20,9 @@ export function useAtomFromValue<T>(value: T) {
 
   const $readonlyAtom = useMemo(() => atom((get) => get($atom)), [$atom]);
   return $readonlyAtom;
+}
+
+export function useAtomFromFunctionValue<T>(value: T) {
+  const $atom = useAtomFromValue(useMemo(() => ({ fn: value }), [value]));
+  return useMemo(() => atom((get) => get($atom).fn), [$atom]);
 }

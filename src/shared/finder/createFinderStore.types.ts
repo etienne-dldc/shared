@@ -4,10 +4,8 @@ export type { Path, To };
 
 export type TPanelStatesBase = Record<string, any>;
 
-export interface TPanelDef<Key, State, AnyState, PanelContext> {
+export interface TPanelDef<Key, State, PanelContext> {
   key: Key;
-  toLocation?: (state: State) => To;
-  parentPanels?: (state: State) => AnyState | null;
   /**
    * Called when the panel is about to be opened
    * This will block the navigation until the promise
@@ -20,7 +18,7 @@ export interface TPanelDef<Key, State, AnyState, PanelContext> {
 }
 
 export type TFinderPanelDefBase<PanelStates extends TPanelStatesBase, PanelContext> = {
-  [K in keyof PanelStates]: TPanelDef<K, PanelStates[K], TPanelStateBase<PanelStates>, PanelContext>;
+  [K in keyof PanelStates]: TPanelDef<K, PanelStates[K], PanelContext>;
 }[keyof PanelStates];
 
 export type TPanelStateBase<PanelStates extends TPanelStatesBase> = {
@@ -34,15 +32,17 @@ export interface TInternalState<PanelStates extends TPanelStatesBase> {
 
 export type TPanelsStateBase<PanelStates extends TPanelStatesBase> = readonly TPanelStateBase<PanelStates>[];
 
-export type TMatchLocationTools<PanelStates extends TPanelStatesBase> = {
-  withParents: (panel: TPanelStateBase<PanelStates>) => TPanelsStateBase<PanelStates>;
-};
-
 export type TMatchLocation<PanelStates extends TPanelStatesBase, PanelContext> = (
   location: Path,
   context: PanelContext,
-  tools: TMatchLocationTools<PanelStates>,
 ) => TPanelsStateBase<PanelStates>;
+
+export type TToLocation<PanelStates extends TPanelStatesBase, PanelContext> = (
+  panels: TPanelsStateBase<PanelStates>,
+  context: PanelContext,
+) => To;
+
+// (state: State) => To;
 
 export type TPanelsDefsBase<PanelStates extends TPanelStatesBase, PanelContext> = readonly TFinderPanelDefBase<
   PanelStates,
@@ -53,6 +53,7 @@ export interface ProviderPropsBase<PanelStates extends TPanelStatesBase, PanelCo
   panels: TPanelsDefsBase<PanelStates, PanelContext>;
   context: PanelContext;
   matchLocation: TMatchLocation<PanelStates, PanelContext>;
+  toLocation: TToLocation<PanelStates, PanelContext>;
 }
 
 export interface FinderLinkProps<PanelStates extends TPanelStatesBase>
