@@ -62,7 +62,7 @@ export function createFinderStore<Panel, PanelContext>() {
 
       const routingId = useState(() => nanoid())[0];
 
-      const $panelStates = useMemo(
+      const $panels = useMemo(
         () =>
           atom((get): readonly Panel[] => {
             const location = get($location);
@@ -84,9 +84,9 @@ export function createFinderStore<Panel, PanelContext>() {
             action: "push" | "replace" | "init";
             panels: readonly Panel[];
           } | null>((get) => {
-            return { action: "init", panels: get($panelStates) };
+            return { action: "init", panels: get($panels) };
           }),
-        [$panelStates],
+        [$panels],
       );
 
       const $loading = useMemo(() => atom((get) => get($requestedPanelStates) !== null), [$requestedPanelStates]);
@@ -166,17 +166,17 @@ export function createFinderStore<Panel, PanelContext>() {
       const $navigate = useMemo(
         () =>
           atom(null, (get, set, options: TNavigateOptions<Panel>) => {
-            const nextPanels = resolveNavigateParams(get($panelStates), options);
+            const nextPanels = resolveNavigateParams(get($panels), options);
             const action = options.replace ? "replace" : "push";
             set($requestedPanelStates, { action, panels: nextPanels });
           }),
-        [$panelStates, $requestedPanelStates],
+        [$panels, $requestedPanelStates],
       );
 
       const $updatePanelByIndex = useMemo(
         () =>
           atom(null, (get, set, panelIndex: number, update: React.SetStateAction<Panel>) => {
-            const panels = get($panelStates);
+            const panels = get($panels);
             const nextPanels = [...panels];
             const prevPanel = panels[panelIndex];
             nextPanels[panelIndex] = typeof update === "function" ? (update as (p: Panel) => Panel)(prevPanel) : update;
@@ -186,7 +186,7 @@ export function createFinderStore<Panel, PanelContext>() {
               fromIndex: -1, // Replace all panels
             });
           }),
-        [$navigate, $panelStates],
+        [$navigate, $panels],
       );
 
       const navigate = useSetAtom($navigate);
@@ -212,7 +212,7 @@ export function createFinderStore<Panel, PanelContext>() {
         history,
         $location,
         $loading,
-        $panelStates,
+        $panels,
         $toLocationFn,
         $context,
         $panelKeyFn,
@@ -230,7 +230,7 @@ export function createFinderStore<Panel, PanelContext>() {
     useMaybe: usePanelMaybe,
     useOrFail: usePanelOrFail,
   } = createHookProvider("Panel", ({ panelIndex }: { panelIndex: number }) => {
-    const { $panelStates, $panelKeyFn, updatePanelByIndex } = useFinderOrFail();
+    const { $panels: $panelStates, $panelKeyFn, updatePanelByIndex } = useFinderOrFail();
 
     const $panel = useMemo(() => atom((get) => get($panelStates)[panelIndex]), [$panelStates, panelIndex]);
 
@@ -287,7 +287,7 @@ export function createFinderStore<Panel, PanelContext>() {
     options: TNavigateOptions<Panel>,
     linkProps: React.ComponentPropsWithoutRef<"a">,
   ): React.ComponentPropsWithoutRef<"a"> {
-    const { $panelStates, $toLocationFn, $context, history, navigate } = useFinderOrFail();
+    const { $panels: $panelStates, $toLocationFn, $context, history, navigate } = useFinderOrFail();
     const { panelIndex } = usePanelOrFail();
 
     const { panels, fromIndex = panelIndex, replace } = options;
