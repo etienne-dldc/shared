@@ -132,7 +132,9 @@ export function createRouteMatcher<AllRoutes extends Record<string, TRoute<any, 
   return {
     allRoutes,
     matchFirst,
+    matchFirstOrFail,
     matchExactFirst,
+    matchExactFirstOrFail,
   };
 
   type TMatchFirstResult<Keys extends string> = {
@@ -140,8 +142,8 @@ export function createRouteMatcher<AllRoutes extends Record<string, TRoute<any, 
   }[Keys];
 
   function matchFirst<Keys extends readonly TRouteKey[]>(
-    routes: Keys,
     location: TRouteLocation,
+    routes: Keys,
   ): TMatchFirstResult<Keys[number] & string> | null {
     for (const key of routes) {
       const route = allRoutes[key];
@@ -153,13 +155,24 @@ export function createRouteMatcher<AllRoutes extends Record<string, TRoute<any, 
     return null;
   }
 
+  function matchFirstOrFail<Keys extends readonly TRouteKey[]>(
+    location: TRouteLocation,
+    routes: Keys,
+  ): TMatchFirstResult<Keys[number] & string> {
+    const match = matchFirst(location, routes);
+    if (!match) {
+      throw new Error("No route matched");
+    }
+    return match;
+  }
+
   type TMatchFirstExactResult<Keys extends string> = {
     [K in Keys]: Simplify<{ key: K } & TInferRouteData<AllRoutes[K]>>;
   }[Keys];
 
   function matchExactFirst<Keys extends readonly TRouteKey[]>(
-    routes: Keys,
     location: TRouteLocation,
+    routes: Keys,
   ): TMatchFirstExactResult<Keys[number] & string> | null {
     for (const key of routes) {
       const route = allRoutes[key];
@@ -169,5 +182,16 @@ export function createRouteMatcher<AllRoutes extends Record<string, TRoute<any, 
       }
     }
     return null;
+  }
+
+  function matchExactFirstOrFail<Keys extends readonly TRouteKey[]>(
+    location: TRouteLocation,
+    routes: Keys,
+  ): TMatchFirstExactResult<Keys[number] & string> {
+    const match = matchExactFirst(location, routes);
+    if (!match) {
+      throw new Error("No route matched");
+    }
+    return match;
   }
 }
