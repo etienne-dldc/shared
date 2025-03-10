@@ -10,53 +10,43 @@ import { useMemoEqual } from "../hooks/useMemoEqual";
 import { useMemoRecord } from "../hooks/useMemoRecord";
 import { createHookProvider } from "../utils/hookProvider";
 import { shouldProcessLinkClick } from "../utils/linkEvents";
-import {
-  FinderLinkProps,
-  ProviderPropsBase,
-  TInternalState,
-  TNavigateOptions,
-  TPanelStateBase,
-  TPanelStatesBase,
-} from "./createFinderStore.types";
+import { FinderLinkProps, ProviderPropsBase, TInternalState, TNavigateOptions } from "./createFinderStore.types";
 import { resolveNavigateParams, toPath } from "./createFinderStore.utils";
 import { FinderPanelProps, FinderPanel as PanelBase } from "./FinderPanel";
 
-export function createFinderStore<PanelStates extends TPanelStatesBase, PanelContext>() {
-  type TPanelState = TPanelStateBase<PanelStates>;
-  type TPanelsState = readonly TPanelState[];
-
+export function createFinderStore<Panel, PanelContext>() {
   const {
     Provider: FinderProvider,
     useMaybe: useFinderMaybe,
     useOrFail: useFinderOrFail,
   } = createHookProvider(
     "Finder",
-    ({ panels: panelsDefs, matchLocation, toLocation, context }: ProviderPropsBase<PanelStates, PanelContext>) => {
+    ({ matchLocation, toLocation, panelLoader, panelKey, context }: ProviderPropsBase<Panel, PanelContext>) => {
       const {
         history,
         $effect: $historyEffect,
         $location,
       } = useMemo(() => {
-        return historyAtom<Partial<TInternalState<PanelStates>>>();
+        return historyAtom<Partial<TInternalState<Panel>>>();
       }, []);
       useAtom($historyEffect);
 
-      // Need object because jotai does not like functions as values
-      const $matchLocation = useAtomFromFunctionValue(matchLocation);
-      const $toLocation = useAtomFromFunctionValue(toLocation);
-      const $panelsDefs = useAtomFromValue(panelsDefs);
+      const $matchLocationFn = useAtomFromFunctionValue(matchLocation);
+      const $toLocationFn = useAtomFromFunctionValue(toLocation);
+      const $panelLoaderFn = useAtomFromFunctionValue(panelLoader);
+      const $panelKeyFn = useAtomFromFunctionValue(panelKey);
       const $context = useAtomFromValue(context);
 
       const $matchLocationWithTools = useMemo(
         () =>
           atom((get) => {
-            const matchLocation = get($matchLocation);
+            const matchLocation = get($matchLocationFn);
             const context = get($context);
             return (location: Path) => {
               return matchLocation(location, context);
             };
           }),
-        [$context, $matchLocation],
+        [$context, $matchLocationFn],
       );
 
       const $panelsFromLocation = useMemo(
@@ -74,7 +64,7 @@ export function createFinderStore<PanelStates extends TPanelStatesBase, PanelCon
 
       const $panelStates = useMemo(
         () =>
-          atom((get): TPanelsState => {
+          atom((get): readonly Panel[] => {
             const location = get($location);
             if (location.state && location.state.routingId && location.state.panels) {
               if (location.state.routingId === routingId) {
@@ -92,7 +82,7 @@ export function createFinderStore<PanelStates extends TPanelStatesBase, PanelCon
         () =>
           atomWithDefault<{
             action: "push" | "replace" | "init";
-            panels: TPanelsState;
+            panels: readonly Panel[];
           } | null>((get) => {
             return { action: "init", panels: get($panelStates) };
           }),
@@ -104,7 +94,7 @@ export function createFinderStore<PanelStates extends TPanelStatesBase, PanelCon
       // Run loader on panels and navigate when ready
       const $loaderEffect = useMemo(() => {
         return atomEffect((get, set) => {
-          const panelsDefs = get($panelsDefs);
+          const panelLoader = get($panelLoaderFn);
           const context = get($context);
           const requestedPanels = get($requestedPanelStates);
           if (!requestedPanels) {
@@ -112,22 +102,21 @@ export function createFinderStore<PanelStates extends TPanelStatesBase, PanelCon
           }
           const { action, panels } = requestedPanels;
           const resolved = panels.map((panel) => {
-            const def = panelsDefs.find((def) => def.key === panel.key);
-            if (!def) {
-              throw new Error(`Panel definition not found for key ${String(panel.key)}`);
+            if (!panelLoader) {
+              return { panel, loaded: true, load: null };
             }
-            const preloaded = Boolean(def.preload && def.preloaded && def.preloaded(panel.state, context));
-            return { def, panel, preloaded };
+            const loadResult = panelLoader(panel, context);
+            return { panel, ...loadResult };
           });
-          // Check if all panels are preloaded
-          const allPreloaded = resolved.every(({ preloaded }) => preloaded);
+          // Check if all panels are loaded
+          const allLoaded = resolved.every(({ loaded }) => loaded);
 
           function navigateNow() {
             set($requestedPanelStates, null);
             if (action === "init") {
               return;
             }
-            const location = toPath(history, get($toLocation)(panels, get($context)));
+            const location = toPath(history, get($toLocationFn)(panels, get($context)));
             if (action === "push") {
               history.push(location, { panels, routingId });
               return;
@@ -139,7 +128,7 @@ export function createFinderStore<PanelStates extends TPanelStatesBase, PanelCon
             action satisfies never;
           }
 
-          if (allPreloaded) {
+          if (allLoaded) {
             navigateNow();
             return;
           }
@@ -148,12 +137,12 @@ export function createFinderStore<PanelStates extends TPanelStatesBase, PanelCon
           (async () => {
             try {
               await Promise.all(
-                resolved.map(async ({ def, panel, preloaded }) => {
-                  if (preloaded || !def.preload) {
+                resolved.map(async ({ loaded, load }) => {
+                  if (loaded || !load) {
                     return;
                   }
                   controller.signal.throwIfAborted();
-                  await def.preload(panel.state, context);
+                  await load();
                 }),
               );
               if (controller.signal.aborted) {
@@ -171,12 +160,12 @@ export function createFinderStore<PanelStates extends TPanelStatesBase, PanelCon
             controller.abort();
           };
         });
-      }, [$context, $panelsDefs, $requestedPanelStates, $toLocation, history, routingId]);
+      }, [$context, $panelLoaderFn, $requestedPanelStates, $toLocationFn, history, routingId]);
       useAtom($loaderEffect);
 
       const $navigate = useMemo(
         () =>
-          atom(null, (get, set, options: TNavigateOptions<PanelStates>) => {
+          atom(null, (get, set, options: TNavigateOptions<Panel>) => {
             const nextPanels = resolveNavigateParams(get($panelStates), options);
             const action = options.replace ? "replace" : "push";
             set($requestedPanelStates, { action, panels: nextPanels });
@@ -184,19 +173,13 @@ export function createFinderStore<PanelStates extends TPanelStatesBase, PanelCon
         [$panelStates, $requestedPanelStates],
       );
 
-      const $updateStateByIndex = useMemo(
+      const $updatePanelByIndex = useMemo(
         () =>
-          atom(null, (get, set, panelIndex: number, key: string, update: React.SetStateAction<TPanelState>) => {
+          atom(null, (get, set, panelIndex: number, update: React.SetStateAction<Panel>) => {
             const panels = get($panelStates);
             const nextPanels = [...panels];
             const prevPanel = panels[panelIndex];
-            if (prevPanel.key !== key) {
-              throw new Error(`Panel key mismatch: expected ${String(key)}, got ${String(prevPanel.key)}`);
-            }
-            nextPanels[panelIndex] = {
-              ...prevPanel,
-              state: typeof update === "function" ? update(prevPanel.state) : update,
-            };
+            nextPanels[panelIndex] = typeof update === "function" ? (update as (p: Panel) => Panel)(prevPanel) : update;
             set($navigate, {
               replace: true,
               panels: nextPanels,
@@ -208,12 +191,12 @@ export function createFinderStore<PanelStates extends TPanelStatesBase, PanelCon
 
       const navigate = useSetAtom($navigate);
       const navigateTo = useCallback(
-        (options: TNavigateOptions<PanelStates>) => {
+        (options: TNavigateOptions<Panel>) => {
           return navigate({ fromIndex: -1, ...options });
         },
         [navigate],
       );
-      const updateStateByIndex = useSetAtom($updateStateByIndex);
+      const updatePanelByIndex = useSetAtom($updatePanelByIndex);
 
       const refreshLocation = useCallback(
         ({ replace }: { replace?: boolean } = {}) => {
@@ -229,13 +212,13 @@ export function createFinderStore<PanelStates extends TPanelStatesBase, PanelCon
         history,
         $location,
         $loading,
-        $panelsDefs,
         $panelStates,
-        $toLocation,
+        $toLocationFn,
         $context,
+        $panelKeyFn,
         navigate,
         navigateTo,
-        updateStateByIndex,
+        updatePanelByIndex,
         panelsFromLocation,
         refreshLocation,
       });
@@ -247,11 +230,11 @@ export function createFinderStore<PanelStates extends TPanelStatesBase, PanelCon
     useMaybe: usePanelMaybe,
     useOrFail: usePanelOrFail,
   } = createHookProvider("Panel", ({ panelIndex }: { panelIndex: number }) => {
-    const { $panelStates, updateStateByIndex } = useFinderOrFail();
+    const { $panelStates, $panelKeyFn, updatePanelByIndex } = useFinderOrFail();
 
-    const $currentPanel = useMemo(() => atom((get) => get($panelStates)[panelIndex]), [$panelStates, panelIndex]);
+    const $panel = useMemo(() => atom((get) => get($panelStates)[panelIndex]), [$panelStates, panelIndex]);
 
-    const $currentPanelKey = useMemo(() => atom((get) => get($currentPanel).key), [$currentPanel]);
+    const $panelKey = useMemo(() => atom((get) => get($panelKeyFn)(get($panel))), [$panel, $panelKeyFn]);
 
     // Active panel if second to last or single panel
     const $isActive = useMemo(
@@ -268,8 +251,6 @@ export function createFinderStore<PanelStates extends TPanelStatesBase, PanelCon
       [$panelStates, panelIndex],
     );
 
-    const $state = useMemo(() => atom((get) => get($currentPanel).state), [$currentPanel]);
-
     const $nextPanel = useMemo(
       () =>
         atom((get) => {
@@ -283,44 +264,30 @@ export function createFinderStore<PanelStates extends TPanelStatesBase, PanelCon
     );
 
     const updateState = useCallback(
-      <K extends keyof PanelStates>(
-        key: K,
-        update: React.SetStateAction<Extract<TPanelState, { key: K }>["state"]>,
-      ) => {
-        return updateStateByIndex(
-          panelIndex,
-          key as string,
-          update as React.SetStateAction<TPanelStateBase<PanelStates>>,
-        );
+      (update: React.SetStateAction<Panel>) => {
+        return updatePanelByIndex(panelIndex, update);
       },
-      [panelIndex, updateStateByIndex],
+      [panelIndex, updatePanelByIndex],
     );
 
     return useMemoRecord({
       panelIndex,
       $isActive,
       $isLast,
-      $currentPanel,
-      $currentPanelKey,
-      $state,
+      $currentPanel: $panel,
+      $currentPanelKey: $panelKey,
+      $panel,
+      $panelKey,
       $nextPanel,
       updateState,
     });
   });
 
-  function usePanelState<K extends keyof PanelStates>(key: K): PanelStates[K] {
-    const state = useAtomValue(usePanelOrFail().$currentPanel);
-    if (state.key !== key) {
-      throw new Error(`Panel key mismatch: expected ${String(key)}, got ${String(state.key)}`);
-    }
-    return state.state as PanelStates[K];
-  }
-
   function usePanelLinkProps(
-    options: TNavigateOptions<PanelStates>,
+    options: TNavigateOptions<Panel>,
     linkProps: React.ComponentPropsWithoutRef<"a">,
   ): React.ComponentPropsWithoutRef<"a"> {
-    const { $panelStates, $toLocation, $context, history, navigate } = useFinderOrFail();
+    const { $panelStates, $toLocationFn, $context, history, navigate } = useFinderOrFail();
     const { panelIndex } = usePanelOrFail();
 
     const { panels, fromIndex = panelIndex, replace } = options;
@@ -330,9 +297,9 @@ export function createFinderStore<PanelStates extends TPanelStatesBase, PanelCon
       () =>
         atom((get) => {
           const nextPanels = resolveNavigateParams(get($panelStates), localOptions);
-          return toPath(history, get($toLocation)(nextPanels, get($context)));
+          return toPath(history, get($toLocationFn)(nextPanels, get($context)));
         }),
-      [$context, $panelStates, $toLocation, history, localOptions],
+      [$context, $panelStates, $toLocationFn, history, localOptions],
     );
 
     const nextLocation = useAtomValue($nextLocation);
@@ -375,7 +342,7 @@ export function createFinderStore<PanelStates extends TPanelStatesBase, PanelCon
     return createElement(PanelBase, { ...nextProps, ref }, children);
   });
 
-  const FinderLink = forwardRef<HTMLAnchorElement, FinderLinkProps<PanelStates>>(function FinderLink(
+  const FinderLink = forwardRef<HTMLAnchorElement, FinderLinkProps<Panel>>(function FinderLink(
     { panels, replace, fromIndex, ...rest },
     ref,
   ): ReactNode {
@@ -392,7 +359,6 @@ export function createFinderStore<PanelStates extends TPanelStatesBase, PanelCon
     useFinderOrFail,
     usePanelMaybe,
     usePanelOrFail,
-    usePanelState,
     Panel,
   };
 }

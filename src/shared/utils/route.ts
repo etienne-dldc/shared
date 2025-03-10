@@ -1,4 +1,5 @@
-import { chemin, splitPathname, TChemin } from "@dldc/chemin";
+import { chemin, splitPathname, TChemin, TSimplify } from "@dldc/chemin";
+import { Simplify } from "type-fest";
 import * as v from "valibot";
 
 export interface TRouteLocation {
@@ -12,7 +13,10 @@ export interface TRouteMatch<Params> {
   readonly exact: boolean;
 }
 
-export type TRouteData<Params, Search extends v.ObjectEntries> = Params & v.InferObjectOutput<Search>;
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export type TDefaultSearch = {};
+
+export type TRouteData<Params, Search extends v.ObjectEntries> = TSimplify<Params & v.InferObjectOutput<Search>>;
 
 export type TMaybeRouteMatch<Params> = TRouteMatch<Params> | null;
 
@@ -28,7 +32,7 @@ export interface TRoute<Params, Search extends v.ObjectEntries> {
 
 export type TInferRouteData<R extends TRoute<any, any>> = NonNullable<ReturnType<R["matchExact"]>>;
 
-export function route<Params, Search extends v.ObjectEntries>(
+export function route<Params, Search extends v.ObjectEntries = TDefaultSearch>(
   pathname: TChemin<Params>,
   searchProps: Search = {} as any,
 ): TRoute<Params, Search> {
@@ -44,7 +48,12 @@ export function route<Params, Search extends v.ObjectEntries>(
   return route;
 }
 
-export function extendsRoute<BaseParams, BaseSearch extends v.ObjectEntries, Params, Search extends v.ObjectEntries>(
+export function extendsRoute<
+  BaseParams,
+  BaseSearch extends v.ObjectEntries,
+  Params,
+  Search extends v.ObjectEntries = TDefaultSearch,
+>(
   base: TRoute<BaseParams, BaseSearch>,
   pathname: TChemin<Params>,
   searchProps: Search = {} as any,
@@ -55,7 +64,7 @@ export function extendsRoute<BaseParams, BaseSearch extends v.ObjectEntries, Par
   });
 }
 
-export function serialize<Params, Search extends v.ObjectEntries>(
+export function serialize<Params, Search extends v.ObjectEntries = TDefaultSearch>(
   route: TRoute<Params, Search>,
   data: TRouteData<Params, Search>,
 ): TRouteLocation {
@@ -108,4 +117,57 @@ export function matchExact<Params, Search extends v.ObjectEntries>(
     return matched.params;
   }
   return null;
+}
+
+export function parseLocation(pathname: string, search?: string): TRouteLocation {
+  return {
+    pathname: splitPathname(pathname),
+    search: search ? Object.fromEntries(new URLSearchParams(search)) : {},
+  };
+}
+
+export function createRouteMatcher<AllRoutes extends Record<string, TRoute<any, any>>>(allRoutes: AllRoutes) {
+  type TRouteKey = keyof AllRoutes;
+
+  return {
+    allRoutes,
+    matchFirst,
+    matchExactFirst,
+  };
+
+  type TMatchFirstResult<Keys extends string> = {
+    [K in Keys]: Simplify<{ key: K } & TRouteMatch<TInferRouteData<AllRoutes[K]>>>;
+  }[Keys];
+
+  function matchFirst<Keys extends readonly TRouteKey[]>(
+    routes: Keys,
+    location: TRouteLocation,
+  ): TMatchFirstResult<Keys[number] & string> | null {
+    for (const key of routes) {
+      const route = allRoutes[key];
+      const match = route.match(location);
+      if (match) {
+        return { key, ...match } as any;
+      }
+    }
+    return null;
+  }
+
+  type TMatchFirstExactResult<Keys extends string> = {
+    [K in Keys]: Simplify<{ key: K } & TInferRouteData<AllRoutes[K]>>;
+  }[Keys];
+
+  function matchExactFirst<Keys extends readonly TRouteKey[]>(
+    routes: Keys,
+    location: TRouteLocation,
+  ): TMatchFirstExactResult<Keys[number] & string> | null {
+    for (const key of routes) {
+      const route = allRoutes[key];
+      const match = route.matchExact(location);
+      if (match) {
+        return { key, ...match } as any;
+      }
+    }
+    return null;
+  }
 }

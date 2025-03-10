@@ -1,13 +1,13 @@
 import { History, parsePath, Path, To } from "history";
-import { TNavigateOptions, TPanelsStateBase, TPanelStatesBase } from "./createFinderStore.types";
+import { TNavigateOptions, TPanelsUpdateFn } from "./createFinderStore.types";
 
-export function resolveNavigateParams<PanelStates extends TPanelStatesBase>(
-  currentPanels: TPanelsStateBase<PanelStates>,
-  options: TNavigateOptions<PanelStates>,
-): TPanelsStateBase<PanelStates> {
+export function resolveNavigateParams<Panel>(
+  currentPanels: readonly Panel[],
+  options: TNavigateOptions<Panel>,
+): readonly Panel[] {
   const { fromIndex: currentIndex = -1, panels } = options;
   if (typeof panels === "function") {
-    return panels(currentPanels);
+    return (panels as TPanelsUpdateFn<Panel>)(currentPanels);
   }
   const base = currentPanels.slice(0, currentIndex + 1);
   if (panels === null) {
