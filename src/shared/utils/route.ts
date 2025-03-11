@@ -126,6 +126,10 @@ export function parseLocation(pathname: string, search?: string): TRouteLocation
   };
 }
 
+export function joinPathname(pathname: readonly string[]): string {
+  return "/" + pathname.join("/");
+}
+
 export function createRouteMatcher<AllRoutes extends Record<string, TRoute<any, any>>>(allRoutes: AllRoutes) {
   type TRouteKey = keyof AllRoutes;
 
