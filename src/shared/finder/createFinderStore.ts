@@ -274,8 +274,6 @@ export function createFinderStore<Panel, PanelContext>() {
       panelIndex,
       $isActive,
       $isLast,
-      $currentPanel: $panel,
-      $currentPanelKey: $panelKey,
       $panel,
       $panelKey,
       $nextPanel,
@@ -328,14 +326,14 @@ export function createFinderStore<Panel, PanelContext>() {
     { children, ...props }: FinderPanelProps,
     ref: ForwardedRef<HTMLDivElement>,
   ): ReactNode {
-    const { $isLast, $currentPanelKey } = usePanelOrFail();
+    const { $isLast, $panelKey } = usePanelOrFail();
 
     const isActive = useAtomValue($isLast);
-    const currentPanelKey = useAtomValue($currentPanelKey);
+    const panelKey = useAtomValue($panelKey);
 
     const nextProps: FinderPanelProps = {
       isActive,
-      resizeLocalStorageKey: `finder-panel-size-${currentPanelKey as string}`,
+      resizeLocalStorageKey: `finder-panel-size-${panelKey as string}`,
       ...props,
     };
 
