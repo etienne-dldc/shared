@@ -71,7 +71,9 @@ export function serialize<Params, Search extends v.ObjectEntries = TDefaultSearc
   const pathname = route.pathname.serialize(data as any);
   const search: Record<string, string> = {} as any;
   for (const key in route.searchProps) {
-    search[key] = String(data[key]) as any;
+    if (key in data && data[key]) {
+      search[key] = String(data[key]);
+    }
   }
   return {
     pathname: splitPathname(pathname),
