@@ -295,9 +295,7 @@ export function createFinderStore<Panel, PanelContext>() {
       () =>
         atom((get) => {
           const nextPanels = resolveNavigateParams(get($panelStates), localOptions);
-          const toLocationFn = get($toLocationFn);
-          const location = toLocationFn(nextPanels, get($context));
-          return toPath(history, location);
+          return toPath(history, get($toLocationFn)(nextPanels, get($context)));
         }),
       [$context, $panelStates, $toLocationFn, history, localOptions],
     );
