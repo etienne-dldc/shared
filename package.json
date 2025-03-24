@@ -15,7 +15,7 @@
     "@ariakit/core": "^0.4.14",
     "@ariakit/react": "^0.4.15",
     "@dldc/chemin": "npm:@jsr/dldc__chemin@^13.0.0",
-    "@dldc/safe-search-params": "npm:@jsr/dldc__safe-search-params@^1.1.0",
+    "@dldc/safe-search-params": "npm:@jsr/dldc__safe-search-params@^1.1.1",
     "@phosphor-icons/react": "^2.1.7",
     "@react-hookz/deep-equal": "^3.0.3",
     "clsx": "^2.1.1",

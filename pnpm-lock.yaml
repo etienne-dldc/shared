@@ -18,8 +18,8 @@ importers:
         specifier: npm:@jsr/dldc__chemin@^13.0.0
         version: '@jsr/dldc__chemin@13.0.0'
       '@dldc/safe-search-params':
-        specifier: npm:@jsr/dldc__safe-search-params@^1.1.0
-        version: '@jsr/dldc__safe-search-params@1.1.0'
+        specifier: npm:@jsr/dldc__safe-search-params@^1.1.1
+        version: '@jsr/dldc__safe-search-params@1.1.1'
       '@phosphor-icons/react':
         specifier: ^2.1.7
         version: 2.1.7(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -365,8 +365,8 @@ packages:
   '@jsr/dldc__erreur@7.1.1':
     resolution: {integrity: sha512-NqS59hO/2ITktUa5RzBYigZ01ZuZQARYDPP/JF6/I6orFmL72zzZcRQPDeL1kWgn3nlwTuW3iPIGl2nOuY581g==, tarball: https://npm.jsr.io/~/11/@jsr/dldc__erreur/7.1.1.tgz}
 
-  '@jsr/dldc__safe-search-params@1.1.0':
-    resolution: {integrity: sha512-jcn3AgGAMT3YK9Vu8hH/QI2G+D85a/XrMVHRQ+79uTVNt0zM2HyBb+c2wj69SzJzCn9mFf2UtjSndb7sVACguA==, tarball: https://npm.jsr.io/~/11/@jsr/dldc__safe-search-params/1.1.0.tgz}
+  '@jsr/dldc__safe-search-params@1.1.1':
+    resolution: {integrity: sha512-Wi/yJCOe4qZEnIWCGdqdEbNWp7VEPbsY7Gnmk4UnzfW20L9SFltcWdQ2PA/qoffWMs3DdyVNyAT/80v7yjDT8Q==, tarball: https://npm.jsr.io/~/11/@jsr/dldc__safe-search-params/1.1.1.tgz}
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -1525,7 +1525,7 @@ snapshots:
 
   '@jsr/dldc__erreur@7.1.1': {}
 
-  '@jsr/dldc__safe-search-params@1.1.0':
+  '@jsr/dldc__safe-search-params@1.1.1':
     dependencies:
       '@jsr/dldc__erreur': 7.1.1
 
