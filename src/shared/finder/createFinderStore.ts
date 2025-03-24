@@ -1,4 +1,4 @@
-import { Path, To } from "history";
+import { To } from "history";
 import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
 import { atomEffect } from "jotai-effect";
 import { atomWithDefault } from "jotai/utils";
@@ -22,13 +22,8 @@ export function createFinderStore<Panel, PanelContext>() {
   } = createHookProvider(
     "Finder",
     ({ matchLocation, toLocation, panelLoader, panelKey, context }: ProviderPropsBase<Panel, PanelContext>) => {
-      const {
-        history,
-        $effect: $historyEffect,
-        $location,
-      } = useMemo(() => {
-        return historyAtom<Partial<TInternalState<Panel>>>();
-      }, []);
+      const historyTools = useMemo(() => historyAtom<Partial<TInternalState<Panel>>>(), []);
+      const { history, $effect: $historyEffect, $location } = historyTools;
       useAtom($historyEffect);
 
       const $matchLocationFn = useAtomFromFunctionValue(matchLocation);
@@ -37,30 +32,38 @@ export function createFinderStore<Panel, PanelContext>() {
       const $panelKeyFn = useAtomFromFunctionValue(panelKey);
       const $context = useAtomFromValue(context);
 
-      const $matchLocationWithTools = useMemo(
-        () =>
-          atom((get) => {
-            const matchLocation = get($matchLocationFn);
-            const context = get($context);
-            return (location: Path) => {
-              return matchLocation(location, context);
-            };
-          }),
-        [$context, $matchLocationFn],
-      );
-
-      const $panelsFromLocation = useMemo(
+      /**
+       * Given a location, returns the panels
+       */
+      const $parseLocation = useMemo(
         () =>
           atom(null, (get, _set, pathTo: To) => {
-            const matchLocationWithTools = get($matchLocationWithTools);
-            const panels = matchLocationWithTools(toPath(history, pathTo));
-            return panels;
+            const matchLocation = get($matchLocationFn);
+            const context = get($context);
+            return matchLocation(toPath(history, pathTo), context);
           }),
-        [$matchLocationWithTools, history],
+        [$context, $matchLocationFn, history],
       );
-      const panelsFromLocation = useSetAtom($panelsFromLocation);
+      const parseLocation = useSetAtom($parseLocation);
+
+      /**
+       * Given panels, returns the location
+       */
+      const $serializeLocation = useMemo(
+        () =>
+          atom(null, (get, _set, panels: readonly Panel[]) => {
+            const currentLocation = get($location);
+            const toLocation = get($toLocationFn);
+            const context = get($context);
+            const location = toLocation(panels, currentLocation, context);
+            return toPath(history, location);
+          }),
+        [$context, $location, $toLocationFn, history],
+      );
+      const serializeLocation = useSetAtom($serializeLocation);
 
       const routingId = useState(() => nanoid())[0];
+      const initialPanels = useState(() => parseLocation(history.location))[0];
 
       const $panels = useMemo(
         () =>
@@ -70,24 +73,67 @@ export function createFinderStore<Panel, PanelContext>() {
               if (location.state.routingId === routingId) {
                 return location.state.panels;
               }
-              // TODO: Allow user to restore panels on reload ?
             }
-            // if no state, we need to find the panels from the path
-            return get($matchLocationWithTools)(location);
+            return initialPanels;
           }),
-        [$location, $matchLocationWithTools, routingId],
+        [$location, initialPanels, routingId],
       );
+
+      interface TRequestedPanelStates {
+        action: "push" | "replace" | "pulled";
+        panels: readonly Panel[];
+      }
 
       const $requestedPanelStates = useMemo(
         () =>
-          atomWithDefault<{
-            action: "push" | "replace" | "init";
-            panels: readonly Panel[];
-          } | null>((get) => {
-            return { action: "init", panels: get($panels) };
+          atomWithDefault<TRequestedPanelStates | null>(() => {
+            return { action: "pulled", panels: initialPanels };
           }),
-        [$panels],
+        [initialPanels],
       );
+
+      const $navigate = useMemo(
+        () =>
+          atom(null, (get, set, options: TNavigateOptions<Panel>) => {
+            const currentPanels = get($panels);
+            const nextPanels = resolveNavigateParams(currentPanels, options);
+            const action = options.replace ? "replace" : "push";
+            set($requestedPanelStates, { action, panels: nextPanels });
+          }),
+        [$panels, $requestedPanelStates],
+      );
+
+      const navigate = useSetAtom($navigate);
+      const navigateTo = useCallback(
+        (options: TNavigateOptions<Panel>) => {
+          return navigate({ fromIndex: -1, ...options });
+        },
+        [navigate],
+      );
+
+      const refreshLocation = useCallback(
+        ({ replace }: { replace?: boolean } = {}) => {
+          navigateTo({ replace, panels: parseLocation(history.location) });
+        },
+        [history.location, navigateTo, parseLocation],
+      );
+
+      const $updatePanelByIndex = useMemo(
+        () =>
+          atom(null, (get, set, panelIndex: number, update: React.SetStateAction<Panel>) => {
+            const panels = get($panels);
+            const nextPanels = [...panels];
+            const prevPanel = panels[panelIndex];
+            nextPanels[panelIndex] = typeof update === "function" ? (update as (p: Panel) => Panel)(prevPanel) : update;
+            set($navigate, {
+              replace: true,
+              panels: nextPanels,
+              fromIndex: -1, // Replace all panels
+            });
+          }),
+        [$navigate, $panels],
+      );
+      const updatePanelByIndex = useSetAtom($updatePanelByIndex);
 
       const $loading = useMemo(() => atom((get) => get($requestedPanelStates) !== null), [$requestedPanelStates]);
 
@@ -113,10 +159,10 @@ export function createFinderStore<Panel, PanelContext>() {
 
           function navigateNow() {
             set($requestedPanelStates, null);
-            if (action === "init") {
+            if (action === "pulled") {
               return;
             }
-            const location = toPath(history, get($toLocationFn)(panels, get($location), get($context)));
+            const location = serializeLocation(panels);
             if (action === "push") {
               history.push(location, { panels, routingId });
               return;
@@ -160,53 +206,8 @@ export function createFinderStore<Panel, PanelContext>() {
             controller.abort();
           };
         });
-      }, [$context, $location, $panelLoaderFn, $requestedPanelStates, $toLocationFn, history, routingId]);
+      }, [$context, $panelLoaderFn, $requestedPanelStates, history, routingId, serializeLocation]);
       useAtom($loaderEffect);
-
-      const $navigate = useMemo(
-        () =>
-          atom(null, (get, set, options: TNavigateOptions<Panel>) => {
-            const nextPanels = resolveNavigateParams(get($panels), options);
-            const action = options.replace ? "replace" : "push";
-            set($requestedPanelStates, { action, panels: nextPanels });
-          }),
-        [$panels, $requestedPanelStates],
-      );
-
-      const $updatePanelByIndex = useMemo(
-        () =>
-          atom(null, (get, set, panelIndex: number, update: React.SetStateAction<Panel>) => {
-            const panels = get($panels);
-            const nextPanels = [...panels];
-            const prevPanel = panels[panelIndex];
-            nextPanels[panelIndex] = typeof update === "function" ? (update as (p: Panel) => Panel)(prevPanel) : update;
-            set($navigate, {
-              replace: true,
-              panels: nextPanels,
-              fromIndex: -1, // Replace all panels
-            });
-          }),
-        [$navigate, $panels],
-      );
-
-      const navigate = useSetAtom($navigate);
-      const navigateTo = useCallback(
-        (options: TNavigateOptions<Panel>) => {
-          return navigate({ fromIndex: -1, ...options });
-        },
-        [navigate],
-      );
-      const updatePanelByIndex = useSetAtom($updatePanelByIndex);
-
-      const refreshLocation = useCallback(
-        ({ replace }: { replace?: boolean } = {}) => {
-          navigateTo({
-            replace,
-            panels: panelsFromLocation(history.location),
-          });
-        },
-        [history, navigateTo, panelsFromLocation],
-      );
 
       return useMemoRecord({
         history,
@@ -219,8 +220,9 @@ export function createFinderStore<Panel, PanelContext>() {
         navigate,
         navigateTo,
         updatePanelByIndex,
-        panelsFromLocation,
         refreshLocation,
+        parseLocation,
+        serializeLocation,
       });
     },
   );

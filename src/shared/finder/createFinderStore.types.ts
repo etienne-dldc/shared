@@ -3,8 +3,14 @@ import { Path, To } from "history";
 export type { Path, To };
 
 export interface TInternalState<Panel> {
-  routingId: string;
+  /**
+   * List of panels
+   */
   panels: readonly Panel[];
+  /**
+   * Unique Id to invalidate location state on reload
+   */
+  routingId: string;
 }
 
 export type TMatchLocation<Panel, PanelContext> = (location: Path, context: PanelContext) => readonly Panel[];
