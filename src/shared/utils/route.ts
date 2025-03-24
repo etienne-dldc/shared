@@ -66,11 +66,12 @@ export function extendsRoute<
 
 export function serialize<Params, Search extends TDtObjBase = TDefaultSearch>(
   route: TRoute<Params, Search>,
-  location: TRouteLocation,
+  currentLocation: TRouteLocation,
   data: TRouteData<Params, Search>,
 ): TRouteLocation {
   const pathname = route.pathname.serialize(data as any);
-  const search = safeSearchParams(location.search);
+  const isSamePath = currentLocation.pathname.join("/") === pathname;
+  const search = safeSearchParams(isSamePath ? currentLocation.search : undefined);
   const updated = search.setObj(route.search, data as any);
 
   return {
