@@ -115,7 +115,7 @@ export function createFinderStore<Panel, PanelContext>() {
         ({ replace }: { replace?: boolean } = {}) => {
           navigateTo({ replace, panels: parseLocation(history.location) });
         },
-        [history.location, navigateTo, parseLocation],
+        [history, navigateTo, parseLocation],
       );
 
       const $updatePanelByIndex = useMemo(
