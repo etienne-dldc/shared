@@ -116,7 +116,7 @@ export function createFinderStore<Panel, PanelContext>() {
             if (action === "init") {
               return;
             }
-            const location = toPath(history, get($toLocationFn)(panels, get($context)));
+            const location = toPath(history, get($toLocationFn)(panels, get($location), get($context)));
             if (action === "push") {
               history.push(location, { panels, routingId });
               return;
@@ -160,7 +160,7 @@ export function createFinderStore<Panel, PanelContext>() {
             controller.abort();
           };
         });
-      }, [$context, $panelLoaderFn, $requestedPanelStates, $toLocationFn, history, routingId]);
+      }, [$context, $location, $panelLoaderFn, $requestedPanelStates, $toLocationFn, history, routingId]);
       useAtom($loaderEffect);
 
       const $navigate = useMemo(
@@ -285,7 +285,7 @@ export function createFinderStore<Panel, PanelContext>() {
     options: TNavigateOptions<Panel>,
     linkProps: React.ComponentPropsWithoutRef<"a">,
   ): React.ComponentPropsWithoutRef<"a"> {
-    const { $panels: $panelStates, $toLocationFn, $context, history, navigate } = useFinderOrFail();
+    const { $panels, $toLocationFn, $context, history, navigate, $location } = useFinderOrFail();
     const { panelIndex } = usePanelOrFail();
 
     const { panels, fromIndex = panelIndex, replace } = options;
@@ -294,10 +294,10 @@ export function createFinderStore<Panel, PanelContext>() {
     const $nextLocation = useMemo(
       () =>
         atom((get) => {
-          const nextPanels = resolveNavigateParams(get($panelStates), localOptions);
-          return toPath(history, get($toLocationFn)(nextPanels, get($context)));
+          const nextPanels = resolveNavigateParams(get($panels), localOptions);
+          return toPath(history, get($toLocationFn)(nextPanels, get($location), get($context)));
         }),
-      [$context, $panelStates, $toLocationFn, history, localOptions],
+      [$context, $location, $panels, $toLocationFn, history, localOptions],
     );
 
     const nextLocation = useAtomValue($nextLocation);

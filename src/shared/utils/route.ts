@@ -1,10 +1,10 @@
 import { chemin, splitPathname, TChemin, TSimplify } from "@dldc/chemin";
+import { safeSearchParams, TDtObjBase, TDtObjOutput } from "@dldc/safe-search-params";
 import { Simplify } from "type-fest";
-import * as v from "valibot";
 
 export interface TRouteLocation {
   readonly pathname: readonly string[];
-  readonly search: Record<string, string>;
+  readonly search: URLSearchParams;
 }
 
 export interface TRouteMatch<Params> {
@@ -16,33 +16,31 @@ export interface TRouteMatch<Params> {
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export type TDefaultSearch = {};
 
-export type TRouteData<Params, Search extends v.ObjectEntries> = TSimplify<Params & v.InferObjectOutput<Search>>;
+export type TRouteData<Params, Search extends TDtObjBase = TDefaultSearch> = TSimplify<Params & TDtObjOutput<Search>>;
 
 export type TMaybeRouteMatch<Params> = TRouteMatch<Params> | null;
 
-export interface TRoute<Params, Search extends v.ObjectEntries> {
+export interface TRoute<Params, Search extends TDtObjBase = TDefaultSearch> {
   readonly pathname: TChemin<Params>;
-  readonly searchProps: Search;
-  readonly searchSchema: v.ObjectSchema<Search, undefined>;
+  readonly search: Search;
 
-  readonly serialize: (data: TRouteData<Params, Search>) => TRouteLocation;
+  readonly serialize: (location: TRouteLocation, data: TRouteData<Params, Search>) => TRouteLocation;
   readonly match: (location: TRouteLocation) => TMaybeRouteMatch<TRouteData<Params, Search>>;
   readonly matchExact: (location: TRouteLocation) => TRouteData<Params, Search> | null;
 }
 
 export type TInferRouteData<R extends TRoute<any, any>> = NonNullable<ReturnType<R["matchExact"]>>;
 
-export function route<Params, Search extends v.ObjectEntries = TDefaultSearch>(
+export function route<Params, Search extends TDtObjBase = TDefaultSearch>(
   pathname: TChemin<Params>,
-  searchProps: Search = {} as any,
+  search: Search = {} as any,
 ): TRoute<Params, Search> {
   const route: TRoute<Params, Search> = {
     pathname,
-    searchProps,
-    searchSchema: v.object(searchProps),
+    search,
     match: (location) => match(route, location),
     matchExact: (location) => matchExact(route, location),
-    serialize: (data) => serialize(route, data),
+    serialize: (location, data) => serialize(route, location, data),
   };
 
   return route;
@@ -50,38 +48,36 @@ export function route<Params, Search extends v.ObjectEntries = TDefaultSearch>(
 
 export function extendsRoute<
   BaseParams,
-  BaseSearch extends v.ObjectEntries,
+  BaseSearch extends TDtObjBase,
   Params,
-  Search extends v.ObjectEntries = TDefaultSearch,
+  Search extends TDtObjBase = TDefaultSearch,
 >(
   base: TRoute<BaseParams, BaseSearch>,
   pathname: TChemin<Params>,
   searchProps: Search = {} as any,
 ): TRoute<BaseParams & Params, BaseSearch & Search> {
   return route(chemin(base.pathname, pathname) as TChemin<BaseParams & Params>, {
-    ...base.searchProps,
+    ...base.search,
     ...searchProps,
   });
 }
 
-export function serialize<Params, Search extends v.ObjectEntries = TDefaultSearch>(
+export function serialize<Params, Search extends TDtObjBase = TDefaultSearch>(
   route: TRoute<Params, Search>,
+  location: TRouteLocation,
   data: TRouteData<Params, Search>,
 ): TRouteLocation {
   const pathname = route.pathname.serialize(data as any);
-  const search: Record<string, string> = {} as any;
-  for (const key in route.searchProps) {
-    if (key in data && data[key]) {
-      search[key] = String(data[key]);
-    }
-  }
+  const search = safeSearchParams(location.search);
+  const updated = search.setObj(route.search, data as any);
+
   return {
     pathname: splitPathname(pathname),
-    search,
+    search: new URLSearchParams(updated.toString()),
   };
 }
 
-export function match<Params, Search extends v.ObjectEntries>(
+export function match<Params, Search extends TDtObjBase>(
   route: TRoute<Params, Search>,
   location: TRouteLocation,
 ): TMaybeRouteMatch<TRouteData<Params, Search>> {
@@ -90,27 +86,24 @@ export function match<Params, Search extends v.ObjectEntries>(
   if (!pathnameMatch) {
     return null;
   }
-  // Then make sure the search schema passes
-  const search = v.safeParse(route.searchSchema, location.search);
-  if (!search.success) {
+  const search = safeSearchParams(location.search);
+  const searchOutput = search.getObjStrict(route.search);
+  if (searchOutput === null) {
+    // If a type does not match or a required field is missing, the route does not match
     return null;
-  }
-  const searchRest = { ...location.search };
-  for (const key of Object.keys(search.output)) {
-    delete searchRest[key];
   }
 
   return {
     exact: pathnameMatch.exact,
-    params: { ...pathnameMatch.params, ...search.output },
+    params: { ...pathnameMatch.params, ...searchOutput },
     rest: {
       pathname: pathnameMatch.rest,
-      search: searchRest,
+      search: location.search,
     },
   };
 }
 
-export function matchExact<Params, Search extends v.ObjectEntries>(
+export function matchExact<Params, Search extends TDtObjBase>(
   route: TRoute<Params, Search>,
   location: TRouteLocation,
 ): TRouteData<Params, Search> | null {
@@ -124,7 +117,7 @@ export function matchExact<Params, Search extends v.ObjectEntries>(
 export function parseLocation(pathname: string, search?: string): TRouteLocation {
   return {
     pathname: splitPathname(pathname),
-    search: search ? Object.fromEntries(new URLSearchParams(search)) : {},
+    search: new URLSearchParams(search),
   };
 }
 

@@ -9,7 +9,7 @@ export interface TInternalState<Panel> {
 
 export type TMatchLocation<Panel, PanelContext> = (location: Path, context: PanelContext) => readonly Panel[];
 
-export type TToLocation<Panel, PanelContext> = (panels: readonly Panel[], context: PanelContext) => To;
+export type TToLocation<Panel, PanelContext> = (panels: readonly Panel[], location: Path, context: PanelContext) => To;
 
 export interface TLoaderResult {
   loaded: boolean;
