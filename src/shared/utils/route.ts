@@ -1,5 +1,5 @@
 import { chemin, splitPathname, TChemin, TSimplify } from "@dldc/chemin";
-import { safeSearchParams, TDtObjBase, TDtObjOutput } from "@dldc/safe-search-params";
+import { safeSearchParams, TDtObjBase, TDtObjOutputStrict } from "@dldc/safe-search-params";
 import { Simplify } from "type-fest";
 
 export interface TRouteLocation {
@@ -16,7 +16,9 @@ export interface TRouteMatch<Params> {
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export type TDefaultSearch = {};
 
-export type TRouteData<Params, Search extends TDtObjBase = TDefaultSearch> = TSimplify<Params & TDtObjOutput<Search>>;
+export type TRouteData<Params, Search extends TDtObjBase = TDefaultSearch> = TSimplify<
+  Params & TDtObjOutputStrict<Search>
+>;
 
 export type TMaybeRouteMatch<Params> = TRouteMatch<Params> | null;
 
