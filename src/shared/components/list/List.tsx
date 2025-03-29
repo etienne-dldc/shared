@@ -35,7 +35,7 @@ export function List(inProps: ListProps) {
   } = DesignContext.useProps(inProps);
 
   const dirClass = direction === "horizontal" ? "flex-row" : "flex-col";
-  const groupClass = cn(tw`flex p-2 bg-neutral-800`, dirClass, className);
+  const groupClass = cn(tw`flex`, dirClass, className);
 
   return (
     <DesignContext.Provider disabled={disabled} size={size}>
