@@ -1,5 +1,11 @@
 import { cn, pick, tw } from "../../styles/utils";
-import { DesignContextProps as TDesignContextProps, TDesignPriority, TDesignRounded, TDesignSize, TDesignVariant } from "../core/DesignContext";
+import {
+  DesignContextProps as TDesignContextProps,
+  TDesignPriority,
+  TDesignRounded,
+  TDesignSize,
+  TDesignVariant,
+} from "../core/DesignContext";
 
 export function buttonSizeClass(size: TDesignSize) {
   return pick(size, {
@@ -110,7 +116,9 @@ export const BUTTON_ICON_SIZE: Record<TDesignSize, number> = {
   lg: 26,
 };
 
-export function mapPrimaryFilledProps<T extends { primary?: boolean; filled?: boolean }>(props: T): Omit<T, "primary" | "filled"> & Partial<TDesignContextProps> {
+export function mapPrimaryFilledProps<T extends { primary?: boolean; filled?: boolean }>(
+  props: T,
+): Omit<T, "primary" | "filled"> & Partial<TDesignContextProps> {
   const { primary, filled, ...rest } = props;
   return {
     priority: mapBool(primary, "primary", "base"),
