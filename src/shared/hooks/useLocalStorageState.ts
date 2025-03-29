@@ -14,7 +14,12 @@ export function useLocalStorageState<T>(
       return defaultValueFn(null);
     }
     const storedValueRaw = localStorage.getItem(key);
-    const storedValue = storedValueRaw ? JSON.parse(storedValueRaw) : null;
+    let storedValue: unknown | null = null;
+    try {
+      storedValue = storedValueRaw ? JSON.parse(storedValueRaw) : null;
+    } catch {
+      // Ignore JSON parse error
+    }
     const restored = defaultValueFn(storedValue);
     const restoredRaw = JSON.stringify(restored);
     if (storedValueRaw !== restoredRaw) {

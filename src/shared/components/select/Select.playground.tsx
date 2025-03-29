@@ -31,7 +31,9 @@ export default function ButtonPlayground() {
         defaultSelected={{
           disabled: "no",
         }}
-        initialAxis={{ column: [], row: [] }}
+        presets={{
+          base: { row: [], column: [], selected: {} },
+        }}
         render={({ disabled }) => (
           <Select items={selectItems} label="Select a fruit" defaultValue="apple" disabled={disabled} />
         )}

@@ -26,7 +26,9 @@ export default function FormPlayground() {
         checked: "auto",
         size: "md",
       }}
-      initialAxis={{ column: [], row: [] }}
+      presets={{
+        base: { row: [], column: [], selected: {} },
+      }}
       render={({ checked, size }) => (
         <div className={cn("w-full h-full")}>
           <CheckBox

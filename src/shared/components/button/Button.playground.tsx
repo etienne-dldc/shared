@@ -118,7 +118,16 @@ export default function ButtonPlayground() {
         fullWidth: "no",
         state: "base",
       }}
-      initialAxis={{ column: [], row: [] }}
+      presets={{
+        base: { column: [], row: [], selected: {} },
+        variants: { column: ["state"], row: ["filled", "primary"], selected: {} },
+        "size & color": { column: ["size"], row: ["color"], selected: { primary: "primary", filled: "filled" } },
+        content: {
+          column: ["title"],
+          row: ["details", "icon", "endIcon"],
+          selected: { primary: "primary", filled: "filled" },
+        },
+      }}
       render={({ fullWidth, background, state, ...props }) => (
         <div className={cn("w-full h-full", background)}>
           <Button {...props} className={cn(fullWidth ? "w-full" : "")} __forceState={state} />

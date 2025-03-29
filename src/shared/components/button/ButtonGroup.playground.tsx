@@ -99,7 +99,9 @@ export default function ButtonPlayground() {
         innerDividers: "yes",
         outerDividers: "none",
       }}
-      initialAxis={{ column: [], row: [] }}
+      presets={{
+        base: { column: [], row: [], selected: {} },
+      }}
       render={({ background, margin, ...props }) => (
         <div className={cn("w-full h-full", background, margin)}>
           <ButtonGroup {...props}>

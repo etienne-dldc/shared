@@ -11,13 +11,11 @@ const LEVEL_VARIANTS = {
 export default function PaperPlayground() {
   return (
     <Variants
-      initialAxis={{ row: [], column: [] }}
-      dimensions={{
-        level: LEVEL_VARIANTS,
+      presets={{
+        base: { row: [], column: [], selected: {} },
       }}
-      defaultSelected={{
-        level: "card",
-      }}
+      dimensions={{ level: LEVEL_VARIANTS }}
+      defaultSelected={{ level: "card" }}
       render={({ level }) => {
         return (
           <Paper level={level} className="p-4">
