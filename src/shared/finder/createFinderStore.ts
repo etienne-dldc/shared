@@ -265,6 +265,18 @@ export function createFinderStore<Panel, PanelContext>() {
       [$panelStates, panelIndex],
     );
 
+    const $nextPanels = useMemo(
+      () =>
+        atom((get) => {
+          const panels = get($panelStates);
+          if (panelIndex + 1 >= panels.length) {
+            return [];
+          }
+          return panels.slice(panelIndex + 1);
+        }),
+      [$panelStates, panelIndex],
+    );
+
     const updateState = useCallback(
       (update: React.SetStateAction<Panel>) => {
         return updatePanelByIndex(panelIndex, update);
@@ -279,6 +291,7 @@ export function createFinderStore<Panel, PanelContext>() {
       $panel,
       $panelKey,
       $nextPanel,
+      $nextPanels,
       updateState,
     });
   });
