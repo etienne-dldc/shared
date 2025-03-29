@@ -22,7 +22,7 @@ export function capitalize(str: string) {
 
 export function formatAge(date: Temporal.PlainDate) {
   const today = Temporal.Now.plainDateISO();
-  const diff = today.since(date.withCalendar(today.getCalendar()), {
+  const diff = today.since(date.withCalendar(today.calendarId), {
     largestUnit: "years",
   });
   const age = diff.years;
