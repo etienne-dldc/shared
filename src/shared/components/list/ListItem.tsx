@@ -1,7 +1,8 @@
 import * as Ariakit from "@ariakit/react";
 import { IconContext } from "@phosphor-icons/react";
-import { ComponentPropsWithRef, useMemo } from "react";
+import { ComponentPropsWithRef, useEffect, useId, useMemo } from "react";
 import { Merge } from "type-fest";
+import { useLatestRef } from "../../hooks/useLatestRef";
 import { cn, pick } from "../../styles/utils";
 import { ButtonContent } from "../button/ButtonContent";
 import { DesignContext, TDesignSize } from "../core/DesignContext";
@@ -65,25 +66,32 @@ export function ListItem(inProps: ListItemProps) {
   const iconProps = useMemo(() => ({ size: pick(size, LIST_ITEM_ICON_SIZE) }), [size]);
 
   const compositeStore = Ariakit.useCompositeContext();
+  const id = useId();
   const renderResolved = compositeStore ? (
-    <Ariakit.CompositeHover render={<Ariakit.CompositeItem render={render} />} />
+    <Ariakit.CompositeHover
+      render={<Ariakit.CompositeItem render={render} disabled={disabled} id={id} />}
+      focusOnHover
+    />
   ) : (
     render
   );
+
+  const selectedRef = useLatestRef(selected);
+  const disabledRef = useLatestRef(disabled);
+  useEffect(() => {
+    if (!compositeStore) {
+      return;
+    }
+    if (selectedRef.current !== "none" && !disabledRef.current) {
+      compositeStore.setActiveId(id);
+    }
+  }, [compositeStore, disabledRef, id, selectedRef]);
 
   return (
     <DesignContext.Provider size={size} disabled={disabled}>
       <IconContext.Provider value={iconProps}>
         <DynamicColorProvider color={color}>
-          <Ariakit.Role
-            render={renderResolved}
-            ref={ref}
-            className={cn(mainClass, className)}
-            // disabled={disabled}
-            // type={type}
-            // {...(forceFocus ? { "data-focus-visible": true } : {})}
-            {...htmlProps}
-          >
+          <Ariakit.Role render={renderResolved} ref={ref} className={cn(mainClass, className)} {...htmlProps}>
             {childrenResolved}
           </Ariakit.Role>
         </DynamicColorProvider>
