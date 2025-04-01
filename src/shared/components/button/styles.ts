@@ -72,7 +72,7 @@ export function buttonClassName({
 
       tw`data-focus-visible:bg-dynamic-600`,
       tw`data-focus-visible:ring-dynamic-600 data-focus-visible:ring-2`,
-      tw`data-focus-visible:inset-ring-dynamic-300 data-focus-visible:inset-ring-1`,
+      tw`data-focus-visible:inset-ring-white data-focus-visible:inset-ring-1`,
 
       tw`data-focus-visible:active:bg-dynamic-700`,
 
