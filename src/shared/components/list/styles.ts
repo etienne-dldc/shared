@@ -26,8 +26,8 @@ export interface ListItemStylesParams {
 
 export function listItemClassName({ selected, size }: ListItemStylesParams): string {
   const selectedStateClass = pick(selected, {
-    none: cn(tw`data-active-item:bg-white/10 data-active-item:text-dynamic-200`),
-    secondary: cn(tw`bg-white/15`, tw`data-active-item:bg-white/10 text-dynamic-200`),
+    none: cn(tw`data-active-item:bg-white/5 data-active-item:text-dynamic-200`),
+    secondary: cn(tw`bg-white/10`, tw`data-active-item:bg-white/5 text-dynamic-200`),
     primary: cn(tw`bg-dynamic-500`, tw`data-active-item:bg-dynamic-600 text-white`),
   });
 

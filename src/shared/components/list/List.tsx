@@ -35,7 +35,7 @@ export function List(inProps: ListProps) {
   } = DesignContext.useProps(inProps);
 
   const dirClass = direction === "horizontal" ? "flex-row" : "flex-col";
-  const groupClass = cn(tw`flex`, dirClass, className);
+  const groupClass = cn(tw`flex gap-1`, dirClass, className);
 
   return (
     <DesignContext.Provider disabled={disabled} size={size}>

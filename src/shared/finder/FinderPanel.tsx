@@ -1,4 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
+import * as Ariakit from "@ariakit/react";
 import { ClickScrollPlugin, OverlayScrollbars } from "overlayscrollbars";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import { createContext, ForwardedRef, forwardRef, useContext, useEffect, useMemo, useRef } from "react";
@@ -8,7 +9,7 @@ import "overlayscrollbars/overlayscrollbars.css";
 
 import { useMergeRefs } from "../hooks/useMergeRefs";
 import { TUseResizeWidth, useResize } from "../hooks/useResize";
-import { cn } from "../styles/utils";
+import { cn, tw } from "../styles/utils";
 import { onDoubleTap } from "../utils/onDoubleTap";
 
 OverlayScrollbars.plugin(ClickScrollPlugin);
@@ -72,15 +73,21 @@ export const FinderPanel = forwardRef(function FinderPanel(
   const onHandleClick = useMemo(() => onDoubleTap(resizer.reset), [resizer.reset]);
 
   return (
-    <div
+    <Ariakit.CompositeItem
       ref={mergedRef}
-      className={cn("shrink-0 relative max-w-[var(--finder-panel-max-width)]", className)}
+      className={cn(
+        "shrink-0 relative max-w-[var(--finder-panel-max-width)]",
+        tw`outline-none`,
+        tw`after:content-[''] after:absolute after:left-0 after:top-0 after:bottom-0 after:right-[var(--gutter-width)] after:pointer-events-none after:z-[9999]`,
+        tw`data-focus-visible:after:border-2 data-focus-visible:after:border-neutral-700`,
+        className,
+      )}
       style={{
         width: resizer.dynamicSize,
         ["--gutter-width" as string]: `${GUTTER_WIDTH}px`,
         ["--mini-handle-height" as string]: `${MINI_HANDLE_HEIGHT}px`,
       }}
-      {...rest}
+      render={<section {...rest} />}
     >
       <PanelRefContext.Provider value={panelRef}>
         <PanelSizeContext.Provider value={resizer.size}>
@@ -114,7 +121,7 @@ export const FinderPanel = forwardRef(function FinderPanel(
         style={{ width: GUTTER_WIDTH, height: MINI_HANDLE_HEIGHT }}
         onClick={onHandleClick}
       />
-    </div>
+    </Ariakit.CompositeItem>
   );
 });
 
