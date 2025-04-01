@@ -121,6 +121,11 @@ export default function ButtonPlayground() {
       presets={{
         base: { column: [], row: [], selected: {} },
         variants: { column: ["state"], row: ["filled", "primary"], selected: {} },
+        focused: {
+          column: ["color"],
+          row: ["size", "filled", "primary"],
+          selected: { state: "focus" },
+        },
         "size & color": { column: ["size"], row: ["color"], selected: { primary: "primary", filled: "filled" } },
         content: {
           column: ["title"],

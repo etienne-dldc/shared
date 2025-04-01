@@ -55,45 +55,70 @@ export function buttonClassName({
     transparent_primary: cn(tw`bg-transparent text-dynamic-300`),
   });
 
+  /**
+   * Focus style is:
+   * - hover style + ring of hover bg color + inset ring for contrast
+   */
+
   const variantClassInteractive = pick(variant_priority, {
     filled_base: cn(
-      tw`hover:bg-dynamic-600 hover:text-white`,
-      forceHover && tw`bg-dynamic-600 text-white`,
-      tw`active:bg-dynamic-700 active:text-white`,
-      forceActive && tw`bg-dynamic-700 text-white`,
-      tw`data-focus-visible:ring-dynamic-400 data-focus-visible:ring-2`,
+      tw`text-white`,
+
+      tw`hover:bg-dynamic-600`,
+      forceHover && tw`bg-dynamic-600`,
+
+      tw`active:bg-dynamic-700`,
+      forceActive && tw`bg-dynamic-700`,
+
+      tw`data-focus-visible:bg-dynamic-600`,
+      tw`data-focus-visible:ring-dynamic-600 data-focus-visible:ring-2`,
+      tw`data-focus-visible:inset-ring-dynamic-300 data-focus-visible:inset-ring-1`,
+
+      tw`data-focus-visible:active:bg-dynamic-700`,
+
       tw`aria-disabled:bg-white/5 aria-disabled:text-dynamic-200/50 aria-disabled:ring-dynamic-500/50`,
     ),
     filled_primary: cn(
       tw`hover:bg-dynamic-500`,
       forceHover && tw`bg-dynamic-500`,
+
       tw`active:bg-dynamic-700`,
       forceActive && tw`bg-dynamic-700`,
-      tw`data-focus-visible:ring-dynamic-100 data-focus-visible:ring-2`,
+
+      tw`data-focus-visible:bg-dynamic-500`,
+      tw`data-focus-visible:ring-dynamic-500 data-focus-visible:ring-2`,
+      tw`data-focus-visible:inset-ring-dynamic-200 data-focus-visible:inset-ring-1`,
+
+      tw`data-focus-visible:active:bg-dynamic-700`,
+
       tw`aria-disabled:bg-dynamic-700 aria-disabled:text-white/50 aria-disabled:ring-dynamic-500/30`,
     ),
     transparent_base: cn(
       tw`hover:bg-white/5 hover:text-dynamic-300`,
       forceHover && tw`bg-white/5 text-dynamic-300`,
+
       tw`active:bg-dynamic-700 active:text-white`,
       forceActive && tw`bg-dynamic-700 text-white`,
-      tw`data-focus-visible:ring-dynamic-400 data-focus-visible:ring-2`,
-      // Focus style is same as hover
+
       tw`data-focus-visible:bg-white/5 data-focus-visible:text-dynamic-300`,
-      // We need to also apply active style
+      tw`data-focus-visible:inset-ring-dynamic-300 data-focus-visible:inset-ring-1`,
+
       tw`data-focus-visible:active:bg-dynamic-700 data-focus-visible:active:text-white`,
+
       tw`aria-disabled:text-dynamic-200/40 aria-disabled:ring-dynamic-700/50`,
     ),
     transparent_primary: cn(
       tw`hover:bg-white/5 hover:text-dynamic-300`,
       forceHover && tw`bg-white/5 text-dynamic-300`,
+
       tw`active:bg-dynamic-700 active:text-white`,
       forceActive && tw`bg-dynamic-700 text-white`,
-      tw`data-focus-visible:ring-dynamic-400 data-focus-visible:ring-2`,
-      // Focus style is same as hover
+
       tw`data-focus-visible:bg-white/5 data-focus-visible:text-dynamic-300`,
-      // We need to also apply active style
+      tw`data-focus-visible:inset-ring-dynamic-300 data-focus-visible:inset-ring-1`,
+
       tw`data-focus-visible:active:bg-dynamic-700 data-focus-visible:active:text-white`,
+
       tw`aria-disabled:text-dynamic-200/40 aria-disabled:ring-dynamic-700/50`,
     ),
   });
