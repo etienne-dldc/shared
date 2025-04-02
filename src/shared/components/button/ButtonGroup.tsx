@@ -4,7 +4,7 @@ import { Merge } from "type-fest";
 import { cn, pick, tw } from "../../styles/utils";
 import { DesignContext, TDesignRounded, TDesignSize } from "../core/DesignContext";
 import { DynamicColorProvider, TDynamicColor } from "../core/DynamicColorProvider";
-import { mapPrimaryFilledProps } from "./styles";
+import { mapBooleanProps } from "./styles";
 
 export type ButtonGroupProps = Merge<
   ComponentPropsWithoutRef<"div">,
@@ -40,7 +40,7 @@ export const ButtonGroup = forwardRef(function ButtonGroup(
     outerDividers = "none",
     innerDividers = true,
     ...divProps
-  } = DesignContext.useProps(mapPrimaryFilledProps(inProps));
+  } = DesignContext.useProps(mapBooleanProps(inProps));
 
   const childrenFiltered = Children.toArray(children).filter((c) => c);
   const childrenLength = Children.count(childrenFiltered);

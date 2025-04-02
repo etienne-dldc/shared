@@ -1,6 +1,7 @@
 import { cn, pick, tw } from "../../styles/utils";
 import {
   DesignContextProps as TDesignContextProps,
+  TDesignHover,
   TDesignPriority,
   TDesignRounded,
   TDesignSize,
@@ -32,6 +33,7 @@ export interface ButtonStylesParams {
   priority: TDesignPriority;
   variant: TDesignVariant;
   rounded: TDesignRounded;
+  hover: TDesignHover;
   interactive: boolean;
   forceHover: boolean;
   forceActive: boolean;
@@ -45,6 +47,7 @@ export function buttonClassName({
   forceActive,
   variant,
   priority,
+  hover,
 }: ButtonStylesParams) {
   const variant_priority = `${variant}_${priority}` as const;
 
@@ -55,71 +58,45 @@ export function buttonClassName({
     transparent_primary: cn(tw`bg-transparent text-dynamic-300`),
   });
 
-  /**
-   * Focus style is:
-   * - hover style + ring of hover bg color + inset ring for contrast
-   */
+  const activeClass = cn(tw`active:bg-dynamic-700 active:text-white`, forceActive && tw`bg-dynamic-700 text-white`);
 
   const variantClassInteractive = pick(variant_priority, {
     filled_base: cn(
       tw`text-white`,
 
-      tw`hover:bg-dynamic-600`,
-      forceHover && tw`bg-dynamic-600`,
-
-      tw`active:bg-dynamic-700`,
-      forceActive && tw`bg-dynamic-700`,
-
-      tw`data-focus-visible:bg-dynamic-600`,
-      tw`data-focus-visible:ring-dynamic-600 data-focus-visible:ring-2`,
-      tw`data-focus-visible:inset-ring-white data-focus-visible:inset-ring-1`,
-
-      tw`data-focus-visible:active:bg-dynamic-700`,
-
       tw`aria-disabled:bg-white/5 aria-disabled:text-dynamic-200/50 aria-disabled:ring-dynamic-500/50`,
     ),
-    filled_primary: cn(
-      tw`hover:bg-dynamic-500`,
-      forceHover && tw`bg-dynamic-500`,
+    filled_primary: cn(tw`aria-disabled:bg-dynamic-700 aria-disabled:text-white/50 aria-disabled:ring-dynamic-500/30`),
+    transparent_base: cn(tw`aria-disabled:text-dynamic-200/40 aria-disabled:ring-dynamic-700/50`),
+    transparent_primary: cn(tw`aria-disabled:text-dynamic-200/40 aria-disabled:ring-dynamic-700/50`),
+  });
 
-      tw`active:bg-dynamic-700`,
-      forceActive && tw`bg-dynamic-700`,
+  /**
+   * Focus style is:
+   * - hover style + ring of hover bg color + inset ring for contrast
+   */
 
-      tw`data-focus-visible:bg-dynamic-500`,
+  const defaultHover: TDesignHover = pick(variant, { filled: "primary", transparent: "base" });
+
+  const hoverClassInteractive = pick(hover ?? defaultHover, {
+    base: cn(
+      tw`hover:bg-white/5 hover:text-dynamic-300`,
+      forceHover && tw`bg-white/5 text-dynamic-300`,
+
+      tw`data-focus-visible:bg-white/5 data-focus-visible:text-dynamic-300`,
+      tw`data-focus-visible:inset-ring-dynamic-300 data-focus-visible:inset-ring-1`,
+
+      tw`data-focus-visible:active:bg-dynamic-700 data-focus-visible:active:text-white`,
+    ),
+    primary: cn(
+      tw`hover:bg-dynamic-500 hover:text-white`,
+      forceHover && tw`bg-dynamic-500 text-white`,
+
+      tw`data-focus-visible:bg-dynamic-500 data-focus-visible:text-white`,
       tw`data-focus-visible:ring-dynamic-500 data-focus-visible:ring-2`,
       tw`data-focus-visible:inset-ring-dynamic-200 data-focus-visible:inset-ring-1`,
 
       tw`data-focus-visible:active:bg-dynamic-700`,
-
-      tw`aria-disabled:bg-dynamic-700 aria-disabled:text-white/50 aria-disabled:ring-dynamic-500/30`,
-    ),
-    transparent_base: cn(
-      tw`hover:bg-white/5 hover:text-dynamic-300`,
-      forceHover && tw`bg-white/5 text-dynamic-300`,
-
-      tw`active:bg-dynamic-700 active:text-white`,
-      forceActive && tw`bg-dynamic-700 text-white`,
-
-      tw`data-focus-visible:bg-white/5 data-focus-visible:text-dynamic-300`,
-      tw`data-focus-visible:inset-ring-dynamic-300 data-focus-visible:inset-ring-1`,
-
-      tw`data-focus-visible:active:bg-dynamic-700 data-focus-visible:active:text-white`,
-
-      tw`aria-disabled:text-dynamic-200/40 aria-disabled:ring-dynamic-700/50`,
-    ),
-    transparent_primary: cn(
-      tw`hover:bg-white/5 hover:text-dynamic-300`,
-      forceHover && tw`bg-white/5 text-dynamic-300`,
-
-      tw`active:bg-dynamic-700 active:text-white`,
-      forceActive && tw`bg-dynamic-700 text-white`,
-
-      tw`data-focus-visible:bg-white/5 data-focus-visible:text-dynamic-300`,
-      tw`data-focus-visible:inset-ring-dynamic-300 data-focus-visible:inset-ring-1`,
-
-      tw`data-focus-visible:active:bg-dynamic-700 data-focus-visible:active:text-white`,
-
-      tw`aria-disabled:text-dynamic-200/40 aria-disabled:ring-dynamic-700/50`,
     ),
   });
 
@@ -130,6 +107,8 @@ export function buttonClassName({
     buttonSizeClass(size),
     variantClassBase,
     interactive && variantClassInteractive,
+    interactive && hoverClassInteractive,
+    interactive && activeClass,
     tw`disabled:cursor-not-allowed data-focus-visible:z-10`,
   );
 }
@@ -141,13 +120,14 @@ export const BUTTON_ICON_SIZE: Record<TDesignSize, number> = {
   lg: 26,
 };
 
-export function mapPrimaryFilledProps<T extends { primary?: boolean; filled?: boolean }>(
+export function mapBooleanProps<T extends { primary?: boolean; filled?: boolean; hoverFilled?: boolean }>(
   props: T,
-): Omit<T, "primary" | "filled"> & Partial<TDesignContextProps> {
-  const { primary, filled, ...rest } = props;
+): Omit<T, "primary" | "filled" | "hoverFilled"> & Partial<TDesignContextProps> {
+  const { primary, filled, hoverFilled = primary, ...rest } = props;
   return {
     priority: mapBool(primary, "primary", "base"),
     variant: mapBool(filled, "filled", "transparent"),
+    hover: mapBool(hoverFilled, "primary", "base"),
     ...rest,
   };
 }

@@ -44,9 +44,11 @@ const ICON_VARIANTS = {
 
 const SIZE_VARIANTS = { xs: "xs", sm: "sm", md: "md", lg: "lg" } as const;
 
-const PRIMARY_VARIANTS = { default: undefined, base: false, primary: true } as const;
+const PRIMARY_VARIANTS = { default: undefined, primary: true, unprimary: false } as const;
 
-const FILLED_VARIANTS = { default: undefined, filled: true, base: false } as const;
+const FILLED_VARIANTS = { default: undefined, filled: true, unfilled: false } as const;
+
+const HOVER_PRIMARY_VARIANTS = { default: undefined, hoverPrimary: true, hoverUnprimary: false } as const;
 
 const ROUND_VARIANTS = {
   all: "all",
@@ -91,6 +93,7 @@ export default function ButtonPlayground() {
         size: SIZE_VARIANTS,
         primary: PRIMARY_VARIANTS,
         filled: FILLED_VARIANTS,
+        hoverFilled: HOVER_PRIMARY_VARIANTS,
         rounded: ROUND_VARIANTS,
         disabled: DISABLED_VARIANTS,
         title: TEXT_VARIANTS,
@@ -111,6 +114,7 @@ export default function ButtonPlayground() {
         size: "md",
         primary: "default",
         filled: "default",
+        hoverFilled: "default",
         loading: "no",
         icon: "user",
         endIcon: "none",
@@ -120,7 +124,7 @@ export default function ButtonPlayground() {
       }}
       presets={{
         base: { column: [], row: [], selected: {} },
-        variants: { column: ["state"], row: ["filled", "primary"], selected: {} },
+        variants: { column: ["state"], row: ["filled", "primary", "hoverFilled"], selected: {} },
         focused: {
           column: ["color"],
           row: ["size", "filled", "primary"],

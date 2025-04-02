@@ -4,7 +4,7 @@ import { cn, TInteractiveState } from "../../styles/utils";
 import { DesignContext, TDesignRounded, TDesignSize } from "../core/DesignContext";
 import { DynamicColorProvider, TDynamicColor } from "../core/DynamicColorProvider";
 import { ButtonContent } from "./ButtonContent";
-import { buttonClassName, mapPrimaryFilledProps } from "./styles";
+import { buttonClassName, mapBooleanProps } from "./styles";
 
 export type ButtonLinkProps = Merge<
   ComponentPropsWithoutRef<"a">,
@@ -46,7 +46,7 @@ export const ButtonLink = forwardRef((inProps: ButtonLinkProps, ref: React.Ref<H
 
     className,
     ...divProps
-  } = DesignContext.useProps(mapPrimaryFilledProps(inProps));
+  } = DesignContext.useProps(mapBooleanProps(inProps));
 
   const forceHover = __forceState === "hover";
   const forceActive = __forceState === "active";

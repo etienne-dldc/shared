@@ -6,7 +6,7 @@ import { cn, pick, TInteractiveState } from "../../styles/utils";
 import { DesignContext, TDesignRounded, TDesignSize } from "../core/DesignContext";
 import { DynamicColorProvider, TDynamicColor } from "../core/DynamicColorProvider";
 import { ButtonContent } from "./ButtonContent";
-import { BUTTON_ICON_SIZE, buttonClassName, mapPrimaryFilledProps } from "./styles";
+import { BUTTON_ICON_SIZE, buttonClassName, mapBooleanProps } from "./styles";
 
 export type ButtonProps = Merge<
   ComponentPropsWithoutRef<"button">,
@@ -20,6 +20,7 @@ export type ButtonProps = Merge<
 
     filled?: boolean;
     primary?: boolean;
+    hoverFilled?: boolean;
 
     // For content
     icon?: React.ReactNode;
@@ -41,6 +42,7 @@ export const Button = forwardRef((inProps: ButtonProps, ref: React.Ref<HTMLButto
     disabled,
     variant,
     priority,
+    hover,
     __forceState,
 
     title,
@@ -53,7 +55,7 @@ export const Button = forwardRef((inProps: ButtonProps, ref: React.Ref<HTMLButto
     className,
     type = "button",
     ...buttonProps
-  } = DesignContext.useProps(mapPrimaryFilledProps(inProps));
+  } = DesignContext.useProps(mapBooleanProps(inProps));
 
   const childrenResolved = children ?? <ButtonContent {...{ title, icon, endIcon, details, loading }} />;
 
@@ -62,8 +64,8 @@ export const Button = forwardRef((inProps: ButtonProps, ref: React.Ref<HTMLButto
   const forceFocus = __forceState === "focus";
 
   const mainClass = useMemo(
-    () => buttonClassName({ size, variant, priority, rounded, interactive: true, forceActive, forceHover }),
-    [size, variant, priority, rounded, forceActive, forceHover],
+    () => buttonClassName({ size, variant, hover, priority, rounded, interactive: true, forceActive, forceHover }),
+    [size, variant, hover, priority, rounded, forceActive, forceHover],
   );
 
   const iconProps = useMemo(() => ({ size: pick(size, BUTTON_ICON_SIZE) }), [size]);
