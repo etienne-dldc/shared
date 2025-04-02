@@ -16,9 +16,9 @@ export const CheckBox = forwardRef<HTMLInputElement, CheckBoxProps>(function Che
   ref,
 ) {
   const [focusVisible, setFocusVisible] = useState(false);
-  const { size, ...rest } = DesignContext.useProps(props);
+  const [design, rest] = DesignContext.useProps(props);
 
-  const iconSize = BUTTON_ICON_SIZE[size];
+  const iconSize = BUTTON_ICON_SIZE[design.size];
 
   return (
     <label data-checked={checked} data-focus-visible={focusVisible || undefined} className={className}>

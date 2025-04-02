@@ -1,9 +1,12 @@
 import * as Ariakit from "@ariakit/react";
 import { IconContext } from "@phosphor-icons/react";
 import { forwardRef, useMemo } from "react";
-import { cn, pick, tw } from "../../styles/utils";
+import { cn, tw } from "../../styles/utils";
+import { pick } from "../../utils/pick";
+import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { ButtonContent } from "../button/ButtonContent";
 import { DesignContext, TDesignSize } from "../core/DesignContext";
+import { DisabledContext } from "../core/DisabledContext";
 import { DynamicColorProvider, TDynamicColor } from "../core/DynamicColorProvider";
 
 interface MenuItemProps extends Omit<Ariakit.MenuItemProps, "title" | "color"> {
@@ -19,10 +22,13 @@ interface MenuItemProps extends Omit<Ariakit.MenuItemProps, "title" | "color"> {
 }
 
 export const MenuItem = forwardRef<HTMLDivElement, MenuItemProps>(function MenuItem(inProps, ref) {
+  const [{ design, disabled }, props] = pipePropsSplitters(inProps, {
+    design: DesignContext.usePropsSplitter(),
+    disabled: DisabledContext.usePropsSplitter(),
+  });
+
   const {
     color,
-    size,
-    disabled,
 
     title,
     icon,
@@ -32,17 +38,17 @@ export const MenuItem = forwardRef<HTMLDivElement, MenuItemProps>(function MenuI
     children = <ButtonContent {...{ title, icon, endIcon, details, loading }} />,
 
     className,
-    ...props
-  } = DesignContext.useProps(inProps);
+    ...htmlProps
+  } = props;
 
-  const mainClass = useMemo(() => dropdownItemClassName(size), [size]);
-  const iconProps = useMemo(() => ({ size: pick(size, { xs: 16, sm: 16, md: 20, lg: 26 }) }), [size]);
+  const mainClass = useMemo(() => dropdownItemClassName(design.size), [design.size]);
+  const iconProps = useMemo(() => ({ size: pick(design.size, { xs: 16, sm: 16, md: 20, lg: 26 }) }), [design.size]);
 
   return (
-    <DesignContext.Provider size={size} disabled={disabled}>
+    <DesignContext.Provider value={design}>
       <IconContext.Provider value={iconProps}>
         <DynamicColorProvider color={color}>
-          <Ariakit.MenuItem disabled={disabled} ref={ref} className={cn(mainClass, className)} {...props}>
+          <Ariakit.MenuItem disabled={disabled.disabled} ref={ref} className={cn(mainClass, className)} {...htmlProps}>
             {children}
           </Ariakit.MenuItem>
         </DynamicColorProvider>

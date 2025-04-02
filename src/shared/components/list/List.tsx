@@ -19,26 +19,27 @@ export type ListProps = Merge<
 >;
 
 export function List(inProps: ListProps) {
-  const {
-    color,
-    size,
-    disabled,
+  const [
+    design,
+    {
+      color,
 
-    direction = "vertical",
+      direction = "vertical",
 
-    render,
+      render,
 
-    children,
-    className,
-    ref,
-    ...divProps
-  } = DesignContext.useProps(inProps);
+      children,
+      className,
+      ref,
+      ...divProps
+    },
+  ] = DesignContext.useProps(inProps);
 
   const dirClass = direction === "horizontal" ? "flex-row" : "flex-col";
   const groupClass = cn(tw`flex gap-1`, dirClass, className);
 
   return (
-    <DesignContext.Provider disabled={disabled} size={size}>
+    <DesignContext.Provider value={design}>
       <DynamicColorProvider color={color}>
         <Ariakit.Role ref={ref} className={groupClass} {...divProps} render={render}>
           {children}

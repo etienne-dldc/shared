@@ -1,6 +1,6 @@
 import { IconContext, IconProps } from "@phosphor-icons/react";
 import { Fragment, useContext } from "react";
-import { pick } from "../../styles/utils";
+import { pick } from "../../utils/pick";
 
 export function LoadingIcon(props: IconProps) {
   const iconProps = useContext(IconContext);

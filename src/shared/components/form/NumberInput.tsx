@@ -201,7 +201,7 @@ export const NumberInput = forwardRef(function NumberInput(
         //   setTimeout(() => setPopoverFocused(false));
         // }}
       >
-        <DesignContext.Provider size="sm">
+        <DesignContext.Define size="sm">
           {state.state === "EditedSuggest" ? (
             <Fragment>
               <p className="px-2">
@@ -222,7 +222,7 @@ export const NumberInput = forwardRef(function NumberInput(
               </Ariakit.Tooltip>
             </Fragment>
           )}
-        </DesignContext.Provider>
+        </DesignContext.Define>
       </Ariakit.Popover>
     </Ariakit.PopoverProvider>
   );

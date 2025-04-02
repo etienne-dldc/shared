@@ -1,68 +1,72 @@
 import { ComponentType, Fragment, PropsWithChildren, createContext, useContext, useMemo } from "react";
+import { useMemoRecord } from "../hooks/useMemoRecord";
+import { TPropsSplitter } from "./propsSplitters";
 
 export interface TPropsContext<Props extends Record<string, any>> {
-  Provider: ComponentType<PropsWithChildren<Partial<Props>>>;
-  useProp<K extends keyof Props>(key: K): Props[K];
-  useProps<P>(directProps: P & Partial<Props>): P & Props;
+  defaultProps: Props;
+  Define: ComponentType<PropsWithChildren<Partial<Props>>>;
+  Provider: ComponentType<PropsWithChildren<{ value: Props }>>;
+  useProps<P>(directProps?: P & Partial<Props>): [props: Props, rest: Omit<P, keyof Props>];
+  usePropsSplitter(): TPropsSplitter<Props>;
 }
 
 export function createPropsContext<Props extends Record<string, any>>(
   name: string,
   defaultProps: Props,
+  mergeProps: (parent: Props, child: Partial<Props>) => Props,
 ): TPropsContext<Props> {
-  const contexts = new Map<keyof Props, React.Context<Props[keyof Props]>>();
+  const InternalContext = createContext<Props>(defaultProps);
 
-  const allKeys = Object.keys(defaultProps).sort();
+  const keys = Object.keys(defaultProps) as Array<keyof Props>;
 
-  const Provider: ComponentType<PropsWithChildren<Partial<Props>>> = ({ children, ...props }) => {
-    const overrideProps = Object.keys(props).filter((key) => allKeys.includes(key)) as (keyof Props)[];
-    if (overrideProps.length === 0) {
-      return <Fragment>{children}</Fragment>;
-    }
-    return overrideProps.reduce(
-      (acc, key) => {
-        const context = getContext(key);
-        const value = (props as Props)[key];
-        return <context.Provider value={value}>{acc}</context.Provider>;
-      },
-      <Fragment>{children}</Fragment>,
-    );
+  function pickProps(props: Record<string, any>): Partial<Props> {
+    const pickedProps: Partial<Props> = {};
+    keys.forEach((key) => {
+      if (key in props && (props as any)[key] !== undefined) {
+        pickedProps[key] = (props as any)[key];
+      }
+    });
+    return pickedProps;
+  }
+
+  const Define: ComponentType<PropsWithChildren<Partial<Props>>> = ({ children, ...props }) => {
+    const parentProps = useContext(InternalContext);
+    const pickedProps = useMemoRecord(pickProps(props));
+
+    const mergedProps = useMemo(() => mergeProps(parentProps, pickedProps), [parentProps, pickedProps]);
+
+    return <InternalContext.Provider value={mergedProps}>{children ?? <Fragment />}</InternalContext.Provider>;
   };
-  Provider.displayName = `${name}Props.Provider`;
+  Define.displayName = `${name}Props.Define`;
 
   return {
-    Provider,
-    useProp,
+    defaultProps,
+    Define,
+    Provider: InternalContext.Provider,
     useProps,
+    usePropsSplitter,
   };
 
-  function getContext(key: keyof Props) {
-    if (!contexts.has(key)) {
-      const context = createContext<Props[keyof Props]>(defaultProps[key]);
-      contexts.set(key, context);
-    }
-    return contexts.get(key)!;
-  }
+  function useProps<P extends Partial<Props>>(directProps?: P): [props: Props, rest: Omit<P, keyof Props>] {
+    const parentProps = useContext(InternalContext);
+    const pickedProps = useMemoRecord(pickProps(directProps ?? {}));
+    const mergedProps = useMemo(() => mergeProps(parentProps, pickedProps), [parentProps, pickedProps]);
 
-  function useProp<K extends keyof Props>(key: K): Props[K] {
-    const context = useMemo(() => getContext(key), [key]);
-    return useContext(context) as Props[K];
-  }
-
-  function useProps<P extends Partial<Props>>(directProps: P): P & Props {
-    const contextProps = Object.fromEntries(
-      allKeys.map((key) => {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        const value = useContext(getContext(key));
-        return [key, value];
-      }),
-    );
-    const res = { ...contextProps } as any;
-    for (const key in directProps) {
-      if (directProps[key] !== undefined) {
-        (res as any)[key] = directProps[key];
+    const remainingProps = { ...directProps } as Omit<P, keyof Props>;
+    keys.forEach((key) => {
+      if (key in remainingProps) {
+        delete (remainingProps as any)[key];
       }
-    }
-    return res;
+    });
+
+    return [mergedProps, remainingProps];
+  }
+
+  function usePropsSplitter(): TPropsSplitter<Props> {
+    const parentProps = useContext(InternalContext);
+    return (props) => {
+      const mergedProps = mergeProps(parentProps, pickProps(props));
+      return mergedProps;
+    };
   }
 }

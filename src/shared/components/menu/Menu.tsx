@@ -37,7 +37,7 @@ export const Menu = forwardRef<HTMLDivElement, MenuProps>(function Menu(
         sameWidth={sameWidth}
         backdrop={backdrop ? <Backdrop /> : undefined}
       >
-        <DesignContext.Provider rounded="all">{content}</DesignContext.Provider>
+        <DesignContext.Define rounded="all">{content}</DesignContext.Define>
       </Ariakit.Menu>
     </Ariakit.MenuProvider>
   );

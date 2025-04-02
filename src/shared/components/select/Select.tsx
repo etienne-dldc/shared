@@ -6,7 +6,7 @@ import { Button } from "../button/Button";
 import { ButtonContent } from "../button/ButtonContent";
 import { buttonRoundedClass, buttonSizeClass } from "../button/styles";
 import { Paper } from "../common/Paper";
-import { DesignContext } from "../core/DesignContext";
+import { DesignContext, resolveDesignProps } from "../core/DesignContext";
 import { Label } from "../form/Label";
 
 export interface TSelectItem<Value extends string> {
@@ -127,14 +127,15 @@ interface SelectItemProps extends Ariakit.SelectItemProps {
   item: TSelectItem<string>;
 }
 
-const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(function SelectItem({ item, ...props }, ref) {
-  const size = DesignContext.useProp("size");
+const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(function SelectItem(inProps, ref) {
+  const [design, { item, ...props }] = DesignContext.useProps(inProps);
+  const { size, xSize, ySize } = resolveDesignProps(design);
 
   const className = cn(
     tw`flex flex-row items-center justify-center text-left group overflow-hidden relative`,
     tw`outline-hidden cursor-pointer`,
     buttonRoundedClass("all"),
-    buttonSizeClass(size),
+    buttonSizeClass(size, xSize, ySize),
     tw`disabled:cursor-not-allowed`,
     tw`data-active-item:bg-dynamic-600 data-active-item:text-white`,
     item.hidden && tw`hidden`,

@@ -1,20 +1,28 @@
-import { cn, pick, tw } from "../../styles/utils";
-import {
-  DesignContextProps as TDesignContextProps,
-  TDesignHover,
-  TDesignPriority,
-  TDesignRounded,
-  TDesignSize,
-  TDesignVariant,
-} from "../core/DesignContext";
+import { cn, tw } from "../../styles/utils";
+import { pick, pickBoolStrict } from "../../utils/pick";
+import { TDesignContextProps, TDesignRounded, TDesignSize, resolveDesignProps } from "../core/DesignContext";
 
-export function buttonSizeClass(size: TDesignSize) {
-  return pick(size, {
-    xs: tw`text-sm min-h-7 min-w-7`,
-    sm: tw`text-sm min-h-8 min-w-8`,
-    md: tw`text-base min-h-10 min-w-10`,
-    lg: tw`text-lg min-h-14 min-w-14`,
-  });
+export function buttonSizeClass(size: TDesignSize, xSize: TDesignSize, ySize: TDesignSize) {
+  return cn(
+    pick(size, {
+      xs: tw`text-sm`,
+      sm: tw`text-sm`,
+      md: tw`text-base`,
+      lg: tw`text-lg`,
+    }),
+    pick(xSize, {
+      xs: tw`min-w-7`,
+      sm: tw`min-w-8`,
+      md: tw`min-w-10`,
+      lg: tw`min-w-14`,
+    }),
+    pick(ySize, {
+      xs: tw`min-h-7`,
+      sm: tw`min-h-8`,
+      md: tw`min-h-10`,
+      lg: tw`min-h-14`,
+    }),
+  );
 }
 
 export function buttonRoundedClass(rounded: TDesignRounded) {
@@ -29,29 +37,19 @@ export function buttonRoundedClass(rounded: TDesignRounded) {
 }
 
 export interface ButtonStylesParams {
-  size: TDesignSize;
-  priority: TDesignPriority;
-  variant: TDesignVariant;
-  rounded: TDesignRounded;
-  hover: TDesignHover;
+  design: TDesignContextProps;
   interactive: boolean;
   forceHover: boolean;
   forceActive: boolean;
 }
 
-export function buttonClassName({
-  size,
-  rounded,
-  interactive,
-  forceHover,
-  forceActive,
-  variant,
-  priority,
-  hover,
-}: ButtonStylesParams) {
-  const variant_priority = `${variant}_${priority}` as const;
+export function buttonClassName({ design, interactive, forceHover, forceActive }: ButtonStylesParams) {
+  const { filled, hoverFilled, primary, rounded, size, xSize, ySize } = resolveDesignProps(design);
+  const filledStr = pickBoolStrict(filled, "filled", "transparent");
+  const primaryStr = pickBoolStrict(primary, "primary", "base");
+  const filled_primary = `${filledStr}_${primaryStr}` as const;
 
-  const variantClassBase = pick(variant_priority, {
+  const variantClassBase = pick(filled_primary, {
     filled_base: cn(tw`bg-white/5 text-dynamic-200`),
     filled_primary: cn(tw`bg-dynamic-600 text-white`),
     transparent_base: cn(tw`bg-transparent text-white`),
@@ -60,7 +58,7 @@ export function buttonClassName({
 
   const activeClass = cn(tw`active:bg-dynamic-700 active:text-white`, forceActive && tw`bg-dynamic-700 text-white`);
 
-  const variantClassInteractive = pick(variant_priority, {
+  const variantClassInteractive = pick(filled_primary, {
     filled_base: cn(
       tw`text-white`,
 
@@ -76,19 +74,9 @@ export function buttonClassName({
    * - hover style + ring of hover bg color + inset ring for contrast
    */
 
-  const defaultHover: TDesignHover = pick(variant, { filled: "primary", transparent: "base" });
-
-  const hoverClassInteractive = pick(hover ?? defaultHover, {
-    base: cn(
-      tw`hover:bg-white/5 hover:text-dynamic-300`,
-      forceHover && tw`bg-white/5 text-dynamic-300`,
-
-      tw`data-focus-visible:bg-white/5 data-focus-visible:text-dynamic-300`,
-      tw`data-focus-visible:inset-ring-dynamic-300 data-focus-visible:inset-ring-1`,
-
-      tw`data-focus-visible:active:bg-dynamic-700 data-focus-visible:active:text-white`,
-    ),
-    primary: cn(
+  const hoverClassInteractive = pickBoolStrict(
+    hoverFilled,
+    cn(
       tw`hover:bg-dynamic-500 hover:text-white`,
       forceHover && tw`bg-dynamic-500 text-white`,
 
@@ -98,13 +86,22 @@ export function buttonClassName({
 
       tw`data-focus-visible:active:bg-dynamic-700`,
     ),
-  });
+    cn(
+      tw`hover:bg-white/5 hover:text-dynamic-300`,
+      forceHover && tw`bg-white/5 text-dynamic-300`,
+
+      tw`data-focus-visible:bg-white/5 data-focus-visible:text-dynamic-300`,
+      tw`data-focus-visible:inset-ring-dynamic-300 data-focus-visible:inset-ring-1`,
+
+      tw`data-focus-visible:active:bg-dynamic-700 data-focus-visible:active:text-white`,
+    ),
+  );
 
   return cn(
     tw`flex flex-row items-center justify-center text-left group overflow-hidden relative`,
     tw`outline-hidden`,
     buttonRoundedClass(rounded),
-    buttonSizeClass(size),
+    buttonSizeClass(size, xSize, ySize),
     variantClassBase,
     interactive && variantClassInteractive,
     interactive && hoverClassInteractive,
@@ -119,19 +116,3 @@ export const BUTTON_ICON_SIZE: Record<TDesignSize, number> = {
   md: 20,
   lg: 26,
 };
-
-export function mapBooleanProps<T extends { primary?: boolean; filled?: boolean; hoverFilled?: boolean }>(
-  props: T,
-): Omit<T, "primary" | "filled" | "hoverFilled"> & Partial<TDesignContextProps> {
-  const { primary, filled, hoverFilled = primary, ...rest } = props;
-  return {
-    priority: mapBool(primary, "primary", "base"),
-    variant: mapBool(filled, "filled", "transparent"),
-    hover: mapBool(hoverFilled, "primary", "base"),
-    ...rest,
-  };
-}
-
-function mapBool<Out>(value: boolean | undefined, trueVal: Out, falseVal: Out): Out | undefined {
-  return value === true ? trueVal : value === false ? falseVal : undefined;
-}

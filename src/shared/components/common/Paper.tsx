@@ -22,7 +22,7 @@ export const Paper = forwardRef(function Paper(
   ref: ForwardedRef<HTMLDivElement>,
 ) {
   return (
-    <DesignContext.Provider rounded="all">
+    <DesignContext.Define rounded="all">
       <DynamicColorProvider force={level === "dialog" || level === "popover"}>
         <div
           className={cn(PAPER_LEVEL_STYLES[level], darkerBackground && tw`bg-zinc-950`, className)}
@@ -30,6 +30,6 @@ export const Paper = forwardRef(function Paper(
           ref={ref}
         />
       </DynamicColorProvider>
-    </DesignContext.Provider>
+    </DesignContext.Define>
   );
 });

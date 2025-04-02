@@ -1,7 +1,8 @@
 import * as Ariakit from "@ariakit/react";
 import { X } from "@phosphor-icons/react";
 import { Fragment, forwardRef, useCallback } from "react";
-import { cn, pick, tw } from "../../styles/utils";
+import { cn, tw } from "../../styles/utils";
+import { pick } from "../../utils/pick";
 import { Button } from "../button/Button";
 import { Paper } from "../common/Paper";
 import { DynamicColorProvider } from "../core/DynamicColorProvider";

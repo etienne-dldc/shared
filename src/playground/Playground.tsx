@@ -95,9 +95,7 @@ function RouteMenu({ items, title, icon, endIcon }: RouteMenuProps) {
         portal={true}
         unmountOnHide
       >
-        <DesignContext.Provider rounded="all">
-          {items.map((item) => renderItem(item, topMenuRef))}
-        </DesignContext.Provider>
+        <DesignContext.Define rounded="all">{items.map((item) => renderItem(item, topMenuRef))}</DesignContext.Define>
       </Ariakit.Menu>
     </Ariakit.MenuProvider>
   );

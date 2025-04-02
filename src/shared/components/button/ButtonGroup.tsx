@@ -1,10 +1,10 @@
 import * as Ariakit from "@ariakit/react";
 import { Children, ComponentPropsWithoutRef, ForwardedRef, forwardRef } from "react";
 import { Merge } from "type-fest";
-import { cn, pick, tw } from "../../styles/utils";
+import { cn, tw } from "../../styles/utils";
+import { pick, pickBoolStrict } from "../../utils/pick";
 import { DesignContext, TDesignRounded, TDesignSize } from "../core/DesignContext";
 import { DynamicColorProvider, TDynamicColor } from "../core/DynamicColorProvider";
-import { mapBooleanProps } from "./styles";
 
 export type ButtonGroupProps = Merge<
   ComponentPropsWithoutRef<"div">,
@@ -27,27 +27,28 @@ export const ButtonGroup = forwardRef(function ButtonGroup(
   inProps: ButtonGroupProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
-  const {
-    color,
-    size,
-    variant,
-    disabled,
-    priority,
-    className,
-    children,
-    direction = "horizontal",
-    roundedGroup = true,
-    outerDividers = "none",
-    innerDividers = true,
-    ...divProps
-  } = DesignContext.useProps(mapBooleanProps(inProps));
+  const [
+    design,
+    {
+      color,
+      className,
+      children,
+      direction = "horizontal",
+      roundedGroup = true,
+      outerDividers = "none",
+      innerDividers = true,
+      ...divProps
+    },
+  ] = DesignContext.useProps(inProps);
 
   const childrenFiltered = Children.toArray(children).filter((c) => c);
   const childrenLength = Children.count(childrenFiltered);
 
-  const variant_priority = `${variant}_${priority}` as const;
+  const filledStr = pickBoolStrict(design.filled, "filled", "transparent");
+  const primaryStr = pickBoolStrict(design.primary, "primary", "base");
+  const filled_primary = `${filledStr}_${primaryStr}` as const;
 
-  const separatorColorClass = pick(variant_priority, {
+  const separatorColorClass = pick(filled_primary, {
     filled_base: tw``,
     filled_primary: tw`bg-dynamic-700`,
     transparent_base: tw`bg-white/10`,
@@ -95,13 +96,7 @@ export const ButtonGroup = forwardRef(function ButtonGroup(
           });
 
           return (
-            <DesignContext.Provider
-              size={size}
-              variant={variant}
-              priority={priority}
-              disabled={disabled}
-              rounded={childRounded}
-            >
+            <DesignContext.Provider value={{ ...design, rounded: childRounded }}>
               {innerDividers && !isFirst && <span className={separatorClass} />}
               {child}
             </DesignContext.Provider>

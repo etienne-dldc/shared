@@ -43,6 +43,7 @@ const ICON_VARIANTS = {
 } as const;
 
 const SIZE_VARIANTS = { xs: "xs", sm: "sm", md: "md", lg: "lg" } as const;
+const DIR_SIZE_VARIANTS = { default: undefined, xs: "xs", sm: "sm", md: "md", lg: "lg" } as const;
 
 const PRIMARY_VARIANTS = { default: undefined, primary: true, unprimary: false } as const;
 
@@ -91,6 +92,8 @@ export default function ButtonPlayground() {
       dimensions={{
         color: DYNAMIC_COLOR_VARIANTS,
         size: SIZE_VARIANTS,
+        xSize: DIR_SIZE_VARIANTS,
+        ySize: DIR_SIZE_VARIANTS,
         primary: PRIMARY_VARIANTS,
         filled: FILLED_VARIANTS,
         hoverFilled: HOVER_PRIMARY_VARIANTS,
@@ -112,6 +115,8 @@ export default function ButtonPlayground() {
         rounded: "all",
         disabled: "no",
         size: "md",
+        xSize: "default",
+        ySize: "default",
         primary: "default",
         filled: "default",
         hoverFilled: "default",
@@ -134,6 +139,11 @@ export default function ButtonPlayground() {
         content: {
           column: ["title"],
           row: ["details", "icon", "endIcon"],
+          selected: { primary: "primary", filled: "filled" },
+        },
+        sizes: {
+          column: ["xSize"],
+          row: ["ySize"],
           selected: { primary: "primary", filled: "filled" },
         },
       }}

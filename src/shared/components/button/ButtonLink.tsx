@@ -4,7 +4,7 @@ import { cn, TInteractiveState } from "../../styles/utils";
 import { DesignContext, TDesignRounded, TDesignSize } from "../core/DesignContext";
 import { DynamicColorProvider, TDynamicColor } from "../core/DynamicColorProvider";
 import { ButtonContent } from "./ButtonContent";
-import { buttonClassName, mapBooleanProps } from "./styles";
+import { buttonClassName } from "./styles";
 
 export type ButtonLinkProps = Merge<
   ComponentPropsWithoutRef<"a">,
@@ -29,36 +29,35 @@ export type ButtonLinkProps = Merge<
 >;
 
 export const ButtonLink = forwardRef((inProps: ButtonLinkProps, ref: React.Ref<HTMLAnchorElement>) => {
-  const {
-    dynamicColor,
-    rounded,
-    size,
-    variant,
-    priority,
-    __forceState,
+  const [
+    design,
+    {
+      dynamicColor,
+      __forceState,
 
-    title,
-    icon,
-    endIcon,
-    details,
-    loading,
-    children = <ButtonContent {...{ title, icon, endIcon, details, loading }} />,
+      title,
+      icon,
+      endIcon,
+      details,
+      loading,
+      children = <ButtonContent {...{ title, icon, endIcon, details, loading }} />,
 
-    className,
-    ...divProps
-  } = DesignContext.useProps(mapBooleanProps(inProps));
+      className,
+      ...divProps
+    },
+  ] = DesignContext.useProps(inProps);
 
   const forceHover = __forceState === "hover";
   const forceActive = __forceState === "active";
   const forceFocus = __forceState === "focus";
 
   const mainClass = useMemo(
-    () => buttonClassName({ size, variant, priority, rounded, interactive: true, forceActive, forceHover }),
-    [size, variant, priority, rounded, forceActive, forceHover],
+    () => buttonClassName({ design, interactive: true, forceActive, forceHover }),
+    [design, forceActive, forceHover],
   );
 
   return (
-    <DesignContext.Provider {...{ rounded, size, variant }}>
+    <DesignContext.Provider value={design}>
       <DynamicColorProvider color={dynamicColor}>
         <a
           ref={ref}

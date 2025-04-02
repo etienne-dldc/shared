@@ -2,25 +2,38 @@ import * as Ariakit from "@ariakit/react";
 import { IconContext } from "@phosphor-icons/react";
 import { ComponentPropsWithoutRef, forwardRef, useMemo } from "react";
 import { Merge } from "type-fest";
-import { cn, pick, TInteractiveState } from "../../styles/utils";
-import { DesignContext, TDesignRounded, TDesignSize } from "../core/DesignContext";
+import { cn, TInteractiveState } from "../../styles/utils";
+import { pick } from "../../utils/pick";
+import { pipePropsSplitters } from "../../utils/propsSplitters";
+import {
+  DesignContext,
+  TDesignDirSize,
+  TDesignFilled,
+  TDesignHoverFilled,
+  TDesignPrimary,
+  TDesignRounded,
+  TDesignSize,
+} from "../core/DesignContext";
+import { DisabledContext } from "../core/DisabledContext";
 import { DynamicColorProvider, TDynamicColor } from "../core/DynamicColorProvider";
 import { ButtonContent } from "./ButtonContent";
-import { BUTTON_ICON_SIZE, buttonClassName, mapBooleanProps } from "./styles";
+import { BUTTON_ICON_SIZE, buttonClassName } from "./styles";
 
 export type ButtonProps = Merge<
   ComponentPropsWithoutRef<"button">,
   {
     // Design
-    color?: TDynamicColor;
-    size?: TDesignSize;
-    rounded?: TDesignRounded;
     disabled?: boolean;
-    __forceState?: null | TInteractiveState;
+    size?: TDesignSize;
+    xSize?: TDesignDirSize;
+    ySize?: TDesignDirSize;
+    rounded?: TDesignRounded;
+    filled?: TDesignFilled;
+    primary?: TDesignPrimary;
+    hoverFilled?: TDesignHoverFilled;
 
-    filled?: boolean;
-    primary?: boolean;
-    hoverFilled?: boolean;
+    color?: TDynamicColor;
+    __forceState?: null | TInteractiveState;
 
     // For content
     icon?: React.ReactNode;
@@ -35,14 +48,13 @@ export type ButtonProps = Merge<
 >;
 
 export const Button = forwardRef((inProps: ButtonProps, ref: React.Ref<HTMLButtonElement>) => {
+  const [{ design, disabled }, props] = pipePropsSplitters(inProps, {
+    design: DesignContext.usePropsSplitter(),
+    disabled: DisabledContext.usePropsSplitter(),
+  });
+
   const {
     color,
-    rounded,
-    size,
-    disabled,
-    variant,
-    priority,
-    hover,
     __forceState,
 
     title,
@@ -55,7 +67,7 @@ export const Button = forwardRef((inProps: ButtonProps, ref: React.Ref<HTMLButto
     className,
     type = "button",
     ...buttonProps
-  } = DesignContext.useProps(mapBooleanProps(inProps));
+  } = props;
 
   const childrenResolved = children ?? <ButtonContent {...{ title, icon, endIcon, details, loading }} />;
 
@@ -64,20 +76,20 @@ export const Button = forwardRef((inProps: ButtonProps, ref: React.Ref<HTMLButto
   const forceFocus = __forceState === "focus";
 
   const mainClass = useMemo(
-    () => buttonClassName({ size, variant, hover, priority, rounded, interactive: true, forceActive, forceHover }),
-    [size, variant, hover, priority, rounded, forceActive, forceHover],
+    () => buttonClassName({ design, interactive: true, forceActive, forceHover }),
+    [design, forceActive, forceHover],
   );
 
-  const iconProps = useMemo(() => ({ size: pick(size, BUTTON_ICON_SIZE) }), [size]);
+  const iconProps = useMemo(() => ({ size: pick(design.size, BUTTON_ICON_SIZE) }), [design.size]);
 
   return (
-    <DesignContext.Provider rounded={rounded} size={size} variant={variant} disabled={disabled}>
+    <DesignContext.Provider value={design}>
       <IconContext.Provider value={iconProps}>
         <DynamicColorProvider color={color}>
           <Ariakit.Button
             ref={ref}
             className={cn(mainClass, className)}
-            disabled={disabled}
+            disabled={disabled.disabled}
             type={type}
             {...(forceFocus ? { "data-focus-visible": true } : {})}
             {...buttonProps}
