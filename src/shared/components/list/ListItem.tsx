@@ -1,6 +1,6 @@
 import * as Ariakit from "@ariakit/react";
 import { IconContext } from "@phosphor-icons/react";
-import { ComponentPropsWithRef, useId, useMemo } from "react";
+import { ComponentPropsWithRef, useMemo } from "react";
 import { Merge } from "type-fest";
 import { cn, pick } from "../../styles/utils";
 import { ButtonContent } from "../button/ButtonContent";
@@ -65,12 +65,8 @@ export function ListItem(inProps: ListItemProps) {
   const iconProps = useMemo(() => ({ size: pick(size, LIST_ITEM_ICON_SIZE) }), [size]);
 
   const compositeStore = Ariakit.useCompositeContext();
-  const id = useId();
   const renderResolved = compositeStore ? (
-    <Ariakit.CompositeHover
-      render={<Ariakit.CompositeItem render={render} disabled={disabled} id={id} />}
-      focusOnHover
-    />
+    <Ariakit.CompositeHover render={<Ariakit.CompositeItem render={render} disabled={disabled} />} focusOnHover />
   ) : (
     render
   );
