@@ -1,8 +1,7 @@
 import * as Ariakit from "@ariakit/react";
 import { IconContext } from "@phosphor-icons/react";
-import { ComponentPropsWithRef, useEffect, useId, useMemo } from "react";
+import { ComponentPropsWithRef, useId, useMemo } from "react";
 import { Merge } from "type-fest";
-import { useLatestRef } from "../../hooks/useLatestRef";
 import { cn, pick } from "../../styles/utils";
 import { ButtonContent } from "../button/ButtonContent";
 import { DesignContext, TDesignSize } from "../core/DesignContext";
@@ -75,17 +74,6 @@ export function ListItem(inProps: ListItemProps) {
   ) : (
     render
   );
-
-  const selectedRef = useLatestRef(selected);
-  const disabledRef = useLatestRef(disabled);
-  useEffect(() => {
-    if (!compositeStore) {
-      return;
-    }
-    if (selectedRef.current !== "none" && !disabledRef.current) {
-      compositeStore.setActiveId(id);
-    }
-  }, [compositeStore, disabledRef, id, selectedRef]);
 
   return (
     <DesignContext.Provider size={size} disabled={disabled}>
