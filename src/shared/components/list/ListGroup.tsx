@@ -5,7 +5,7 @@ import { pick } from "../../utils/pick";
 import { DesignContext, resolveDesignProps, TDesignDirSize, TDesignSize } from "../core/DesignContext";
 
 export interface ListGroupProps extends ComponentPropsWithRef<"div"> {
-  title?: string;
+  title: string;
   size?: TDesignSize;
   xSize?: TDesignDirSize;
   ySize?: TDesignDirSize;
