@@ -1,7 +1,8 @@
 import * as Ariakit from "@ariakit/react";
-import { CaretRight, File, Square } from "@phosphor-icons/react";
+import { CaretRight, File, SignOut, Square } from "@phosphor-icons/react";
 import { Variants } from "../../../playground/Variants";
 import { cn } from "../../styles/utils";
+import { Button } from "../button/Button";
 import { DesignContext } from "../core/DesignContext";
 import { List } from "./List";
 import { ListGroup } from "./ListGroup";
@@ -41,6 +42,15 @@ export default function ButtonPlayground() {
                   <ListItem title="Item 10" endIcon={<CaretRight />} icon={<Square />} />
                   <ListItem title="Item 11" endIcon={<CaretRight />} icon={<File />} />
                 </ListGroup>
+                <Button
+                  render={<Ariakit.CompositeItem />}
+                  title="Button"
+                  color="red"
+                  filled={false}
+                  hoverFilled
+                  icon={<SignOut />}
+                  ySize="md"
+                />
               </Ariakit.Composite>
             </Ariakit.CompositeProvider>
           </DesignContext.Define>

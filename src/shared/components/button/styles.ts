@@ -70,8 +70,10 @@ export function buttonClassName({ design, interactive, forceHover, forceActive }
   });
 
   /**
-   * Focus style is:
+   * Focus visible style is:
    * - hover style + ring of hover bg color + inset ring for contrast
+   * Active item style (when in a list) is:
+   * - Only hover style (we need to undo the active style)
    */
 
   const hoverClassInteractive = pickBoolStrict(
@@ -85,6 +87,8 @@ export function buttonClassName({ design, interactive, forceHover, forceActive }
       tw`data-focus-visible:inset-ring-dynamic-200 data-focus-visible:inset-ring-1`,
 
       tw`data-focus-visible:active:bg-dynamic-700`,
+
+      tw`data-focus-visible:data-active-item:ring-0 data-focus-visible:data-active-item:inset-ring-0`,
     ),
     cn(
       tw`hover:bg-white/5 hover:text-dynamic-300`,
@@ -94,6 +98,8 @@ export function buttonClassName({ design, interactive, forceHover, forceActive }
       tw`data-focus-visible:inset-ring-dynamic-300 data-focus-visible:inset-ring-1`,
 
       tw`data-focus-visible:active:bg-dynamic-700 data-focus-visible:active:text-white`,
+
+      tw`data-focus-visible:data-active-item:ring-0 data-focus-visible:data-active-item:inset-ring-0`,
     ),
   );
 
