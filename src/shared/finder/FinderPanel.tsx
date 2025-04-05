@@ -2,11 +2,12 @@
 import * as Ariakit from "@ariakit/react";
 import { ClickScrollPlugin, OverlayScrollbars } from "overlayscrollbars";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
-import { createContext, ForwardedRef, forwardRef, useContext, useEffect, useMemo, useRef } from "react";
+import { createContext, ForwardedRef, forwardRef, useCallback, useContext, useEffect, useMemo, useRef } from "react";
 import scrollIntoView from "smooth-scroll-into-view-if-needed";
 
 import "overlayscrollbars/overlayscrollbars.css";
 
+import { useLatestRef } from "../hooks/useLatestRef";
 import { useMergeRefs } from "../hooks/useMergeRefs";
 import { TUseResizeWidth, useResize } from "../hooks/useResize";
 import { cn, tw } from "../styles/utils";
@@ -41,14 +42,22 @@ export interface FinderPanelProps extends React.ComponentPropsWithoutRef<"div"> 
   className?: string;
   resizeLocalStorageKey?: string;
   isActive?: boolean;
+  onActivate?: () => void;
 }
 
 export const FinderPanel = forwardRef(function FinderPanel(
-  { children, className, isActive = false, resizeLocalStorageKey, ...rest }: FinderPanelProps,
+  { children, className, isActive = false, onActivate, resizeLocalStorageKey, ...rest }: FinderPanelProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
   const panelRef = useRef<HTMLDivElement | null>(null);
   const mergedRef = useMergeRefs(ref, panelRef);
+  const onActivateRef = useLatestRef(() => {
+    const panelEl = panelRef.current;
+    if (panelEl) {
+      scrollIntoView(panelEl);
+    }
+    onActivate?.();
+  });
 
   const resizer = useResize(panelRef, {
     direction: "left",
@@ -57,20 +66,27 @@ export const FinderPanel = forwardRef(function FinderPanel(
   });
 
   useEffect(() => {
-    const panelEl = panelRef.current;
-    if (!isActive || !panelEl) {
+    if (!isActive) {
       return;
     }
-    scrollIntoView(panelEl);
-    // When the app load we need to wait for the scrollbars to be initialized
-    // This does nothing if the first scrollIntoView worked
     const timer = setTimeout(() => {
-      scrollIntoView(panelEl);
+      onActivateRef.current();
     }, 10);
     return () => clearTimeout(timer);
-  }, [isActive]);
+  }, [isActive, onActivateRef]);
 
   const onHandleClick = useMemo(() => onDoubleTap(resizer.reset), [resizer.reset]);
+
+  const onCompositeKeyDown = useCallback(
+    (event: React.KeyboardEvent) => {
+      if (event.key === "Enter" && event.currentTarget === event.target) {
+        event.preventDefault();
+        event.stopPropagation();
+        onActivateRef.current();
+      }
+    },
+    [onActivateRef],
+  );
 
   return (
     <Ariakit.CompositeItem
@@ -88,6 +104,7 @@ export const FinderPanel = forwardRef(function FinderPanel(
         ["--mini-handle-height" as string]: `${MINI_HANDLE_HEIGHT}px`,
       }}
       render={<section {...rest} />}
+      onKeyDown={onCompositeKeyDown}
     >
       <PanelRefContext.Provider value={panelRef}>
         <PanelSizeContext.Provider value={resizer.size}>
