@@ -56,7 +56,11 @@ export function buttonClassName({ design, interactive, forceHover, forceActive }
     transparent_primary: cn(tw`bg-transparent text-dynamic-300`),
   });
 
-  const activeClass = cn(tw`active:bg-dynamic-700 active:text-white`, forceActive && tw`bg-dynamic-700 text-white`);
+  const activeClass = cn(
+    tw`active:bg-dynamic-700 active:text-white`,
+    forceActive && tw`bg-dynamic-700 text-white`,
+    tw`data-focus-visible:active:bg-dynamic-700 data-focus-visible:active:text-white`,
+  );
 
   const variantClassInteractive = pick(filled_primary, {
     filled_base: cn(
@@ -69,37 +73,25 @@ export function buttonClassName({ design, interactive, forceHover, forceActive }
     transparent_primary: cn(tw`aria-disabled:text-dynamic-200/40 aria-disabled:ring-dynamic-700/50`),
   });
 
-  /**
-   * Focus visible style is:
-   * - hover style + ring of hover bg color + inset ring for contrast
-   * Active item style (when in a list) is:
-   * - Only hover style (we need to undo the active style)
-   */
-
   const hoverClassInteractive = pickBoolStrict(
     hoverFilled,
     cn(
       tw`hover:bg-dynamic-500 hover:text-white`,
       forceHover && tw`bg-dynamic-500 text-white`,
 
+      // Copy hover style
       tw`data-focus-visible:bg-dynamic-500 data-focus-visible:text-white`,
-      tw`data-focus-visible:ring-dynamic-500 data-focus-visible:ring-2`,
-      tw`data-focus-visible:inset-ring-dynamic-200 data-focus-visible:inset-ring-1`,
-
-      tw`data-focus-visible:active:bg-dynamic-700`,
-
-      tw`data-focus-visible:data-active-item:ring-0 data-focus-visible:data-active-item:inset-ring-0`,
+      // Add inset ring
+      tw`data-focus-visible:inset-ring-white data-focus-visible:inset-ring-1`,
     ),
     cn(
       tw`hover:bg-white/5 hover:text-dynamic-300`,
       forceHover && tw`bg-white/5 text-dynamic-300`,
 
+      // Copy hover style
       tw`data-focus-visible:bg-white/5 data-focus-visible:text-dynamic-300`,
+      // Add inset ring
       tw`data-focus-visible:inset-ring-dynamic-300 data-focus-visible:inset-ring-1`,
-
-      tw`data-focus-visible:active:bg-dynamic-700 data-focus-visible:active:text-white`,
-
-      tw`data-focus-visible:data-active-item:ring-0 data-focus-visible:data-active-item:inset-ring-0`,
     ),
   );
 
