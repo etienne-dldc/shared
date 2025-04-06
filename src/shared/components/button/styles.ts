@@ -50,23 +50,23 @@ export function buttonClassName({ design, interactive, forceHover, forceActive }
   const filled_primary = `${filledStr}_${primaryStr}` as const;
 
   const variantClassBase = pick(filled_primary, {
-    filled_primary: cn(tw`bg-dynamic-700 text-white`),
+    filled_primary: cn(tw`bg-dynamic-600 text-white`),
     filled_base: cn(tw`bg-white/5 text-dynamic-200`),
     transparent_primary: cn(tw`bg-transparent text-dynamic-300`),
     transparent_base: cn(tw`bg-transparent text-white`),
   });
 
   const activeClass = cn(
-    tw`active:bg-dynamic-800 active:text-white`,
-    forceActive && tw`bg-dynamic-800 text-white`,
-    tw`data-focus-visible:active:bg-dynamic-800 data-focus-visible:active:text-white`,
-    forceActive && tw`data-focus-visible:bg-dynamic-800 data-focus-visible:text-white`,
-    tw`aria-disabled:active:bg-dynamic-800 aria-disabled:active:text-white/50`,
-    forceActive && tw`aria-disabled:bg-dynamic-800 aria-disabled:text-white/50`,
+    tw`active:bg-dynamic-700 active:text-white`,
+    forceActive && tw`bg-dynamic-700 text-white`,
+    tw`data-focus-visible:active:bg-dynamic-700 data-focus-visible:active:text-white`,
+    forceActive && tw`data-focus-visible:bg-dynamic-700 data-focus-visible:text-white`,
+    tw`aria-disabled:active:bg-dynamic-700 aria-disabled:active:text-white/50`,
+    forceActive && tw`aria-disabled:bg-dynamic-700 aria-disabled:text-white/50`,
   );
 
   const disabledClass = pick(filled_primary, {
-    filled_primary: cn(tw`aria-disabled:bg-dynamic-800 aria-disabled:text-white/50`),
+    filled_primary: cn(tw`aria-disabled:bg-dynamic-700 aria-disabled:text-white/50`),
     filled_base: cn(tw`aria-disabled:bg-white/5 aria-disabled:text-dynamic-200/50`),
     transparent_primary: cn(tw`aria-disabled:text-dynamic-200/40`),
     transparent_base: cn(tw`aria-disabled:text-white/40`),
@@ -75,12 +75,12 @@ export function buttonClassName({ design, interactive, forceHover, forceActive }
   const hoverFilledBaseClass = pickBoolStrict(
     hoverFilled,
     cn(
-      tw`hover:bg-dynamic-600 hover:text-white`,
-      forceHover && tw`bg-dynamic-600 text-white`,
+      tw`hover:bg-dynamic-500 hover:text-white`,
+      forceHover && tw`bg-dynamic-500 text-white`,
 
       // Disabled hover style
-      tw`aria-disabled:hover:bg-dynamic-800 aria-disabled:hover:text-white/50`,
-      forceHover && tw`aria-disabled:bg-dynamic-800 aria-disabled:text-white/50`,
+      tw`aria-disabled:hover:bg-dynamic-700 aria-disabled:hover:text-white/50`,
+      forceHover && tw`aria-disabled:bg-dynamic-700 aria-disabled:text-white/50`,
     ),
     cn(
       tw`hover:bg-white/5 hover:text-dynamic-300`,
@@ -98,14 +98,16 @@ export function buttonClassName({ design, interactive, forceHover, forceActive }
       // Focused style
       tw`data-focus-visible:bg-dynamic-600 data-focus-visible:text-white`,
       tw`data-focus-visible:inset-ring-white data-focus-visible:inset-ring-1`,
+      tw`data-focus-visible:ring-white data-focus-visible:ring-1`,
       // Copy disabled hover style
-      tw`aria-disabled:data-focus-visible:bg-dynamic-800 aria-disabled:data-focus-visible:text-white/50`,
-      forceHover && tw`aria-disabled:data-focus-visible:bg-dynamic-800 aria-disabled:data-focus-visible:text-white/50`,
+      tw`aria-disabled:data-focus-visible:bg-dynamic-700 aria-disabled:data-focus-visible:text-white/50`,
+      forceHover && tw`aria-disabled:data-focus-visible:bg-dynamic-700 aria-disabled:data-focus-visible:text-white/50`,
     ),
     cn(
       // Focused style
       tw`data-focus-visible:bg-white/5 data-focus-visible:text-dynamic-300`,
       tw`data-focus-visible:inset-ring-dynamic-300 data-focus-visible:inset-ring-1`,
+      tw`data-focus-visible:ring-dynamic-300 data-focus-visible:ring-1`,
       // Copy disabled hover style
       tw`aria-disabled:data-focus-visible:bg-white/5 aria-disabled:data-focus-visible:text-dynamic-200/50`,
       forceHover &&

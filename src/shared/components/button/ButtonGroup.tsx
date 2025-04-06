@@ -50,7 +50,7 @@ export const ButtonGroup = forwardRef(function ButtonGroup(
 
   const separatorColorClass = pick(filled_primary, {
     filled_base: tw``,
-    filled_primary: tw`bg-dynamic-800`,
+    filled_primary: tw`bg-dynamic-700`,
     transparent_base: tw`bg-white/10`,
     transparent_primary: tw`bg-white/10`,
   });
