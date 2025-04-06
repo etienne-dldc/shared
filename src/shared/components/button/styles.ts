@@ -83,8 +83,8 @@ export function buttonClassName({ design, interactive, forceHover, forceActive }
       forceHover && tw`aria-disabled:bg-dynamic-700 aria-disabled:text-white/50`,
     ),
     cn(
-      tw`hover:bg-white/5 hover:text-dynamic-300`,
-      forceHover && tw`bg-white/5 text-dynamic-300`,
+      tw`hover:bg-white/5 hover:text-dynamic-200`,
+      forceHover && tw`bg-white/5 text-dynamic-200`,
 
       // Disabled hover style
       tw`aria-disabled:hover:bg-white/5 aria-disabled:hover:text-dynamic-200/50`,
@@ -105,9 +105,9 @@ export function buttonClassName({ design, interactive, forceHover, forceActive }
     ),
     cn(
       // Focused style
-      tw`data-focus-visible:bg-white/5 data-focus-visible:text-dynamic-300`,
-      tw`data-focus-visible:inset-ring-dynamic-300 data-focus-visible:inset-ring-1`,
-      tw`data-focus-visible:ring-dynamic-300 data-focus-visible:ring-1`,
+      tw`data-focus-visible:bg-white/5 data-focus-visible:text-dynamic-200`,
+      tw`data-focus-visible:inset-ring-dynamic-200 data-focus-visible:inset-ring-1`,
+      tw`data-focus-visible:ring-dynamic-200 data-focus-visible:ring-1`,
       // Copy disabled hover style
       tw`aria-disabled:data-focus-visible:bg-white/5 aria-disabled:data-focus-visible:text-dynamic-200/50`,
       forceHover &&
