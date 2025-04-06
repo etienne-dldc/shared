@@ -1,6 +1,6 @@
 import { ComponentPropsWithoutRef, forwardRef, useMemo } from "react";
 import { Merge } from "type-fest";
-import { cn, TInteractiveState } from "../../styles/utils";
+import { cn } from "../../styles/utils";
 import { DesignContext, TDesignRounded, TDesignSize } from "../core/DesignContext";
 import { DynamicColorProvider, TDynamicColor } from "../core/DynamicColorProvider";
 import { ButtonContent } from "./ButtonContent";
@@ -16,8 +16,6 @@ export type ButtonLikeProps = Merge<
 
     filled?: boolean;
     primary?: boolean;
-
-    __forceState?: null | TInteractiveState;
 
     // For content
     icon?: React.ReactNode;
@@ -36,7 +34,6 @@ export const ButtonLike = forwardRef((inProps: ButtonLikeProps, ref: React.Ref<H
     design,
     {
       color,
-      __forceState,
 
       title,
       icon,
@@ -50,24 +47,15 @@ export const ButtonLike = forwardRef((inProps: ButtonLikeProps, ref: React.Ref<H
     },
   ] = DesignContext.useProps(inProps);
 
-  const forceHover = __forceState === "hover";
-  const forceActive = __forceState === "active";
-  const forceFocus = __forceState === "focus";
-
   const mainClass = useMemo(
-    () => buttonClassName({ design, interactive: false, forceActive, forceHover }),
-    [design, forceActive, forceHover],
+    () => buttonClassName({ design, interactive: false, forceActive: false, forceHover: false }),
+    [design],
   );
 
   return (
     <DesignContext.Provider value={design}>
       <DynamicColorProvider color={color}>
-        <div
-          ref={ref}
-          className={cn(mainClass, className)}
-          {...(forceFocus ? { "data-focus-visible": true } : {})}
-          {...divProps}
-        >
+        <div ref={ref} className={cn(mainClass, className)} {...divProps}>
           {children}
         </div>
       </DynamicColorProvider>
