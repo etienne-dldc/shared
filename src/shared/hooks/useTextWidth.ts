@@ -1,11 +1,7 @@
-import { MutableRefObject, useLayoutEffect, useRef, useState } from "react";
+import { RefObject, useLayoutEffect, useRef, useState } from "react";
 import { measureText } from "../utils/measureText";
 
-export function useTextWidth(
-  ref: MutableRefObject<HTMLInputElement | null>,
-  text: string,
-  enabled: boolean,
-): number | null {
+export function useTextWidth(ref: RefObject<HTMLInputElement | null>, text: string, enabled: boolean): number | null {
   const [width, setWidth] = useState<number | null>(null);
 
   const prevConfigRef = useRef<{ content: string; styles: CSSStyleDeclaration } | null>(null);

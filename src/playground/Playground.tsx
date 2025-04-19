@@ -1,7 +1,7 @@
 import * as Ariakit from "@ariakit/react";
 import { CaretDown, CaretRight, CircleDashed, Folder, List, SquaresFour } from "@phosphor-icons/react";
 import { createBrowserHistory } from "history";
-import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { RefObject, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "../shared/components/button/Button";
 import { ButtonGroup } from "../shared/components/button/ButtonGroup";
 import { ButtonLike } from "../shared/components/button/ButtonLike";
@@ -103,7 +103,7 @@ function RouteMenu({ items, title, icon, endIcon }: RouteMenuProps) {
 
 interface NestedMenuProps {
   item: TRouteFolder;
-  parentRef?: React.MutableRefObject<HTMLDivElement | null>;
+  parentRef?: RefObject<HTMLDivElement | null>;
 }
 
 function NestedMenu({ item, parentRef }: NestedMenuProps) {
@@ -147,7 +147,7 @@ function NavItem({ item }: NavItemProps) {
   return <MenuItem title={item.name} icon={<SquaresFour />} render={<a href={item.path} onClick={onClick} />} />;
 }
 
-function renderItem(item: TRouteItem, parentRef?: React.MutableRefObject<HTMLDivElement | null>) {
+function renderItem(item: TRouteItem, parentRef?: RefObject<HTMLDivElement | null>) {
   const key = `${item.kind}-${item.name}`;
   if (item.kind === "route") {
     return <NavItem item={item} key={key} />;
