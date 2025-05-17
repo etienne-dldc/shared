@@ -1,6 +1,6 @@
 import * as Ariakit from "@ariakit/react";
 import { IconContext } from "@phosphor-icons/react";
-import { ComponentPropsWithoutRef, forwardRef, useMemo } from "react";
+import { ComponentProps, useMemo } from "react";
 import { Merge } from "type-fest";
 import { cn, TInteractiveState } from "../../styles/utils";
 import { pick } from "../../utils/pick";
@@ -20,7 +20,7 @@ import { ButtonContent } from "./ButtonContent";
 import { BUTTON_ICON_SIZE, buttonClassName } from "./styles";
 
 export type ButtonProps = Merge<
-  ComponentPropsWithoutRef<"button">,
+  ComponentProps<"button">,
   {
     // Design
     disabled?: boolean;
@@ -47,7 +47,7 @@ export type ButtonProps = Merge<
   }
 >;
 
-export const Button = forwardRef((inProps: ButtonProps, ref: React.Ref<HTMLButtonElement>) => {
+export const Button = (inProps: ButtonProps) => {
   const [{ design, disabled }, props] = pipePropsSplitters(inProps, {
     design: DesignContext.usePropsSplitter(),
     disabled: DisabledContext.usePropsSplitter(),
@@ -66,6 +66,7 @@ export const Button = forwardRef((inProps: ButtonProps, ref: React.Ref<HTMLButto
 
     className,
     type = "button",
+    ref,
     ...buttonProps
   } = props;
 
@@ -100,4 +101,4 @@ export const Button = forwardRef((inProps: ButtonProps, ref: React.Ref<HTMLButto
       </IconContext.Provider>
     </DesignContext.Provider>
   );
-});
+};
