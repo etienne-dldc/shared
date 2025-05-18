@@ -1,4 +1,4 @@
-import { Backspace } from "@phosphor-icons/react";
+import { BackspaceIcon } from "@phosphor-icons/react";
 import { useRef } from "react";
 import { Button } from "../button/Button";
 import { Tooltip } from "../popovers/Tooltip";
@@ -28,7 +28,7 @@ export function SearchInput({ value, onValueChange, ...inputProps }: SearchInput
               rounded="all"
               className="mr-1.5"
               color="red"
-              icon={<Backspace />}
+              icon={<BackspaceIcon />}
               onClick={() => {
                 onValueChange("");
                 inputRef.current?.focus();

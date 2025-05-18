@@ -1,5 +1,5 @@
 import * as Ariakit from "@ariakit/react";
-import { X } from "@phosphor-icons/react";
+import { XIcon } from "@phosphor-icons/react";
 import { Fragment, forwardRef, useCallback } from "react";
 import { cn, tw } from "../../styles/utils";
 import { pick } from "../../utils/pick";
@@ -107,7 +107,7 @@ export const Modal = forwardRef<HTMLButtonElement, ModalProps>(
                   endActions={
                     <Fragment>
                       {endActions}
-                      {!noCloseButton && <Ariakit.DialogDismiss render={<Button icon={<X />} />} />}
+                      {!noCloseButton && <Ariakit.DialogDismiss render={<Button icon={<XIcon />} />} />}
                     </Fragment>
                   }
                   // actions={actions}

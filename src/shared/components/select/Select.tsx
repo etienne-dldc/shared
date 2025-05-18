@@ -1,5 +1,5 @@
 import * as Ariakit from "@ariakit/react";
-import { CaretDown } from "@phosphor-icons/react";
+import { CaretDownIcon } from "@phosphor-icons/react";
 import { ForwardedRef, forwardRef, useMemo, type JSX } from "react";
 import { cn, tw } from "../../styles/utils";
 import { Button } from "../button/Button";
@@ -97,7 +97,7 @@ const SelectAny = forwardRef(function Select(
             ) : (
               <ButtonContent
                 details={selectedItem.details}
-                endIcon={caret && <Ariakit.SelectArrow render={<CaretDown />} />}
+                endIcon={caret && <Ariakit.SelectArrow render={<CaretDownIcon />} />}
                 icon={selectedItem.icon}
                 title={<span className={selectedIsEmpty ? "opacity-50" : ""}>{selectedItem.title}</span>}
               />

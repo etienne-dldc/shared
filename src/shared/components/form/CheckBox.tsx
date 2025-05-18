@@ -1,5 +1,5 @@
 import * as Ariakit from "@ariakit/react";
-import { CheckSquare, Square } from "@phosphor-icons/react";
+import { CheckSquareIcon, SquareIcon } from "@phosphor-icons/react";
 import { ComponentPropsWithoutRef, forwardRef, useState } from "react";
 import { BUTTON_ICON_SIZE } from "../button/styles";
 import { IconBox } from "../common/IconBox";
@@ -35,7 +35,7 @@ export const CheckBox = forwardRef<HTMLInputElement, CheckBoxProps>(function Che
         />
       </Ariakit.VisuallyHidden>
       <div className="check" data-checked={checked}>
-        <IconBox size={iconSize} icon={checked ? <CheckSquare weight="fill" /> : <Square weight="bold" />} />
+        <IconBox size={iconSize} icon={checked ? <CheckSquareIcon weight="fill" /> : <SquareIcon weight="bold" />} />
       </div>
     </label>
   );

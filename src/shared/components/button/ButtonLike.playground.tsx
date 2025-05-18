@@ -1,4 +1,4 @@
-import { CaretDown, CirclesFour, User } from "@phosphor-icons/react";
+import { CaretDownIcon, CirclesFourIcon, UserIcon } from "@phosphor-icons/react";
 import { Variants } from "../../../playground/Variants";
 import { cn, tw } from "../../styles/utils";
 import { ButtonLike } from "./ButtonLike";
@@ -37,9 +37,9 @@ const DYNAMIC_COLOR_VARIANTS = {
 
 const ICON_VARIANTS = {
   none: undefined,
-  user: <User />,
-  workspace: <CirclesFour />,
-  select: <CaretDown />,
+  user: <UserIcon />,
+  workspace: <CirclesFourIcon />,
+  select: <CaretDownIcon />,
 } as const;
 
 const SIZE_VARIANTS = { xs: "xs", sm: "sm", md: "md", lg: "lg" } as const;

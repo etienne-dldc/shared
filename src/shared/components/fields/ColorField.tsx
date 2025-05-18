@@ -1,5 +1,5 @@
 import * as Ariakit from "@ariakit/react";
-import { CaretDown, CaretUp } from "@phosphor-icons/react";
+import { CaretDownIcon, CaretUpIcon } from "@phosphor-icons/react";
 import { useEffect } from "react";
 import colors from "tailwindcss/colors";
 import { COLOR_NAMES, toColor, VALID_COLORS } from "../../styles/colors";
@@ -61,7 +61,7 @@ export function ColorField({ name, label, disabled = false, required = false, co
                 <ButtonContent
                   icon={<span className="w-5 h-5 rounded-sm" style={{ background: colors[valueColor][colorLevel] }} />}
                   title={COLOR_NAMES[valueColor]}
-                  endIcon={<Ariakit.SelectArrow render={selectOpen ? <CaretUp /> : <CaretDown />} />}
+                  endIcon={<Ariakit.SelectArrow render={selectOpen ? <CaretUpIcon /> : <CaretDownIcon />} />}
                 />
               </Ariakit.Select>
             }

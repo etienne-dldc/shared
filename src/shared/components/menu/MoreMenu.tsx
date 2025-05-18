@@ -1,4 +1,4 @@
-import { CaretDown, CaretUp } from "@phosphor-icons/react";
+import { CaretDownIcon, CaretUpIcon } from "@phosphor-icons/react";
 import { forwardRef, useState } from "react";
 import { Button } from "../button/Button";
 import { TDesignSize } from "../core/DesignContext";
@@ -24,7 +24,7 @@ export const MoreMenu = forwardRef<HTMLDivElement, MoreMenuProps>(function MoreM
       open={open}
       setOpen={setOpen}
       className={className}
-      trigger={<Button primary={primary} size={size} icon={open ? <CaretUp /> : <CaretDown />} color={color} />}
+      trigger={<Button primary={primary} size={size} icon={open ? <CaretUpIcon /> : <CaretDownIcon />} color={color} />}
       content={content}
       {...props}
       ref={ref}

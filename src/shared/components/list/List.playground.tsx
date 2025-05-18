@@ -1,5 +1,5 @@
 import * as Ariakit from "@ariakit/react";
-import { CaretRight, File, SignOut, Square } from "@phosphor-icons/react";
+import { CaretRightIcon, FileIcon, SignOutIcon, SquareIcon } from "@phosphor-icons/react";
 import { Variants } from "../../../playground/Variants";
 import { cn } from "../../styles/utils";
 import { Button } from "../button/Button";
@@ -21,26 +21,26 @@ export default function ButtonPlayground() {
           <DesignContext.Define xSize="lg">
             <Ariakit.CompositeProvider>
               <Ariakit.Composite render={<List size="lg" color="blue" />}>
-                <ListItem title="Item 1" endIcon={<CaretRight />} icon={<File />} />
-                <ListItem title="Item 2" endIcon={<CaretRight />} icon={<File />} />
-                <ListItem title="Item 3" endIcon={<CaretRight />} icon={<File />} />
-                <ListItem title="Item 4" endIcon={<CaretRight />} icon={<File />} />
-                <ListItem title="Item 5" endIcon={<CaretRight />} icon={<File />} />
+                <ListItem title="Item 1" endIcon={<CaretRightIcon />} icon={<FileIcon />} />
+                <ListItem title="Item 2" endIcon={<CaretRightIcon />} icon={<FileIcon />} />
+                <ListItem title="Item 3" endIcon={<CaretRightIcon />} icon={<FileIcon />} />
+                <ListItem title="Item 4" endIcon={<CaretRightIcon />} icon={<FileIcon />} />
+                <ListItem title="Item 5" endIcon={<CaretRightIcon />} icon={<FileIcon />} />
                 <ListGroup title="Group LG" size="lg">
-                  <ListItem title="Item 6" endIcon={<CaretRight />} icon={<Square />} />
-                  <ListItem title="Item 7" endIcon={<CaretRight />} icon={<File />} />
+                  <ListItem title="Item 6" endIcon={<CaretRightIcon />} icon={<SquareIcon />} />
+                  <ListItem title="Item 7" endIcon={<CaretRightIcon />} icon={<FileIcon />} />
                 </ListGroup>
                 <ListGroup title="Group MD" size="md">
-                  <ListItem title="Item 8" endIcon={<CaretRight />} icon={<Square />} />
-                  <ListItem title="Item 9" endIcon={<CaretRight />} icon={<File />} />
+                  <ListItem title="Item 8" endIcon={<CaretRightIcon />} icon={<SquareIcon />} />
+                  <ListItem title="Item 9" endIcon={<CaretRightIcon />} icon={<FileIcon />} />
                 </ListGroup>
                 <ListGroup title="Group SM" size="sm">
-                  <ListItem title="Item 10" endIcon={<CaretRight />} icon={<Square />} />
-                  <ListItem title="Item 11" endIcon={<CaretRight />} icon={<File />} />
+                  <ListItem title="Item 10" endIcon={<CaretRightIcon />} icon={<SquareIcon />} />
+                  <ListItem title="Item 11" endIcon={<CaretRightIcon />} icon={<FileIcon />} />
                 </ListGroup>
                 <ListGroup title="Group XS" size="xs">
-                  <ListItem title="Item 10" endIcon={<CaretRight />} icon={<Square />} />
-                  <ListItem title="Item 11" endIcon={<CaretRight />} icon={<File />} />
+                  <ListItem title="Item 10" endIcon={<CaretRightIcon />} icon={<SquareIcon />} />
+                  <ListItem title="Item 11" endIcon={<CaretRightIcon />} icon={<FileIcon />} />
                 </ListGroup>
                 <Button
                   render={<Ariakit.CompositeItem />}
@@ -48,7 +48,7 @@ export default function ButtonPlayground() {
                   color="red"
                   filled={false}
                   hoverFilled
-                  icon={<SignOut />}
+                  icon={<SignOutIcon />}
                   ySize="md"
                 />
               </Ariakit.Composite>

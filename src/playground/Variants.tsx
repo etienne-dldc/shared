@@ -1,4 +1,4 @@
-import { ArrowsLeftRight, Plus } from "@phosphor-icons/react";
+import { ArrowsLeftRightIcon, PlusIcon } from "@phosphor-icons/react";
 import { Fragment, SetStateAction, useCallback, useMemo, type JSX } from "react";
 import { Button } from "../shared/components/button/Button";
 import { ButtonContent } from "../shared/components/button/ButtonContent";
@@ -143,7 +143,7 @@ export function Variants<Dims extends TDimensions>({
               options={Object.keys(dimensions)}
               onChange={(selected) => setColAxis(selected)}
             />
-            <Button color="purple" size="xs" icon={<ArrowsLeftRight />} onClick={() => swapAxis()} />
+            <Button color="purple" size="xs" icon={<ArrowsLeftRightIcon />} onClick={() => swapAxis()} />
             <MultiSelect<keyof Dims & string>
               label="row"
               selected={rowAxis as string[]}
@@ -289,7 +289,7 @@ function MultiSelect<T extends string>({ label, onChange, options, selected }: M
       })}
       {available.length > 0 && (
         <Button
-          icon={<Plus />}
+          icon={<PlusIcon />}
           onClick={() => {
             onChange([...selected, available[0]]);
           }}

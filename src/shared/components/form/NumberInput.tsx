@@ -1,5 +1,5 @@
 import * as Ariakit from "@ariakit/react";
-import { ArrowCounterClockwise, Check, Warning } from "@phosphor-icons/react";
+import { ArrowCounterClockwiseIcon, CheckIcon, WarningIcon } from "@phosphor-icons/react";
 import { ForwardedRef, forwardRef, Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import { tw } from "../../styles/utils";
 import { Button } from "../button/Button";
@@ -171,7 +171,7 @@ export const NumberInput = forwardRef(function NumberInput(
               invalidEdit && (
                 <Ariakit.Tooltip content="Valeur modifiée">
                   <div className="w-10 flex items-center justify-center">
-                    <Warning className="w-5 h-5 text-orange-600" />
+                    <WarningIcon className="w-5 h-5 text-orange-600" />
                   </div>
                 </Ariakit.Tooltip>
               )
@@ -208,17 +208,17 @@ export const NumberInput = forwardRef(function NumberInput(
                 Voulez-vous dire <span className="font-mono px-2">{format(state.value)}</span> ?
               </p>
               <Ariakit.Tooltip content="Accepter">
-                <Button icon={<Check />} color="green" onClick={accept} />
+                <Button icon={<CheckIcon />} color="green" onClick={accept} />
               </Ariakit.Tooltip>
               <Ariakit.Tooltip content="Réinitialiser">
-                <Button icon={<ArrowCounterClockwise />} color="red" onClick={reset} />
+                <Button icon={<ArrowCounterClockwiseIcon />} color="red" onClick={reset} />
               </Ariakit.Tooltip>
             </Fragment>
           ) : (
             <Fragment>
               <p className="px-2">Nombre invalide</p>
               <Ariakit.Tooltip content="Réinitialiser">
-                <Button icon={<ArrowCounterClockwise />} color="red" onClick={reset} />
+                <Button icon={<ArrowCounterClockwiseIcon />} color="red" onClick={reset} />
               </Ariakit.Tooltip>
             </Fragment>
           )}

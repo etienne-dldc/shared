@@ -1,5 +1,12 @@
 import * as Ariakit from "@ariakit/react";
-import { CaretDown, CaretRight, CircleDashed, Folder, List, SquaresFour } from "@phosphor-icons/react";
+import {
+  CaretDownIcon,
+  CaretRightIcon,
+  CircleDashedIcon,
+  FolderIcon,
+  ListIcon,
+  SquaresFourIcon,
+} from "@phosphor-icons/react";
 import { createBrowserHistory } from "history";
 import { RefObject, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "../shared/components/button/Button";
@@ -50,24 +57,28 @@ export function Playground() {
     <div className="grid min-h-screen gap-4 p-4" style={{ gridTemplateRows: "auto 1fr" }}>
       <div className="flex flex-row">
         <ButtonGroup primary>
-          <RouteMenu items={routes} icon={<List />} />
+          <RouteMenu items={routes} icon={<ListIcon />} />
           {routeMatch?.parents.map((parent) => {
             return (
               <RouteMenu
                 key={parent.name}
                 items={parent.routes}
                 title={parent.name}
-                icon={<Folder />}
-                endIcon={<CaretDown />}
+                icon={<FolderIcon />}
+                endIcon={<CaretDownIcon />}
               />
             );
           })}
-          {routeMatch?.match && <ButtonLike title={routeMatch?.match.name} icon={<SquaresFour />} />}
+          {routeMatch?.match && <ButtonLike title={routeMatch?.match.name} icon={<SquaresFourIcon />} />}
         </ButtonGroup>
       </div>
       <div className="relative">
         <Suspense fallback={<LoadingBlock />}>
-          {routeMatch ? <routeMatch.match.component /> : <EmptyState text="Route not found" icon={<CircleDashed />} />}
+          {routeMatch ? (
+            <routeMatch.match.component />
+          ) : (
+            <EmptyState text="Route not found" icon={<CircleDashedIcon />} />
+          )}
         </Suspense>
       </div>
     </div>
@@ -111,7 +122,7 @@ function NestedMenu({ item, parentRef }: NestedMenuProps) {
 
   return (
     <Ariakit.MenuProvider>
-      <MenuItem render={<Ariakit.MenuButton />} title={item.name} icon={<Folder />} endIcon={<CaretRight />} />
+      <MenuItem render={<Ariakit.MenuButton />} title={item.name} icon={<FolderIcon />} endIcon={<CaretRightIcon />} />
       <Ariakit.Menu
         gutter={4}
         getAnchorRect={parentRef ? () => parentRef.current?.getBoundingClientRect() ?? null : undefined}
@@ -144,7 +155,7 @@ function NavItem({ item }: NavItemProps) {
     [item.path, menuStore],
   );
 
-  return <MenuItem title={item.name} icon={<SquaresFour />} render={<a href={item.path} onClick={onClick} />} />;
+  return <MenuItem title={item.name} icon={<SquaresFourIcon />} render={<a href={item.path} onClick={onClick} />} />;
 }
 
 function renderItem(item: TRouteItem, parentRef?: RefObject<HTMLDivElement | null>) {
