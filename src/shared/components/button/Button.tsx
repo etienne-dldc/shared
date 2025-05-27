@@ -38,6 +38,7 @@ export type ButtonProps = Merge<
     // For content
     icon?: React.ReactNode;
     endIcon?: React.ReactNode;
+    endAction?: React.ReactNode;
     title?: React.ReactNode;
     details?: string | React.ReactNode;
     loading?: boolean;
@@ -60,6 +61,7 @@ export const Button = (inProps: ButtonProps) => {
     title,
     icon,
     endIcon,
+    endAction,
     details,
     loading,
     children,
@@ -70,7 +72,9 @@ export const Button = (inProps: ButtonProps) => {
     ...buttonProps
   } = props;
 
-  const childrenResolved = children ?? <ButtonContent {...{ title, icon, endIcon, details, loading }} />;
+  const childrenResolved = children ?? (
+    <ButtonContent interactive {...{ title, icon, endIcon, endAction, details, loading }} />
+  );
 
   const forceHover = __forceState === "hover";
   const forceActive = __forceState === "active";

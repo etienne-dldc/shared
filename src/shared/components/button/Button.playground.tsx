@@ -1,7 +1,8 @@
-import { CaretDownIcon, CirclesFourIcon, UserIcon } from "@phosphor-icons/react";
+import { CaretDownIcon, CirclesFourIcon, DotsThreeVerticalIcon, UserIcon } from "@phosphor-icons/react";
 import { Variants } from "../../../playground/Variants";
 import { cn, tw } from "../../styles/utils";
 import { Button } from "./Button";
+import { ButtonLike } from "./ButtonLike";
 
 const TEXT_VARIANTS = {
   none: undefined,
@@ -42,7 +43,16 @@ const ICON_VARIANTS = {
   select: <CaretDownIcon />,
 } as const;
 
+const END_ACTION_VARIANTS = {
+  none: undefined,
+  dotsButton: <ButtonLike icon={<DotsThreeVerticalIcon />} />,
+  caretButton: <ButtonLike icon={<CaretDownIcon />} />,
+  cancelButton: <ButtonLike title="Cancel" color="red" />,
+  primaryDotsButton: <ButtonLike icon={<DotsThreeVerticalIcon />} />,
+} as const;
+
 const SIZE_VARIANTS = { xs: "xs", sm: "sm", md: "md", lg: "lg" } as const;
+
 const DIR_SIZE_VARIANTS = { default: undefined, xs: "xs", sm: "sm", md: "md", lg: "lg" } as const;
 
 const PRIMARY_VARIANTS = { default: undefined, primary: true, unprimary: false } as const;
@@ -104,6 +114,7 @@ export default function ButtonPlayground() {
         loading: LOADING_VARIANTS,
         icon: ICON_VARIANTS,
         endIcon: ICON_VARIANTS,
+        endAction: END_ACTION_VARIANTS,
         background: BACKGROUND_COLORS,
         fullWidth: FULL_WIDTH_VARIANTS,
         state: INTERACTIVE_STATE,
@@ -123,6 +134,7 @@ export default function ButtonPlayground() {
         loading: "no",
         icon: "user",
         endIcon: "none",
+        endAction: "none",
         background: "none",
         fullWidth: "no",
         state: "base",

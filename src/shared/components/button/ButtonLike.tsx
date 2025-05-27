@@ -20,6 +20,7 @@ export type ButtonLikeProps = Merge<
     // For content
     icon?: React.ReactNode;
     endIcon?: React.ReactNode;
+    endAction?: React.ReactNode;
     title?: React.ReactNode;
     details?: string | React.ReactNode;
     loading?: boolean;
@@ -38,9 +39,10 @@ export const ButtonLike = forwardRef((inProps: ButtonLikeProps, ref: React.Ref<H
       title,
       icon,
       endIcon,
+      endAction,
       details,
       loading,
-      children = <ButtonContent {...{ title, icon, endIcon, details, loading }} />,
+      children = <ButtonContent interactive={false} {...{ title, icon, endIcon, endAction, details, loading }} />,
 
       className,
       ...divProps

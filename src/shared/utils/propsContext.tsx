@@ -19,12 +19,20 @@ export function createPropsContext<Props extends Record<string, any>>(
 
   const keys = Object.keys(defaultProps) as Array<keyof Props>;
 
+  function withoutUndefined<T extends Record<string, any>>(value: T): T {
+    const result: Record<string, any> = {};
+    for (const key in value) {
+      if (value[key] !== undefined) {
+        result[key] = value[key];
+      }
+    }
+    return result as T;
+  }
+
   function pickProps(props: Record<string, any>): Partial<Props> {
     const pickedProps: Partial<Props> = {};
     keys.forEach((key) => {
-      if (key in props && (props as any)[key] !== undefined) {
-        pickedProps[key] = (props as any)[key];
-      }
+      pickedProps[key] = key in props ? (props as any)[key] : undefined;
     });
     return pickedProps;
   }
@@ -33,7 +41,10 @@ export function createPropsContext<Props extends Record<string, any>>(
     const parentProps = useContext(InternalContext);
     const pickedProps = useMemoRecord(pickProps(props));
 
-    const mergedProps = useMemo(() => mergeProps(parentProps, pickedProps), [parentProps, pickedProps]);
+    const mergedProps = useMemo(
+      () => mergeProps(parentProps, withoutUndefined(pickedProps)),
+      [parentProps, pickedProps],
+    );
 
     return <InternalContext.Provider value={mergedProps}>{children ?? <Fragment />}</InternalContext.Provider>;
   };
@@ -50,7 +61,10 @@ export function createPropsContext<Props extends Record<string, any>>(
   function useProps<P extends Partial<Props>>(directProps?: P): [props: Props, rest: Omit<P, keyof Props>] {
     const parentProps = useContext(InternalContext);
     const pickedProps = useMemoRecord(pickProps(directProps ?? {}));
-    const mergedProps = useMemo(() => mergeProps(parentProps, pickedProps), [parentProps, pickedProps]);
+    const mergedProps = useMemo(
+      () => mergeProps(parentProps, withoutUndefined(pickedProps)),
+      [parentProps, pickedProps],
+    );
 
     const remainingProps = { ...directProps } as Omit<P, keyof Props>;
     keys.forEach((key) => {
@@ -65,7 +79,7 @@ export function createPropsContext<Props extends Record<string, any>>(
   function usePropsSplitter(): TPropsSplitter<Props> {
     const parentProps = useContext(InternalContext);
     return (props) => {
-      const mergedProps = mergeProps(parentProps, pickProps(props));
+      const mergedProps = mergeProps(parentProps, withoutUndefined(pickProps(props)));
       return mergedProps;
     };
   }

@@ -2,7 +2,8 @@
 import { createPropsContext } from "../../utils/propsContext";
 
 // null = infer value from other props
-export type TDesignSize = "xs" | "sm" | "md" | "lg";
+export type TDesignSizeBase = "xs" | "sm" | "md" | "lg";
+export type TDesignSize = TDesignSizeBase | "smInner" | "mdInner" | "lgInner";
 export type TDesignDirSize = TDesignSize | null;
 export type TDesignPrimary = boolean;
 export type TDesignFilled = boolean;
