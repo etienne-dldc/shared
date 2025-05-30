@@ -34,7 +34,7 @@ export function useFinderPanelRefOrFail() {
   return ref;
 }
 
-const GUTTER_WIDTH = 11;
+const GUTTER_WIDTH = 10;
 const MINI_HANDLE_HEIGHT = 20;
 
 export interface FinderPanelProps extends React.ComponentPropsWithoutRef<"div"> {
@@ -125,7 +125,7 @@ export const FinderPanel = forwardRef(function FinderPanel(
           </OverlayScrollbarsComponent>
         </PanelSizeContext.Provider>
       </PanelRefContext.Provider>
-      <div className="absolute inset-y-0 right-0 w-[var(--gutter-width)] pointer-events-none bg-neutral-900 z-10" />
+      <div className="absolute inset-y-0 right-0 w-[var(--gutter-width)] pointer-events-none bg-black/25 z-10" />
       <MiniHandle
         onPointerDown={resizer.onPointerDown}
         className="top-0 right-0 z-10"

@@ -43,7 +43,7 @@ export function Finder({ children, className }: FinderProps) {
 
   return (
     <OverlayScrollbarsComponent
-      className={cn("bg-neutral-800", className)}
+      className={cn("bg-neutral-900 border-[0.5px] border-white/5", className)}
       events={{
         initialized: onInitUpdate,
         updated: onInitUpdate,
