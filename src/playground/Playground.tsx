@@ -101,7 +101,7 @@ function RouteMenu({ items, title, icon, endIcon }: RouteMenuProps) {
       <Ariakit.Menu
         gutter={8}
         ref={topMenuRef}
-        render={<Paper level="popover" />}
+        render={<Paper />}
         className={cn("p-2 outline-hidden h-[300px] min-w-36")}
         portal={true}
         unmountOnHide
@@ -124,9 +124,9 @@ function NestedMenu({ item, parentRef }: NestedMenuProps) {
     <Ariakit.MenuProvider>
       <MenuItem render={<Ariakit.MenuButton />} title={item.name} icon={<FolderIcon />} endIcon={<CaretRightIcon />} />
       <Ariakit.Menu
-        gutter={4}
+        gutter={8}
         getAnchorRect={parentRef ? () => parentRef.current?.getBoundingClientRect() ?? null : undefined}
-        render={<Paper level="popover" />}
+        render={<Paper />}
         className={cn("p-2 outline-hidden h-[300px] min-w-36")}
         ref={menuRef}
       >

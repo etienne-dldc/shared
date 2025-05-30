@@ -16,9 +16,9 @@ export default function PaperPlayground() {
       }}
       dimensions={{ level: LEVEL_VARIANTS }}
       defaultSelected={{ level: "card" }}
-      render={({ level }) => {
+      render={() => {
         return (
-          <Paper level={level} className="p-4">
+          <Paper className="p-4">
             <div className="w-12 h-12 bg-white/5" />
           </Paper>
         );

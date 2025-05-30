@@ -3,29 +3,15 @@ import { cn, tw } from "../../styles/utils";
 import { DesignContext } from "../core/DesignContext";
 import { DynamicColorProvider } from "../core/DynamicColorProvider";
 
-export type TPaperLevel = "background" | "card" | "dialog" | "popover";
-
-export interface PaperProps extends ComponentPropsWithoutRef<"div"> {
-  level: TPaperLevel;
-  darkerBackground?: boolean;
-}
-
-const PAPER_LEVEL_STYLES = {
-  background: tw`bg-zinc-900`,
-  card: tw`bg-zinc-900 rounded-md flex flex-col`,
-  dialog: tw`bg-zinc-900 rounded-md shadow-xl ring-1 ring-inset ring-white/10 flex flex-col`,
-  popover: tw`bg-zinc-900 rounded-md shadow-xl ring-1 ring-inset ring-white/10 flex flex-col`,
-} as const;
-
 export const Paper = forwardRef(function Paper(
-  { level, darkerBackground = false, className, ...divProps }: PaperProps,
+  { className, ...divProps }: ComponentPropsWithoutRef<"div">,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
   return (
     <DesignContext.Define rounded="all">
-      <DynamicColorProvider force={level === "dialog" || level === "popover"}>
+      <DynamicColorProvider force>
         <div
-          className={cn(PAPER_LEVEL_STYLES[level], darkerBackground && tw`bg-zinc-950`, className)}
+          className={cn(tw`bg-zinc-900 rounded-md shadow-xl border-[0.5px] border-neutral-700/70`, className)}
           {...divProps}
           ref={ref}
         />

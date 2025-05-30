@@ -13,7 +13,6 @@ interface ModalProps {
   children?: React.ReactElement<any>;
   title: string;
   content: React.ReactNode;
-  darkerBackground?: boolean;
   open?: boolean;
   setOpen?: (open: boolean) => void;
   onClose?: () => void;
@@ -24,7 +23,6 @@ interface ModalProps {
   noCloseButton?: boolean;
   innerScroll?: boolean;
   endActions?: React.ReactNode;
-  // actions?: React.ReactNode;
   unmountOnHide?: boolean;
 }
 
@@ -41,7 +39,6 @@ export const Modal = forwardRef<HTMLButtonElement, ModalProps>(
       width = "md",
       height = "md",
       hideOnEscape,
-      darkerBackground = false,
       noCloseButton = false,
       innerScroll = false,
       unmountOnHide,
@@ -92,8 +89,6 @@ export const Modal = forwardRef<HTMLButtonElement, ModalProps>(
               style={{ gridTemplateRows: `1fr`, gridTemplateColumns: `auto` }}
             >
               <Paper
-                level="dialog"
-                darkerBackground={darkerBackground}
                 className={cn(
                   tw`flex flex-col gap-4 outline-hidden p-4 place-self-center w-full overflow-hidden`,
                   widthClass,

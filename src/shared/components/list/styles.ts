@@ -8,6 +8,10 @@ export const LIST_ITEM_ICON_SIZE: Record<TDesignSize, number> = {
   sm: 18,
   md: 20,
   lg: 26,
+
+  smInner: 16,
+  mdInner: 20,
+  lgInner: 26,
 };
 
 export interface ListItemStylesParams {
