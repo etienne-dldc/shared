@@ -109,7 +109,7 @@ const SelectAny = forwardRef(function Select(
       <Ariakit.SelectPopover
         gutter={4}
         portal
-        render={<Paper className="p-2 outline-hidden" level="popover" />}
+        render={<Paper className="p-2 outline-hidden" />}
         sameWidth
         unmountOnHide
       >
@@ -134,7 +134,7 @@ const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(function SelectIt
   const className = cn(
     tw`flex flex-row items-center justify-center text-left group overflow-hidden relative`,
     tw`outline-hidden cursor-pointer`,
-    buttonRoundedClass("all"),
+    buttonRoundedClass("all", size),
     buttonSizeClass(size, xSize, ySize),
     tw`disabled:cursor-not-allowed`,
     tw`data-active-item:bg-dynamic-600 data-active-item:text-white`,

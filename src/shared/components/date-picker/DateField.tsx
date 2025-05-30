@@ -71,7 +71,7 @@ export const DateField = forwardRef(function DateField(
         />
         <Ariakit.FormError name={name} render={<FieldError />} />
       </div>
-      <Ariakit.Popover gutter={4} portal render={<Paper level="popover" className="" />}>
+      <Ariakit.Popover gutter={4} portal render={<Paper />}>
         <div>
           <ReactDayPicker
             mode="single"

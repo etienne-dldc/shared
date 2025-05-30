@@ -73,7 +73,7 @@ export function ColorField({ name, label, disabled = false, required = false, co
             portal
             fitViewport
             overlap
-            render={<Paper level="popover" />}
+            render={<Paper />}
             className="max-h-[var(--popover-available-height)] overflow-hidden"
           >
             <div className="overflow-auto flex flex-col py-2">

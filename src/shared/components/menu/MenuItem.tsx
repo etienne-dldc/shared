@@ -42,7 +42,10 @@ export const MenuItem = forwardRef<HTMLDivElement, MenuItemProps>(function MenuI
   } = props;
 
   const mainClass = useMemo(() => dropdownItemClassName(design.size), [design.size]);
-  const iconProps = useMemo(() => ({ size: pick(design.size, { xs: 16, sm: 16, md: 20, lg: 26 }) }), [design.size]);
+  const iconProps = useMemo(
+    () => ({ size: pick(design.size, { xs: 16, sm: 16, md: 20, lg: 26, smInner: 16, mdInner: 20, lgInner: 26 }) }),
+    [design.size],
+  );
 
   return (
     <DesignContext.Provider value={design}>
@@ -63,6 +66,9 @@ function dropdownItemClassName(size: TDesignSize) {
     sm: tw`text-sm min-h-[32px] min-w-[32px]`,
     md: tw`text-base min-h-[40px] min-w-[40px]`,
     lg: tw`text-lg min-h-[54px] min-w-[54px]`,
+    smInner: tw`text-sm min-h-[20px] min-w-[20px]`,
+    mdInner: tw`text-base min-h-[28px] min-w-[28px]`,
+    lgInner: tw`text-lg min-h-[34px] min-w-[34px]`,
   });
 
   return cn(

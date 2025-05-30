@@ -189,7 +189,7 @@ export const NumberInput = forwardRef(function NumberInput(
       />
       <Ariakit.Popover
         gutter={4}
-        render={<Paper level="popover" />}
+        render={<Paper />}
         className="flex flex-row items-center gap-2 p-2"
         autoFocusOnShow={false}
 

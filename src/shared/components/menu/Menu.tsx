@@ -30,7 +30,7 @@ export const Menu = forwardRef<HTMLDivElement, MenuProps>(function Menu(
       <Ariakit.Menu
         gutter={8}
         ref={ref}
-        render={<Paper level="popover" />}
+        render={<Paper />}
         className={cn("p-2 outline-hidden", className)}
         portal={portal}
         unmountOnHide

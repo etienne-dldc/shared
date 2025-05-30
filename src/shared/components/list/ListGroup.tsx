@@ -20,6 +20,10 @@ export function ListGroup(props: ListGroupProps) {
     sm: cn("ml-1"),
     md: cn("ml-2"),
     lg: cn("ml-3"),
+    // TODO: check if this is correct
+    smInner: cn("ml-1"),
+    mdInner: cn("ml-2"),
+    lgInner: cn("ml-3"),
   });
 
   return (
