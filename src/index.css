@@ -1,4 +1,6 @@
-@import "tailwindcss";
+@layer reset, base, tokens, recipes, utilities;
+
+/* @import "tailwindcss";
 
 @theme static {
   --color-red-50: oklch(0.971 0.013 17.38);
@@ -283,4 +285,4 @@
   opacity: 1;
   visibility: visible;
   --os-handle-bg: var(--color-neutral-800);
-}
+} */
