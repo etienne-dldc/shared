@@ -1,5 +1,6 @@
 import { IconContext, IconProps } from "@phosphor-icons/react";
 import { Fragment, useContext } from "react";
+import { css } from "../../../../styled-system/css";
 import { pick } from "../../utils/pick";
 
 export function LoadingIcon(props: IconProps) {
@@ -8,14 +9,7 @@ export function LoadingIcon(props: IconProps) {
   const weight = props.weight ?? iconProps?.weight ?? "regular";
   const color = props.color ?? iconProps?.color ?? "currentColor";
 
-  const strokeWidth = pick(weight, {
-    thin: 8,
-    light: 12,
-    regular: 16,
-    bold: 24,
-    duotone: 16,
-    fill: 16,
-  });
+  const strokeWidth = pick(weight, { thin: 8, light: 12, regular: 16, bold: 24, duotone: 16, fill: 16 });
 
   const bgStrokeWidth = weight === "duotone" ? 28 : strokeWidth;
   const bgFill = weight === "duotone" ? color : "none";
@@ -24,8 +18,8 @@ export function LoadingIcon(props: IconProps) {
     <div role="status">
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        ria-hidden="true"
-        className="animate-spin"
+        aria-hidden="true"
+        className={css({ animation: "spin" })}
         fill="none"
         style={{ width: size, height: size }}
         viewBox="0 0 256 256"
@@ -50,7 +44,7 @@ export function LoadingIcon(props: IconProps) {
           </Fragment>
         )}
       </svg>
-      <span className="sr-only">Loading...</span>
+      <span className={css({ srOnly: true })}>Loading...</span>
     </div>
   );
 }

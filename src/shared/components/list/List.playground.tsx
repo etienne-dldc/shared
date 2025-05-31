@@ -2,7 +2,7 @@ import * as Ariakit from "@ariakit/react";
 import { CaretRightIcon, FileIcon, SignOutIcon, SquareIcon } from "@phosphor-icons/react";
 import { Variants } from "../../../playground/Variants";
 import { cn } from "../../styles/utils";
-import { Button } from "../button/Button";
+import { Button } from "../button-legacy/Button";
 import { DesignContext } from "../core/DesignContext";
 import { List } from "./List";
 import { ListGroup } from "./ListGroup";

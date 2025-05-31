@@ -3,7 +3,7 @@ import { XIcon } from "@phosphor-icons/react";
 import { Fragment, forwardRef, useCallback } from "react";
 import { cn, tw } from "../../styles/utils";
 import { pick } from "../../utils/pick";
-import { Button } from "../button/Button";
+import { Button } from "../button-legacy/Button";
 import { Paper } from "../common/Paper";
 import { DynamicColorProvider } from "../core/DynamicColorProvider";
 import { PageTitle } from "../layouts/PageTitle";

@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { nanoid } from "nanoid";
 import { useState } from "react";
 import scrollIntoView from "smooth-scroll-into-view-if-needed";
-import { Button } from "../components/button/Button";
+import { Button } from "../components/button-legacy/Button";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { Finder } from "./Finder";
 import { FinderPanel, useFinderPanelRefOrFail, useFinderPanelSize } from "./FinderPanel";

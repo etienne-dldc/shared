@@ -5,7 +5,7 @@ import { Merge } from "type-fest";
 import { cn } from "../../styles/utils";
 import { pick } from "../../utils/pick";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
-import { ButtonContent } from "../button/ButtonContent";
+import { ButtonContent } from "../button-legacy/ButtonContent";
 import { DesignContext, TDesignSize } from "../core/DesignContext";
 import { DisabledContext } from "../core/DisabledContext";
 import { DynamicColorProvider, TDynamicColor } from "../core/DynamicColorProvider";

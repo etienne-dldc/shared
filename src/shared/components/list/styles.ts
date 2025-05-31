@@ -1,6 +1,6 @@
 import { cn, tw } from "../../styles/utils";
 import { pick } from "../../utils/pick";
-import { buttonSizeClass } from "../button/styles";
+import { buttonSizeClass } from "../button-legacy/styles";
 import { resolveDesignProps, TDesignContextProps, TDesignSize } from "../core/DesignContext";
 
 export const LIST_ITEM_ICON_SIZE: Record<TDesignSize, number> = {

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Fragment } from "react/jsx-runtime";
-import { Button } from "../button/Button";
+import { Button } from "../button-legacy/Button";
 import { Modal } from "./Modal";
 
 export default function ModalPlayground() {

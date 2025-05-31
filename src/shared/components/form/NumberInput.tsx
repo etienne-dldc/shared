@@ -2,7 +2,7 @@ import * as Ariakit from "@ariakit/react";
 import { ArrowCounterClockwiseIcon, CheckIcon, WarningIcon } from "@phosphor-icons/react";
 import { ForwardedRef, forwardRef, Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import { tw } from "../../styles/utils";
-import { Button } from "../button/Button";
+import { Button } from "../button-legacy/Button";
 import { Paper } from "../common/Paper";
 import { DesignContext } from "../core/DesignContext";
 import { TextInput, TextInputProps } from "./TextInput";
