@@ -1,20 +1,96 @@
 import { defineConfig } from "@pandacss/dev";
+import pandaPreset from "@pandacss/preset-panda";
+
+const spacing = {
+  "0__x": { value: "0.125rem" },
+  "0_x": { value: "0.25rem" },
+  "0_xx": { value: "0.375rem" },
+  "0x": { value: "0.5rem" },
+  "0x_x": { value: "0.625rem" },
+  "0xx": { value: "0.75rem" },
+  "0xxx": { value: "0.875rem" },
+  1: { value: "1rem" },
+  "1__x": { value: "1.125rem" },
+  "1_x": { value: "1.25rem" },
+  "1_xx": { value: "1.375rem" },
+  "1x": { value: "1.5rem" },
+  "1x_x": { value: "1.625rem" },
+  "1xx": { value: "1.75rem" },
+  "1xxx": { value: "1.875rem" },
+  2: { value: "2rem" },
+  "2_x": { value: "2.25rem" },
+  "2x": { value: "2.5rem" },
+  "2xx": { value: "2.75rem" },
+  3: { value: "3rem" },
+  "3_x": { value: "3.25rem" },
+  "3x": { value: "3.5rem" },
+  "3xx": { value: "3.75rem" },
+  4: { value: "4rem" },
+  "4x": { value: "4.5rem" },
+  5: { value: "5rem" },
+  6: { value: "6rem" },
+  7: { value: "7rem" },
+  8: { value: "8rem" },
+  9: { value: "9rem" },
+  10: { value: "10rem" },
+  11: { value: "11rem" },
+  12: { value: "12rem" },
+  13: { value: "13rem" },
+  14: { value: "14rem" },
+  15: { value: "15rem" },
+  16: { value: "16rem" },
+  18: { value: "18rem" },
+  20: { value: "20rem" },
+  24: { value: "24rem" },
+};
 
 export default defineConfig({
-  // Whether to use css reset
   preflight: true,
-
-  // Where to look for your css declarations
   include: ["./src/**/*.{js,jsx,ts,tsx}"],
-
-  // Files to exclude
   exclude: [],
-
-  // Useful for theme customization
+  presets: [],
   theme: {
-    extend: {},
+    extend: {
+      ...pandaPreset.theme,
+      tokens: {
+        ...pandaPreset.theme.tokens,
+        spacing,
+      },
+      // Based on line height size
+      // const fontSizeRem = lineHeightRem - 0.56 * Math.exp(-Math.pow(1.76 - lineHeightRem, 2) / Math.pow(0.8, 2));
+      // const fontSizeRemRounded = Math.round(fontSizeRem * 16) / 16; // Round to px
+      textStyles: {
+        "0x": { value: { lineHeight: "0.5rem", fontSize: "0.4375rem" } },
+        "0x_x": { value: { lineHeight: "0.625rem", fontSize: "0.5625rem" } },
+        "0xx": { value: { lineHeight: "0.75rem", fontSize: "0.625rem" } },
+        "0xxx": { value: { lineHeight: "0.875rem", fontSize: "0.6875rem" } },
+        "1": { value: { lineHeight: "1rem", fontSize: "0.75rem" } },
+        "1__x": { value: { lineHeight: "1.125rem", fontSize: "0.8125rem" } },
+        "1_x": { value: { lineHeight: "1.25rem", fontSize: "0.875rem" } },
+        "1_xx": { value: { lineHeight: "1.375rem", fontSize: "0.9375rem" } },
+        "1x": { value: { lineHeight: "1.5rem", fontSize: "1rem" } },
+        "1x_x": { value: { lineHeight: "1.625rem", fontSize: "1.0625rem" } },
+        "1xx": { value: { lineHeight: "1.75rem", fontSize: "1.1875rem" } },
+        "1xxx": { value: { lineHeight: "1.875rem", fontSize: "1.3125rem" } },
+        "2": { value: { lineHeight: "2rem", fontSize: "1.5rem" } },
+        "2_x": { value: { lineHeight: "2.25rem", fontSize: "1.875rem" } },
+        "2x": { value: { lineHeight: "2.5rem", fontSize: "2.25rem" } },
+        "2xx": { value: { lineHeight: "2.75rem", fontSize: "2.625rem" } },
+        "3": { value: { lineHeight: "3rem", fontSize: "2.9375rem" } },
+        "3_x": { value: { lineHeight: "3.25rem", fontSize: "3.25rem" } },
+        "3x": { value: { lineHeight: "3.5rem", fontSize: "3.5rem" } },
+        "3xx": { value: { lineHeight: "3.75rem", fontSize: "3.75rem" } },
+        "4": { value: { lineHeight: "4rem", fontSize: "4rem" } },
+        "4x": { value: { lineHeight: "4.5rem", fontSize: "4.5rem" } },
+        "5": { value: { lineHeight: "5rem", fontSize: "5rem" } },
+        "6": { value: { lineHeight: "6rem", fontSize: "6rem" } },
+        "7": { value: { lineHeight: "7rem", fontSize: "7rem" } },
+        "8": { value: { lineHeight: "8rem", fontSize: "8rem" } },
+      },
+    },
   },
-
-  // The output directory for your css system
   outdir: "styled-system",
+  strictTokens: true,
+  strictPropertyValues: true,
+  jsxFramework: "react",
 });
