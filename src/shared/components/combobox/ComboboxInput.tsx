@@ -2,8 +2,8 @@ import * as Ariakit from "@ariakit/react";
 import { Backspace } from "@phosphor-icons/react";
 import { forwardRef } from "react";
 import { cn } from "../../styles/utils";
-import { Button } from "../button/Button";
-import { ButtonContent } from "../button/ButtonContent";
+import { Button } from "../button-legacy/Button";
+import { ButtonContent } from "../button-legacy/ButtonContent";
 import { TextInput, TextInputProps } from "../form/TextInput";
 
 interface ComboboxInputProps extends TextInputProps {

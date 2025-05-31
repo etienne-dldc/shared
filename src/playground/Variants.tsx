@@ -1,9 +1,9 @@
 import { ArrowsLeftRightIcon, PlusIcon } from "@phosphor-icons/react";
 import { Fragment, SetStateAction, useCallback, useMemo, type JSX } from "react";
-import { Button } from "../shared/components/button/Button";
-import { ButtonContent } from "../shared/components/button/ButtonContent";
-import { ButtonGroup } from "../shared/components/button/ButtonGroup";
-import { ButtonLike } from "../shared/components/button/ButtonLike";
+import { Button } from "../shared/components/button-legacy/Button";
+import { ButtonContent } from "../shared/components/button-legacy/ButtonContent";
+import { ButtonGroup } from "../shared/components/button-legacy/ButtonGroup";
+import { ButtonLike } from "../shared/components/button-legacy/ButtonLike";
 import { Select, TSelectItem } from "../shared/components/select/Select";
 import { useLatestRef } from "../shared/hooks/useLatestRef";
 import { useLocalStorageState } from "../shared/hooks/useLocalStorageState";

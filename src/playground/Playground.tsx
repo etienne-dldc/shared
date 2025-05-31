@@ -9,9 +9,9 @@ import {
 } from "@phosphor-icons/react";
 import { createBrowserHistory } from "history";
 import { RefObject, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Button } from "../shared/components/button/Button";
-import { ButtonGroup } from "../shared/components/button/ButtonGroup";
-import { ButtonLike } from "../shared/components/button/ButtonLike";
+import { Button } from "../shared/components/button-legacy/Button";
+import { ButtonGroup } from "../shared/components/button-legacy/ButtonGroup";
+import { ButtonLike } from "../shared/components/button-legacy/ButtonLike";
 import { LoadingBlock } from "../shared/components/common/LoadingBlock";
 import { Paper } from "../shared/components/common/Paper";
 import { DesignContext } from "../shared/components/core/DesignContext";

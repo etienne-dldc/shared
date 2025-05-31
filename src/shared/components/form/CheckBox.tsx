@@ -1,7 +1,7 @@
 import * as Ariakit from "@ariakit/react";
 import { CheckSquareIcon, SquareIcon } from "@phosphor-icons/react";
 import { ComponentPropsWithoutRef, forwardRef, useState } from "react";
-import { BUTTON_ICON_SIZE } from "../button/styles";
+import { BUTTON_ICON_SIZE } from "../button-legacy/styles";
 import { IconBox } from "../common/IconBox";
 import { DesignContext, TDesignSize } from "../core/DesignContext";
 

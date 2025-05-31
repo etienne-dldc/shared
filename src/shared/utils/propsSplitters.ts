@@ -2,7 +2,7 @@ import { UnionToIntersection } from "type-fest";
 
 type BaseRecord = Record<string, any>;
 
-export type TPropsSplitter<Out extends BaseRecord> = (props: BaseRecord) => Out;
+export type TPropsSplitter<Out> = (props: BaseRecord) => Out;
 
 export type TPropsSplittersResult<Props extends BaseRecord, Splitters extends Record<string, TPropsSplitter<any>>> = [
   { [K in keyof Splitters]: ReturnType<Splitters[K]> },
