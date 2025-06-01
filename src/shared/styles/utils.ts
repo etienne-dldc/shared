@@ -7,4 +7,4 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export type TInteractiveState = "hover" | "focus" | "active";
+export type TInteractiveState = "hover" | "focus";

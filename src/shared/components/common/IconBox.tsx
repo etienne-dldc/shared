@@ -1,21 +1,25 @@
 import { IconContext, IconWeight } from "@phosphor-icons/react";
-import { useContext, useMemo } from "react";
+import { ComponentProps, useContext, useMemo } from "react";
+import { Merge } from "type-fest";
 import { css, cva } from "../../../../styled-system/css";
 import { SystemStyleObject } from "../../../../styled-system/types";
 import { cn } from "../../styles/utils";
 import { DesignContext, resolveDesignProps, TDesignCrossSize, TDesignMainSize } from "../core/DesignContext";
 
-interface IconBoxProps {
-  icon: React.ReactNode;
-  alt?: string;
-  color?: string;
-  size?: string | number;
-  weight?: IconWeight;
-  mirrored?: boolean;
-  className?: string;
-  crossSize?: TDesignCrossSize;
-  css?: SystemStyleObject;
-}
+type IconBoxProps = Merge<
+  ComponentProps<"div">,
+  {
+    icon: React.ReactNode;
+    alt?: string;
+    color?: string;
+    size?: string | number;
+    weight?: IconWeight;
+    mirrored?: boolean;
+    className?: string;
+    crossSize?: TDesignCrossSize;
+    css?: SystemStyleObject;
+  }
+>;
 
 const ICON_SIZE_MAPPING: Record<TDesignCrossSize, number> = {
   "2x": 10,
@@ -57,7 +61,7 @@ const iconClass = cva({
 });
 
 export function IconBox(props: IconBoxProps) {
-  const [designBase, { icon, alt, color, size, weight, mirrored, className, css: cssProp }] =
+  const [designBase, { icon, alt, color, size, weight, mirrored, className, css: cssProp, ...htmlProps }] =
     DesignContext.useProps(props);
   const parentIconProps = useContext(IconContext);
   const { crossSize, mainSize } = resolveDesignProps(designBase);
@@ -77,7 +81,11 @@ export function IconBox(props: IconBoxProps) {
 
   return (
     <IconContext.Provider value={mergedProps}>
-      <div className={cn(css(iconClass.raw({ mainSize }), cssProp), className)} style={{ minHeight: resolvedSize }}>
+      <div
+        className={cn(css(iconClass.raw({ mainSize }), cssProp), className)}
+        style={{ minHeight: resolvedSize }}
+        {...htmlProps}
+      >
         {icon}
       </div>
     </IconContext.Provider>

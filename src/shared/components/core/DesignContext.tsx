@@ -13,6 +13,30 @@ export type TDesignVariant = "solid" | "surface" | "subtle" | "ghost";
 
 export type TDesignRounded = "left" | "right" | "top" | "bottom" | "none" | "all";
 
+export type TPaletteColor =
+  | "red"
+  | "orange"
+  | "amber"
+  | "yellow"
+  | "lime"
+  | "green"
+  | "emerald"
+  | "teal"
+  | "cyan"
+  | "sky"
+  | "blue"
+  | "indigo"
+  | "violet"
+  | "purple"
+  | "fuchsia"
+  | "pink"
+  | "rose"
+  | "slate"
+  | "gray"
+  | "zinc"
+  | "neutral"
+  | "stone";
+
 export interface TDesignContextProps {
   contentSize: TDesignContentSize | null;
   crossSize: TDesignCrossSize | null;
@@ -28,7 +52,7 @@ export const DesignContext = createPropsContext(
     contentSize: null,
     crossSize: null,
     mainSize: null,
-    variant: "subtle",
+    variant: "surface",
     hoverVariant: null,
     rounded: "all",
   } as TDesignContextProps,
