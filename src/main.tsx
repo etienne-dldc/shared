@@ -11,8 +11,8 @@ createRoot(document.getElementById("root")!).render(
     <Suspense fallback={<p>Loading...</p>}>
       {/* <Playground /> */}
       <VStack p="4" gap="2" alignItems="start">
-        <ButtonGroup color="blue" variant="solid" direction="vertical">
-          <Button content="Hello" icon={<HouseIcon />} />
+        <ButtonGroup color="blue" variant="solid" direction="vertical" css={{ maxWidth: "24" }}>
+          <Button content="Hello this is some long text" icon={<HouseIcon />} endIcon={<CaretRightIcon />} />
           <Button content="Hey" icon={<HouseIcon />} />
           <Button content="Hello" icon={<HouseIcon />} />
           <Button content="Hello" icon={<HouseIcon />} />

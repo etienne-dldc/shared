@@ -1,5 +1,6 @@
 import { ComponentPropsWithRef } from "react";
 import { css, cx } from "../../../../styled-system/css";
+import { Ellipsis } from "../../../../styled-system/jsx";
 import { SystemStyleObject } from "../../../../styled-system/types";
 import { isNotNil } from "../../utils/nil";
 import { IconBox } from "../common/IconBox";
@@ -84,7 +85,7 @@ export function ItemContent(props: ItemContentProps) {
               hasEndAction && { pr: "0" },
             )}
           >
-            {children}
+            {typeof children === "string" ? <Ellipsis>{children}</Ellipsis> : children}
           </div>
         )}
         {endActionResolved}

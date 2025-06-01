@@ -1,8 +1,8 @@
 import * as Ariakit from "@ariakit/react";
-import { SystemStyleObject } from "@pandacss/dev";
 import { Children, cloneElement, ComponentPropsWithoutRef, ForwardedRef, forwardRef, Fragment } from "react";
 import { Merge } from "type-fest";
 import { css } from "../../../../styled-system/css";
+import { SystemStyleObject } from "../../../../styled-system/types";
 import { cn } from "../../styles/utils";
 import { colorPaletteClass } from "../common/styles";
 import { DesignContext, TDesignCrossSize, TDesignMainSize, TDesignVariant, TPaletteColor } from "../core/DesignContext";
@@ -43,6 +43,7 @@ export const ButtonGroup = forwardRef(function ButtonGroup(
     outerDividers = "none",
     innerDividers = true,
     rounded = true,
+    css: cssProp,
     ...divProps
   } = props;
 
@@ -68,6 +69,7 @@ export const ButtonGroup = forwardRef(function ButtonGroup(
           css(
             buttonGroupClass.raw({ direction, variant }),
             inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
+            cssProp,
           ),
           className,
         )}

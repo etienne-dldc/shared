@@ -1,4 +1,11 @@
-import { defineConfig, defineGlobalStyles, defineTextStyles, defineUtility, Tokens } from "@pandacss/dev";
+import {
+  defineConfig,
+  defineGlobalStyles,
+  definePattern,
+  defineTextStyles,
+  defineUtility,
+  Tokens,
+} from "@pandacss/dev";
 import pandaPreset from "@pandacss/preset-panda";
 
 const spacing = {
@@ -114,7 +121,7 @@ const sizes = {
 
 const radii = {
   "1_x": { value: "0.3125rem" },
-  //   xs: { value: '0.125rem' },
+  // xs: { value: '0.125rem' },
   // sm: { value: '0.25rem' },
   // md: { value: '0.375rem' },
   // lg: { value: '0.5rem' },
@@ -284,6 +291,25 @@ export default defineConfig({
   utilities: {
     extend: {
       ...insetRing,
+    },
+  },
+  patterns: {
+    extend: {
+      ellipsis: definePattern({
+        description: "Text ellipsis",
+        jsxElement: "span",
+        properties: {},
+        defaultValues: {},
+        transform(props) {
+          const { truncate, ...rest } = props;
+          return {
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            ...rest,
+          };
+        },
+      }),
     },
   },
   globalCss,
