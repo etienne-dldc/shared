@@ -79,10 +79,31 @@ export const buttonClass = cva({
             borderWidth: "0x",
           },
         },
+        _disabled: {
+          bg: "colorPalette.950",
+          color: "neutral.200/60",
+        },
       },
-      surface: {},
-      subtle: {},
-      ghost: {},
+      surface: {
+        _disabled: {
+          color: "colorPalette.200/40",
+          bg: "white/3",
+          _after: {
+            borderColor: "neutral.900",
+          },
+        },
+      },
+      subtle: {
+        _disabled: {
+          color: "colorPalette.200/40",
+          bg: "white/3",
+        },
+      },
+      ghost: {
+        _disabled: {
+          color: "colorPalette.200/40",
+        },
+      },
     } satisfies Record<TDesignVariant, SystemStyleObject>,
     hoverVariant: {
       solid: {
