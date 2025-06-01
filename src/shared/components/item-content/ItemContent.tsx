@@ -1,6 +1,5 @@
 import { ComponentPropsWithRef } from "react";
 import { css, cx } from "../../../../styled-system/css";
-import { styled } from "../../../../styled-system/jsx";
 import { SystemStyleObject } from "../../../../styled-system/types";
 import { isNotNil } from "../../utils/nil";
 import { IconBox } from "../common/IconBox";
@@ -13,7 +12,7 @@ import {
   TDesignCrossSize,
   TDesignMainSize,
 } from "../core/DesignContext";
-import { itemContentClass, itemContentFontSizeClass } from "./styles";
+import { contentSpaceClass, itemContentClass, itemContentFontSizeClass } from "./styles";
 
 interface ItemContentProps extends Omit<ComponentPropsWithRef<"div">, "title"> {
   icon?: React.ReactNode;
@@ -40,18 +39,18 @@ export function ItemContent(props: ItemContentProps) {
   const design = resolveDesignProps(designBase);
   const { contentSize, mainSize, crossSize } = design;
 
-  const endActionResolved = endAction ? (
-    <styled.div>{endAction}</styled.div>
-  ) : endIcon ? (
-    <IconBox css={{ ml: "auto" }} icon={endIcon} />
-  ) : null;
-
   const hasStartIcon = Boolean(icon || loading);
-  const hasEndAction = Boolean(endActionResolved);
+  const hasEndAction = Boolean(endAction || endIcon);
   const hasChildren = isNotNil(children);
 
   const iconOnly = (hasStartIcon && !hasChildren && !hasEndAction) || (hasEndAction && !hasStartIcon && !hasChildren);
   const iconOnlyStyles = iconOnly ? css.raw({ mx: "auto" }) : null;
+
+  const endActionResolved = endAction ? (
+    <div className={css({ ml: "auto" }, iconOnlyStyles)}>{endAction}</div>
+  ) : endIcon ? (
+    <IconBox css={css.raw({ ml: "auto" }, iconOnlyStyles)} icon={endIcon} />
+  ) : null;
 
   const nestedContentSize: TDesignCrossSize = contentToNestedCross[design.contentSize] ?? "4";
 
@@ -70,18 +69,25 @@ export function ItemContent(props: ItemContentProps) {
     >
       <DesignContext.Define crossSize={nestedContentSize} mainSize={props.mainSize}>
         {hasStartIcon && (
-          <IconBox css={css.raw({ mr: "auto" }, iconOnlyStyles)} icon={loading ? <LoadingIcon /> : icon} />
+          <IconBox
+            css={css.raw({ mr: "auto" }, iconOnlyStyles)}
+            icon={loading ? <LoadingIcon /> : icon}
+            data-slot="start-icon"
+          />
         )}
         {isNotNil(children) && (
-          <styled.div display="flex" flexGrow={1} alignItems="center" overflow="hidden">
+          <div
+            className={css(
+              { display: "flex", flexGrow: 1, alignItems: "center", overflow: "hidden" },
+              contentSpaceClass.raw({ mainSize }),
+              hasStartIcon && { pl: "0" },
+              hasEndAction && { pr: "0" },
+            )}
+          >
             {children}
-          </styled.div>
+          </div>
         )}
-        {endAction ? (
-          <div className={css({ ml: "auto" }, iconOnlyStyles)}>{endAction}</div>
-        ) : endIcon ? (
-          <IconBox css={css.raw({ ml: "auto" }, iconOnlyStyles)} icon={endIcon} />
-        ) : null}
+        {endActionResolved}
       </DesignContext.Define>
     </div>
   );

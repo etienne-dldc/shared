@@ -13,13 +13,12 @@ import {
   TDesignVariant,
   TPaletteColor,
 } from "../core/DesignContext";
-import { DisabledContext } from "../core/DisabledContext";
 import { ItemContent } from "../item-content/ItemContent";
 import { itemContentFontSizeClass } from "../item-content/styles";
-import { buttonClass, buttonLikeClass } from "./styles";
+import { buttonLikeClass } from "./styles";
 
-export type ButtonProps = Merge<
-  ComponentProps<"button">,
+export type ButtonLikeProps = Merge<
+  ComponentProps<"div">,
   {
     // Design
     disabled?: boolean;
@@ -41,17 +40,16 @@ export type ButtonProps = Merge<
     details?: string | React.ReactNode;
     loading?: boolean;
 
-    // Forward to Button
+    // Forward to Element
     render?: React.ReactElement<any>;
   }
 >;
 
-export function Button(inProps: ButtonProps) {
-  const [{ design, disabled }, props] = pipePropsSplitters(inProps, {
+export function ButtonLike(inProps: ButtonLikeProps) {
+  const [{ design }, props] = pipePropsSplitters(inProps, {
     design: DesignContext.usePropsSplitter(),
-    disabled: DisabledContext.usePropsSplitter(),
   });
-  const { contentSize, crossSize, hoverVariant, variant } = resolveDesignProps(design);
+  const { contentSize, crossSize, variant } = resolveDesignProps(design);
 
   const {
     color,
@@ -66,7 +64,6 @@ export function Button(inProps: ButtonProps) {
     children,
 
     className,
-    type = "button",
     ...buttonProps
   } = props;
 
@@ -83,22 +80,19 @@ export function Button(inProps: ButtonProps) {
       rounded={inProps.rounded}
       hoverVariant={inProps.hoverVariant}
     >
-      <Ariakit.Button
+      <Ariakit.Role
         className={cx(
           css(
             buttonLikeClass.raw({ crossSize, variant, colorPalette: color }),
-            buttonClass.raw({ hoverVariant, variant }),
             itemContentFontSizeClass.raw({ contentSize, crossSize }),
             cssProp,
           ),
           className,
         )}
-        disabled={disabled.disabled}
-        type={type}
         {...buttonProps}
       >
         {childrenResolved}
-      </Ariakit.Button>
+      </Ariakit.Role>
     </DesignContext.Define>
   );
 }

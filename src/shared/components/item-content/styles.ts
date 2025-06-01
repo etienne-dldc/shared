@@ -20,17 +20,35 @@ export const itemContentClass = cva({
   },
   variants: {
     mainSize: {
-      "2x": { gap: "0x", px: "1" },
-      "3": { gap: "0xx", px: "1xx" },
-      "3x": { gap: "1", px: "2x" },
-      "4": { gap: "1x", px: "3" },
-      "4x": { gap: "1xx", px: "3" },
-      "5": { gap: "2_x", px: "3x" },
-      "6": { gap: "2x", px: "4x" },
+      "2x": { gap: "0x", px: "0x" },
+      "3": { gap: "1", px: "1" },
+      "3x": { gap: "1_x", px: "1_x" },
+      "4": { gap: "1x", px: "1x" },
+      "4x": { gap: "1xx", px: "1xx" },
+      "5": { gap: "2x", px: "2x" },
+      "6": { gap: "2x", px: "2x" },
       "7": { gap: "3", px: "5" },
       "8": { gap: "3x", px: "5x" },
       "10": { gap: "4", px: "6" },
       "12": { gap: "4x", px: "6x" },
+    } satisfies Record<TDesignMainSize, SystemStyleObject>,
+  },
+});
+
+export const contentSpaceClass = cva({
+  variants: {
+    mainSize: {
+      "2x": { px: "0x" },
+      "3": { px: "1" },
+      "3x": { px: "1_x" },
+      "4": { px: "1x" },
+      "4x": { px: "1xx" },
+      "5": { px: "2x" },
+      "6": { px: "2x" },
+      "7": { px: "5" },
+      "8": { px: "5x" },
+      "10": { px: "6" },
+      "12": { px: "6x" },
     } satisfies Record<TDesignMainSize, SystemStyleObject>,
   },
 });

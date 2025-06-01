@@ -84,7 +84,13 @@ importers:
       '@pandacss/eslint-plugin':
         specifier: ^0.2.9
         version: 0.2.9(eslint@9.27.0(jiti@2.4.2))(typescript@5.8.3)
+      '@pandacss/preset-base':
+        specifier: ^0.53.7
+        version: 0.53.7
       '@pandacss/preset-panda':
+        specifier: ^0.53.7
+        version: 0.53.7
+      '@pandacss/types':
         specifier: ^0.53.7
         version: 0.53.7
       '@tailwindcss/vite':
