@@ -1,6 +1,6 @@
 import { cva } from "../../../../styled-system/css";
 import { SystemStyleObject } from "../../../../styled-system/types";
-import { TDesignCrossSize, TDesignVariant, TPaletteColor } from "../core/DesignContext";
+import { TDesignCrossSize, TDesignVariant } from "../core/DesignContext";
 
 export const buttonLikeClass = cva({
   base: {
@@ -9,6 +9,15 @@ export const buttonLikeClass = cva({
     alignItems: "center",
     rounded: "1_x",
     outline: "none",
+    position: "relative",
+    _after: {
+      rounded: "1_x",
+      pointerEvents: "none",
+      content: "''",
+      position: "absolute",
+      inset: "0",
+      borderRadius: "[inherit]",
+    },
   },
   variants: {
     crossSize: {
@@ -32,38 +41,14 @@ export const buttonLikeClass = cva({
       surface: {
         bg: "white/5",
         color: "colorPalette.200",
-        insetRing: "solid",
-        insetRingColor: "white/5",
-        insetRingWidth: "0_x",
+        _after: {
+          borderColor: "neutral.800",
+          borderWidth: "0_x",
+        },
       },
       subtle: { bg: "white/5", color: "colorPalette.200" },
       ghost: { color: "colorPalette.200" },
     } satisfies Record<TDesignVariant, SystemStyleObject>,
-    colorPalette: {
-      red: { colorPalette: "red" },
-      orange: { colorPalette: "orange" },
-      amber: { colorPalette: "amber" },
-      yellow: { colorPalette: "yellow" },
-      lime: { colorPalette: "lime" },
-      green: { colorPalette: "green" },
-      emerald: { colorPalette: "emerald" },
-      teal: { colorPalette: "teal" },
-      cyan: { colorPalette: "cyan" },
-      sky: { colorPalette: "sky" },
-      blue: { colorPalette: "blue" },
-      indigo: { colorPalette: "indigo" },
-      violet: { colorPalette: "violet" },
-      purple: { colorPalette: "purple" },
-      fuchsia: { colorPalette: "fuchsia" },
-      pink: { colorPalette: "pink" },
-      rose: { colorPalette: "rose" },
-
-      gray: { colorPalette: "gray" },
-      slate: { colorPalette: "slate" },
-      neutral: { colorPalette: "neutral" },
-      stone: { colorPalette: "stone" },
-      zinc: { colorPalette: "zinc" },
-    } satisfies Record<TPaletteColor, SystemStyleObject>,
   },
 });
 
@@ -78,9 +63,10 @@ export const buttonClass = cva({
       },
     },
     _focusVisible: {
-      insetRing: "solid",
-      insetRingColor: "neutral.300",
-      insetRingWidth: "0_x",
+      _after: {
+        borderColor: "neutral.300",
+        borderWidth: "0_x",
+      },
     },
   },
   variants: {
@@ -88,8 +74,10 @@ export const buttonClass = cva({
       solid: {
         _focusVisible: {
           bg: "colorPalette.800",
-          insetRingColor: "neutral.200",
-          insetRingWidth: "0x",
+          _after: {
+            borderColor: "neutral.200",
+            borderWidth: "0x",
+          },
         },
       },
       surface: {},
@@ -104,9 +92,10 @@ export const buttonClass = cva({
         _hover: {
           bg: "white/10",
           color: "colorPalette.100",
-          insetRing: "solid",
-          insetRingColor: "white/10",
-          insetRingWidth: "0_x",
+          _after: {
+            borderColor: "neutral.700",
+            borderWidth: "0_x",
+          },
         },
       },
       subtle: {
@@ -115,6 +104,134 @@ export const buttonClass = cva({
       ghost: {
         _hover: { bg: "white/5", color: "colorPalette.100" },
       },
+    } satisfies Record<TDesignVariant, SystemStyleObject>,
+  },
+});
+
+export const buttonGroupClass = cva({
+  base: {
+    display: "flex",
+  },
+  variants: {
+    direction: {
+      horizontal: {
+        flexDirection: "row",
+        "& > *[data-first]": {
+          borderEndRadius: "[0!]",
+        },
+        "& > *[data-first]:is(:hover, [data-hover], :focus-visible, [data-focus-visible]):after": {
+          right: "-0_x",
+        },
+        "& > *[data-between]": {
+          borderRadius: "[0!]",
+        },
+        "& > *[data-between]:is(:hover, [data-hover], :focus-visible, [data-focus-visible]):after": {
+          left: "-0_x",
+          right: "-0_x",
+        },
+        "& > *[data-last]": {
+          borderStartRadius: "[0!]",
+        },
+        "& > *[data-last]:is(:hover, [data-hover], :focus-visible, [data-focus-visible]):after": {
+          left: "-0_x",
+        },
+      },
+      vertical: {
+        flexDirection: "column",
+        "& > *[data-first]": {
+          borderBottomRadius: "[0!]",
+        },
+        "& > *[data-first]:is(:hover, [data-hover], :focus-visible, [data-focus-visible]):after": {
+          bottom: "-0_x",
+        },
+        "& > *[data-between]": {
+          borderRadius: "[0!]",
+        },
+        "& > *[data-between]:is(:hover, [data-hover], :focus-visible, [data-focus-visible]):after": {
+          top: "-0_x",
+          bottom: "-0_x",
+        },
+        "& > *[data-last]": {
+          borderTopRadius: "[0!]",
+        },
+        "& > *[data-last]:is(:hover, [data-hover], :focus-visible, [data-focus-visible]):after": {
+          top: "-0_x",
+        },
+      },
+    },
+    variant: {
+      solid: {},
+      surface: {},
+      subtle: {},
+      ghost: {},
+    } satisfies Record<TDesignVariant, SystemStyleObject>,
+  },
+  compoundVariants: [
+    {
+      direction: "horizontal",
+      variant: "surface",
+      css: {
+        "& > *[data-first]:after": {
+          borderRightWidth: "[0!]",
+        },
+        "& > *[data-first]:is(:hover, [data-hover], :focus-visible, [data-focus-visible]):after": {
+          borderRightWidth: "0_x!",
+        },
+        "& > *[data-between]:after": {
+          borderXWidth: "[0!]",
+        },
+        "& > *[data-between]:is(:hover, [data-hover], :focus-visible, [data-focus-visible]):after": {
+          borderXWidth: "0_x!",
+        },
+        "& > *[data-last]:after": {
+          borderLeftWidth: "[0!]",
+        },
+        "& > *[data-last]:is(:hover, [data-hover], :focus-visible, [data-focus-visible]):after": {
+          borderLeftWidth: "0_x!",
+        },
+      },
+    },
+    {
+      direction: "vertical",
+      variant: "surface",
+      css: {
+        "& > *[data-first]:after": {
+          borderBottomWidth: "[0!]",
+        },
+        "& > *[data-first]:is(:hover, [data-hover], :focus-visible, [data-focus-visible]):after": {
+          borderBottomWidth: "0_x!",
+        },
+        "& > *[data-between]:after": {
+          borderYWidth: "[0!]",
+        },
+        "& > *[data-between]:is(:hover, [data-hover], :focus-visible, [data-focus-visible]):after": {
+          borderYWidth: "0_x!",
+        },
+        "& > *[data-last]:after": {
+          borderTopWidth: "[0!]",
+        },
+        "& > *[data-last]:is(:hover, [data-hover], :focus-visible, [data-focus-visible]):after": {
+          borderTopWidth: "0_x!",
+        },
+      },
+    },
+  ],
+});
+
+export const separatorClass = cva({
+  base: {
+    alignSelf: "stretch",
+  },
+  variants: {
+    direction: {
+      horizontal: { w: "0_x" },
+      vertical: { h: "0_x" },
+    },
+    variant: {
+      solid: { bg: "colorPalette.700" },
+      surface: { bg: "neutral.800" },
+      subtle: {},
+      ghost: {},
     } satisfies Record<TDesignVariant, SystemStyleObject>,
   },
 });

@@ -11,8 +11,6 @@ export type TDesignContentSize = TSize;
 export type TDesignMainSize = TSize;
 export type TDesignVariant = "solid" | "surface" | "subtle" | "ghost";
 
-export type TDesignRounded = "left" | "right" | "top" | "bottom" | "none" | "all";
-
 export type TPaletteColor =
   | "red"
   | "orange"
@@ -43,7 +41,6 @@ export interface TDesignContextProps {
   mainSize: TDesignMainSize | null;
   variant: TDesignVariant;
   hoverVariant: TDesignVariant | null;
-  rounded: TDesignRounded;
 }
 
 export const DesignContext = createPropsContext(
@@ -54,7 +51,6 @@ export const DesignContext = createPropsContext(
     mainSize: null,
     variant: "surface",
     hoverVariant: null,
-    rounded: "all",
   } as TDesignContextProps,
   (parent, props) => ({ ...parent, ...props }),
 );
@@ -111,12 +107,11 @@ const DEFAULT_SIZE = {
 export type TResolvedDesignProps = ReturnType<typeof resolveDesignProps>;
 
 export function resolveDesignProps(props: TDesignContextProps) {
-  const { contentSize, crossSize, mainSize, variant, hoverVariant, rounded } = props;
+  const { contentSize, crossSize, mainSize, variant, hoverVariant } = props;
 
   return {
     variant,
     hoverVariant: hoverVariant ?? variant,
-    rounded,
     ...DEFAULT_SIZE,
     ...resolveDesignSizes(contentSize, crossSize, mainSize),
   };
