@@ -4,12 +4,12 @@ import { Merge } from "type-fest";
 import { css, cx } from "../../../../styled-system/css";
 import { ComponentProps, SystemStyleObject } from "../../../../styled-system/types";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
+import { colorPaletteClass } from "../common/styles";
 import {
   DesignContext,
   resolveDesignProps,
   TDesignCrossSize,
   TDesignMainSize,
-  TDesignRounded,
   TDesignVariant,
   TPaletteColor,
 } from "../core/DesignContext";
@@ -26,12 +26,10 @@ export type ButtonProps = Merge<
     crossSize?: TDesignCrossSize;
     contentSize?: TDesignCrossSize;
     mainSize?: TDesignMainSize;
-    rounded?: TDesignRounded;
     variant?: TDesignVariant;
     hoverVariant?: TDesignVariant;
-    css?: SystemStyleObject;
-
     color?: TPaletteColor;
+    css?: SystemStyleObject;
 
     // For content
     icon?: React.ReactNode;
@@ -80,14 +78,14 @@ export function Button(inProps: ButtonProps) {
       mainSize={inProps.mainSize}
       contentSize={inProps.contentSize}
       variant={inProps.variant}
-      rounded={inProps.rounded}
       hoverVariant={inProps.hoverVariant}
     >
       <Ariakit.Button
         className={cx(
           css(
-            buttonLikeClass.raw({ crossSize, variant, colorPalette: color }),
+            buttonLikeClass.raw({ crossSize, variant }),
             buttonClass.raw({ hoverVariant, variant }),
+            inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
             itemContentFontSizeClass.raw({ contentSize, crossSize }),
             cssProp,
           ),

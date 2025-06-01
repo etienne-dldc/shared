@@ -4,6 +4,7 @@ import { Merge } from "type-fest";
 import { css, cx } from "../../../../styled-system/css";
 import { ComponentProps, SystemStyleObject } from "../../../../styled-system/types";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
+import { colorPaletteClass } from "../common/styles";
 import {
   DesignContext,
   resolveDesignProps,
@@ -83,7 +84,8 @@ export function ButtonLike(inProps: ButtonLikeProps) {
       <Ariakit.Role
         className={cx(
           css(
-            buttonLikeClass.raw({ crossSize, variant, colorPalette: color }),
+            buttonLikeClass.raw({ crossSize, variant }),
+            inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
             itemContentFontSizeClass.raw({ contentSize, crossSize }),
             cssProp,
           ),

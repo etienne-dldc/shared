@@ -52,14 +52,19 @@ const spacing = {
 
 const sizes = {
   "0": { value: "0rem" },
-  "0x": { value: "0.125rem" },
-  "1": { value: "0.25rem" },
-  "1x": { value: "0.375rem" },
-  "2": { value: "0.5rem" },
-  "2x": { value: "0.625rem" },
-  "3": { value: "0.75rem" },
-  "3x": { value: "0.875rem" },
-  "4": { value: "1rem" },
+  "0_x": { value: "0.0625rem" }, // 1px
+  "0x": { value: "0.125rem" }, // 2px
+  "0xx": { value: "0.1875rem" }, // 3px
+  "1": { value: "0.25rem" }, // 4px
+  "1_x": { value: "0.3125rem" }, // 5px
+  "1x": { value: "0.375rem" }, // 6px
+  "1xx": { value: "0.4375rem" }, // 7px
+  "2": { value: "0.5rem" }, // 8px
+  "2_x": { value: "0.5625rem" }, // 9px
+  "2x": { value: "0.625rem" }, // 10px
+  "3": { value: "0.75rem" }, // 12px
+  "3x": { value: "0.875rem" }, // 14px
+  "4": { value: "1rem" }, // 16px
   "4x": { value: "1.125rem" },
   "5": { value: "1.25rem" },
   "6": { value: "1.5rem" },
