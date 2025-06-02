@@ -1,8 +1,9 @@
 import { CaretDownIcon, CirclesFourIcon, DotsThreeVerticalIcon, UserIcon } from "@phosphor-icons/react";
 import { Variants } from "../../../playground/Variants";
 import { cn, tw } from "../../styles/utils";
-import { Button } from "./Button";
-import { ButtonLike } from "./ButtonLike";
+import { Button } from "../button-legacy/Button";
+import { ButtonLike } from "../button-legacy/ButtonLike";
+import { TDesignSizeBase } from "../core/DesignContext";
 
 const TEXT_VARIANTS = {
   none: undefined,
@@ -45,13 +46,19 @@ const ICON_VARIANTS = {
 
 const END_ACTION_VARIANTS = {
   none: undefined,
-  dotsButton: <ButtonLike icon={<DotsThreeVerticalIcon />} />,
-  caretButton: <ButtonLike icon={<CaretDownIcon />} />,
-  cancelButton: <ButtonLike title="Cancel" color="red" />,
-  primaryDotsButton: <ButtonLike icon={<DotsThreeVerticalIcon />} />,
+  dotsButton: <Button icon={<DotsThreeVerticalIcon />} />,
+  caretButton: <Button icon={<CaretDownIcon />} />,
+  cancelButton: <Button title="Cancel" color="red" />,
+  primaryDotsButton: <Button icon={<DotsThreeVerticalIcon />} primary />,
+  primaryRedDotsButton: <Button icon={<DotsThreeVerticalIcon />} primary color="red" />,
 } as const;
 
-const SIZE_VARIANTS = { xs: "xs", sm: "sm", md: "md", lg: "lg" } as const;
+const SIZE_VARIANTS = {
+  xs: "xs",
+  sm: "sm",
+  md: "md",
+  lg: "lg",
+} satisfies Record<TDesignSizeBase, TDesignSizeBase>;
 
 const DIR_SIZE_VARIANTS = { default: undefined, xs: "xs", sm: "sm", md: "md", lg: "lg" } as const;
 
@@ -81,23 +88,16 @@ const BACKGROUND_COLORS = {
   slate: tw`bg-slate-950`,
 } as const;
 
-const INTERACTIVE_STATE = {
-  base: null,
-  hover: "hover",
-  active: "active",
-  focus: "focus",
-} as const;
-
 const DISABLED_VARIANTS = { no: undefined, yes: true } as const;
 
 const LOADING_VARIANTS = { no: undefined, yes: true } as const;
 
 const FULL_WIDTH_VARIANTS = { no: false, yes: true } as const;
 
-export default function ButtonPlayground() {
+export default function ButtonLikePlayground() {
   return (
     <Variants
-      localStorageKey="button"
+      localStorageKey="button-like"
       cellMinWidth={200}
       dimensions={{
         color: DYNAMIC_COLOR_VARIANTS,
@@ -117,7 +117,6 @@ export default function ButtonPlayground() {
         endAction: END_ACTION_VARIANTS,
         background: BACKGROUND_COLORS,
         fullWidth: FULL_WIDTH_VARIANTS,
-        state: INTERACTIVE_STATE,
       }}
       defaultSelected={{
         color: "blue",
@@ -137,16 +136,9 @@ export default function ButtonPlayground() {
         endAction: "none",
         background: "none",
         fullWidth: "no",
-        state: "base",
       }}
       presets={{
         base: { column: [], row: [], selected: {} },
-        variants: { column: ["state"], row: ["filled", "primary", "hoverFilled"], selected: {} },
-        focused: {
-          column: ["color"],
-          row: ["size", "filled", "primary"],
-          selected: { state: "focus" },
-        },
         "size & color": { column: ["size"], row: ["color"], selected: { primary: "primary", filled: "filled" } },
         content: {
           column: ["title"],
@@ -159,9 +151,9 @@ export default function ButtonPlayground() {
           selected: { primary: "primary", filled: "filled" },
         },
       }}
-      render={({ fullWidth, background, state, ...props }) => (
-        <div className={cn("w-full h-full", background)}>
-          <Button {...props} className={cn(fullWidth ? "w-full" : "")} __forceState={state} />
+      render={({ fullWidth, background, ...props }) => (
+        <div className={cn("w-full h-full", background, fullWidth ? "" : "flex flex-row")}>
+          <ButtonLike {...props} className={cn(fullWidth ? "w-full" : "")} />
         </div>
       )}
     />
