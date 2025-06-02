@@ -1,8 +1,8 @@
 import { CaretRightIcon, HouseIcon } from "@phosphor-icons/react";
 import { Variants } from "../../../playground/Variants";
 import { cn } from "../../styles/utils";
-import { Button } from "./Button";
-import { ButtonGroup } from "./ButtonGroup";
+import { Button } from "../button-legacy/Button";
+import { ButtonGroup } from "../button-legacy/ButtonGroup";
 
 const DYNAMIC_COLOR_VARIANTS = {
   default: undefined,
