@@ -278,7 +278,7 @@ function MultiSelect<T extends string>({ label, onChange, options, selected }: M
               })),
               {
                 value: "REMOVE",
-                title: "--REMOVE--",
+                content: "--REMOVE--",
               },
             ]}
             label={label}

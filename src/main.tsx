@@ -1,9 +1,11 @@
-import { CaretRightIcon, HouseIcon } from "@phosphor-icons/react";
+import { CaretRightIcon, HouseIcon, PersonIcon } from "@phosphor-icons/react";
 import { StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
-import { VStack } from "../styled-system/jsx";
+import { Paper, VStack } from "../styled-system/jsx";
 import "./index.css";
 import { Button } from "./shared/components/button/Button";
+import { Select } from "./shared/components/select/Select";
+import { TSelectItem } from "./shared/components/select/types";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -53,6 +55,56 @@ createRoot(document.getElementById("root")!).render(
           content="Ghost"
           icon={<HouseIcon />}
           endIcon={<CaretRightIcon />}
+        />
+        <Paper w="72" h="36" p="4">
+          <Button content="Hello" />
+        </Paper>
+        <Paper w="72" h="36" p="4" level="select">
+          <Button content="Hello" />
+        </Paper>
+        <Select
+          items={[
+            { value: "1", content: "First", icon: <HouseIcon />, endIcon: <PersonIcon /> },
+            { value: "2", content: "Second", icon: <HouseIcon /> },
+            { value: "3", content: "Thrid long name", icon: <HouseIcon /> },
+          ]}
+          defaultValue="1"
+          label="Select an item"
+          renderSelect={<Button css={{ minW: "40" }} />}
+        />
+
+        <Select
+          items={[
+            { value: "1", content: "First", icon: <HouseIcon />, endIcon: <PersonIcon /> },
+            { value: "2", content: "Second", icon: <HouseIcon /> },
+            { value: "3", content: "Thrid long name", icon: <HouseIcon /> },
+          ]}
+          defaultValue="1"
+          label="Select an item"
+          renderSelect={<Button css={{ minW: "40" }} />}
+          variant="solid"
+          color="blue"
+        />
+
+        <Select
+          items={[
+            { value: "1", content: "First", icon: <HouseIcon />, endIcon: <PersonIcon /> },
+            { value: "2", content: "Second", icon: <HouseIcon /> },
+            { value: "3", content: "Thrid long name", icon: <HouseIcon /> },
+            ...Array.from(
+              { length: 20 },
+              (_, i): TSelectItem<string> => ({
+                value: (i + 4).toString(),
+                content: `Item ${i + 4}`,
+                icon: <HouseIcon />,
+                disabled: i % 2 === 0,
+              }),
+            ),
+          ]}
+          defaultValue="1"
+          label="Select an item"
+          renderSelect={<Button css={{ minW: "40" }} />}
+          crossSize="7"
         />
       </VStack>
     </Suspense>

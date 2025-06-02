@@ -4,10 +4,11 @@ import { Merge } from "type-fest";
 import { css, cx } from "../../../../styled-system/css";
 import { ComponentProps, SystemStyleObject } from "../../../../styled-system/types";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
-import { colorPaletteClass } from "../common/styles";
+import { colorPaletteClass, crossSizeClass } from "../common/styles";
 import {
   DesignContext,
   resolveDesignProps,
+  TDesignContentSize,
   TDesignCrossSize,
   TDesignMainSize,
   TDesignVariant,
@@ -24,7 +25,7 @@ export type ButtonProps = Merge<
     // Design
     disabled?: boolean;
     crossSize?: TDesignCrossSize;
-    contentSize?: TDesignCrossSize;
+    contentSize?: TDesignContentSize;
     mainSize?: TDesignMainSize;
     variant?: TDesignVariant;
     hoverVariant?: TDesignVariant;
@@ -83,7 +84,8 @@ export function Button(inProps: ButtonProps) {
       <Ariakit.Button
         className={cx(
           css(
-            buttonLikeClass.raw({ crossSize, variant }),
+            crossSizeClass.raw({ crossSize }),
+            buttonLikeClass.raw({ variant }),
             buttonClass.raw({ hoverVariant, variant }),
             inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
             itemContentFontSizeClass.raw({ contentSize, crossSize }),
