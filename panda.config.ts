@@ -120,7 +120,8 @@ const sizes = {
 } satisfies Tokens["sizes"];
 
 const radii = {
-  "1_x": { value: "0.3125rem" },
+  "1_x": { value: "0.3125rem" }, // 5px
+  "2": { value: "0.5rem" }, // 8px
   // xs: { value: '0.125rem' },
   // sm: { value: '0.25rem' },
   // md: { value: '0.375rem' },
@@ -268,11 +269,78 @@ const insetRing = {
   }),
 };
 
+const ellipsis = definePattern({
+  description: "Text ellipsis",
+  jsxElement: "span",
+  properties: {},
+  defaultValues: {},
+  transform(props) {
+    const { truncate, ...rest } = props;
+    return {
+      textOverflow: "ellipsis",
+      whiteSpace: "nowrap",
+      overflow: "hidden",
+      ...rest,
+    };
+  },
+});
+
+const paper = definePattern({
+  description: "Paper component",
+  jsxElement: "div",
+  properties: {
+    level: {
+      type: "enum",
+      value: ["select", "modal"],
+    },
+  },
+  transform(props) {
+    const { level = "modal", ...rest } = props;
+    switch (level) {
+      case "select":
+        return {
+          overflow: "hidden",
+          background: "neutral.900",
+          borderColor: "neutral.800",
+          borderRadius: "2",
+          borderWidth: "0_x",
+          boxShadow: "md",
+          ...rest,
+        };
+      case "modal":
+        return {
+          overflow: "hidden",
+          background: "neutral.950",
+          borderColor: "neutral.900",
+          borderRadius: "2",
+          borderWidth: "0_x",
+          boxShadow: "xl",
+          ...rest,
+        };
+      default:
+        return rest;
+    }
+  },
+});
+
+const colors = {
+  ...pandaPreset.theme.tokens.colors,
+  neutral: {
+    ...pandaPreset.theme.tokens.colors.neutral,
+    "925": { value: "#101010" },
+  },
+} satisfies Tokens["colors"];
+
 export default defineConfig({
   preflight: true,
   include: ["./src/**/*.{js,jsx,ts,tsx}"],
   exclude: [],
+  outdir: "styled-system",
+  strictTokens: true,
+  strictPropertyValues: true,
+  jsxFramework: "react",
   presets: [],
+  globalCss,
   theme: {
     extend: {
       ...pandaPreset.theme,
@@ -284,6 +352,7 @@ export default defineConfig({
         borders,
         shadows,
         borderWidths,
+        colors,
       },
       textStyles,
     },
@@ -295,26 +364,14 @@ export default defineConfig({
   },
   patterns: {
     extend: {
-      ellipsis: definePattern({
-        description: "Text ellipsis",
-        jsxElement: "span",
-        properties: {},
-        defaultValues: {},
-        transform(props) {
-          const { truncate, ...rest } = props;
-          return {
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            ...rest,
-          };
-        },
-      }),
+      ellipsis,
+      paper,
     },
   },
-  globalCss,
-  outdir: "styled-system",
-  strictTokens: true,
-  strictPropertyValues: true,
-  jsxFramework: "react",
+  conditions: {
+    extend: {
+      activeItem: "&[data-active-item]",
+      disabled: "&:is(:disabled, [disabled], [data-disabled], [aria-disabled=true])",
+    },
+  },
 });

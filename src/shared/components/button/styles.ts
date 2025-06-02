@@ -1,6 +1,6 @@
 import { cva } from "../../../../styled-system/css";
 import { SystemStyleObject } from "../../../../styled-system/types";
-import { TDesignCrossSize, TDesignVariant } from "../core/DesignContext";
+import { TDesignVariant } from "../core/DesignContext";
 
 export const buttonLikeClass = cva({
   base: {
@@ -11,28 +11,14 @@ export const buttonLikeClass = cva({
     outline: "none",
     position: "relative",
     _after: {
-      rounded: "1_x",
+      rounded: "[inherit]",
       pointerEvents: "none",
       content: "''",
       position: "absolute",
       inset: "0",
-      borderRadius: "[inherit]",
     },
   },
   variants: {
-    crossSize: {
-      "2x": { minH: "2x", textStyle: "f2x" },
-      "3": { minH: "3", textStyle: "f3" },
-      "3x": { minH: "3x", textStyle: "f3x" },
-      "4": { minH: "4", textStyle: "f4" },
-      "4x": { minH: "4x", textStyle: "f4x" },
-      "5": { minH: "5", textStyle: "f5" },
-      "6": { minH: "6", textStyle: "f6" },
-      "7": { minH: "7", textStyle: "f7" },
-      "8": { minH: "8", textStyle: "f8" },
-      "10": { minH: "10", textStyle: "f10" },
-      "12": { minH: "12", textStyle: "f12" },
-    } satisfies Record<TDesignCrossSize, SystemStyleObject>,
     variant: {
       solid: {
         bg: "colorPalette.600",
@@ -144,7 +130,7 @@ export const buttonGroupClass = cva({
           right: "-0_x",
         },
         "& > *[data-between]": {
-          borderRadius: "[0!]",
+          rounded: "[0!]",
         },
         "& > *[data-between]:is(:hover, [data-hover], :focus-visible, [data-focus-visible]):after": {
           left: "-0_x",
@@ -166,7 +152,7 @@ export const buttonGroupClass = cva({
           bottom: "-0_x",
         },
         "& > *[data-between]": {
-          borderRadius: "[0!]",
+          rounded: "[0!]",
         },
         "& > *[data-between]:is(:hover, [data-hover], :focus-visible, [data-focus-visible]):after": {
           top: "-0_x",

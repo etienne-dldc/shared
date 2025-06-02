@@ -44,7 +44,7 @@ export default function ButtonPlayground() {
           items={[
             {
               value: "",
-              title: "Select a fruit",
+              content: "Select a fruit",
               hidden: true,
             },
             ...selectItems,

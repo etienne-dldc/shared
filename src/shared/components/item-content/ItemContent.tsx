@@ -22,7 +22,6 @@ interface ItemContentProps extends Omit<ComponentPropsWithRef<"div">, "title"> {
   children?: React.ReactNode;
   contentSize?: TDesignContentSize;
   mainSize?: TDesignMainSize;
-  details?: string | React.ReactNode;
   loading?: boolean;
   css?: SystemStyleObject;
 }
