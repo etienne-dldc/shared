@@ -8,13 +8,13 @@ import {
   SquaresFourIcon,
 } from "@phosphor-icons/react";
 import { createBrowserHistory } from "history";
-import { RefObject, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Button } from "../shared/components/button-legacy/Button";
-import { ButtonGroup } from "../shared/components/button-legacy/ButtonGroup";
-import { ButtonLike } from "../shared/components/button-legacy/ButtonLike";
+import { ComponentPropsWithRef, RefObject, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Merge } from "type-fest";
+import { Grid, HStack, Paper, styled } from "../../styled-system/jsx";
+import { Button } from "../shared/components/button/Button";
+import { ButtonGroup } from "../shared/components/button/ButtonGroup";
+import { ButtonLike } from "../shared/components/button/ButtonLike";
 import { LoadingBlock } from "../shared/components/common/LoadingBlock";
-import { Paper } from "../shared/components/common/Paper";
-import { DesignContext } from "../shared/components/core/DesignContext";
 import { EmptyState } from "../shared/components/layouts/EmptyState";
 import { MenuItem } from "../shared/components/menu/MenuItem";
 import { cn } from "../shared/styles/utils";
@@ -54,9 +54,9 @@ export function Playground() {
   }, [location.pathname]);
 
   return (
-    <div className="grid min-h-screen gap-4 p-4" style={{ gridTemplateRows: "auto 1fr" }}>
-      <div className="flex flex-row">
-        <ButtonGroup primary>
+    <Grid minH="screen" gap="4" p="4" gridTemplateRows="auto 1fr">
+      <HStack>
+        <ButtonGroup variant="solid" crossSize="10" color="blue">
           <RouteMenu items={routes} icon={<ListIcon />} />
           {routeMatch?.parents.map((parent) => {
             return (
@@ -69,9 +69,9 @@ export function Playground() {
               />
             );
           })}
-          {routeMatch?.match && <ButtonLike title={routeMatch?.match.name} icon={<SquaresFourIcon />} />}
+          {routeMatch?.match && <ButtonLike content={routeMatch?.match.name} icon={<SquaresFourIcon />} />}
         </ButtonGroup>
-      </div>
+      </HStack>
       <div className="relative">
         <Suspense fallback={<LoadingBlock />}>
           {routeMatch ? (
@@ -81,23 +81,26 @@ export function Playground() {
           )}
         </Suspense>
       </div>
-    </div>
+    </Grid>
   );
 }
 
-interface RouteMenuProps {
-  title?: string;
-  icon?: React.ReactNode;
-  endIcon?: React.ReactNode;
-  items: TRouteItem[];
-}
+type RouteMenuProps = Merge<
+  ComponentPropsWithRef<"button">,
+  {
+    title?: string;
+    icon?: React.ReactNode;
+    endIcon?: React.ReactNode;
+    items: TRouteItem[];
+  }
+>;
 
-function RouteMenu({ items, title, icon, endIcon }: RouteMenuProps) {
+function RouteMenu({ items, title, icon, endIcon, ...buttonProps }: RouteMenuProps) {
   const topMenuRef = useRef<HTMLDivElement | null>(null);
 
   return (
     <Ariakit.MenuProvider>
-      <Ariakit.MenuButton render={<Button title={title} icon={icon} endIcon={endIcon} />} />
+      <Ariakit.MenuButton render={<Button content={title} icon={icon} endIcon={endIcon} />} {...buttonProps} />
       <Ariakit.Menu
         gutter={8}
         ref={topMenuRef}
@@ -106,7 +109,7 @@ function RouteMenu({ items, title, icon, endIcon }: RouteMenuProps) {
         portal={true}
         unmountOnHide
       >
-        <DesignContext.Define rounded="all">{items.map((item) => renderItem(item, topMenuRef))}</DesignContext.Define>
+        {items.map((item) => renderItem(item, topMenuRef))}
       </Ariakit.Menu>
     </Ariakit.MenuProvider>
   );
@@ -122,15 +125,27 @@ function NestedMenu({ item, parentRef }: NestedMenuProps) {
 
   return (
     <Ariakit.MenuProvider>
-      <MenuItem render={<Ariakit.MenuButton />} title={item.name} icon={<FolderIcon />} endIcon={<CaretRightIcon />} />
+      <MenuItem
+        render={<Ariakit.MenuButton />}
+        content={item.name}
+        icon={<FolderIcon />}
+        endIcon={<CaretRightIcon />}
+      />
       <Ariakit.Menu
         gutter={8}
         getAnchorRect={parentRef ? () => parentRef.current?.getBoundingClientRect() ?? null : undefined}
-        render={<Paper />}
-        className={cn("p-2 outline-hidden h-[300px] min-w-36")}
+        render={<Paper level="select" outline="none" />}
         ref={menuRef}
       >
-        {item.routes.map((item) => renderItem(item, menuRef))}
+        <styled.div
+          p="1"
+          minW="var(--popover-anchor-width)"
+          maxW="var(--popover-available-width)"
+          maxH="var(--popover-available-height)"
+          overflowY="auto"
+        >
+          {item.routes.map((item) => renderItem(item, menuRef))}
+        </styled.div>
       </Ariakit.Menu>
     </Ariakit.MenuProvider>
   );
@@ -155,7 +170,7 @@ function NavItem({ item }: NavItemProps) {
     [item.path, menuStore],
   );
 
-  return <MenuItem title={item.name} icon={<SquaresFourIcon />} render={<a href={item.path} onClick={onClick} />} />;
+  return <MenuItem content={item.name} icon={<SquaresFourIcon />} render={<a href={item.path} onClick={onClick} />} />;
 }
 
 function renderItem(item: TRouteItem, parentRef?: RefObject<HTMLDivElement | null>) {

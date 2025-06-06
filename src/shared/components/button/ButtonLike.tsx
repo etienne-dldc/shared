@@ -4,13 +4,12 @@ import { Merge } from "type-fest";
 import { css, cx } from "../../../../styled-system/css";
 import { ComponentProps, SystemStyleObject } from "../../../../styled-system/types";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
-import { colorPaletteClass } from "../common/styles";
+import { colorPaletteClass, crossSizeClass } from "../common/styles";
 import {
   DesignContext,
   resolveDesignProps,
   TDesignCrossSize,
   TDesignMainSize,
-  TDesignRounded,
   TDesignVariant,
   TPaletteColor,
 } from "../core/DesignContext";
@@ -19,14 +18,13 @@ import { itemContentFontSizeClass } from "../item-content/styles";
 import { buttonLikeClass } from "./styles";
 
 export type ButtonLikeProps = Merge<
-  ComponentProps<"div">,
+  Omit<ComponentProps<"div">, "title">,
   {
     // Design
     disabled?: boolean;
     crossSize?: TDesignCrossSize;
     contentSize?: TDesignCrossSize;
     mainSize?: TDesignMainSize;
-    rounded?: TDesignRounded;
     variant?: TDesignVariant;
     hoverVariant?: TDesignVariant;
     css?: SystemStyleObject;
@@ -78,13 +76,13 @@ export function ButtonLike(inProps: ButtonLikeProps) {
       mainSize={inProps.mainSize}
       contentSize={inProps.contentSize}
       variant={inProps.variant}
-      rounded={inProps.rounded}
       hoverVariant={inProps.hoverVariant}
     >
       <Ariakit.Role
         className={cx(
           css(
-            buttonLikeClass.raw({ crossSize, variant }),
+            crossSizeClass.raw({ crossSize }),
+            buttonLikeClass.raw({ variant }),
             inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
             itemContentFontSizeClass.raw({ contentSize, crossSize }),
             cssProp,

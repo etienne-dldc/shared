@@ -72,7 +72,7 @@ export function ItemContent(props: ItemContentProps) {
           <IconBox
             css={css.raw({ mr: "auto" }, iconOnlyStyles)}
             icon={loading ? <LoadingIcon /> : icon}
-            data-slot="start-icon"
+            data-slot={!iconOnly ? "start-icon" : undefined}
           />
         )}
         {isNotNil(children) && (

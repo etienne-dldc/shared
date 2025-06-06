@@ -1,6 +1,6 @@
 import { CaretDownIcon, CaretUpIcon } from "@phosphor-icons/react";
 import { forwardRef, useState } from "react";
-import { Button } from "../button-legacy/Button";
+import { Button } from "../button/Button";
 import { TDesignSize } from "../core/DesignContext";
 import { TDynamicColor } from "../core/DynamicColorProvider";
 import { Menu, MenuProps } from "./Menu";

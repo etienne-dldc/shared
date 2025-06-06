@@ -1,14 +1,14 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createPropsContext } from "../../utils/propsContext";
 
-export type TSize = "2x" | "3" | "3x" | "4" | "4x" | "5" | "6" | "7" | "8" | "10" | "12";
+export type TDesignSize = "2x" | "3" | "3x" | "4" | "4x" | "5" | "6" | "7" | "8" | "10" | "12";
 
 // Can be thought as all possible height a button can have
-export type TDesignCrossSize = TSize;
+export type TDesignCrossSize = TDesignSize;
 // Inherits from TDesignCrossSize for nested content
-export type TDesignContentSize = TSize;
+export type TDesignContentSize = TDesignSize;
 // Main size is based on icon width
-export type TDesignMainSize = TSize;
+export type TDesignMainSize = TDesignSize;
 export type TDesignVariant = "solid" | "surface" | "subtle" | "ghost";
 
 export type TPaletteColor =

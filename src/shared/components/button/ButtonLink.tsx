@@ -18,7 +18,7 @@ import { itemContentFontSizeClass } from "../item-content/styles";
 import { buttonClass, buttonLikeClass } from "./styles";
 
 export type ButtonLinkProps = Merge<
-  ComponentProps<"a">,
+  Omit<ComponentProps<"a">, "title">,
   {
     // Design
     crossSize?: TDesignCrossSize;

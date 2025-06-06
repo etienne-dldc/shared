@@ -1,9 +1,9 @@
 import { CaretDownIcon, CirclesFourIcon, DotsThreeVerticalIcon, UserIcon } from "@phosphor-icons/react";
 import { Variants } from "../../../playground/Variants";
 import { cn, tw } from "../../styles/utils";
-import { Button } from "../button-legacy/Button";
-import { ButtonLike } from "../button-legacy/ButtonLike";
-import { TDesignSizeBase } from "../core/DesignContext";
+import { TDesignCrossSize } from "../core/DesignContext";
+import { Button } from "./Button";
+import { ButtonLike } from "./ButtonLike";
 
 const TEXT_VARIANTS = {
   none: undefined,
@@ -48,17 +48,24 @@ const END_ACTION_VARIANTS = {
   none: undefined,
   dotsButton: <Button icon={<DotsThreeVerticalIcon />} />,
   caretButton: <Button icon={<CaretDownIcon />} />,
-  cancelButton: <Button title="Cancel" color="red" />,
-  primaryDotsButton: <Button icon={<DotsThreeVerticalIcon />} primary />,
-  primaryRedDotsButton: <Button icon={<DotsThreeVerticalIcon />} primary color="red" />,
+  cancelButton: <Button content="Cancel" color="red" />,
+  primaryDotsButton: <Button icon={<DotsThreeVerticalIcon />} variant="solid" />,
+  primaryRedDotsButton: <Button icon={<DotsThreeVerticalIcon />} variant="solid" color="red" />,
 } as const;
 
 const SIZE_VARIANTS = {
-  xs: "xs",
-  sm: "sm",
-  md: "md",
-  lg: "lg",
-} satisfies Record<TDesignSizeBase, TDesignSizeBase>;
+  "2x": "2x",
+  "3": "3",
+  "3x": "3x",
+  "4": "4",
+  "4x": "4x",
+  "5": "5",
+  "6": "6",
+  "7": "7",
+  "8": "8",
+  "10": "10",
+  "12": "12",
+} satisfies Record<TDesignCrossSize, TDesignCrossSize>;
 
 const DIR_SIZE_VARIANTS = { default: undefined, xs: "xs", sm: "sm", md: "md", lg: "lg" } as const;
 
@@ -124,7 +131,7 @@ export default function ButtonLikePlayground() {
         details: "none",
         rounded: "all",
         disabled: "no",
-        size: "md",
+        size: "6",
         xSize: "default",
         ySize: "default",
         primary: "default",

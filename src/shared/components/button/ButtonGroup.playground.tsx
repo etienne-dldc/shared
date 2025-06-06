@@ -1,8 +1,8 @@
 import { CaretRightIcon, HouseIcon } from "@phosphor-icons/react";
 import { Variants } from "../../../playground/Variants";
 import { cn } from "../../styles/utils";
-import { Button } from "../button-legacy/Button";
-import { ButtonGroup } from "../button-legacy/ButtonGroup";
+import { Button } from "./Button";
+import { ButtonGroup } from "./ButtonGroup";
 
 const DYNAMIC_COLOR_VARIANTS = {
   default: undefined,
@@ -105,10 +105,10 @@ export default function ButtonPlayground() {
       render={({ background, margin, ...props }) => (
         <div className={cn("w-full h-full", background, margin)}>
           <ButtonGroup {...props}>
-            <Button title="text" />
-            <Button title="text and icon" icon={<HouseIcon />} />
-            <Button icon={<HouseIcon />} filled={true} />
-            <Button title="text and 2 icon" icon={<HouseIcon />} endIcon={<CaretRightIcon />} />
+            <Button content="text" />
+            <Button content="text and icon" icon={<HouseIcon />} />
+            <Button icon={<HouseIcon />} variant="solid" />
+            <Button content="text and 2 icon" icon={<HouseIcon />} endIcon={<CaretRightIcon />} />
           </ButtonGroup>
         </div>
       )}

@@ -1,25 +1,29 @@
 import * as Ariakit from "@ariakit/react";
 import { IconContext } from "@phosphor-icons/react";
 import { forwardRef, useMemo } from "react";
+import { Merge } from "type-fest";
 import { cn, tw } from "../../styles/utils";
 import { pick } from "../../utils/pick";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
-import { ButtonContent } from "../button-legacy/ButtonContent";
-import { DesignContext, TDesignSize } from "../core/DesignContext";
+import { DesignContext, TDesignCrossSize } from "../core/DesignContext";
 import { DisabledContext } from "../core/DisabledContext";
 import { DynamicColorProvider, TDynamicColor } from "../core/DynamicColorProvider";
+import { ItemContent } from "../item-content/ItemContent";
 
-interface MenuItemProps extends Omit<Ariakit.MenuItemProps, "title" | "color"> {
-  color?: TDynamicColor;
-  size?: TDesignSize;
+export type MenuItemProps = Merge<
+  Omit<Ariakit.MenuItemProps, "title" | "color">,
+  {
+    color?: TDynamicColor;
+    crossSize?: TDesignCrossSize;
 
-  // Content
-  icon?: React.ReactNode;
-  endIcon?: React.ReactNode;
-  title?: React.ReactNode;
-  details?: string | React.ReactNode;
-  loading?: boolean;
-}
+    // Content
+    icon?: React.ReactNode;
+    endIcon?: React.ReactNode;
+    content?: React.ReactNode;
+    details?: string | React.ReactNode;
+    loading?: boolean;
+  }
+>;
 
 export const MenuItem = forwardRef<HTMLDivElement, MenuItemProps>(function MenuItem(inProps, ref) {
   const [{ design, disabled }, props] = pipePropsSplitters(inProps, {
@@ -30,21 +34,21 @@ export const MenuItem = forwardRef<HTMLDivElement, MenuItemProps>(function MenuI
   const {
     color,
 
-    title,
+    content,
     icon,
     endIcon,
     details,
     loading,
-    children = <ButtonContent {...{ title, icon, endIcon, details, loading }} />,
+    children = <ItemContent {...{ icon, endIcon, details, loading }}>{content}</ItemContent>,
 
     className,
     ...htmlProps
   } = props;
 
-  const mainClass = useMemo(() => dropdownItemClassName(design.size), [design.size]);
+  const mainClass = useMemo(() => dropdownItemClassName(design.crossSize), [design.crossSize]);
   const iconProps = useMemo(
-    () => ({ size: pick(design.size, { xs: 16, sm: 16, md: 20, lg: 26, smInner: 16, mdInner: 20, lgInner: 26 }) }),
-    [design.size],
+    () => ({ size: pick(design.crossSize, { xs: 16, sm: 16, md: 20, lg: 26, smInner: 16, mdInner: 20, lgInner: 26 }) }),
+    [design.crossSize],
   );
 
   return (

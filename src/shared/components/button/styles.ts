@@ -10,6 +10,9 @@ export const buttonLikeClass = cva({
     rounded: "1_x",
     outline: "none",
     position: "relative",
+    '& [data-slot="start-icon"]': {
+      opacity: 0.6,
+    },
     _after: {
       rounded: "[inherit]",
       pointerEvents: "none",
@@ -40,9 +43,6 @@ export const buttonLikeClass = cva({
 
 export const buttonClass = cva({
   base: {
-    '& [data-slot="start-icon"]': {
-      opacity: 0.6,
-    },
     _hover: {
       '& [data-slot="start-icon"]': {
         opacity: 1,
@@ -123,23 +123,23 @@ export const buttonGroupClass = cva({
     direction: {
       horizontal: {
         flexDirection: "row",
-        "& > *[data-first]": {
+        "& *[data-first]": {
           borderEndRadius: "[0!]",
         },
-        "& > *[data-first]:is(:hover, [data-hover], :focus-visible, [data-focus-visible]):after": {
+        "& *[data-first]:is(:hover, [data-hover], :focus-visible, [data-focus-visible]):after": {
           right: "-0_x",
         },
-        "& > *[data-between]": {
+        "& *[data-between]": {
           rounded: "[0!]",
         },
-        "& > *[data-between]:is(:hover, [data-hover], :focus-visible, [data-focus-visible]):after": {
+        "& *[data-between]:is(:hover, [data-hover], :focus-visible, [data-focus-visible]):after": {
           left: "-0_x",
           right: "-0_x",
         },
-        "& > *[data-last]": {
+        "& *[data-last]": {
           borderStartRadius: "[0!]",
         },
-        "& > *[data-last]:is(:hover, [data-hover], :focus-visible, [data-focus-visible]):after": {
+        "& *[data-last]:is(:hover, [data-hover], :focus-visible, [data-focus-visible]):after": {
           left: "-0_x",
         },
       },
