@@ -1,8 +1,6 @@
 import * as Ariakit from "@ariakit/react";
 import { forwardRef } from "react";
-import { cn } from "../../styles/utils";
-import { Paper } from "../common/Paper";
-import { DesignContext } from "../core/DesignContext";
+import { Paper, styled } from "../../../../styled-system/jsx";
 import { Backdrop } from "../popovers/Backdrop";
 
 export interface MenuProps extends Ariakit.MenuProviderProps {
@@ -28,16 +26,24 @@ export const Menu = forwardRef<HTMLDivElement, MenuProps>(function Menu(
     <Ariakit.MenuProvider store={props.store ?? store}>
       <Ariakit.MenuButton render={triggertRender} />
       <Ariakit.Menu
-        gutter={8}
+        gutter={4}
         ref={ref}
-        render={<Paper />}
-        className={cn("p-2 outline-hidden", className)}
+        render={<Paper level="select" outline="none" />}
+        className={className}
         portal={portal}
         unmountOnHide
         sameWidth={sameWidth}
         backdrop={backdrop ? <Backdrop /> : undefined}
       >
-        <DesignContext.Define rounded="all">{content}</DesignContext.Define>
+        <styled.div
+          p="1"
+          minW="var(--popover-anchor-width)"
+          maxW="var(--popover-available-width)"
+          maxH="var(--popover-available-height)"
+          overflowY="auto"
+        >
+          {content}
+        </styled.div>
       </Ariakit.Menu>
     </Ariakit.MenuProvider>
   );

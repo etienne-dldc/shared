@@ -20,7 +20,7 @@ import { itemContentFontSizeClass } from "../item-content/styles";
 import { buttonClass, buttonLikeClass } from "./styles";
 
 export type ButtonProps = Merge<
-  ComponentProps<"button">,
+  Omit<ComponentProps<"button">, "title">,
   {
     // Design
     disabled?: boolean;

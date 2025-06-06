@@ -1,10 +1,13 @@
 import { CaretDownIcon, CirclesFourIcon, DotsThreeVerticalIcon, UserIcon } from "@phosphor-icons/react";
-import { Variants } from "../../../playground/Variants";
-import { cn, tw } from "../../styles/utils";
-import { Button } from "../button-legacy/Button";
-import { ButtonLike } from "../button-legacy/ButtonLike";
+import { styled } from "../../../../styled-system/jsx";
+import { TVariantsValues, Variants } from "../../../playground/Variants";
+import { cn } from "../../styles/utils";
+import { TDesignSize, TDesignVariant, TPaletteColor } from "../core/DesignContext";
+import { Button } from "./Button";
+import { ButtonLike } from "./ButtonLike";
 
 const TEXT_VARIANTS = {
+  default: "Label",
   none: undefined,
   short: "Label",
   long: "Much longer text",
@@ -12,6 +15,7 @@ const TEXT_VARIANTS = {
 } as const;
 
 const DYNAMIC_COLOR_VARIANTS = {
+  default: undefined,
   red: "red",
   orange: "orange",
   amber: "amber",
@@ -34,9 +38,10 @@ const DYNAMIC_COLOR_VARIANTS = {
   zinc: "zinc",
   neutral: "neutral",
   stone: "stone",
-} as const;
+} satisfies TVariantsValues<TPaletteColor, TPaletteColor | undefined>;
 
 const ICON_VARIANTS = {
+  default: undefined,
   none: undefined,
   user: <UserIcon />,
   workspace: <CirclesFourIcon />,
@@ -44,125 +49,138 @@ const ICON_VARIANTS = {
 } as const;
 
 const END_ACTION_VARIANTS = {
+  default: undefined,
   none: undefined,
   dotsButton: <ButtonLike icon={<DotsThreeVerticalIcon />} />,
   caretButton: <ButtonLike icon={<CaretDownIcon />} />,
-  cancelButton: <ButtonLike title="Cancel" color="red" />,
+  cancelButton: <ButtonLike content="Cancel" color="red" />,
   primaryDotsButton: <ButtonLike icon={<DotsThreeVerticalIcon />} />,
 } as const;
 
-const SIZE_VARIANTS = { xs: "xs", sm: "sm", md: "md", lg: "lg" } as const;
+const SIZE_VARIANTS = {
+  default: undefined,
+  size_2x: "2x",
+  size_3: "3",
+  size_3x: "3x",
+  size_4: "4",
+  size_4x: "4x",
+  size_5: "5",
+  size_6: "6",
+  size_7: "7",
+  size_8: "8",
+  size_10: "10",
+  size_12: "12",
+} satisfies TVariantsValues<`size_${TDesignSize}`, TDesignSize | undefined>;
 
-const DIR_SIZE_VARIANTS = { default: undefined, xs: "xs", sm: "sm", md: "md", lg: "lg" } as const;
+const VARIANT_VARIANTS = {
+  default: undefined,
+  solid: "solid",
+  surface: "surface",
+  subtle: "subtle",
+  ghost: "ghost",
+} satisfies TVariantsValues<TDesignVariant, TDesignVariant | undefined>;
 
-const PRIMARY_VARIANTS = { default: undefined, primary: true, unprimary: false } as const;
-
-const FILLED_VARIANTS = { default: undefined, filled: true, unfilled: false } as const;
-
-const HOVER_PRIMARY_VARIANTS = { default: undefined, hoverPrimary: true, hoverUnprimary: false } as const;
-
-const ROUND_VARIANTS = {
-  all: "all",
-  left: "left",
-  right: "right",
-  top: "top",
-  bottom: "bottom",
-  none: "none",
-} as const;
-
-const BACKGROUND_COLORS = {
-  none: "",
-  blue: tw`bg-blue-950`,
-  indigo: tw`bg-indigo-950`,
-  green: tw`bg-green-950`,
-  orange: tw`bg-orange-950`,
-  teal: tw`bg-teal-950`,
-  red: tw`bg-red-950`,
-  slate: tw`bg-slate-950`,
-} as const;
+// const BACKGROUND_COLORS = {
+//   none: "",
+//   blue: tw`bg-blue-950`,
+//   indigo: tw`bg-indigo-950`,
+//   green: tw`bg-green-950`,
+//   orange: tw`bg-orange-950`,
+//   teal: tw`bg-teal-950`,
+//   red: tw`bg-red-950`,
+//   slate: tw`bg-slate-950`,
+// } as const;
 
 const INTERACTIVE_STATE = {
+  default: undefined,
   base: null,
   hover: "hover",
-  active: "active",
   focus: "focus",
 } as const;
 
-const DISABLED_VARIANTS = { no: undefined, yes: true } as const;
+const DISABLED_VARIANTS = {
+  default: undefined,
+  no: false,
+  yes: true,
+} as const;
 
-const LOADING_VARIANTS = { no: undefined, yes: true } as const;
+const LOADING_VARIANTS = { default: undefined, no: false, yes: true } as const;
 
-const FULL_WIDTH_VARIANTS = { no: false, yes: true } as const;
+const FULL_WIDTH_VARIANTS = { default: undefined, no: false, yes: true } as const;
 
 export default function ButtonPlayground() {
   return (
     <Variants
+      title="Button"
       localStorageKey="button"
       cellMinWidth={200}
       dimensions={{
-        color: DYNAMIC_COLOR_VARIANTS,
-        size: SIZE_VARIANTS,
-        xSize: DIR_SIZE_VARIANTS,
-        ySize: DIR_SIZE_VARIANTS,
-        primary: PRIMARY_VARIANTS,
-        filled: FILLED_VARIANTS,
-        hoverFilled: HOVER_PRIMARY_VARIANTS,
-        rounded: ROUND_VARIANTS,
         disabled: DISABLED_VARIANTS,
-        title: TEXT_VARIANTS,
-        details: TEXT_VARIANTS,
+        crossSize: SIZE_VARIANTS,
+        contentSize: SIZE_VARIANTS,
+        mainSize: SIZE_VARIANTS,
+        variant: VARIANT_VARIANTS,
+        hoverVariant: VARIANT_VARIANTS,
+        color: DYNAMIC_COLOR_VARIANTS,
+
+        content: TEXT_VARIANTS,
         loading: LOADING_VARIANTS,
         icon: ICON_VARIANTS,
         endIcon: ICON_VARIANTS,
         endAction: END_ACTION_VARIANTS,
-        background: BACKGROUND_COLORS,
+
+        // background: BACKGROUND_COLORS,
         fullWidth: FULL_WIDTH_VARIANTS,
         state: INTERACTIVE_STATE,
       }}
       defaultSelected={{
-        color: "blue",
-        title: "short",
-        details: "none",
-        rounded: "all",
-        disabled: "no",
-        size: "md",
-        xSize: "default",
-        ySize: "default",
-        primary: "default",
-        filled: "default",
-        hoverFilled: "default",
-        loading: "no",
-        icon: "user",
-        endIcon: "none",
-        endAction: "none",
-        background: "none",
-        fullWidth: "no",
-        state: "base",
+        disabled: "default",
+        crossSize: "default",
+        contentSize: "default",
+        mainSize: "default",
+        variant: "default",
+        hoverVariant: "default",
+        color: "default",
+
+        content: "default",
+        loading: "default",
+        icon: "default",
+        endIcon: "default",
+        endAction: "default",
+
+        // background: "default",
+        fullWidth: "default",
+        state: "default",
       }}
       presets={{
         base: { column: [], row: [], selected: {} },
-        variants: { column: ["state"], row: ["filled", "primary", "hoverFilled"], selected: {} },
+        variants: { column: ["state"], row: ["variant", "hoverVariant"], selected: {} },
         focused: {
           column: ["color"],
-          row: ["size", "filled", "primary"],
+          row: ["crossSize", "variant"],
           selected: { state: "focus" },
         },
-        "size & color": { column: ["size"], row: ["color"], selected: { primary: "primary", filled: "filled" } },
-        content: {
-          column: ["title"],
-          row: ["details", "icon", "endIcon"],
-          selected: { primary: "primary", filled: "filled" },
-        },
-        sizes: {
-          column: ["xSize"],
-          row: ["ySize"],
-          selected: { primary: "primary", filled: "filled" },
-        },
+        "size & color": { column: ["crossSize"], row: ["color"], selected: { variant: "solid" } },
+        // content: {
+        //   column: ["title"],
+        //   row: ["details", "icon", "endIcon"],
+        //   selected: { primary: "primary", filled: "filled" },
+        // },
+        // sizes: {
+        //   column: ["xSize"],
+        //   row: ["ySize"],
+        //   selected: { primary: "primary", filled: "filled" },
+        // },
       }}
-      render={({ fullWidth, background, state, ...props }) => (
-        <div className={cn("w-full h-full", background)}>
-          <Button {...props} className={cn(fullWidth ? "w-full" : "")} __forceState={state} />
-        </div>
+      render={({ fullWidth, state, ...props }) => (
+        <styled.div className={cn("w-full h-full")}>
+          <Button
+            {...props}
+            css={{ w: fullWidth ? "full" : "auto" }}
+            data-focus-visible={state === "focus" ? true : undefined}
+            data-hover={state === "hover" ? true : undefined}
+          />
+        </styled.div>
       )}
     />
   );

@@ -1,6 +1,7 @@
 import * as Ariakit from "@ariakit/react";
 import { CaretDownIcon } from "@phosphor-icons/react";
-import { ForwardedRef, useMemo } from "react";
+import { ComponentPropsWithRef, useMemo } from "react";
+import { Merge } from "type-fest";
 import { css, cx } from "../../../../styled-system/css";
 import { Paper, styled } from "../../../../styled-system/jsx";
 import { vstack } from "../../../../styled-system/patterns";
@@ -21,39 +22,40 @@ import { ItemContent } from "../item-content/ItemContent";
 import { SelectItem } from "./SelectItem";
 import { TSelectItem } from "./types";
 
-interface SelectProps<Value extends string> {
-  // Design
-  disabled?: boolean;
-  crossSize?: TDesignCrossSize;
-  contentSize?: TDesignContentSize;
-  mainSize?: TDesignMainSize;
-  variant?: TDesignVariant;
-  hoverVariant?: TDesignVariant;
-  color?: TPaletteColor;
+export type SelectProps<Value extends string> = Merge<
+  ComponentPropsWithRef<"button">,
+  {
+    // Design
+    disabled?: boolean;
+    crossSize?: TDesignCrossSize;
+    contentSize?: TDesignContentSize;
+    mainSize?: TDesignMainSize;
+    variant?: TDesignVariant;
+    hoverVariant?: TDesignVariant;
+    color?: TPaletteColor;
 
-  caret?: boolean;
-  className?: string;
-  defaultValue?: Value;
-  items: TSelectItem<Value>[];
-  label: React.ReactNode;
-  name?: string;
-  labelHidden?: boolean;
-  onChange?: (value: Value) => void;
-  open?: boolean;
-  setOpen?: (open: boolean) => void;
-  issues?: React.ReactNode;
-  value?: Value;
-  emptyValue?: Value;
-  sameWidth?: boolean;
+    caret?: boolean;
+    className?: string;
+    defaultValue?: Value;
+    items: TSelectItem<Value>[];
+    label: React.ReactNode;
+    name?: string;
+    labelHidden?: boolean;
+    onChange?: (value: Value) => void;
+    open?: boolean;
+    setOpen?: (open: boolean) => void;
+    issues?: React.ReactNode;
+    value?: Value;
+    emptyValue?: Value;
+    sameWidth?: boolean;
 
-  renderSelected?: (item: TSelectItem<Value>) => React.ReactNode;
+    renderSelected?: (item: TSelectItem<Value>) => React.ReactNode;
 
-  renderSelect?: React.ReactElement<any>;
-  renderLabel?: React.ReactElement<any>;
-  renderWrapper?: React.ReactElement<any>;
-
-  ref?: ForwardedRef<HTMLDivElement>;
-}
+    renderSelect?: React.ReactElement<any>;
+    renderLabel?: React.ReactElement<any>;
+    renderWrapper?: React.ReactElement<any>;
+  }
+>;
 
 export function Select<Value extends string>(inProps: SelectProps<Value>) {
   const [{ disabled }, props] = pipePropsSplitters(inProps, {
@@ -74,13 +76,14 @@ export function Select<Value extends string>(inProps: SelectProps<Value>) {
     caret = true,
     defaultValue,
     emptyValue,
-    sameWidth = true,
+    sameWidth = false,
     className,
     renderSelected,
     renderSelect,
     renderLabel,
     renderWrapper,
     ref,
+    ...htmlProps
   } = props;
 
   const selectStore = Ariakit.useSelectStore({
@@ -119,7 +122,6 @@ export function Select<Value extends string>(inProps: SelectProps<Value>) {
               ),
               className,
             )}
-            ref={ref}
           >
             <Ariakit.SelectLabel
               render={
@@ -128,7 +130,7 @@ export function Select<Value extends string>(inProps: SelectProps<Value>) {
             >
               {label}
             </Ariakit.SelectLabel>
-            <Ariakit.Select disabled={disabled.disabled} name={name} render={renderSelect ?? <Button />}>
+            <Ariakit.Select disabled={disabled.disabled} name={name} {...htmlProps} render={renderSelect ?? <Button />}>
               {selectedItem ? (
                 renderSelected ? (
                   renderSelected(selectedItem)
