@@ -76,14 +76,14 @@ importers:
         version: 1.1.0(typescript@5.8.3)
     devDependencies:
       '@eslint/js':
-        specifier: ^9.27.0
+        specifier: ^9.28.0
         version: 9.28.0
       '@pandacss/dev':
         specifier: ^0.53.7
         version: 0.53.7(typescript@5.8.3)
       '@pandacss/eslint-plugin':
         specifier: ^0.2.9
-        version: 0.2.9(eslint@9.27.0(jiti@2.4.2))(typescript@5.8.3)
+        version: 0.2.12(eslint@9.28.0(jiti@2.4.2))(typescript@5.8.3)
       '@pandacss/preset-base':
         specifier: ^0.53.7
         version: 0.53.7
@@ -94,19 +94,19 @@ importers:
         specifier: ^0.53.7
         version: 0.53.7
       '@tailwindcss/vite':
-        specifier: ^4.1.7
+        specifier: ^4.1.8
         version: 4.1.8(vite@6.3.5(jiti@2.4.2)(lightningcss@1.30.1)(yaml@2.7.0))
       '@types/react':
-        specifier: ^19.1.4
+        specifier: ^19.1.6
         version: 19.1.6
       '@types/react-dom':
-        specifier: ^19.1.5
+        specifier: ^19.1.6
         version: 19.1.6(@types/react@19.1.6)
       '@vitejs/plugin-react-swc':
-        specifier: ^3.9.0
+        specifier: ^3.10.1
         version: 3.10.1(vite@6.3.5(jiti@2.4.2)(lightningcss@1.30.1)(yaml@2.7.0))
       eslint:
-        specifier: ^9.27.0
+        specifier: ^9.28.0
         version: 9.28.0(jiti@2.4.2)
       eslint-plugin-react-hooks:
         specifier: ^5.2.0
@@ -466,8 +466,8 @@ packages:
     resolution: {integrity: sha512-wzDNtP+hApLNRRzMXYBBSQF6FBjBaRJQ0TnLbxVEQSQCOAq8M4AspLYn36QuriXwgxut+xIdxQ6g7T3I3LfMlQ==}
     hasBin: true
 
-  '@pandacss/eslint-plugin@0.2.9':
-    resolution: {integrity: sha512-0KyxDGsx5yLuqglAEmcKT67JbfhdGS8PVC4lUhnABaIc6Mfgz0g/ZoxXFFDFye7SBr/29MemSmPmvTvH6Th3+A==}
+  '@pandacss/eslint-plugin@0.2.12':
+    resolution: {integrity: sha512-+wnwanzPAJHBjOjBUw/6gKExf1kd5FjHAsdSeCjUl2k1Rg6Tdn/MG1IHWRi3V/46XBXSq7eFv0bJNz5vFRUCXw==}
     peerDependencies:
       eslint: '*'
 
@@ -2265,14 +2265,14 @@ snapshots:
       - jsdom
       - typescript
 
-  '@pandacss/eslint-plugin@0.2.9(eslint@9.27.0(jiti@2.4.2))(typescript@5.8.3)':
+  '@pandacss/eslint-plugin@0.2.12(eslint@9.28.0(jiti@2.4.2))(typescript@5.8.3)':
     dependencies:
       '@pandacss/config': 0.53.7
       '@pandacss/generator': 0.53.7
       '@pandacss/node': 0.53.7(typescript@5.8.3)
       '@pandacss/shared': 0.53.7
-      '@typescript-eslint/utils': 8.32.1(eslint@9.27.0(jiti@2.4.2))(typescript@5.8.3)
-      eslint: 9.27.0(jiti@2.4.2)
+      '@typescript-eslint/utils': 8.33.1(eslint@9.28.0(jiti@2.4.2))(typescript@5.8.3)
+      eslint: 9.28.0(jiti@2.4.2)
       hookable: 5.5.3
       synckit: 0.9.3
     transitivePeerDependencies:
