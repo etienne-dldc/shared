@@ -5,17 +5,23 @@ import { css } from "../../../../styled-system/css";
 import { SystemStyleObject } from "../../../../styled-system/types";
 import { cn } from "../../styles/utils";
 import { colorPaletteClass } from "../common/styles";
-import { DesignContext, TDesignCrossSize, TDesignMainSize, TDesignVariant, TPaletteColor } from "../core/DesignContext";
+import {
+  DesignContext,
+  TDesignButtonHeight,
+  TDesignSpacing,
+  TDesignVariant,
+  TPaletteColor,
+} from "../core/DesignContext";
 import { buttonGroupClass, separatorClass } from "./styles";
 
 export type ButtonGroupProps = Merge<
-  ComponentPropsWithoutRef<"div">,
+  Omit<ComponentPropsWithoutRef<"div">, "title" | "height" | "color">,
   {
     // Design
     disabled?: boolean;
-    crossSize?: TDesignCrossSize;
-    contentSize?: TDesignCrossSize;
-    mainSize?: TDesignMainSize;
+    height?: TDesignButtonHeight;
+    contentSize?: TDesignButtonHeight;
+    spacing?: TDesignSpacing;
     variant?: TDesignVariant;
     hoverVariant?: TDesignVariant;
     color?: TPaletteColor;
@@ -57,8 +63,8 @@ export const ButtonGroup = forwardRef(function ButtonGroup(
 
   return (
     <DesignContext.Define
-      crossSize={inProps.crossSize}
-      mainSize={inProps.mainSize}
+      height={inProps.height}
+      spacing={inProps.spacing}
       contentSize={inProps.contentSize}
       variant={inProps.variant}
       hoverVariant={inProps.hoverVariant}

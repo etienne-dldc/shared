@@ -1,6 +1,6 @@
 import { cva } from "../../../../styled-system/css";
 import { SystemStyleObject } from "../../../../styled-system/types";
-import { TDesignCrossSize, TPaletteColor } from "../core/DesignContext";
+import { TDesignButtonHeight, TPaletteColor } from "../core/DesignContext";
 
 export const colorPaletteClass = cva({
   variants: {
@@ -32,9 +32,9 @@ export const colorPaletteClass = cva({
   },
 });
 
-export const crossSizeClass = cva({
+export const heightClass = cva({
   variants: {
-    crossSize: {
+    height: {
       "2x": { minH: "2x", textStyle: "f2x" },
       "3": { minH: "3", textStyle: "f3" },
       "3x": { minH: "3x", textStyle: "f3x" },
@@ -46,6 +46,6 @@ export const crossSizeClass = cva({
       "8": { minH: "8", textStyle: "f8" },
       "10": { minH: "10", textStyle: "f10" },
       "12": { minH: "12", textStyle: "f12" },
-    } satisfies Record<TDesignCrossSize, SystemStyleObject>,
+    } satisfies Record<TDesignButtonHeight, SystemStyleObject>,
   },
 });

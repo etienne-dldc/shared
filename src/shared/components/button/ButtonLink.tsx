@@ -3,13 +3,13 @@ import { Merge } from "type-fest";
 
 import { css, cx } from "../../../../styled-system/css";
 import { ComponentProps, SystemStyleObject } from "../../../../styled-system/types";
-import { colorPaletteClass, crossSizeClass } from "../common/styles";
+import { colorPaletteClass, heightClass } from "../common/styles";
 import {
   DesignContext,
   resolveDesignProps,
+  TDesignButtonHeight,
   TDesignContentSize,
-  TDesignCrossSize,
-  TDesignMainSize,
+  TDesignSpacing,
   TDesignVariant,
   TPaletteColor,
 } from "../core/DesignContext";
@@ -21,9 +21,9 @@ export type ButtonLinkProps = Merge<
   Omit<ComponentProps<"a">, "title">,
   {
     // Design
-    crossSize?: TDesignCrossSize;
+    height?: TDesignButtonHeight;
     contentSize?: TDesignContentSize;
-    mainSize?: TDesignMainSize;
+    spacing?: TDesignSpacing;
     variant?: TDesignVariant;
     hoverVariant?: TDesignVariant;
     color?: TPaletteColor;
@@ -44,7 +44,7 @@ export type ButtonLinkProps = Merge<
 
 export function ButtonLink(inProps: ButtonLinkProps) {
   const [design, props] = DesignContext.useProps(inProps);
-  const { contentSize, crossSize, hoverVariant, variant } = resolveDesignProps(design);
+  const { contentSize, height, hoverVariant, variant } = resolveDesignProps(design);
 
   const {
     color,
@@ -68,8 +68,8 @@ export function ButtonLink(inProps: ButtonLinkProps) {
 
   return (
     <DesignContext.Define
-      crossSize={inProps.crossSize}
-      mainSize={inProps.mainSize}
+      height={inProps.height}
+      spacing={inProps.spacing}
       contentSize={inProps.contentSize}
       variant={inProps.variant}
       hoverVariant={inProps.hoverVariant}
@@ -78,11 +78,11 @@ export function ButtonLink(inProps: ButtonLinkProps) {
         render={<a />}
         className={cx(
           css(
-            crossSizeClass.raw({ crossSize }),
+            heightClass.raw({ height: height }),
             buttonLikeClass.raw({ variant }),
             buttonClass.raw({ hoverVariant, variant }),
             inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
-            itemContentFontSizeClass.raw({ contentSize, crossSize }),
+            itemContentFontSizeClass.raw({ contentSize, height: height }),
             cssProp,
           ),
           className,

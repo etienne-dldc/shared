@@ -5,13 +5,13 @@ import { DayPicker as ReactDayPicker } from "react-day-picker";
 
 import { cn, tw } from "../../styles/utils";
 import { formatNativeDateStr } from "../../utils/dates";
-import { Paper } from "../common/Paper";
 import { StringLike } from "../fields/utils";
 import { FieldError } from "../form/FieldError";
 import { Label } from "../form/Label";
 import { TextInput } from "../form/TextInput";
 
 import "react-day-picker/dist/style.css";
+import { Paper } from "../../../../styled-system/jsx";
 
 interface DateFieldProps {
   name: StringLike;

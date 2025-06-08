@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { nanoid } from "nanoid";
 import { useState } from "react";
 import scrollIntoView from "smooth-scroll-into-view-if-needed";
-import { Button } from "../components/button-legacy/Button";
+import { Button } from "../components/button/Button";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { Finder } from "./Finder";
 import { FinderPanel, useFinderPanelRefOrFail, useFinderPanelSize } from "./FinderPanel";
@@ -28,9 +28,9 @@ export default function FinderPlayground() {
         {keys.map((key, i) => (
           <FinderPanel key={key} className="w-full md:w-[600px]" isActive={i === keys.length - 1}>
             <div className="flex flex-col gap-2 p-2">
-              <Button onClick={open(i)} title="Open" />
-              <Button onClick={reset(i)} title="Reset" />
-              {i > 0 && <Button onClick={close(i)} title="Close" />}
+              <Button onClick={open(i)} content="Open" />
+              <Button onClick={reset(i)} content="Reset" />
+              {i > 0 && <Button onClick={close(i)} content="Close" />}
             </div>
             <PanelContent />
           </FinderPanel>
@@ -60,9 +60,9 @@ function PanelContent() {
             scrollIntoView(panelRef.current);
           }
         }}
-        title="Scroll into view"
+        content="Scroll into view"
       />
-      <Button onClick={() => setExpanded((prev) => !prev)} title={expanded ? "Collapse" : "Expand"} />
+      <Button onClick={() => setExpanded((prev) => !prev)} content={expanded ? "Collapse" : "Expand"} />
       {expanded && (
         <div className="flex flex-col gap-2">
           {Array.from({ length: 10 }).map((_, i) => (

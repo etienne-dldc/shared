@@ -10,14 +10,14 @@ import {
 import { createBrowserHistory } from "history";
 import { ComponentPropsWithRef, RefObject, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Merge } from "type-fest";
-import { Grid, HStack, Paper, styled } from "../../styled-system/jsx";
+import { css } from "../../styled-system/css";
+import { HStack, Paper, styled } from "../../styled-system/jsx";
 import { Button } from "../shared/components/button/Button";
 import { ButtonGroup } from "../shared/components/button/ButtonGroup";
 import { ButtonLike } from "../shared/components/button/ButtonLike";
 import { LoadingBlock } from "../shared/components/common/LoadingBlock";
 import { EmptyState } from "../shared/components/layouts/EmptyState";
 import { MenuItem } from "../shared/components/menu/MenuItem";
-import { cn } from "../shared/styles/utils";
 import { routes, TRoute, TRouteFolder, TRouteItem } from "./routes";
 
 const history = createBrowserHistory();
@@ -54,9 +54,9 @@ export function Playground() {
   }, [location.pathname]);
 
   return (
-    <Grid minH="screen" gap="4" p="4" gridTemplateRows="auto 1fr">
+    <styled.div display="flex" flexDirection="column" gap="4" p="4" minH="screen">
       <HStack>
-        <ButtonGroup variant="solid" crossSize="10" color="blue">
+        <ButtonGroup variant="solid" height="10" color="blue">
           <RouteMenu items={routes} icon={<ListIcon />} />
           {routeMatch?.parents.map((parent) => {
             return (
@@ -72,7 +72,7 @@ export function Playground() {
           {routeMatch?.match && <ButtonLike content={routeMatch?.match.name} icon={<SquaresFourIcon />} />}
         </ButtonGroup>
       </HStack>
-      <div className="relative">
+      <styled.div position="relative">
         <Suspense fallback={<LoadingBlock />}>
           {routeMatch ? (
             <routeMatch.match.component />
@@ -80,8 +80,8 @@ export function Playground() {
             <EmptyState text="Route not found" icon={<CircleDashedIcon />} />
           )}
         </Suspense>
-      </div>
-    </Grid>
+      </styled.div>
+    </styled.div>
   );
 }
 
@@ -98,6 +98,8 @@ type RouteMenuProps = Merge<
 function RouteMenu({ items, title, icon, endIcon, ...buttonProps }: RouteMenuProps) {
   const topMenuRef = useRef<HTMLDivElement | null>(null);
 
+  console.log({ topMenuRef });
+
   return (
     <Ariakit.MenuProvider>
       <Ariakit.MenuButton render={<Button content={title} icon={icon} endIcon={endIcon} />} {...buttonProps} />
@@ -105,7 +107,7 @@ function RouteMenu({ items, title, icon, endIcon, ...buttonProps }: RouteMenuPro
         gutter={8}
         ref={topMenuRef}
         render={<Paper />}
-        className={cn("p-2 outline-hidden h-[300px] min-w-36")}
+        className={css({ padding: "2", outline: "none", height: "[300px]", minWidth: "[150px]" })}
         portal={true}
         unmountOnHide
       >
@@ -133,7 +135,7 @@ function NestedMenu({ item, parentRef }: NestedMenuProps) {
       />
       <Ariakit.Menu
         gutter={8}
-        getAnchorRect={parentRef ? () => parentRef.current?.getBoundingClientRect() ?? null : undefined}
+        // getAnchorRect={parentRef ? () => parentRef.current?.getBoundingClientRect() ?? null : undefined}
         render={<Paper level="select" outline="none" />}
         ref={menuRef}
       >

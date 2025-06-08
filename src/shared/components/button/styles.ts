@@ -66,7 +66,7 @@ export const buttonClass = cva({
           },
         },
         _disabled: {
-          bg: "colorPalette.950",
+          bg: "colorPalette.900",
           color: "neutral.200/60",
         },
       },
@@ -100,7 +100,7 @@ export const buttonClass = cva({
           bg: "white/10",
           color: "colorPalette.100",
           _after: {
-            borderColor: "neutral.700",
+            borderColor: "colorPalette.700",
             borderWidth: "0_x",
           },
         },

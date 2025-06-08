@@ -4,13 +4,13 @@ import { Merge } from "type-fest";
 import { css, cx } from "../../../../styled-system/css";
 import { ComponentProps, SystemStyleObject } from "../../../../styled-system/types";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
-import { colorPaletteClass, crossSizeClass } from "../common/styles";
+import { colorPaletteClass, heightClass } from "../common/styles";
 import {
   DesignContext,
   resolveDesignProps,
+  TDesignButtonHeight,
   TDesignContentSize,
-  TDesignCrossSize,
-  TDesignMainSize,
+  TDesignSpacing,
   TDesignVariant,
   TPaletteColor,
 } from "../core/DesignContext";
@@ -20,13 +20,13 @@ import { itemContentFontSizeClass } from "../item-content/styles";
 import { buttonClass, buttonLikeClass } from "./styles";
 
 export type ButtonProps = Merge<
-  Omit<ComponentProps<"button">, "title">,
+  Omit<ComponentProps<"button">, "title" | "height" | "color">,
   {
     // Design
     disabled?: boolean;
-    crossSize?: TDesignCrossSize;
+    height?: TDesignButtonHeight;
     contentSize?: TDesignContentSize;
-    mainSize?: TDesignMainSize;
+    spacing?: TDesignSpacing;
     variant?: TDesignVariant;
     hoverVariant?: TDesignVariant;
     color?: TPaletteColor;
@@ -42,6 +42,10 @@ export type ButtonProps = Merge<
 
     // Forward to Button
     render?: React.ReactElement<any>;
+
+    // Data attributes
+    "data-hover"?: boolean;
+    "data-focus-visible"?: boolean;
   }
 >;
 
@@ -50,7 +54,7 @@ export function Button(inProps: ButtonProps) {
     design: DesignContext.usePropsSplitter(),
     disabled: DisabledContext.usePropsSplitter(),
   });
-  const { contentSize, crossSize, hoverVariant, variant } = resolveDesignProps(design);
+  const { contentSize, height, hoverVariant, variant } = resolveDesignProps(design);
 
   const {
     color,
@@ -75,30 +79,32 @@ export function Button(inProps: ButtonProps) {
 
   return (
     <DesignContext.Define
-      crossSize={inProps.crossSize}
-      mainSize={inProps.mainSize}
+      height={inProps.height}
+      spacing={inProps.spacing}
       contentSize={inProps.contentSize}
       variant={inProps.variant}
       hoverVariant={inProps.hoverVariant}
     >
-      <Ariakit.Button
-        className={cx(
-          css(
-            crossSizeClass.raw({ crossSize }),
-            buttonLikeClass.raw({ variant }),
-            buttonClass.raw({ hoverVariant, variant }),
-            inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
-            itemContentFontSizeClass.raw({ contentSize, crossSize }),
-            cssProp,
-          ),
-          className,
-        )}
-        disabled={disabled.disabled}
-        type={type}
-        {...buttonProps}
-      >
-        {childrenResolved}
-      </Ariakit.Button>
+      <DisabledContext.Define disabled={inProps.disabled}>
+        <Ariakit.Button
+          className={cx(
+            css(
+              heightClass.raw({ height }),
+              buttonLikeClass.raw({ variant }),
+              buttonClass.raw({ hoverVariant, variant }),
+              inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
+              itemContentFontSizeClass.raw({ contentSize, height }),
+              cssProp,
+            ),
+            className,
+          )}
+          disabled={disabled.disabled}
+          type={type}
+          {...buttonProps}
+        >
+          {childrenResolved}
+        </Ariakit.Button>
+      </DisabledContext.Define>
     </DesignContext.Define>
   );
 }

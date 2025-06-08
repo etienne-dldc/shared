@@ -1,6 +1,6 @@
 import { css } from "../../../../styled-system/css";
 
-export const selectItemClass = css.raw({
+export const menuItemClass = css.raw({
   display: "flex",
   flexDirection: "row",
   alignItems: "center",

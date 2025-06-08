@@ -1,12 +1,12 @@
 import { cva } from "../../../../styled-system/css";
 import { SystemStyleObject } from "../../../../styled-system/types";
 import {
-  contentToCross,
-  crossToContent,
+  contentToHeight,
+  heightToContent,
+  TDesignButtonHeight,
   TDesignContentSize,
   TDesignContextProps,
-  TDesignCrossSize,
-  TDesignMainSize,
+  TDesignSpacing,
   TResolvedDesignProps,
 } from "../core/DesignContext";
 
@@ -19,7 +19,7 @@ export const itemContentClass = cva({
     maxW: "full",
   },
   variants: {
-    mainSize: {
+    spacing: {
       "2x": { gap: "0x", px: "0x" },
       "3": { gap: "1", px: "1" },
       "3x": { gap: "1_x", px: "1_x" },
@@ -31,13 +31,13 @@ export const itemContentClass = cva({
       "8": { gap: "3x", px: "5x" },
       "10": { gap: "4", px: "6" },
       "12": { gap: "4x", px: "6x" },
-    } satisfies Record<TDesignMainSize, SystemStyleObject>,
+    } satisfies Record<TDesignSpacing, SystemStyleObject>,
   },
 });
 
 export const contentSpaceClass = cva({
   variants: {
-    mainSize: {
+    spacing: {
       "2x": { px: "0x" },
       "3": { px: "1" },
       "3x": { px: "1_x" },
@@ -49,7 +49,7 @@ export const contentSpaceClass = cva({
       "8": { px: "5x" },
       "10": { px: "6" },
       "12": { px: "6x" },
-    } satisfies Record<TDesignMainSize, SystemStyleObject>,
+    } satisfies Record<TDesignSpacing, SystemStyleObject>,
   },
 });
 
@@ -68,7 +68,7 @@ export const itemContentFontSizeClass = cva({
       "10": { textStyle: "f10" },
       "12": { textStyle: "f12" },
     } satisfies Record<TDesignContentSize, SystemStyleObject>,
-    crossSize: {
+    height: {
       "2x": { minW: "2x" },
       "3": { minW: "3" },
       "3x": { minW: "3x" },
@@ -80,15 +80,15 @@ export const itemContentFontSizeClass = cva({
       "8": { minW: "8" },
       "10": { minW: "10" },
       "12": { minW: "12" },
-    } satisfies Record<TDesignCrossSize, SystemStyleObject>,
+    } satisfies Record<TDesignButtonHeight, SystemStyleObject>,
   },
 });
 
 export function nestedDesignContent(design: TResolvedDesignProps): TDesignContextProps {
-  const nestedContentSize = crossToContent[design.contentSize] ?? "3";
+  const nestedContentSize = heightToContent[design.contentSize] ?? "3";
   return {
     ...design,
     contentSize: nestedContentSize,
-    crossSize: contentToCross[nestedContentSize] ?? "4",
+    height: contentToHeight[nestedContentSize] ?? "4",
   };
 }

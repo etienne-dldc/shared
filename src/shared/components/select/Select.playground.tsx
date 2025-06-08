@@ -1,19 +1,20 @@
 import { Fragment } from "react/jsx-runtime";
-import { Variants } from "../../../playground/Variants";
-import { Select, TSelectItem } from "./Select";
+import { Variants } from "../../../playground/LegacyVariants";
+import { Select } from "./Select";
+import { TSelectItem } from "./types";
 
 const selectItems: TSelectItem<string>[] = [
   {
     value: "apple",
-    title: "Apple",
+    content: "Apple",
   },
   {
     value: "banana",
-    title: "Banana",
+    content: "Banana",
   },
   {
     value: "cherry",
-    title: "Cherry",
+    content: "Cherry",
   },
 ];
 
