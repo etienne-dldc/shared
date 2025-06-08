@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Variants } from "../../playground/Variants";
+import { Variants } from "../../playground/LegacyVariants";
 import { cn } from "../styles/utils";
 import { CheckBox } from "./form/CheckBox";
 
@@ -29,12 +29,12 @@ export default function FormPlayground() {
       presets={{
         base: { row: [], column: [], selected: {} },
       }}
-      render={({ checked, size }) => (
+      render={({ checked }) => (
         <div className={cn("w-full h-full")}>
           <CheckBox
             checked={checked === "auto" ? globalCheched : checked}
             onChange={checked === "auto" ? setGlobalChecked : undefined}
-            size={size}
+            // size={size}
           />
         </div>
       )}

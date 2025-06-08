@@ -1,4 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
 import * as Ariakit from "@ariakit/react";
 import { ClickScrollPlugin, OverlayScrollbars } from "overlayscrollbars";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
@@ -18,14 +17,17 @@ OverlayScrollbars.plugin(ClickScrollPlugin);
 const PanelSizeContext = createContext<TUseResizeWidth>(0);
 const PanelRefContext = createContext<React.RefObject<HTMLDivElement | null> | null>(null);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useFinderPanelSize() {
   return useContext(PanelSizeContext);
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useFinderPanelRef() {
   return useContext(PanelRefContext);
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useFinderPanelRefOrFail() {
   const ref = useContext(PanelRefContext);
   if (!ref) {

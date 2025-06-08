@@ -1,5 +1,5 @@
 import { CaretRightIcon, HouseIcon } from "@phosphor-icons/react";
-import { Variants } from "../../../playground/Variants";
+import { Variants } from "../../../playground/LegacyVariants";
 import { cn } from "../../styles/utils";
 import { Button } from "./Button";
 import { ButtonGroup } from "./ButtonGroup";

@@ -1,6 +1,6 @@
 import { CaretDownIcon, CirclesFourIcon, DotsThreeVerticalIcon, UserIcon } from "@phosphor-icons/react";
 import { styled } from "../../../../styled-system/jsx";
-import { TVariantsValues, Variants } from "../../../playground/Variants";
+import { TVariantsValues, Variants } from "../../../playground/LegacyVariants";
 import { cn } from "../../styles/utils";
 import { TDesignSize, TDesignVariant, TPaletteColor } from "../core/DesignContext";
 import { Button } from "./Button";
@@ -116,9 +116,9 @@ export default function ButtonPlayground() {
       cellMinWidth={200}
       dimensions={{
         disabled: DISABLED_VARIANTS,
-        crossSize: SIZE_VARIANTS,
+        height: SIZE_VARIANTS,
         contentSize: SIZE_VARIANTS,
-        mainSize: SIZE_VARIANTS,
+        spacing: SIZE_VARIANTS,
         variant: VARIANT_VARIANTS,
         hoverVariant: VARIANT_VARIANTS,
         color: DYNAMIC_COLOR_VARIANTS,
@@ -135,9 +135,9 @@ export default function ButtonPlayground() {
       }}
       defaultSelected={{
         disabled: "default",
-        crossSize: "default",
+        height: "default",
         contentSize: "default",
-        mainSize: "default",
+        spacing: "default",
         variant: "default",
         hoverVariant: "default",
         color: "default",
@@ -157,10 +157,10 @@ export default function ButtonPlayground() {
         variants: { column: ["state"], row: ["variant", "hoverVariant"], selected: {} },
         focused: {
           column: ["color"],
-          row: ["crossSize", "variant"],
+          row: ["height", "variant"],
           selected: { state: "focus" },
         },
-        "size & color": { column: ["crossSize"], row: ["color"], selected: { variant: "solid" } },
+        "size & color": { column: ["height"], row: ["color"], selected: { variant: "solid" } },
         // content: {
         //   column: ["title"],
         //   row: ["details", "icon", "endIcon"],

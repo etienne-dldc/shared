@@ -1,6 +1,6 @@
 import { BackspaceIcon } from "@phosphor-icons/react";
 import { useRef } from "react";
-import { Button } from "../button-legacy/Button";
+import { Button } from "../button/Button";
 import { Tooltip } from "../popovers/Tooltip";
 import { TextInput } from "./TextInput";
 
@@ -23,9 +23,6 @@ export function SearchInput({ value, onValueChange, ...inputProps }: SearchInput
         value.length > 0 && (
           <Tooltip content="Effacer">
             <Button
-              filled={false}
-              size="xs"
-              rounded="all"
               className="mr-1.5"
               color="red"
               icon={<BackspaceIcon />}

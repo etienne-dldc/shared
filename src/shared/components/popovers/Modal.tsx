@@ -1,13 +1,12 @@
 import * as Ariakit from "@ariakit/react";
 import { XIcon } from "@phosphor-icons/react";
 import { Fragment, forwardRef, useCallback } from "react";
-import { cn, tw } from "../../styles/utils";
+import { css, cx } from "../../../../styled-system/css";
+import { Backdrop, Paper } from "../../../../styled-system/jsx";
 import { pick } from "../../utils/pick";
-import { Button } from "../button-legacy/Button";
-import { Paper } from "../common/Paper";
+import { Button } from "../button/Button";
 import { DynamicColorProvider } from "../core/DynamicColorProvider";
 import { PageTitle } from "../layouts/PageTitle";
-import { Backdrop } from "./Backdrop";
 
 interface ModalProps {
   children?: React.ReactElement<any>;
@@ -43,23 +42,23 @@ export const Modal = forwardRef<HTMLButtonElement, ModalProps>(
       innerScroll = false,
       unmountOnHide,
       endActions,
-      // actions,
     },
     ref,
   ) => {
     const widthClass = pick(width, {
-      xs: tw`max-w-[460px]`,
-      sm: tw`max-w-[600px]`,
-      md: tw`max-w-[800px]`,
-      lg: tw`max-w-[1200px]`,
-      full: tw``,
+      xs: css.raw({ maxW: "[460px]" }),
+      sm: css.raw({ maxW: "[600px]" }),
+      md: css.raw({ maxW: "[800px]" }),
+      lg: css.raw({ maxW: "[1200px]" }),
+      full: css.raw({}),
     });
+
     const heightClass = pick(height, {
-      xs: tw``,
-      sm: innerScroll ? tw`h-[300px]` : tw`min-h-[300px]`,
-      md: innerScroll ? tw`h-[300px]` : tw`min-h-[300px]`,
-      lg: innerScroll ? tw`h-[300px]` : tw`min-h-[300px]`,
-      full: innerScroll ? tw`h-screen` : tw`min-h-full`,
+      xs: css.raw({}),
+      sm: innerScroll ? css.raw({ h: "[300px]" }) : css.raw({ minH: "[300px]" }),
+      md: innerScroll ? css.raw({ h: "[300px]" }) : css.raw({ minH: "[300px]" }),
+      lg: innerScroll ? css.raw({ h: "[300px]" }) : css.raw({ minH: "[300px]" }),
+      full: innerScroll ? css.raw({ h: "screen" }) : css.raw({ minH: "full" }),
     });
 
     const setOpenInternal = useCallback(
@@ -79,22 +78,45 @@ export const Modal = forwardRef<HTMLButtonElement, ModalProps>(
           backdrop={<Backdrop />}
           hideOnEscape={hideOnEscape}
           unmountOnHide={unmountOnHide}
-          className={cn("fixed inset-0 overflow-x-hidden z-50", innerScroll ? "overflow-y-hidden" : "overflow-y-auto")}
+          className={css({
+            position: "fixed",
+            inset: "0",
+            overflowX: "hidden",
+            zIndex: "50",
+            ...(innerScroll ? { overflowY: "hidden" } : { overflowY: "auto" }),
+          })}
           modal
           portal
         >
           <DynamicColorProvider force>
             <div
-              className={cn("w-full grid p-5", innerScroll ? "h-full" : "min-h-full")}
+              className={css({
+                width: "full",
+                display: "grid",
+                padding: "5",
+                ...(innerScroll ? { height: "full" } : { minHeight: "full" }),
+              })}
               style={{ gridTemplateRows: `1fr`, gridTemplateColumns: `auto` }}
             >
               <Paper
-                className={cn(
-                  tw`flex flex-col gap-4 outline-hidden p-4 place-self-center w-full overflow-hidden`,
-                  widthClass,
-                  heightClass,
+                level="modal"
+                className={cx(
+                  css(
+                    {
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "4",
+                      outline: "none",
+                      padding: "4",
+                      placeSelf: "center",
+                      width: "full",
+                      overflow: "hidden",
+                    },
+                    widthClass,
+                    heightClass,
+                    innerScroll && { height: "full" },
+                  ),
                   className,
-                  innerScroll && tw`h-full`,
                 )}
               >
                 <PageTitle
@@ -102,10 +124,11 @@ export const Modal = forwardRef<HTMLButtonElement, ModalProps>(
                   endActions={
                     <Fragment>
                       {endActions}
-                      {!noCloseButton && <Ariakit.DialogDismiss render={<Button icon={<XIcon />} />} />}
+                      {!noCloseButton && (
+                        <Ariakit.DialogDismiss render={<Button variant="subtle" icon={<XIcon />} children={null} />} />
+                      )}
                     </Fragment>
                   }
-                  // actions={actions}
                 />
                 {content}
               </Paper>

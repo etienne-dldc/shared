@@ -4,10 +4,10 @@ import { Merge } from "type-fest";
 import { css, cva } from "../../../../styled-system/css";
 import { SystemStyleObject } from "../../../../styled-system/types";
 import { cn } from "../../styles/utils";
-import { DesignContext, resolveDesignProps, TDesignCrossSize, TDesignMainSize } from "../core/DesignContext";
+import { DesignContext, resolveDesignProps, TDesignButtonHeight, TDesignSpacing } from "../core/DesignContext";
 
 type IconBoxProps = Merge<
-  ComponentProps<"div">,
+  Omit<ComponentProps<"div">, "title" | "height">,
   {
     icon: React.ReactNode;
     alt?: string;
@@ -16,12 +16,12 @@ type IconBoxProps = Merge<
     weight?: IconWeight;
     mirrored?: boolean;
     className?: string;
-    crossSize?: TDesignCrossSize;
+    height?: TDesignButtonHeight;
     css?: SystemStyleObject;
   }
 >;
 
-const ICON_SIZE_MAPPING: Record<TDesignCrossSize, number> = {
+const ICON_SIZE_MAPPING: Record<TDesignButtonHeight, number> = {
   "2x": 10,
   "3": 12,
   "3x": 14,
@@ -44,7 +44,7 @@ const iconClass = cva({
     flexShrink: 0,
   },
   variants: {
-    mainSize: {
+    spacing: {
       "2x": { minW: "2x" },
       "3": { minW: "3" },
       "3x": { minW: "3x" },
@@ -56,7 +56,7 @@ const iconClass = cva({
       "8": { minW: "8" },
       "10": { minW: "10" },
       "12": { minW: "12" },
-    } satisfies Record<TDesignMainSize, SystemStyleObject>,
+    } satisfies Record<TDesignSpacing, SystemStyleObject>,
   },
 });
 
@@ -64,8 +64,8 @@ export function IconBox(props: IconBoxProps) {
   const [designBase, { icon, alt, color, size, weight, mirrored, className, css: cssProp, ...htmlProps }] =
     DesignContext.useProps(props);
   const parentIconProps = useContext(IconContext);
-  const { crossSize, mainSize } = resolveDesignProps(designBase);
-  const resolvedSize = size ?? ICON_SIZE_MAPPING[crossSize] ?? 16;
+  const { height, spacing: spacing } = resolveDesignProps(designBase);
+  const resolvedSize = size ?? ICON_SIZE_MAPPING[height] ?? 16;
 
   const mergedProps = useMemo(
     () => ({
@@ -82,7 +82,7 @@ export function IconBox(props: IconBoxProps) {
   return (
     <IconContext.Provider value={mergedProps}>
       <div
-        className={cn(css(iconClass.raw({ mainSize }), cssProp), className)}
+        className={cn(css(iconClass.raw({ spacing: spacing }), cssProp), className)}
         style={{ minHeight: resolvedSize }}
         {...htmlProps}
       >

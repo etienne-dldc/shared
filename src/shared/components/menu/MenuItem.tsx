@@ -1,20 +1,31 @@
 import * as Ariakit from "@ariakit/react";
-import { IconContext } from "@phosphor-icons/react";
-import { forwardRef, useMemo } from "react";
 import { Merge } from "type-fest";
-import { cn, tw } from "../../styles/utils";
-import { pick } from "../../utils/pick";
+import { css, cx } from "../../../../styled-system/css";
+import { SystemStyleObject } from "../../../../styled-system/types";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
-import { DesignContext, TDesignCrossSize } from "../core/DesignContext";
+import { colorPaletteClass, heightClass } from "../common/styles";
+import {
+  DesignContext,
+  resolveDesignProps,
+  TDesignButtonHeight,
+  TDesignContentSize,
+  TDesignSpacing,
+} from "../core/DesignContext";
 import { DisabledContext } from "../core/DisabledContext";
-import { DynamicColorProvider, TDynamicColor } from "../core/DynamicColorProvider";
+import { TDynamicColor } from "../core/DynamicColorProvider";
 import { ItemContent } from "../item-content/ItemContent";
+import { itemContentFontSizeClass } from "../item-content/styles";
+import { menuItemClass } from "./styles";
 
 export type MenuItemProps = Merge<
-  Omit<Ariakit.MenuItemProps, "title" | "color">,
+  Omit<Ariakit.MenuItemProps, "title" | "color" | "height">,
   {
+    // Design
     color?: TDynamicColor;
-    crossSize?: TDesignCrossSize;
+    height?: TDesignButtonHeight;
+    contentSize?: TDesignContentSize;
+    spacing?: TDesignSpacing;
+    css?: SystemStyleObject;
 
     // Content
     icon?: React.ReactNode;
@@ -25,64 +36,50 @@ export type MenuItemProps = Merge<
   }
 >;
 
-export const MenuItem = forwardRef<HTMLDivElement, MenuItemProps>(function MenuItem(inProps, ref) {
+export function MenuItem(inProps: MenuItemProps) {
   const [{ design, disabled }, props] = pipePropsSplitters(inProps, {
     design: DesignContext.usePropsSplitter(),
     disabled: DisabledContext.usePropsSplitter(),
   });
+  const { height, contentSize } = resolveDesignProps(design);
 
   const {
     color,
+    css: cssProp,
 
     content,
     icon,
     endIcon,
     details,
     loading,
-    children = <ItemContent {...{ icon, endIcon, details, loading }}>{content}</ItemContent>,
+    children,
 
     className,
     ...htmlProps
   } = props;
 
-  const mainClass = useMemo(() => dropdownItemClassName(design.crossSize), [design.crossSize]);
-  const iconProps = useMemo(
-    () => ({ size: pick(design.crossSize, { xs: 16, sm: 16, md: 20, lg: 26, smInner: 16, mdInner: 20, lgInner: 26 }) }),
-    [design.crossSize],
-  );
+  const childrenResolved = children ?? <ItemContent {...{ icon, endIcon, details, loading }}>{content}</ItemContent>;
 
   return (
-    <DesignContext.Provider value={design}>
-      <IconContext.Provider value={iconProps}>
-        <DynamicColorProvider color={color}>
-          <Ariakit.MenuItem disabled={disabled.disabled} ref={ref} className={cn(mainClass, className)} {...htmlProps}>
-            {children}
-          </Ariakit.MenuItem>
-        </DynamicColorProvider>
-      </IconContext.Provider>
-    </DesignContext.Provider>
-  );
-});
-
-function dropdownItemClassName(size: TDesignSize) {
-  const sizeClass = pick(size, {
-    xs: tw`text-sm min-h-[28px] min-w-[28px]`,
-    sm: tw`text-sm min-h-[32px] min-w-[32px]`,
-    md: tw`text-base min-h-[40px] min-w-[40px]`,
-    lg: tw`text-lg min-h-[54px] min-w-[54px]`,
-    smInner: tw`text-sm min-h-[20px] min-w-[20px]`,
-    mdInner: tw`text-base min-h-[28px] min-w-[28px]`,
-    lgInner: tw`text-lg min-h-[34px] min-w-[34px]`,
-  });
-
-  return cn(
-    tw`flex flex-row items-center text-left group overflow-hidden relative`,
-    tw`rounded-xs text-dynamic-200`,
-    tw`data-active-item:bg-dynamic-600 data-active-item:text-white`,
-
-    tw`outline-hidden cursor-pointer`,
-    tw`aria-disabled:text-dynamic-200/50 aria-disabled:cursor-not-allowed`,
-
-    sizeClass,
+    <DesignContext.Define height={inProps.height} spacing={inProps.spacing} contentSize={inProps.contentSize}>
+      <DisabledContext.Define disabled={inProps.disabled}>
+        <Ariakit.MenuItem
+          disabled={disabled.disabled}
+          className={cx(
+            css(
+              heightClass.raw({ height }),
+              menuItemClass,
+              inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
+              itemContentFontSizeClass.raw({ contentSize, height }),
+              cssProp,
+            ),
+            className,
+          )}
+          {...htmlProps}
+        >
+          {childrenResolved}
+        </Ariakit.MenuItem>
+      </DisabledContext.Define>
+    </DesignContext.Define>
   );
 }

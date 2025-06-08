@@ -10,9 +10,9 @@ import { Button } from "../button/Button";
 import { colorPaletteClass } from "../common/styles";
 import {
   DesignContext,
+  TDesignButtonHeight,
   TDesignContentSize,
-  TDesignCrossSize,
-  TDesignMainSize,
+  TDesignSpacing,
   TDesignVariant,
   TPaletteColor,
 } from "../core/DesignContext";
@@ -27,9 +27,9 @@ export type SelectProps<Value extends string> = Merge<
   {
     // Design
     disabled?: boolean;
-    crossSize?: TDesignCrossSize;
+    height?: TDesignButtonHeight;
     contentSize?: TDesignContentSize;
-    mainSize?: TDesignMainSize;
+    spacing?: TDesignSpacing;
     variant?: TDesignVariant;
     hoverVariant?: TDesignVariant;
     color?: TPaletteColor;
@@ -105,8 +105,8 @@ export function Select<Value extends string>(inProps: SelectProps<Value>) {
 
   return (
     <DesignContext.Define
-      crossSize={inProps.crossSize}
-      mainSize={inProps.mainSize}
+      height={inProps.height}
+      spacing={inProps.spacing}
       contentSize={inProps.contentSize}
       variant={inProps.variant}
       hoverVariant={inProps.hoverVariant}

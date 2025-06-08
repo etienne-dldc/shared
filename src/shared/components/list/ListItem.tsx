@@ -1,15 +1,13 @@
 import * as Ariakit from "@ariakit/react";
-import { IconContext } from "@phosphor-icons/react";
 import { ComponentPropsWithRef, useMemo } from "react";
 import { Merge } from "type-fest";
 import { cn } from "../../styles/utils";
-import { pick } from "../../utils/pick";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
-import { ButtonContent } from "../button-legacy/ButtonContent";
 import { DesignContext, TDesignSize } from "../core/DesignContext";
 import { DisabledContext } from "../core/DisabledContext";
 import { DynamicColorProvider, TDynamicColor } from "../core/DynamicColorProvider";
-import { LIST_ITEM_ICON_SIZE, listItemClassName } from "./styles";
+import { ItemContent } from "../item-content/ItemContent";
+import { listItemClassName } from "./styles";
 
 export type TListItemSelected = "none" | "secondary" | "primary";
 
@@ -57,14 +55,14 @@ export function ListItem(inProps: ListItemProps) {
     ...htmlProps
   } = props;
 
-  const childrenResolved = children ?? <ButtonContent {...{ title, icon, endIcon, details }} />;
+  const childrenResolved = children ?? <ItemContent {...{ children: title, icon, endIcon, details }} />;
 
-  const mainClass = useMemo(
+  const spacingClass = useMemo(
     () => listItemClassName({ design, selected, forceHover: false, forceActive: false }),
     [design, selected],
   );
 
-  const iconProps = useMemo(() => ({ size: pick(design.size, LIST_ITEM_ICON_SIZE) }), [design.size]);
+  // const iconProps = useMemo(() => ({ size: pick(design.size, LIST_ITEM_ICON_SIZE) }), [design.size]);
 
   const compositeStore = Ariakit.useCompositeContext();
   const renderResolved = compositeStore ? (
@@ -78,13 +76,13 @@ export function ListItem(inProps: ListItemProps) {
 
   return (
     <DesignContext.Provider value={design}>
-      <IconContext.Provider value={iconProps}>
-        <DynamicColorProvider color={color}>
-          <Ariakit.Role render={renderResolved} ref={ref} className={cn(mainClass, className)} {...htmlProps}>
-            {childrenResolved}
-          </Ariakit.Role>
-        </DynamicColorProvider>
-      </IconContext.Provider>
+      {/* <IconContext.Provider value={iconProps}> */}
+      <DynamicColorProvider color={color}>
+        <Ariakit.Role render={renderResolved} ref={ref} className={cn(spacingClass, className)} {...htmlProps}>
+          {childrenResolved}
+        </Ariakit.Role>
+      </DynamicColorProvider>
+      {/* </IconContext.Provider> */}
     </DesignContext.Provider>
   );
 }

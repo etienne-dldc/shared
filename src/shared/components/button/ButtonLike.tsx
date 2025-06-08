@@ -4,12 +4,12 @@ import { Merge } from "type-fest";
 import { css, cx } from "../../../../styled-system/css";
 import { ComponentProps, SystemStyleObject } from "../../../../styled-system/types";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
-import { colorPaletteClass, crossSizeClass } from "../common/styles";
+import { colorPaletteClass, heightClass } from "../common/styles";
 import {
   DesignContext,
   resolveDesignProps,
-  TDesignCrossSize,
-  TDesignMainSize,
+  TDesignButtonHeight,
+  TDesignSpacing,
   TDesignVariant,
   TPaletteColor,
 } from "../core/DesignContext";
@@ -18,13 +18,13 @@ import { itemContentFontSizeClass } from "../item-content/styles";
 import { buttonLikeClass } from "./styles";
 
 export type ButtonLikeProps = Merge<
-  Omit<ComponentProps<"div">, "title">,
+  Omit<ComponentProps<"div">, "title" | "height">,
   {
     // Design
     disabled?: boolean;
-    crossSize?: TDesignCrossSize;
-    contentSize?: TDesignCrossSize;
-    mainSize?: TDesignMainSize;
+    height?: TDesignButtonHeight;
+    contentSize?: TDesignButtonHeight;
+    spacing?: TDesignSpacing;
     variant?: TDesignVariant;
     hoverVariant?: TDesignVariant;
     css?: SystemStyleObject;
@@ -48,7 +48,7 @@ export function ButtonLike(inProps: ButtonLikeProps) {
   const [{ design }, props] = pipePropsSplitters(inProps, {
     design: DesignContext.usePropsSplitter(),
   });
-  const { contentSize, crossSize, variant } = resolveDesignProps(design);
+  const { contentSize, height, variant } = resolveDesignProps(design);
 
   const {
     color,
@@ -72,8 +72,8 @@ export function ButtonLike(inProps: ButtonLikeProps) {
 
   return (
     <DesignContext.Define
-      crossSize={inProps.crossSize}
-      mainSize={inProps.mainSize}
+      height={inProps.height}
+      spacing={inProps.spacing}
       contentSize={inProps.contentSize}
       variant={inProps.variant}
       hoverVariant={inProps.hoverVariant}
@@ -81,10 +81,10 @@ export function ButtonLike(inProps: ButtonLikeProps) {
       <Ariakit.Role
         className={cx(
           css(
-            crossSizeClass.raw({ crossSize }),
+            heightClass.raw({ height: height }),
             buttonLikeClass.raw({ variant }),
             inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
-            itemContentFontSizeClass.raw({ contentSize, crossSize }),
+            itemContentFontSizeClass.raw({ contentSize, height: height }),
             cssProp,
           ),
           className,

@@ -2,13 +2,13 @@ import * as Ariakit from "@ariakit/react";
 import { CaretDownIcon, CaretUpIcon } from "@phosphor-icons/react";
 import { useEffect } from "react";
 import colors from "tailwindcss/colors";
+import { Paper } from "../../../../styled-system/jsx";
 import { COLOR_NAMES, toColor, VALID_COLORS } from "../../styles/colors";
-import { Button } from "../button-legacy/Button";
-import { ButtonContent } from "../button-legacy/ButtonContent";
-import { Paper } from "../common/Paper";
+import { Button } from "../button/Button";
 import { DynamicColorProvider } from "../core/DynamicColorProvider";
 import { FieldError } from "../form/FieldError";
 import { Label } from "../form/Label";
+import { ItemContent } from "../item-content/ItemContent";
 import { StringLike } from "./utils";
 
 interface ColorFieldProps {
@@ -58,11 +58,12 @@ export function ColorField({ name, label, disabled = false, required = false, co
             required={required}
             render={
               <Ariakit.Select render={<Button className="cursor-pointer" />} disabled={disabled}>
-                <ButtonContent
+                <ItemContent
                   icon={<span className="w-5 h-5 rounded-sm" style={{ background: colors[valueColor][colorLevel] }} />}
-                  title={COLOR_NAMES[valueColor]}
                   endIcon={<Ariakit.SelectArrow render={selectOpen ? <CaretUpIcon /> : <CaretDownIcon />} />}
-                />
+                >
+                  {COLOR_NAMES[valueColor]}
+                </ItemContent>
               </Ariakit.Select>
             }
           />

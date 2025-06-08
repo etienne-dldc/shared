@@ -3,12 +3,9 @@ import { createPropsContext } from "../../utils/propsContext";
 
 export type TDesignSize = "2x" | "3" | "3x" | "4" | "4x" | "5" | "6" | "7" | "8" | "10" | "12";
 
-// Can be thought as all possible height a button can have
-export type TDesignCrossSize = TDesignSize;
-// Inherits from TDesignCrossSize for nested content
+export type TDesignButtonHeight = TDesignSize;
 export type TDesignContentSize = TDesignSize;
-// Main size is based on icon width
-export type TDesignMainSize = TDesignSize;
+export type TDesignSpacing = TDesignSize; // Horizontal spacing based on icon width
 export type TDesignVariant = "solid" | "surface" | "subtle" | "ghost";
 
 export type TPaletteColor =
@@ -37,8 +34,8 @@ export type TPaletteColor =
 
 export interface TDesignContextProps {
   contentSize: TDesignContentSize | null;
-  crossSize: TDesignCrossSize | null;
-  mainSize: TDesignMainSize | null;
+  height: TDesignButtonHeight | null;
+  spacing: TDesignSpacing | null;
   variant: TDesignVariant;
   hoverVariant: TDesignVariant | null;
 }
@@ -47,8 +44,8 @@ export const DesignContext = createPropsContext(
   "Design",
   {
     contentSize: null,
-    crossSize: null,
-    mainSize: null,
+    height: null,
+    spacing: null,
     variant: "surface",
     hoverVariant: null,
   } as TDesignContextProps,
@@ -56,95 +53,96 @@ export const DesignContext = createPropsContext(
 );
 
 const DEFAULT_SIZE_MAPPING: Record<
-  TDesignCrossSize,
-  { cross: TDesignCrossSize; content: TDesignContentSize; main: TDesignMainSize }
+  TDesignButtonHeight,
+  { height: TDesignButtonHeight; content: TDesignContentSize; spacing: TDesignSpacing }
 > = {
-  "2x": { cross: "2x", content: "2x", main: "2x" },
-  "3": { cross: "3", content: "2x", main: "2x" },
-  "3x": { cross: "3x", content: "2x", main: "2x" },
-  "4": { cross: "4", content: "3", main: "3" },
-  "4x": { cross: "4x", content: "3", main: "3" },
-  "5": { cross: "5", content: "3", main: "3" },
-  "6": { cross: "6", content: "3x", main: "3x" },
-  "7": { cross: "7", content: "4", main: "4" },
-  "8": { cross: "8", content: "4x", main: "4x" },
-  "10": { cross: "10", content: "5", main: "5" },
-  "12": { cross: "12", content: "6", main: "6" },
+  "2x": { height: "2x", content: "2x", spacing: "2x" },
+  "3": { height: "3", content: "2x", spacing: "2x" },
+  "3x": { height: "3x", content: "2x", spacing: "2x" },
+  "4": { height: "4", content: "3", spacing: "3" },
+  "4x": { height: "4x", content: "3", spacing: "3" },
+  "5": { height: "5", content: "3", spacing: "3" },
+  "6": { height: "6", content: "3x", spacing: "3x" },
+  "7": { height: "7", content: "4", spacing: "4" },
+  "8": { height: "8", content: "4x", spacing: "4x" },
+  "10": { height: "10", content: "5", spacing: "5" },
+  "12": { height: "12", content: "6", spacing: "6" },
 };
 
 const DEFAULT_SIZE_MAPPING_LIST = Object.values(DEFAULT_SIZE_MAPPING);
 
-export const contentToCross: Record<TDesignContentSize, TDesignCrossSize | undefined> = {} as any;
-export const crossToContent: Record<TDesignCrossSize | TDesignContentSize, TDesignContentSize | undefined> = {} as any;
-export const contentToMain: Record<TDesignContentSize, TDesignMainSize | undefined> = {} as any;
-export const mainToContent: Record<TDesignMainSize, TDesignContentSize | undefined> = {} as any;
-export const crossToMain: Record<TDesignCrossSize, TDesignMainSize | undefined> = {} as any;
-export const mainToCross: Record<TDesignMainSize, TDesignCrossSize | undefined> = {} as any;
+export const contentToHeight: Record<TDesignContentSize, TDesignButtonHeight | undefined> = {} as any;
+export const heightToContent: Record<TDesignButtonHeight | TDesignContentSize, TDesignContentSize | undefined> =
+  {} as any;
+export const contentToSpacing: Record<TDesignContentSize, TDesignSpacing | undefined> = {} as any;
+export const spacingToContent: Record<TDesignSpacing, TDesignContentSize | undefined> = {} as any;
+export const heightToSpacing: Record<TDesignButtonHeight, TDesignSpacing | undefined> = {} as any;
+export const spacingToHeight: Record<TDesignSpacing, TDesignButtonHeight | undefined> = {} as any;
 
-export const contentToNestedCross: Record<TDesignContentSize, TDesignCrossSize | undefined> = {} as any;
+export const contentToNestedHeight: Record<TDesignContentSize, TDesignButtonHeight | undefined> = {} as any;
 
-DEFAULT_SIZE_MAPPING_LIST.forEach(({ content, cross, main }) => {
-  contentToCross[content] = cross;
-  crossToContent[cross] = content;
-  contentToMain[content] = main;
-  mainToContent[main] = content;
-  crossToMain[cross] = main;
-  mainToCross[main] = cross;
+DEFAULT_SIZE_MAPPING_LIST.forEach(({ content, height, spacing }) => {
+  contentToHeight[content] = height;
+  heightToContent[height] = content;
+  contentToSpacing[content] = spacing;
+  spacingToContent[spacing] = content;
+  heightToSpacing[height] = spacing;
+  spacingToHeight[spacing] = height;
 
-  // Find item that has current content as cross
-  const crossItem = DEFAULT_SIZE_MAPPING_LIST.find((item) => item.cross === content);
-  if (crossItem) {
-    contentToNestedCross[content] = crossItem.cross;
+  // Find item that has current content as height
+  const heightItem = DEFAULT_SIZE_MAPPING_LIST.find((item) => item.height === content);
+  if (heightItem) {
+    contentToNestedHeight[content] = heightItem.height;
   }
 });
 
 const DEFAULT_SIZE = {
   contentSize: "3x" satisfies TDesignContentSize,
-  crossSize: "6" satisfies TDesignCrossSize,
-  mainSize: "3x" satisfies TDesignMainSize,
+  height: "6" satisfies TDesignButtonHeight,
+  spacing: "3x" satisfies TDesignSpacing,
 } as const;
 
 export type TResolvedDesignProps = ReturnType<typeof resolveDesignProps>;
 
 export function resolveDesignProps(props: TDesignContextProps) {
-  const { contentSize, crossSize, mainSize, variant, hoverVariant } = props;
+  const { contentSize, height, spacing, variant, hoverVariant } = props;
 
   return {
     variant,
     hoverVariant: hoverVariant ?? variant,
     ...DEFAULT_SIZE,
-    ...resolveDesignSizes(contentSize, crossSize, mainSize),
+    ...resolveDesignSizes(contentSize, height, spacing),
   };
 }
 
 function resolveDesignSizes(
   contentSize: TDesignContentSize | null,
-  crossSize: TDesignCrossSize | null,
-  mainSize: TDesignMainSize | null,
+  height: TDesignButtonHeight | null,
+  spacing: TDesignSpacing | null,
 ): {
   contentSize?: TDesignContentSize;
-  crossSize?: TDesignCrossSize;
-  mainSize?: TDesignMainSize;
+  height?: TDesignButtonHeight;
+  spacing?: TDesignSpacing;
 } {
   if (contentSize) {
     return {
       contentSize,
-      crossSize: crossSize ?? contentToCross[contentSize],
-      mainSize: mainSize ?? contentToMain[contentSize],
+      height: height ?? contentToHeight[contentSize],
+      spacing: spacing ?? contentToSpacing[contentSize],
     };
   }
-  if (crossSize) {
+  if (height) {
     return {
-      crossSize,
-      contentSize: contentSize ?? crossToContent[crossSize],
-      mainSize: mainSize ?? crossToMain[crossSize],
+      height: height,
+      contentSize: contentSize ?? heightToContent[height],
+      spacing: spacing ?? heightToSpacing[height],
     };
   }
-  if (mainSize) {
+  if (spacing) {
     return {
-      mainSize,
-      contentSize: contentSize ?? mainToContent[mainSize],
-      crossSize: crossSize ?? mainToCross[mainSize],
+      spacing: spacing,
+      contentSize: contentSize ?? spacingToContent[spacing],
+      height: height ?? spacingToHeight[spacing],
     };
   }
   return {};

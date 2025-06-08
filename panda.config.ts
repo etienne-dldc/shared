@@ -216,6 +216,103 @@ const globalCss = defineGlobalStyles({
   "#root": {
     minHeight: "100vh",
   },
+  // Tailwind preflight styles
+  "*,::after,::before,::backdrop,::file-selector-button": {
+    boxSizing: "border-box",
+    margin: "0",
+    padding: "0",
+    border: "0 solid",
+  },
+  "html,:host": {
+    lineHeight: 1.5,
+    WebkitTextSizeAdjust: "100%",
+    tabSize: 4,
+    fontFamily:
+      "--theme(--default-font-family,ui-sans-serif,system-ui,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji')",
+    fontFeatureSettings: "--theme(--default-font-feature-settings, normal)",
+    fontVariationSettings: "--theme(--default-font-variation-settings, normal)",
+    WebkitTapHighlightColor: "transparent",
+  },
+  hr: { height: "0", color: "inherit", borderTopWidth: "1px" },
+  "abbr:where([title])": {
+    WebkitTextDecoration: "underline dotted",
+    textDecoration: "underline dotted",
+  },
+  "h1,h2,h3,h4,h5,h6": { fontSize: "inherit", fontWeight: "inherit" },
+  a: {
+    color: "inherit",
+    WebkitTextDecoration: "inherit",
+    textDecoration: "inherit",
+  },
+  "b,strong": { fontWeight: "bolder" },
+  "code,kbd,samp,pre": {
+    fontFamily:
+      "--theme(--default-mono-font-family,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace)",
+    fontFeatureSettings: "--theme(--default-mono-font-feature-settings, normal)",
+    fontVariationSettings: "--theme(--default-mono-font-variation-settings, normal)",
+    fontSize: "1em",
+  },
+  small: { fontSize: "80%" },
+  "sub,sup": {
+    fontSize: "75%",
+    lineHeight: 0,
+    position: "relative",
+    verticalAlign: "baseline",
+  },
+  sub: { bottom: "-0.25em" },
+  sup: { top: "-0.5em" },
+  table: {
+    textIndent: "0",
+    borderColor: "inherit",
+    borderCollapse: "collapse",
+  },
+  ":-moz-focusring": { outline: "auto" },
+  progress: { verticalAlign: "baseline" },
+  summary: { display: "list-item" },
+  "ol,ul,menu": { listStyle: "none" },
+  "img,svg,video,canvas,audio,iframe,embed,object": {
+    display: "block",
+    verticalAlign: "middle",
+  },
+  "img,video": { maxWidth: "100%", height: "auto" },
+  "button,input,select,optgroup,textarea,::file-selector-button": {
+    font: "inherit",
+    fontFeatureSettings: "inherit",
+    fontVariationSettings: "inherit",
+    letterSpacing: "inherit",
+    color: "inherit",
+    borderRadius: "0",
+    backgroundColor: "transparent",
+    opacity: 1,
+  },
+  ":where(select:is([multiple], [size])) optgroup": { fontWeight: "bolder" },
+  ":where(select:is([multiple], [size])) optgroup option": {
+    paddingInlineStart: "20px",
+  },
+  "::file-selector-button": { marginInlineEnd: "4px" },
+  "::placeholder": { opacity: 1 },
+  "@supports (not (-webkit-appearance: -apple-pay-button))  or  (contain-intrinsic-size: 1px)": {
+    "::placeholder": {
+      color: "color-mix(in oklab, currentcolor 50%, transparent)",
+    },
+  },
+  textarea: { resize: "vertical" },
+  "::-webkit-search-decoration": { WebkitAppearance: "none" },
+  "::-webkit-date-and-time-value": { minHeight: "1lh", textAlign: "inherit" },
+  "::-webkit-datetime-edit": { display: "inline-flex" },
+  "::-webkit-datetime-edit-fields-wrapper": { padding: "0" },
+  "::-webkit-datetime-edit,::-webkit-datetime-edit-year-field,::-webkit-datetime-edit-month-field,::-webkit-datetime-edit-day-field,::-webkit-datetime-edit-hour-field,::-webkit-datetime-edit-minute-field,::-webkit-datetime-edit-second-field,::-webkit-datetime-edit-millisecond-field,::-webkit-datetime-edit-meridiem-field":
+    {
+      paddingBlock: "0",
+    },
+  ":-moz-ui-invalid": { boxShadow: "none" },
+  "button,input:where([type='button'], [type='reset'], [type='submit']),::file-selector-button": {
+    appearance: "button",
+  },
+  "::-webkit-inner-spin-button,::-webkit-outer-spin-button": {
+    height: "auto",
+  },
+  "[hidden]:where(:not([hidden='until-found']))": { display: "none !important" },
 });
 
 const insetRingWidthVar = "--inset-ring-width";
@@ -323,6 +420,20 @@ const paper = definePattern({
   },
 });
 
+const backdrop = definePattern({
+  description: "Backdrop component",
+  jsxElement: "div",
+  properties: {},
+  transform() {
+    return {
+      position: "fixed",
+      inset: "0",
+      backgroundColor: "black/30",
+      backdropFilter: "blur(4px)",
+    };
+  },
+});
+
 const colors = {
   ...pandaPreset.theme.tokens.colors,
   neutral: {
@@ -366,6 +477,7 @@ export default defineConfig({
     extend: {
       ellipsis,
       paper,
+      backdrop,
     },
   },
   conditions: {

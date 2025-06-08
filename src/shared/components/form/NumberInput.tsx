@@ -1,10 +1,9 @@
 import * as Ariakit from "@ariakit/react";
 import { ArrowCounterClockwiseIcon, CheckIcon, WarningIcon } from "@phosphor-icons/react";
 import { ForwardedRef, forwardRef, Fragment, useCallback, useEffect, useMemo, useState } from "react";
+import { Paper } from "../../../../styled-system/jsx";
 import { tw } from "../../styles/utils";
-import { Button } from "../button-legacy/Button";
-import { Paper } from "../common/Paper";
-import { DesignContext } from "../core/DesignContext";
+import { Button } from "../button/Button";
 import { TextInput, TextInputProps } from "./TextInput";
 
 export type TNumberInputParse = (value: string) => number;
@@ -201,28 +200,28 @@ export const NumberInput = forwardRef(function NumberInput(
         //   setTimeout(() => setPopoverFocused(false));
         // }}
       >
-        <DesignContext.Define size="sm">
-          {state.state === "EditedSuggest" ? (
-            <Fragment>
-              <p className="px-2">
-                Voulez-vous dire <span className="font-mono px-2">{format(state.value)}</span> ?
-              </p>
-              <Ariakit.Tooltip content="Accepter">
-                <Button icon={<CheckIcon />} color="green" onClick={accept} />
-              </Ariakit.Tooltip>
-              <Ariakit.Tooltip content="Réinitialiser">
-                <Button icon={<ArrowCounterClockwiseIcon />} color="red" onClick={reset} />
-              </Ariakit.Tooltip>
-            </Fragment>
-          ) : (
-            <Fragment>
-              <p className="px-2">Nombre invalide</p>
-              <Ariakit.Tooltip content="Réinitialiser">
-                <Button icon={<ArrowCounterClockwiseIcon />} color="red" onClick={reset} />
-              </Ariakit.Tooltip>
-            </Fragment>
-          )}
-        </DesignContext.Define>
+        {/* <DesignContext.Define size="sm"> */}
+        {state.state === "EditedSuggest" ? (
+          <Fragment>
+            <p className="px-2">
+              Voulez-vous dire <span className="font-mono px-2">{format(state.value)}</span> ?
+            </p>
+            <Ariakit.Tooltip content="Accepter">
+              <Button icon={<CheckIcon />} color="green" onClick={accept} />
+            </Ariakit.Tooltip>
+            <Ariakit.Tooltip content="Réinitialiser">
+              <Button icon={<ArrowCounterClockwiseIcon />} color="red" onClick={reset} />
+            </Ariakit.Tooltip>
+          </Fragment>
+        ) : (
+          <Fragment>
+            <p className="px-2">Nombre invalide</p>
+            <Ariakit.Tooltip content="Réinitialiser">
+              <Button icon={<ArrowCounterClockwiseIcon />} color="red" onClick={reset} />
+            </Ariakit.Tooltip>
+          </Fragment>
+        )}
+        {/* </DesignContext.Define> */}
       </Ariakit.Popover>
     </Ariakit.PopoverProvider>
   );

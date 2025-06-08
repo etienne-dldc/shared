@@ -1,11 +1,10 @@
 import * as Ariakit from "@ariakit/react";
-// import { buttonRoundedClass, buttonSizeClass } from "../button-legacy/styles";
 import { CheckIcon } from "@phosphor-icons/react";
 import { css, cx } from "../../../../styled-system/css";
-import { crossSizeClass } from "../common/styles";
+import { heightClass } from "../common/styles";
 import { DesignContext, resolveDesignProps } from "../core/DesignContext";
 import { ItemContent } from "../item-content/ItemContent";
-import { selecteItemClass } from "./styles";
+import { selectItemClass } from "./styles";
 import { TSelectItem } from "./types";
 
 interface SelectItemProps extends Ariakit.SelectItemProps {
@@ -14,7 +13,7 @@ interface SelectItemProps extends Ariakit.SelectItemProps {
 
 export function SelectItem(inProps: SelectItemProps) {
   const [design, { item, className, ...props }] = DesignContext.useProps(inProps);
-  const { crossSize } = resolveDesignProps(design);
+  const { height } = resolveDesignProps(design);
   const store = Ariakit.useSelectContext();
   if (!store) {
     throw new Error("SelectItem must be used within a SelectProvider");
@@ -25,7 +24,7 @@ export function SelectItem(inProps: SelectItemProps) {
     <Ariakit.SelectItem
       {...props}
       className={cx(
-        css(crossSizeClass.raw({ crossSize }), selecteItemClass, item.hidden && { display: "none" }),
+        css(heightClass.raw({ height: height }), selectItemClass, item.hidden && { display: "none" }),
         className,
       )}
       disabled={item.disabled || item.hidden}
