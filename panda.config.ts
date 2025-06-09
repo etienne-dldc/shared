@@ -102,19 +102,6 @@ const sizes = {
   "80": { value: "20rem" },
   "96": { value: "24rem" },
 
-  // xs: { value: '20rem' },
-  // sm: { value: '24rem' },
-  // md: { value: '28rem' },
-  // lg: { value: '32rem' },
-  // xl: { value: '36rem' },
-  // '2xl': { value: '42rem' },
-  // '3xl': { value: '48rem' },
-  // '4xl': { value: '56rem' },
-  // '5xl': { value: '64rem' },
-  // '6xl': { value: '72rem' },
-  // '7xl': { value: '80rem' },
-  // '8xl': { value: '90rem' },
-
   prose: { value: "65ch" },
   full: { value: "100%" },
   min: { value: "min-content" },
@@ -127,14 +114,7 @@ const radii = {
   "0x": { value: "0.125rem" }, // 2px
   "1_x": { value: "0.3125rem" }, // 5px
   "2": { value: "0.5rem" }, // 8px
-  // xs: { value: '0.125rem' },
-  // sm: { value: '0.25rem' },
-  // md: { value: '0.375rem' },
-  // lg: { value: '0.5rem' },
-  // xl: { value: '0.75rem' },
-  // '2xl': { value: '1rem' },
-  // '3xl': { value: '1.5rem' },
-  // '4xl': { value: '2rem' },
+
   full: { value: "9999px" },
 } as Tokens["radii"];
 
@@ -263,12 +243,21 @@ const paper = definePattern({
   properties: {
     level: {
       type: "enum",
-      value: ["select", "modal"],
+      value: ["card", "select", "modal"],
     },
   },
   transform(props) {
     const { level = "modal", ...rest } = props;
     switch (level) {
+      case "card":
+        return {
+          overflow: "hidden",
+          background: "neutral.900",
+          borderColor: "neutral.825",
+          borderRadius: "2",
+          borderWidth: "0_x",
+          ...rest,
+        };
       case "select":
         return {
           overflow: "hidden",
@@ -313,6 +302,12 @@ const colors = {
   ...pandaPreset.theme.tokens.colors,
   neutral: {
     ...pandaPreset.theme.tokens.colors.neutral,
+    "725": { value: "#3A3A3A" },
+    "750": { value: "#333333" },
+    "775": { value: "#2D2D2D" },
+    "825": { value: "#222222" },
+    "850": { value: "#1F1F1F" },
+    "875": { value: "#1B1B1B" },
     "925": { value: "#101010" },
   },
 } satisfies Tokens["colors"];

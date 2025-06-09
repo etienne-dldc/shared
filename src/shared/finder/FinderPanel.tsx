@@ -10,6 +10,7 @@ import { useLatestRef } from "../hooks/useLatestRef";
 import { useMergeRefs } from "../hooks/useMergeRefs";
 import { TUseResizeWidth, useResize } from "../hooks/useResize";
 import { onDoubleTap } from "../utils/onDoubleTap";
+import "./panel-scrollbar.css";
 import { panelScrollbarClass } from "./scrollbar";
 
 OverlayScrollbars.plugin(ClickScrollPlugin);
