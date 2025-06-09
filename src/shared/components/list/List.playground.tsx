@@ -1,7 +1,6 @@
 import * as Ariakit from "@ariakit/react";
 import { CaretRightIcon, FileIcon, SignOutIcon, SquareIcon } from "@phosphor-icons/react";
 import { Variants } from "../../../playground/LegacyVariants";
-import { cn } from "../../styles/utils";
 import { Button } from "../button/Button";
 import { DesignContext } from "../core/DesignContext";
 import { List } from "./List";
@@ -17,7 +16,9 @@ export default function ButtonPlayground() {
       defaultSelected={{}}
       presets={{ base: { column: [], row: [], selected: {} } }}
       render={() => (
-        <div className={cn("w-full h-full")}>
+        <div
+        // className={cn("w-full h-full")}
+        >
           <DesignContext.Define
           // size="lg"
           >

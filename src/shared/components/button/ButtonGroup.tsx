@@ -1,9 +1,8 @@
 import * as Ariakit from "@ariakit/react";
 import { Children, cloneElement, ComponentPropsWithoutRef, ForwardedRef, forwardRef, Fragment } from "react";
 import { Merge } from "type-fest";
-import { css } from "../../../../styled-system/css";
+import { css, cx } from "../../../../styled-system/css";
 import { SystemStyleObject } from "../../../../styled-system/types";
-import { cn } from "../../styles/utils";
 import { colorPaletteClass } from "../common/styles";
 import {
   DesignContext,
@@ -71,7 +70,7 @@ export const ButtonGroup = forwardRef(function ButtonGroup(
     >
       <Ariakit.Role
         ref={ref}
-        className={cn(
+        className={cx(
           css(
             buttonGroupClass.raw({ direction, variant }),
             inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),

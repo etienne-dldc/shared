@@ -1,6 +1,5 @@
 import { CaretRightIcon, HouseIcon } from "@phosphor-icons/react";
 import { Variants } from "../../../playground/LegacyVariants";
-import { cn } from "../../styles/utils";
 import { Button } from "./Button";
 import { ButtonGroup } from "./ButtonGroup";
 
@@ -103,7 +102,9 @@ export default function ButtonPlayground() {
         base: { column: [], row: [], selected: {} },
       }}
       render={({ background, margin, ...props }) => (
-        <div className={cn("w-full h-full", background, margin)}>
+        <div
+        // className={cn("w-full h-full", background, margin)}
+        >
           <ButtonGroup {...props}>
             <Button content="text" />
             <Button content="text and icon" icon={<HouseIcon />} />

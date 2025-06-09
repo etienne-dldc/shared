@@ -1,9 +1,8 @@
 import { IconContext, IconWeight } from "@phosphor-icons/react";
 import { ComponentProps, useContext, useMemo } from "react";
 import { Merge } from "type-fest";
-import { css } from "../../../../styled-system/css";
+import { css, cx } from "../../../../styled-system/css";
 import { SystemStyleObject } from "../../../../styled-system/types";
-import { cn } from "../../styles/utils";
 
 type IconBoxProps = Merge<
   Omit<ComponentProps<"div">, "title" | "height">,
@@ -48,7 +47,7 @@ export function IconBox(props: IconBoxProps) {
   return (
     <IconContext.Provider value={mergedProps}>
       <div
-        className={cn(css(iconClass, cssProp), className)}
+        className={cx(css(iconClass, cssProp), className)}
         style={size ? { ["--icon-size" as string]: size, ...style } : style}
         {...htmlProps}
       >
