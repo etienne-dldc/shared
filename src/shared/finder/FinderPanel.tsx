@@ -1,16 +1,16 @@
 import * as Ariakit from "@ariakit/react";
 import { ClickScrollPlugin, OverlayScrollbars } from "overlayscrollbars";
-import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import { createContext, ForwardedRef, forwardRef, useCallback, useContext, useEffect, useMemo, useRef } from "react";
 import scrollIntoView from "smooth-scroll-into-view-if-needed";
-
-import "overlayscrollbars/overlayscrollbars.css";
-
+import { css, cx } from "../../../styled-system/css";
+import { styled } from "../../../styled-system/jsx";
+import { SystemStyleObject } from "../../../styled-system/types";
+import { Scrollbars } from "../components/common/Scrollbars";
 import { useLatestRef } from "../hooks/useLatestRef";
 import { useMergeRefs } from "../hooks/useMergeRefs";
 import { TUseResizeWidth, useResize } from "../hooks/useResize";
-import { cn, tw } from "../styles/utils";
 import { onDoubleTap } from "../utils/onDoubleTap";
+import { panelScrollbarClass } from "./scrollbar";
 
 OverlayScrollbars.plugin(ClickScrollPlugin);
 
@@ -41,14 +41,15 @@ const MINI_HANDLE_HEIGHT = 20;
 
 export interface FinderPanelProps extends React.ComponentPropsWithoutRef<"div"> {
   initialWidth?: TUseResizeWidth;
-  className?: string;
   resizeLocalStorageKey?: string;
   isActive?: boolean;
   onActivate?: () => void;
+  className?: string;
+  css?: SystemStyleObject;
 }
 
 export const FinderPanel = forwardRef(function FinderPanel(
-  { children, className, isActive = false, onActivate, resizeLocalStorageKey, ...rest }: FinderPanelProps,
+  { children, className, isActive = false, onActivate, resizeLocalStorageKey, css: cssProp, ...rest }: FinderPanelProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
   const panelRef = useRef<HTMLDivElement | null>(null);
@@ -93,11 +94,33 @@ export const FinderPanel = forwardRef(function FinderPanel(
   return (
     <Ariakit.CompositeItem
       ref={mergedRef}
-      className={cn(
-        "shrink-0 relative max-w-[var(--finder-panel-max-width)]",
-        tw`outline-none`,
-        tw`after:content-[''] after:absolute after:left-0 after:top-0 after:bottom-0 after:right-[var(--gutter-width)] after:pointer-events-none after:z-[9999]`,
-        tw`data-focus-visible:after:border-2 data-focus-visible:after:border-neutral-700`,
+      className={cx(
+        css(
+          {
+            flexShrink: "0",
+            position: "relative",
+            maxWidth: "[var(--finder-panel-max-width)]",
+            outline: "none",
+            "&::after": {
+              content: "''",
+              position: "absolute",
+              left: "0",
+              top: "0",
+              bottom: "0",
+              right: "[var(--gutter-width)]",
+              pointerEvents: "none",
+              zIndex: 9999,
+            },
+            _focusVisible: {
+              "&::after": {
+                borderWidth: "0x",
+                borderColor: "neutral.700",
+                borderStyle: "solid",
+              },
+            },
+          },
+          cssProp,
+        ),
         className,
       )}
       style={{
@@ -110,13 +133,13 @@ export const FinderPanel = forwardRef(function FinderPanel(
     >
       <PanelRefContext.Provider value={panelRef}>
         <PanelSizeContext.Provider value={resizer.size}>
-          <OverlayScrollbarsComponent
+          <Scrollbars
             defer
-            className={cn("h-full w-full")}
+            className={css({ height: "full", width: "full" })}
             style={{ paddingRight: GUTTER_WIDTH }}
             options={{
               scrollbars: {
-                theme: "os-theme-dark os-panel-theme",
+                theme: cx("os-theme-dark os-panel-theme", panelScrollbarClass),
                 autoHide: "scroll",
                 clickScroll: true,
               },
@@ -124,19 +147,27 @@ export const FinderPanel = forwardRef(function FinderPanel(
             }}
           >
             {children}
-          </OverlayScrollbarsComponent>
+          </Scrollbars>
         </PanelSizeContext.Provider>
       </PanelRefContext.Provider>
-      <div className="absolute inset-y-0 right-0 w-[var(--gutter-width)] pointer-events-none bg-black/25 z-10" />
+      <styled.div
+        position="absolute"
+        insetY="0"
+        right="0"
+        width="[var(--gutter-width)]"
+        pointerEvents="none"
+        bg="black/25"
+        zIndex={10}
+      />
       <MiniHandle
         onPointerDown={resizer.onPointerDown}
-        className="top-0 right-0 z-10"
+        className={css({ top: "0", right: "0", zIndex: 10 })}
         style={{ width: GUTTER_WIDTH, height: MINI_HANDLE_HEIGHT }}
         onClick={onHandleClick}
       />
       <MiniHandle
         onPointerDown={resizer.onPointerDown}
-        className="bottom-0 right-0 z-10"
+        className={css({ bottom: "0", right: "0", zIndex: 10 })}
         style={{ width: GUTTER_WIDTH, height: MINI_HANDLE_HEIGHT }}
         onClick={onHandleClick}
       />
@@ -147,15 +178,31 @@ export const FinderPanel = forwardRef(function FinderPanel(
 function MiniHandle({ className, ...rest }: React.ComponentPropsWithoutRef<"div">) {
   return (
     <div
-      className={cn(
-        "absolute flex justify-center items-center gap-[3px] p-0.5 cursor-col-resize touch-none",
-        "before:content-[''] before:absolute before:-left-1 before:top-0 before:bottom-0 before:right-0",
+      className={cx(
+        css({
+          position: "absolute",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "0xx",
+          padding: "0_x",
+          cursor: "col-resize",
+          touchAction: "none",
+          "&::before": {
+            content: "''",
+            position: "absolute",
+            left: "-0_x",
+            top: "0",
+            bottom: "0",
+            right: "0",
+          },
+        }),
         className,
       )}
       {...rest}
     >
-      <div className="w-px bg-neutral-600 rounded-full h-2" />
-      <div className="w-px bg-neutral-600 rounded-full h-2" />
+      <div className={css({ width: "0_x", backgroundColor: "neutral.600", borderRadius: "full", height: "2" })} />
+      <div className={css({ width: "0_x", backgroundColor: "neutral.600", borderRadius: "full", height: "2" })} />
     </div>
   );
 }

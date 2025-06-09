@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 
 import { ClickScrollPlugin, OverlayScrollbars } from "overlayscrollbars";
-import "overlayscrollbars/overlayscrollbars.css";
+import "./overlayscrollbars.css";
 
 OverlayScrollbars.plugin(ClickScrollPlugin);
 

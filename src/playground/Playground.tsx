@@ -66,7 +66,7 @@ export function Playground() {
   }, [location.pathname]);
 
   return (
-    <styled.div display="flex" flexDirection="column" gap="4" p="4" minH="screen">
+    <styled.div display="grid" gridTemplateRows="auto 1fr" gridTemplateColumns="100%" gap="4" p="4" minH="screen">
       <HStack>
         <ButtonGroup variant="solid" height="10" color="blue">
           <RouteMenu items={routes} icon={<ListIcon />} />
