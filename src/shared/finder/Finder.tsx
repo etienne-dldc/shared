@@ -3,6 +3,7 @@ import { OverlayScrollbars } from "overlayscrollbars";
 import { useCallback, useRef, useState } from "react";
 import { css, cx } from "../../../styled-system/css";
 import { styled } from "../../../styled-system/jsx";
+import { paper } from "../../../styled-system/patterns";
 import { SystemStyleObject } from "../../../styled-system/types";
 import { Scrollbars } from "../components/common/Scrollbars";
 
@@ -44,10 +45,7 @@ export function Finder({ children, className, css: cssProp }: FinderProps) {
 
   return (
     <Scrollbars
-      className={cx(
-        css({ bg: "neutral.900", borderStyle: "solid", borderWidth: "0_x", borderColor: "white/5" }, cssProp),
-        className,
-      )}
+      className={cx(css(paper.raw({ level: "card" }), cssProp), className)}
       events={{
         initialized: onInitUpdate,
         updated: onInitUpdate,
