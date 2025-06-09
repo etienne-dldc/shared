@@ -1,13 +1,12 @@
 import { cva } from "../../../../styled-system/css";
 import { SystemStyleObject } from "../../../../styled-system/types";
-import { TDesignVariant } from "../core/DesignContext";
+import { TDesignButtonHeight, TDesignVariant } from "../core/DesignContext";
 
 export const buttonLikeClass = cva({
   base: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    rounded: "1_x",
     outline: "none",
     position: "relative",
     '& [data-slot="item-icon"]': {
@@ -38,6 +37,23 @@ export const buttonLikeClass = cva({
       subtle: { bg: "white/5", color: "colorPalette.200" },
       ghost: { color: "colorPalette.200" },
     } satisfies Record<TDesignVariant, SystemStyleObject>,
+    height: {
+      "2x": { rounded: "0x" },
+      "3": { rounded: "0x" },
+      "3x": { rounded: "0x" },
+      "4": { rounded: "1_x" },
+      "4x": { rounded: "1_x" },
+      "5": { rounded: "1_x" },
+      "5x": { rounded: "1_x" },
+      "6": { rounded: "1_x" },
+      "6x": { rounded: "1_x" },
+      "7": { rounded: "1_x" },
+      "7x": { rounded: "1_x" },
+      "8": { rounded: "1_x" },
+      "9": { rounded: "1_x" },
+      "10": { rounded: "1_x" },
+      "12": { rounded: "1_x" },
+    } satisfies Record<TDesignButtonHeight, SystemStyleObject>,
   },
 });
 

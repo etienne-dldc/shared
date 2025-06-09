@@ -80,7 +80,7 @@ const DEFAULT_SIZE_MAPPING: Record<
   "5x": { height: "5x", contentSize: "3", spacing: "5x" },
   "6": { height: "6", contentSize: "3x", spacing: "6" },
   "6x": { height: "6x", contentSize: "3x", spacing: "6x" },
-  "7": { height: "7", contentSize: "3x", spacing: "7" },
+  "7": { height: "7", contentSize: "4", spacing: "7" },
   "7x": { height: "7x", contentSize: "4", spacing: "7x" },
   "8": { height: "8", contentSize: "4", spacing: "8" },
   "9": { height: "9", contentSize: "4", spacing: "9" },
@@ -115,7 +115,7 @@ DEFAULT_SIZE_MAPPING_LIST.forEach(({ contentSize: content, height, spacing }) =>
   }
 });
 
-const DEFAULT_SIZE = DEFAULT_SIZE_MAPPING["6"];
+const DEFAULT_SIZE = DEFAULT_SIZE_MAPPING["7"];
 
 export type TResolvedDesignProps = ReturnType<typeof resolveDesignProps>;
 

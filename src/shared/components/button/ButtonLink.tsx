@@ -79,7 +79,7 @@ export function ButtonLink(inProps: ButtonLinkProps) {
         className={cx(
           css(
             heightClass.raw({ height }),
-            buttonLikeClass.raw({ variant }),
+            buttonLikeClass.raw({ variant, height }),
             buttonClass.raw({ hoverVariant, variant }),
             inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
             itemContentSizeClass.raw({ contentSize, height }),
