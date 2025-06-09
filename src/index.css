@@ -1,4 +1,30 @@
-@layer reset, base, tokens, recipes, utilities;
+@layer reset, base, tokens, libraries, custom, recipes, utilities;
+
+@import "tailwindcss/preflight.css" layer(reset);
+
+@layer custom {
+  .os-panel-theme {
+    --os-size: var(--gutter-width);
+    --os-padding-axis: 4px;
+    --os-padding-perpendicular: 2px;
+  }
+
+  .os-panel-theme.os-scrollbar-vertical {
+    --os-handle-bg: var(--colors-neutral-500);
+    --os-handle-bg-hover: var(--colors-neutral-400);
+    --os-handle-bg-active: var(--colors-neutral-300);
+
+    z-index: 20;
+    bottom: 0;
+    padding: calc(var(--mini-handle-height) + 4px) var(--os-padding-perpendicular);
+  }
+
+  .os-panel-theme.os-scrollbar-vertical.os-scrollbar-auto-hide-hidden {
+    opacity: 1;
+    visibility: visible;
+    --os-handle-bg: var(--colors-neutral-800);
+  }
+}
 
 /* @import "tailwindcss";
 
