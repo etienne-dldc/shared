@@ -8,19 +8,19 @@ export const menuItemClass = css.raw({
   outline: "none",
   position: "relative",
   color: "colorPalette.200",
-  '& [data-slot="start-icon"]': {
+  '& [data-slot="item-icon"]': {
     opacity: 0.6,
   },
   _activeItem: {
     bg: "white/5",
     color: "colorPalette.100",
-    '& [data-slot="start-icon"]': {
+    '& [data-slot="item-icon"]': {
       opacity: 1,
     },
   },
   _selected: {
     color: "colorPalette.100",
-    '& [data-slot="start-icon"]': {
+    '& [data-slot="item-icon"]': {
       opacity: 1,
     },
   },

@@ -23,10 +23,7 @@ export function SelectItem(inProps: SelectItemProps) {
   return (
     <Ariakit.SelectItem
       {...props}
-      className={cx(
-        css(heightClass.raw({ height: height }), selectItemClass, item.hidden && { display: "none" }),
-        className,
-      )}
+      className={cx(css(heightClass.raw({ height }), selectItemClass, item.hidden && { display: "none" }), className)}
       disabled={item.disabled || item.hidden}
       value={item.value}
     >

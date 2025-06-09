@@ -10,7 +10,7 @@ export const buttonLikeClass = cva({
     rounded: "1_x",
     outline: "none",
     position: "relative",
-    '& [data-slot="start-icon"]': {
+    '& [data-slot="item-icon"]': {
       opacity: 0.6,
     },
     _after: {
@@ -44,7 +44,7 @@ export const buttonLikeClass = cva({
 export const buttonClass = cva({
   base: {
     _hover: {
-      '& [data-slot="start-icon"]': {
+      '& [data-slot="item-icon"]': {
         opacity: 1,
       },
     },

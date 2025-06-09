@@ -35,17 +35,17 @@ export const colorPaletteClass = cva({
 export const heightClass = cva({
   variants: {
     height: {
-      "2x": { minH: "2x", textStyle: "f2x" },
-      "3": { minH: "3", textStyle: "f3" },
-      "3x": { minH: "3x", textStyle: "f3x" },
-      "4": { minH: "4", textStyle: "f4" },
-      "4x": { minH: "4x", textStyle: "f4x" },
-      "5": { minH: "5", textStyle: "f5" },
-      "6": { minH: "6", textStyle: "f6" },
-      "7": { minH: "7", textStyle: "f7" },
-      "8": { minH: "8", textStyle: "f8" },
-      "10": { minH: "10", textStyle: "f10" },
-      "12": { minH: "12", textStyle: "f12" },
+      "2x": { designHeight: "2x", textStyle: "f2x" },
+      "3": { designHeight: "3", textStyle: "f3" },
+      "3x": { designHeight: "3x", textStyle: "f3x" },
+      "4": { designHeight: "4", textStyle: "f4" },
+      "4x": { designHeight: "4x", textStyle: "f4x" },
+      "5": { designHeight: "5", textStyle: "f5" },
+      "6": { designHeight: "6", textStyle: "f6" },
+      "7": { designHeight: "7", textStyle: "f7" },
+      "8": { designHeight: "8", textStyle: "f8" },
+      "10": { designHeight: "10", textStyle: "f10" },
+      "12": { designHeight: "12", textStyle: "f12" },
     } satisfies Record<TDesignButtonHeight, SystemStyleObject>,
   },
 });

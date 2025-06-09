@@ -14,7 +14,7 @@ import {
   TPaletteColor,
 } from "../core/DesignContext";
 import { ItemContent } from "../item-content/ItemContent";
-import { itemContentFontSizeClass } from "../item-content/styles";
+import { itemContentSizeClass } from "../item-content/styles";
 import { buttonClass, buttonLikeClass } from "./styles";
 
 export type ButtonLinkProps = Merge<
@@ -78,11 +78,11 @@ export function ButtonLink(inProps: ButtonLinkProps) {
         render={<a />}
         className={cx(
           css(
-            heightClass.raw({ height: height }),
+            heightClass.raw({ height }),
             buttonLikeClass.raw({ variant }),
             buttonClass.raw({ hoverVariant, variant }),
             inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
-            itemContentFontSizeClass.raw({ contentSize, height: height }),
+            itemContentSizeClass.raw({ contentSize, height }),
             cssProp,
           ),
           className,

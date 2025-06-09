@@ -13,7 +13,7 @@ import {
   TDesignContentSize,
   TDesignSpacing,
 } from "../core/DesignContext";
-import { contentSpaceClass, itemContentClass, itemContentFontSizeClass } from "./styles";
+import { itemContentClass, itemContentInnerSpacingClass, itemContentSizeClass } from "./styles";
 
 interface ItemContentProps extends Omit<ComponentPropsWithRef<"div">, "title"> {
   icon?: React.ReactNode;
@@ -37,7 +37,7 @@ export function ItemContent(props: ItemContentProps) {
     DesignContext.useProps(props);
 
   const design = resolveDesignProps(designBase);
-  const { contentSize, spacing: mainSize, height } = design;
+  const { contentSize, spacing, height } = design;
 
   const hasStartIcon = Boolean(icon || loading);
   const hasEndAction = Boolean(endAction || endIcon);
@@ -49,7 +49,11 @@ export function ItemContent(props: ItemContentProps) {
   const endActionResolved = endAction ? (
     <div className={css({ ml: "auto" }, iconOnlyStyles)}>{endAction}</div>
   ) : endIcon ? (
-    <IconBox css={css.raw({ ml: "auto" }, iconOnlyStyles)} icon={endIcon} />
+    <IconBox
+      data-slot={hasChildren ? "item-icon" : undefined}
+      css={css.raw({ ml: "auto" }, iconOnlyStyles)}
+      icon={endIcon}
+    />
   ) : null;
 
   const nestedContentSize: TDesignButtonHeight = contentToNestedHeight[design.contentSize] ?? "4";
@@ -58,8 +62,8 @@ export function ItemContent(props: ItemContentProps) {
     <div
       className={cx(
         css(
-          itemContentClass.raw({ spacing: mainSize }),
-          itemContentFontSizeClass.raw({ contentSize, height: height }),
+          itemContentClass.raw({ spacing }),
+          itemContentSizeClass.raw({ contentSize, height }),
           iconOnly && { px: "0" },
           cssProp,
         ),
@@ -72,16 +76,17 @@ export function ItemContent(props: ItemContentProps) {
           <IconBox
             css={css.raw({ mr: "auto" }, iconOnlyStyles)}
             icon={loading ? <LoadingIcon /> : icon}
-            data-slot={!iconOnly ? "start-icon" : undefined}
+            data-slot={hasChildren ? "item-icon" : undefined}
           />
         )}
-        {isNotNil(children) && (
+        {hasChildren && (
           <div
             className={css(
               { display: "flex", flexGrow: 1, alignItems: "center", overflow: "hidden" },
-              contentSpaceClass.raw({ spacing: mainSize }),
-              hasStartIcon && { pl: "0" },
-              hasEndAction && { pr: "0" },
+              itemContentInnerSpacingClass.raw({
+                hasLeftIcon: hasStartIcon ? "yes" : "no",
+                hasRightIcon: hasEndAction ? "yes" : "no",
+              }),
             )}
           >
             {typeof children === "string" ? <Ellipsis>{children}</Ellipsis> : children}

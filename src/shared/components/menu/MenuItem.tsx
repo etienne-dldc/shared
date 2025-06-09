@@ -14,7 +14,7 @@ import {
 import { DisabledContext } from "../core/DisabledContext";
 import { TDynamicColor } from "../core/DynamicColorProvider";
 import { ItemContent } from "../item-content/ItemContent";
-import { itemContentFontSizeClass } from "../item-content/styles";
+import { itemContentSizeClass } from "../item-content/styles";
 import { menuItemClass } from "./styles";
 
 export type MenuItemProps = Merge<
@@ -70,7 +70,7 @@ export function MenuItem(inProps: MenuItemProps) {
               heightClass.raw({ height }),
               menuItemClass,
               inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
-              itemContentFontSizeClass.raw({ contentSize, height }),
+              itemContentSizeClass.raw({ contentSize, height }),
               cssProp,
             ),
             className,

@@ -10,7 +10,6 @@ import {
 import { createBrowserHistory } from "history";
 import { ComponentPropsWithRef, RefObject, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Merge } from "type-fest";
-import { css } from "../../styled-system/css";
 import { HStack, Paper, styled } from "../../styled-system/jsx";
 import { Button } from "../shared/components/button/Button";
 import { ButtonGroup } from "../shared/components/button/ButtonGroup";
@@ -21,6 +20,19 @@ import { MenuItem } from "../shared/components/menu/MenuItem";
 import { routes, TRoute, TRouteFolder, TRouteItem } from "./routes";
 
 const history = createBrowserHistory();
+
+const menuPaper = (
+  <Paper
+    level="select"
+    outline="none"
+    p="1"
+    minW="var(--popover-anchor-width)"
+    maxW="var(--popover-available-width)"
+    maxH="var(--popover-available-height)"
+    height="[300px]"
+    overflowY="auto"
+  />
+);
 
 export function Playground() {
   const [location, setLocation] = useState(() => history.location);
@@ -103,14 +115,7 @@ function RouteMenu({ items, title, icon, endIcon, ...buttonProps }: RouteMenuPro
   return (
     <Ariakit.MenuProvider>
       <Ariakit.MenuButton render={<Button content={title} icon={icon} endIcon={endIcon} />} {...buttonProps} />
-      <Ariakit.Menu
-        gutter={8}
-        ref={topMenuRef}
-        render={<Paper />}
-        className={css({ padding: "2", outline: "none", height: "[300px]", minWidth: "[150px]" })}
-        portal={true}
-        unmountOnHide
-      >
+      <Ariakit.Menu gutter={8} ref={topMenuRef} render={menuPaper} portal={true} unmountOnHide>
         {items.map((item) => renderItem(item, topMenuRef))}
       </Ariakit.Menu>
     </Ariakit.MenuProvider>
@@ -135,19 +140,12 @@ function NestedMenu({ item, parentRef }: NestedMenuProps) {
       />
       <Ariakit.Menu
         gutter={8}
-        // getAnchorRect={parentRef ? () => parentRef.current?.getBoundingClientRect() ?? null : undefined}
-        render={<Paper level="select" outline="none" />}
+        getAnchorRect={parentRef ? () => parentRef.current?.getBoundingClientRect() ?? null : undefined}
+        render={menuPaper}
         ref={menuRef}
+        portal={true}
       >
-        <styled.div
-          p="1"
-          minW="var(--popover-anchor-width)"
-          maxW="var(--popover-available-width)"
-          maxH="var(--popover-available-height)"
-          overflowY="auto"
-        >
-          {item.routes.map((item) => renderItem(item, menuRef))}
-        </styled.div>
+        {item.routes.map((item) => renderItem(item, menuRef))}
       </Ariakit.Menu>
     </Ariakit.MenuProvider>
   );
