@@ -17,7 +17,7 @@ export function PageTitle({ icon, title, onTitleClick, details, className, start
     <HStack gap="2" className={className}>
       {startActions && <HStack gap="2">{startActions}</HStack>}
       <HStack gap="2" pl="1">
-        {icon && <IconBox size={28} icon={icon} css={{ p: "0x" }} weight="bold" />}
+        {icon && <IconBox size="28px" icon={icon} css={{ p: "0x" }} weight="bold" />}
         <styled.h1 textStyle="7" fontWeight="semibold" onClick={onTitleClick}>
           {title}
           {isNotNil(details) && (

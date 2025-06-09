@@ -72,13 +72,16 @@ const sizes = {
   "3": { value: "0.75rem" }, // 12px
   "3x": { value: "0.875rem" }, // 14px
   "4": { value: "1rem" }, // 16px
-  "4x": { value: "1.125rem" },
-  "5": { value: "1.25rem" },
-  "6": { value: "1.5rem" },
-  "7": { value: "1.75rem" },
-  "8": { value: "2rem" },
-  "9": { value: "2.25rem" },
-  "10": { value: "2.5rem" },
+  "4x": { value: "1.125rem" }, // 18px
+  "5": { value: "1.25rem" }, // 20px
+  "5x": { value: "1.375rem" }, // 22px
+  "6": { value: "1.5rem" }, // 24px
+  "6x": { value: "1.625rem" }, // 26px
+  "7": { value: "1.75rem" }, // 28px
+  "7x": { value: "1.875rem" }, // 30px
+  "8": { value: "2rem" }, // 32px
+  "9": { value: "2.25rem" }, // 36px
+  "10": { value: "2.5rem" }, // 40px
   "11": { value: "2.75rem" },
   "12": { value: "3rem" },
   "14": { value: "3.5rem" },
