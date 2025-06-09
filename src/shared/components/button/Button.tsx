@@ -16,7 +16,7 @@ import {
 } from "../core/DesignContext";
 import { DisabledContext } from "../core/DisabledContext";
 import { ItemContent } from "../item-content/ItemContent";
-import { itemContentFontSizeClass } from "../item-content/styles";
+import { itemContentSizeClass } from "../item-content/styles";
 import { buttonClass, buttonLikeClass } from "./styles";
 
 export type ButtonProps = Merge<
@@ -93,7 +93,7 @@ export function Button(inProps: ButtonProps) {
               buttonLikeClass.raw({ variant }),
               buttonClass.raw({ hoverVariant, variant }),
               inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
-              itemContentFontSizeClass.raw({ contentSize, height }),
+              itemContentSizeClass.raw({ contentSize, height }),
               cssProp,
             ),
             className,

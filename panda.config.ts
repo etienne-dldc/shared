@@ -315,56 +315,29 @@ const globalCss = defineGlobalStyles({
   "[hidden]:where(:not([hidden='until-found']))": { display: "none !important" },
 });
 
-const insetRingWidthVar = "--inset-ring-width";
-const insetRingColorVar = "--inset-ring-color";
-const insetRingColorMixVar = "--inset-ring-color-mix";
-const insetRingBoxShadow = `inset 0 0 0 var(${insetRingWidthVar}, 1px) var(${insetRingColorVar}, white)`;
+const designHeightVar = "--design-height";
 
-const insetRing = {
-  insetRing: defineUtility({
-    className: "ir",
-    values: ["none", "solid"],
-    property: "boxShadow",
-    transform: (value) => {
-      if (value === "none") {
-        return { boxShadow: "none" };
-      }
-      if (value === "solid") {
-        return {
-          boxShadow: insetRingBoxShadow,
-        };
-      }
-      return undefined;
-    },
-  }),
-  insetRingColor: defineUtility({
-    className: "ir",
-    values: "colors",
-    property: "boxShadow",
-    transform: (value, args) => {
-      const mix = args.utils.colorMix(value);
-      if (mix.invalid) {
-        return {
-          [insetRingColorVar]: value,
-        };
-      }
-      return {
-        [insetRingColorMixVar]: mix.value,
-        [insetRingColorVar]: `var(${insetRingColorMixVar}, ${mix.color})`,
-      };
-    },
-  }),
-  insetRingWidth: defineUtility({
-    className: "irw",
-    values: "borderWidths",
-    property: "boxShadow",
-    transform: (value) => {
-      return {
-        [insetRingWidthVar]: value,
-      };
-    },
-  }),
-};
+const designHeight = defineUtility({
+  className: "dh",
+  values: "sizes",
+  property: "minHeight",
+  transform: (value) => {
+    return {
+      [designHeightVar]: value,
+      minHeight: `var(${designHeightVar}, ${value})`,
+    };
+  },
+});
+
+const iconSizeVar = "--icon-size";
+
+const iconSize = defineUtility({
+  className: "is",
+  values: "sizes",
+  transform: (value) => {
+    return { [iconSizeVar]: value };
+  },
+});
 
 const ellipsis = definePattern({
   description: "Text ellipsis",
@@ -452,6 +425,14 @@ export default defineConfig({
   jsxFramework: "react",
   presets: [],
   globalCss,
+  globalVars: {
+    [iconSizeVar]: "0.875rem", // 3x
+    "--spacing-gap": "0",
+    // From ariakit
+    "--popover-anchor-width": "0",
+    "--popover-available-width": "100vw",
+    "--popover-available-height": "100vh",
+  },
   theme: {
     extend: {
       ...pandaPreset.theme,
@@ -470,7 +451,8 @@ export default defineConfig({
   },
   utilities: {
     extend: {
-      ...insetRing,
+      designHeight,
+      iconSize,
     },
   },
   patterns: {

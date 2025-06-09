@@ -14,7 +14,7 @@ import {
   TPaletteColor,
 } from "../core/DesignContext";
 import { ItemContent } from "../item-content/ItemContent";
-import { itemContentFontSizeClass } from "../item-content/styles";
+import { itemContentSizeClass } from "../item-content/styles";
 import { buttonLikeClass } from "./styles";
 
 export type ButtonLikeProps = Merge<
@@ -81,10 +81,10 @@ export function ButtonLike(inProps: ButtonLikeProps) {
       <Ariakit.Role
         className={cx(
           css(
-            heightClass.raw({ height: height }),
+            heightClass.raw({ height }),
             buttonLikeClass.raw({ variant }),
             inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
-            itemContentFontSizeClass.raw({ contentSize, height: height }),
+            itemContentSizeClass.raw({ contentSize, height }),
             cssProp,
           ),
           className,

@@ -54,19 +54,19 @@ export const DesignContext = createPropsContext(
 
 const DEFAULT_SIZE_MAPPING: Record<
   TDesignButtonHeight,
-  { height: TDesignButtonHeight; content: TDesignContentSize; spacing: TDesignSpacing }
+  { height: TDesignButtonHeight; contentSize: TDesignContentSize; spacing: TDesignSpacing }
 > = {
-  "2x": { height: "2x", content: "2x", spacing: "2x" },
-  "3": { height: "3", content: "2x", spacing: "2x" },
-  "3x": { height: "3x", content: "2x", spacing: "2x" },
-  "4": { height: "4", content: "3", spacing: "3" },
-  "4x": { height: "4x", content: "3", spacing: "3" },
-  "5": { height: "5", content: "3", spacing: "3" },
-  "6": { height: "6", content: "3x", spacing: "3x" },
-  "7": { height: "7", content: "4", spacing: "4" },
-  "8": { height: "8", content: "4x", spacing: "4x" },
-  "10": { height: "10", content: "5", spacing: "5" },
-  "12": { height: "12", content: "6", spacing: "6" },
+  "2x": { height: "2x", contentSize: "2x", spacing: "2x" },
+  "3": { height: "3", contentSize: "2x", spacing: "3" },
+  "3x": { height: "3x", contentSize: "2x", spacing: "3x" },
+  "4": { height: "4", contentSize: "3", spacing: "4" },
+  "4x": { height: "4x", contentSize: "3", spacing: "4x" },
+  "5": { height: "5", contentSize: "3", spacing: "5" },
+  "6": { height: "6", contentSize: "3x", spacing: "6" },
+  "7": { height: "7", contentSize: "4", spacing: "7" },
+  "8": { height: "8", contentSize: "4", spacing: "8" },
+  "10": { height: "10", contentSize: "4x", spacing: "10" },
+  "12": { height: "12", contentSize: "5", spacing: "12" },
 };
 
 const DEFAULT_SIZE_MAPPING_LIST = Object.values(DEFAULT_SIZE_MAPPING);
@@ -81,7 +81,7 @@ export const spacingToHeight: Record<TDesignSpacing, TDesignButtonHeight | undef
 
 export const contentToNestedHeight: Record<TDesignContentSize, TDesignButtonHeight | undefined> = {} as any;
 
-DEFAULT_SIZE_MAPPING_LIST.forEach(({ content, height, spacing }) => {
+DEFAULT_SIZE_MAPPING_LIST.forEach(({ contentSize: content, height, spacing }) => {
   contentToHeight[content] = height;
   heightToContent[height] = content;
   contentToSpacing[content] = spacing;
@@ -96,11 +96,7 @@ DEFAULT_SIZE_MAPPING_LIST.forEach(({ content, height, spacing }) => {
   }
 });
 
-const DEFAULT_SIZE = {
-  contentSize: "3x" satisfies TDesignContentSize,
-  height: "6" satisfies TDesignButtonHeight,
-  spacing: "3x" satisfies TDesignSpacing,
-} as const;
+const DEFAULT_SIZE = DEFAULT_SIZE_MAPPING["6"];
 
 export type TResolvedDesignProps = ReturnType<typeof resolveDesignProps>;
 
@@ -124,6 +120,13 @@ function resolveDesignSizes(
   height?: TDesignButtonHeight;
   spacing?: TDesignSpacing;
 } {
+  if (height) {
+    return {
+      height,
+      contentSize: contentSize ?? heightToContent[height],
+      spacing: spacing ?? heightToSpacing[height],
+    };
+  }
   if (contentSize) {
     return {
       contentSize,
@@ -131,16 +134,9 @@ function resolveDesignSizes(
       spacing: spacing ?? contentToSpacing[contentSize],
     };
   }
-  if (height) {
-    return {
-      height: height,
-      contentSize: contentSize ?? heightToContent[height],
-      spacing: spacing ?? heightToSpacing[height],
-    };
-  }
   if (spacing) {
     return {
-      spacing: spacing,
+      spacing,
       contentSize: contentSize ?? spacingToContent[spacing],
       height: height ?? spacingToHeight[spacing],
     };
