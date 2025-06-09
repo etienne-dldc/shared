@@ -123,6 +123,8 @@ const sizes = {
 } satisfies Tokens["sizes"];
 
 const radii = {
+  "0": { value: "0rem" },
+  "0x": { value: "0.125rem" }, // 2px
   "1_x": { value: "0.3125rem" }, // 5px
   "2": { value: "0.5rem" }, // 8px
   // xs: { value: '0.125rem' },

@@ -54,7 +54,8 @@ const END_ACTION_VARIANTS = {
   dotsButton: <ButtonLike icon={<DotsThreeVerticalIcon />} />,
   caretButton: <ButtonLike icon={<CaretDownIcon />} />,
   cancelButton: <ButtonLike content="Cancel" color="red" />,
-  primaryDotsButton: <ButtonLike icon={<DotsThreeVerticalIcon />} />,
+  solidDotsButton: <ButtonLike icon={<DotsThreeVerticalIcon />} variant="solid" />,
+  surfaceDotsButton: <ButtonLike icon={<DotsThreeVerticalIcon />} variant="surface" />,
 } as const;
 
 const SIZE_VARIANTS = {
@@ -165,16 +166,16 @@ export default function ButtonPlayground() {
           selected: { state: "focus" },
         },
         "size & color": { column: ["height"], row: ["color"], selected: { variant: "solid" } },
-        // content: {
-        //   column: ["title"],
-        //   row: ["details", "icon", "endIcon"],
-        //   selected: { primary: "primary", filled: "filled" },
-        // },
-        // sizes: {
-        //   column: ["xSize"],
-        //   row: ["ySize"],
-        //   selected: { primary: "primary", filled: "filled" },
-        // },
+        content: {
+          column: ["content"],
+          row: ["icon", "endIcon"],
+          selected: { variant: "solid", color: "blue" },
+        },
+        sizes: {
+          column: ["height"],
+          row: ["spacing"],
+          selected: { variant: "solid", color: "blue" },
+        },
       }}
       render={({ fullWidth, state, ...props }) => (
         <styled.div className={cn("w-full h-full")}>

@@ -150,14 +150,20 @@ export function Variants<Dims extends TDimensions>({
             options={Object.keys(dimensions)}
             onChange={(selected) => setColAxis(selected)}
           />
-          <Button color="purple" icon={<ArrowsLeftRightIcon />} onClick={() => swapAxis()} />
+          <Button
+            color="purple"
+            variant="subtle"
+            hoverVariant="surface"
+            icon={<ArrowsLeftRightIcon />}
+            onClick={() => swapAxis()}
+          />
           <MultiSelect<keyof Dims & string>
             label="row"
             selected={rowAxis as string[]}
             options={Object.keys(dimensions)}
             onChange={(selected) => setRowAxis(selected)}
           />
-          <Button content="Reset" onClick={() => resetAxis()} color="red" variant="subtle" />
+          <Button content="Reset" onClick={() => resetAxis()} color="red" variant="subtle" hoverVariant="surface" />
         </HStack>
       </HStack>
       <HStack gap="8" alignItems="start">

@@ -82,7 +82,7 @@ export function ButtonLike(inProps: ButtonLikeProps) {
         className={cx(
           css(
             heightClass.raw({ height }),
-            buttonLikeClass.raw({ variant }),
+            buttonLikeClass.raw({ variant, height }),
             inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
             itemContentSizeClass.raw({ contentSize, height }),
             cssProp,
