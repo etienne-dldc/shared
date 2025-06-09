@@ -60,9 +60,13 @@ const SIZE_VARIANTS = {
   "4": "4",
   "4x": "4x",
   "5": "5",
+  "5x": "5x",
   "6": "6",
+  "6x": "6x",
   "7": "7",
+  "7x": "7x",
   "8": "8",
+  "9": "9",
   "10": "10",
   "12": "12",
 } satisfies Record<TDesignButtonHeight, TDesignButtonHeight>;

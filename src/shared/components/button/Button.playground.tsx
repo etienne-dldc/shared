@@ -65,9 +65,13 @@ const SIZE_VARIANTS = {
   size_4: "4",
   size_4x: "4x",
   size_5: "5",
+  size_5x: "5x",
   size_6: "6",
+  size_6x: "6x",
   size_7: "7",
+  size_7x: "7x",
   size_8: "8",
+  size_9: "9",
   size_10: "10",
   size_12: "12",
 } satisfies TVariantsValues<`size_${TDesignSize}`, TDesignSize | undefined>;
