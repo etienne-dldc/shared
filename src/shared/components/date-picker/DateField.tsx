@@ -3,7 +3,6 @@ import { fr } from "date-fns/locale/fr";
 import { ForwardedRef, forwardRef, useState } from "react";
 import { DayPicker as ReactDayPicker } from "react-day-picker";
 
-import { cn, tw } from "../../styles/utils";
 import { formatNativeDateStr } from "../../utils/dates";
 import { StringLike } from "../fields/utils";
 import { FieldError } from "../form/FieldError";
@@ -87,9 +86,11 @@ export const DateField = forwardRef(function DateField(
               store.setValue(name, day?.toISOString() ?? "");
               setPickerOpen(false);
             }}
-            classNames={{
-              month_caption: cn("rdp-month_caption", tw`ml-4 capitalize`),
-            }}
+            classNames={
+              {
+                // month_caption: cn("rdp-month_caption", tw`ml-4 capitalize`),
+              }
+            }
           />
         </div>
       </Ariakit.Popover>

@@ -19,7 +19,6 @@
     "@dldc/safe-search-params": "jsr:^1.1.1",
     "@phosphor-icons/react": "^2.1.10",
     "@react-hookz/deep-equal": "^3.0.4",
-    "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "history": "^5.3.0",
     "jotai": "^2.12.5",
@@ -31,7 +30,6 @@
     "react-day-picker": "^9.7.0",
     "react-dom": "^19.1.0",
     "smooth-scroll-into-view-if-needed": "^2.0.2",
-    "tailwind-merge": "^3.3.0",
     "temporal-polyfill": "^0.3.0",
     "type-fest": "^4.41.0",
     "valibot": "1.1.0"
@@ -52,7 +50,6 @@
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.2.0",
     "prettier": "^3.5.3",
-    "tailwindcss": "^4.1.8",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.33.1",
     "vite": "^6.3.5"

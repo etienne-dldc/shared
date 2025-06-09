@@ -1,7 +1,6 @@
 import { CaretDownIcon, CirclesFourIcon, DotsThreeVerticalIcon, UserIcon } from "@phosphor-icons/react";
 import { styled } from "../../../../styled-system/jsx";
 import { TVariantsValues, Variants } from "../../../playground/LegacyVariants";
-import { cn } from "../../styles/utils";
 import { TDesignSize, TDesignVariant, TPaletteColor } from "../core/DesignContext";
 import { Button } from "./Button";
 import { ButtonLike } from "./ButtonLike";
@@ -178,7 +177,9 @@ export default function ButtonPlayground() {
         },
       }}
       render={({ fullWidth, state, ...props }) => (
-        <styled.div className={cn("w-full h-full")}>
+        <styled.div
+        // className={cn("w-full h-full")}
+        >
           <Button
             {...props}
             css={{ w: fullWidth ? "full" : "auto" }}

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Variants } from "../../playground/LegacyVariants";
-import { cn } from "../styles/utils";
 import { CheckBox } from "./form/CheckBox";
 
 const CHECKED_VARIANTS = {
@@ -30,7 +29,9 @@ export default function FormPlayground() {
         base: { row: [], column: [], selected: {} },
       }}
       render={({ checked }) => (
-        <div className={cn("w-full h-full")}>
+        <div
+        // className={cn("w-full h-full")}
+        >
           <CheckBox
             checked={checked === "auto" ? globalCheched : checked}
             onChange={checked === "auto" ? setGlobalChecked : undefined}

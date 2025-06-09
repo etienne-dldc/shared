@@ -2,7 +2,6 @@ import * as Ariakit from "@ariakit/react";
 import { ArrowCounterClockwiseIcon, CheckIcon, WarningIcon } from "@phosphor-icons/react";
 import { ForwardedRef, forwardRef, Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import { Paper } from "../../../../styled-system/jsx";
-import { tw } from "../../styles/utils";
 import { Button } from "../button/Button";
 import { TextInput, TextInputProps } from "./TextInput";
 
@@ -161,7 +160,7 @@ export const NumberInput = forwardRef(function NumberInput(
             value={focused ? editedRaw : valueStr}
             onValueChange={onInputChange}
             className={className}
-            innerClassName={tw`font-mono text-right`}
+            // innerClassName={tw`font-mono text-right`}
             inputClassName="text-right"
             onFocus={() => setInputFocused(true)}
             onBlur={onBlur}

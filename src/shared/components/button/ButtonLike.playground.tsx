@@ -1,6 +1,5 @@
 import { CaretDownIcon, CirclesFourIcon, DotsThreeVerticalIcon, UserIcon } from "@phosphor-icons/react";
 import { Variants } from "../../../playground/LegacyVariants";
-import { cn, tw } from "../../styles/utils";
 import { TDesignButtonHeight } from "../core/DesignContext";
 import { Button } from "./Button";
 import { ButtonLike } from "./ButtonLike";
@@ -88,16 +87,16 @@ const ROUND_VARIANTS = {
   none: "none",
 } as const;
 
-const BACKGROUND_COLORS = {
-  none: "",
-  blue: tw`bg-blue-950`,
-  indigo: tw`bg-indigo-950`,
-  green: tw`bg-green-950`,
-  orange: tw`bg-orange-950`,
-  teal: tw`bg-teal-950`,
-  red: tw`bg-red-950`,
-  slate: tw`bg-slate-950`,
-} as const;
+// const BACKGROUND_COLORS = {
+//   none: "",
+//   blue: tw`bg-blue-950`,
+//   indigo: tw`bg-indigo-950`,
+//   green: tw`bg-green-950`,
+//   orange: tw`bg-orange-950`,
+//   teal: tw`bg-teal-950`,
+//   red: tw`bg-red-950`,
+//   slate: tw`bg-slate-950`,
+// } as const;
 
 const DISABLED_VARIANTS = { no: undefined, yes: true } as const;
 
@@ -126,7 +125,7 @@ export default function ButtonLikePlayground() {
         icon: ICON_VARIANTS,
         endIcon: ICON_VARIANTS,
         endAction: END_ACTION_VARIANTS,
-        background: BACKGROUND_COLORS,
+        // background: BACKGROUND_COLORS,
         fullWidth: FULL_WIDTH_VARIANTS,
       }}
       defaultSelected={{
@@ -145,7 +144,7 @@ export default function ButtonLikePlayground() {
         icon: "user",
         endIcon: "none",
         endAction: "none",
-        background: "none",
+        // background: "none",
         fullWidth: "no",
       }}
       presets={{
@@ -162,9 +161,14 @@ export default function ButtonLikePlayground() {
           selected: { primary: "primary", filled: "filled" },
         },
       }}
-      render={({ fullWidth, background, ...props }) => (
-        <div className={cn("w-full h-full", background, fullWidth ? "" : "flex flex-row")}>
-          <ButtonLike {...props} className={cn(fullWidth ? "w-full" : "")} />
+      render={({ fullWidth, ...props }) => (
+        <div
+        // className={cn("w-full h-full", fullWidth ? "" : "flex flex-row")}
+        >
+          <ButtonLike
+            {...props}
+            // className={cn(fullWidth ? "w-full" : "")}
+          />
         </div>
       )}
     />
