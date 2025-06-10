@@ -30,7 +30,7 @@ export const buttonLikeClass = cva({
         bg: "white/5",
         color: "colorPalette.200",
         _after: {
-          borderColor: "neutral.800",
+          borderColor: "white/10",
           borderWidth: "0_x",
         },
       },
