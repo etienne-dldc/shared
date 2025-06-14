@@ -1,60 +1,78 @@
-import { Fragment, JSX } from "react";
-import { Grid, Paper, styled } from "../../../styled-system/jsx";
-import { Scrollbars } from "../../shared/components/common/Scrollbars";
-import { TDimention, TVariantsTreeProps, TVariantsTreeRootAny, TVarientsKeys } from "./types";
-import { useVariantsState } from "./useVariantsState";
+import { GearIcon, SquaresFourIcon } from "@phosphor-icons/react";
+import { Fragment } from "react";
+import { Paper } from "../../../styled-system/jsx";
+import { Button } from "../../shared/components/button/Button";
+import { PageTitle } from "../../shared/components/layouts/PageTitle";
+import { Modal } from "../../shared/components/popovers/Modal";
+import { TDimention, TRenderVariant, TVariantsTreeProps, TVariantsTreeRootAny, TVarientsKeys } from "./types";
+import { VariantConfig } from "./VariantConfig";
+import { VariantGrid } from "./VariantGrid";
+import { variantStoreHooks, VariantStoreProvider } from "./variantStore";
 
 export interface VariantsProps<Tree extends TVariantsTreeRootAny> {
   localStorageKey?: string;
   tree: Tree;
-  render: (props: TVariantsTreeProps<Tree>, key: string) => JSX.Element | null;
+  render: TRenderVariant<TVariantsTreeProps<Tree>>;
   dimentions: TDimention<TVarientsKeys<Tree["data"]>>[];
+  base?: TVarientsKeys<Tree["data"]>[];
   configPosition?: "left" | "right" | "top" | "bottom" | "hidden";
+  title: string;
+  icon?: React.ReactNode;
 }
 
 export function Variants<Tree extends TVariantsTreeRootAny>({
   localStorageKey,
   tree,
   render,
-  dimentions,
+  dimentions: initialDimentions,
+  base: initialBase = [],
   configPosition: initialConfigPosition = "top",
+  title,
+  icon = <SquaresFourIcon />,
 }: VariantsProps<Tree>) {
-  const { cols, rows, configs } = useVariantsState<TVariantsTreeProps<Tree>>({
-    localStorageKey,
-    tree,
-    initialDimentions: dimentions as TDimention<string>[],
-    initialConfigPosition,
-  });
+  return (
+    <VariantStoreProvider
+      localStorageKey={localStorageKey}
+      tree={tree}
+      initialDimentions={initialDimentions as TDimention<string>[]}
+      initialConfigPosition={initialConfigPosition}
+      initialBase={initialBase as string[]}
+      render={render}
+    >
+      <VariantsInner title={title} icon={icon} />
+    </VariantStoreProvider>
+  );
+}
 
-  console.log({ configs });
+interface VariantsInnerProps {
+  title: string;
+  icon?: React.ReactNode;
+}
+
+function VariantsInner({ title, icon }: VariantsInnerProps) {
+  // const render = variantStoreHooks.useRender();
+  const modalOpen = variantStoreHooks.useModalOpen();
+  const setModalOpen = variantStoreHooks.useSetModalOpen();
 
   return (
-    <Paper level="card">
-      <Scrollbars>
-        <styled.div p="4" m="1" minW="max">
-          <Grid gap="4">
-            {cols.map((col, colIndex) => (
-              <Fragment key={col.key}>
-                {rows.map((row, rowIndex) => {
-                  const key = `${col.key}-${row.key}`;
-                  const props = { ...col.props, ...row.props } as TVariantsTreeProps<Tree>;
-                  return (
-                    <styled.div
-                      style={{ gridColumn: 1 + colIndex, gridRow: 1 + rowIndex }}
-                      display="flex"
-                      flexDirection="column"
-                      alignItems="center"
-                      key={key}
-                    >
-                      {render(props, key)}
-                    </styled.div>
-                  );
-                })}
-              </Fragment>
-            ))}
-          </Grid>
-        </styled.div>
-      </Scrollbars>
-    </Paper>
+    <Fragment>
+      <Paper level="card" display="flex" flexDirection="column">
+        <PageTitle
+          icon={icon}
+          title={title}
+          css={{ p: "3", pb: "0" }}
+          endActions={<Button variant="ghost" onClick={() => setModalOpen(true)} icon={<GearIcon />} />}
+        />
+        <VariantGrid />
+      </Paper>
+      <Modal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        title="Configure Variants"
+        content={<VariantConfig />}
+        width="full"
+        height="full"
+      />
+    </Fragment>
   );
 }
