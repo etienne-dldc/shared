@@ -6,22 +6,23 @@ import { isNotNil } from "../../utils/nil";
 import { IconBox } from "../common/IconBox";
 import { LoadingIcon } from "../common/LoadingIcon";
 import {
-  contentToNestedHeight,
   DesignContext,
   resolveDesignProps,
+  resolveOuterHeight,
   TDesignButtonHeight,
-  TDesignContentSize,
   TDesignSpacing,
 } from "../core/DesignContext";
 import { itemContentClass, itemContentInnerSpacingClass, itemContentSizeClass } from "./styles";
 
 interface ItemContentProps extends Omit<ComponentPropsWithRef<"div">, "title"> {
+  height?: TDesignButtonHeight;
+  spacing?: TDesignSpacing;
+  innerHeight?: TDesignButtonHeight;
+
   icon?: React.ReactNode;
   endIcon?: React.ReactNode;
   endAction?: React.ReactNode;
   children?: React.ReactNode;
-  contentSize?: TDesignContentSize;
-  spacing?: TDesignSpacing;
   loading?: boolean;
   css?: SystemStyleObject;
 }
@@ -33,11 +34,13 @@ interface ItemContentProps extends Omit<ComponentPropsWithRef<"div">, "title"> {
  * - Provide nested content size
  */
 export function ItemContent(props: ItemContentProps) {
-  const [designBase, { icon, endIcon, endAction, children, loading, className, css: cssProp, ...htmlProps }] =
-    DesignContext.useProps(props);
+  const [
+    designBase,
+    { icon, endIcon, endAction, children, loading, className, innerHeight, css: cssProp, ...htmlProps },
+  ] = DesignContext.useProps(props);
 
-  const design = resolveDesignProps(designBase);
-  const { contentSize, spacing, height } = design;
+  const { height } = resolveDesignProps(designBase);
+  const spacing = resolveOuterHeight(height);
 
   const hasStartIcon = Boolean(icon || loading);
   const hasEndAction = Boolean(endAction || endIcon);
@@ -56,22 +59,15 @@ export function ItemContent(props: ItemContentProps) {
     />
   ) : null;
 
-  const nestedContentSize: TDesignButtonHeight = contentToNestedHeight[design.contentSize] ?? "4";
-
   return (
     <div
       className={cx(
-        css(
-          itemContentClass.raw({ spacing }),
-          itemContentSizeClass.raw({ contentSize, height }),
-          iconOnly && { px: "0" },
-          cssProp,
-        ),
+        css(itemContentClass.raw({ spacing }), itemContentSizeClass.raw({ height }), iconOnly && { px: "0" }, cssProp),
         className,
       )}
       {...htmlProps}
     >
-      <DesignContext.Define height={nestedContentSize} spacing={props.spacing}>
+      <DesignContext.Define spacing={props.spacing}>
         {hasStartIcon && (
           <IconBox
             css={css.raw({ mr: "auto" }, iconOnlyStyles)}

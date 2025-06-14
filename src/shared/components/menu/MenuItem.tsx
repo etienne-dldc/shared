@@ -7,12 +7,12 @@ import { colorPaletteClass, heightClass } from "../common/styles";
 import {
   DesignContext,
   resolveDesignProps,
+  resolveNestedHeight,
   TDesignButtonHeight,
-  TDesignContentSize,
   TDesignSpacing,
+  TPaletteColor,
 } from "../core/DesignContext";
 import { DisabledContext } from "../core/DisabledContext";
-import { TDynamicColor } from "../core/DynamicColorProvider";
 import { ItemContent } from "../item-content/ItemContent";
 import { itemContentSizeClass } from "../item-content/styles";
 import { menuItemClass } from "./styles";
@@ -21,11 +21,12 @@ export type MenuItemProps = Merge<
   Omit<Ariakit.MenuItemProps, "title" | "color" | "height">,
   {
     // Design
-    color?: TDynamicColor;
     height?: TDesignButtonHeight;
-    contentSize?: TDesignContentSize;
     spacing?: TDesignSpacing;
+
+    color?: TPaletteColor;
     css?: SystemStyleObject;
+    innerHeight?: TDesignButtonHeight;
 
     // Content
     icon?: React.ReactNode;
@@ -41,11 +42,11 @@ export function MenuItem(inProps: MenuItemProps) {
     design: DesignContext.usePropsSplitter(),
     disabled: DisabledContext.usePropsSplitter(),
   });
-  const { height, contentSize } = resolveDesignProps(design);
 
   const {
     color,
     css: cssProp,
+    innerHeight,
 
     content,
     icon,
@@ -58,10 +59,13 @@ export function MenuItem(inProps: MenuItemProps) {
     ...htmlProps
   } = props;
 
+  const { height } = resolveDesignProps(design);
+  const nestedHeight = innerHeight ?? resolveNestedHeight(height);
+
   const childrenResolved = children ?? <ItemContent {...{ icon, endIcon, details, loading }}>{content}</ItemContent>;
 
   return (
-    <DesignContext.Define height={inProps.height} spacing={inProps.spacing} contentSize={inProps.contentSize}>
+    <DesignContext.Define height={nestedHeight} spacing={inProps.spacing}>
       <DisabledContext.Define disabled={inProps.disabled}>
         <Ariakit.MenuItem
           disabled={disabled.disabled}
@@ -70,7 +74,7 @@ export function MenuItem(inProps: MenuItemProps) {
               heightClass.raw({ height }),
               menuItemClass,
               inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
-              itemContentSizeClass.raw({ contentSize, height }),
+              itemContentSizeClass.raw({ height }),
               cssProp,
             ),
             className,

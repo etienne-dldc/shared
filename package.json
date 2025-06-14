@@ -27,6 +27,7 @@
     "overlayscrollbars": "^2.11.4",
     "overlayscrollbars-react": "^0.5.6",
     "react": "^19.1.0",
+    "react-arborist": "^3.4.3",
     "react-day-picker": "^9.7.0",
     "react-dom": "^19.1.0",
     "smooth-scroll-into-view-if-needed": "^2.0.2",

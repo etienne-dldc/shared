@@ -1,6 +1,7 @@
 import * as Ariakit from "@ariakit/react";
 import { Merge } from "type-fest";
 
+import { NodeApi } from "react-arborist";
 import { css, cx } from "../../../../styled-system/css";
 import { ComponentProps, SystemStyleObject } from "../../../../styled-system/types";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
@@ -11,27 +12,26 @@ import {
   resolveNestedHeight,
   TDesignButtonHeight,
   TDesignSpacing,
-  TDesignVariant,
   TPaletteColor,
 } from "../core/DesignContext";
-import { DisabledContext } from "../core/DisabledContext";
 import { ItemContent } from "../item-content/ItemContent";
 import { itemContentSizeClass } from "../item-content/styles";
-import { buttonClass, buttonLikeClass } from "./styles";
+import { treeItemClass } from "./styles";
 
-export type ButtonProps = Merge<
-  Omit<ComponentProps<"button">, "title" | "height" | "color">,
+export type TreeItemProps = Merge<
+  Omit<ComponentProps<"div">, "title" | "height">,
   {
+    node: NodeApi<any>;
+    style: React.CSSProperties;
+    dragHandle?: (el: HTMLDivElement | null) => void;
+
     // Design
-    disabled?: boolean;
     height?: TDesignButtonHeight;
     spacing?: TDesignSpacing;
-    variant?: TDesignVariant;
-    hoverVariant?: TDesignVariant;
 
-    color?: TPaletteColor;
-    css?: SystemStyleObject;
     innerHeight?: TDesignButtonHeight;
+    css?: SystemStyleObject;
+    color?: TPaletteColor;
 
     // For content
     icon?: React.ReactNode;
@@ -41,22 +41,21 @@ export type ButtonProps = Merge<
     details?: string | React.ReactNode;
     loading?: boolean;
 
-    // Forward to Button
+    // Forward to Element
     render?: React.ReactElement<any>;
-
-    // Data attributes
-    "data-hover"?: boolean;
-    "data-focus-visible"?: boolean;
   }
 >;
 
-export function Button(inProps: ButtonProps) {
-  const [{ design, disabled }, props] = pipePropsSplitters(inProps, {
+export function TreeItem(inProps: TreeItemProps) {
+  const [{ design }, props] = pipePropsSplitters(inProps, {
     design: DesignContext.usePropsSplitter(),
-    disabled: DisabledContext.usePropsSplitter(),
   });
 
   const {
+    node,
+    style,
+    dragHandle,
+
     color,
     css: cssProp,
     innerHeight,
@@ -70,11 +69,10 @@ export function Button(inProps: ButtonProps) {
     children,
 
     className,
-    type = "button",
     ...buttonProps
   } = props;
 
-  const { height, hoverVariant, variant } = resolveDesignProps(design);
+  const { height } = resolveDesignProps(design);
   const nestedHeight = innerHeight ?? resolveNestedHeight(height);
 
   const childrenResolved = children ?? (
@@ -82,31 +80,28 @@ export function Button(inProps: ButtonProps) {
   );
 
   return (
-    <Ariakit.Button
+    <Ariakit.Role
+      style={style}
+      data-selected={node.isSelected ? "true" : undefined}
+      data-rounded-start={!node.isSelected || node.isSelectedStart ? "true" : undefined}
+      data-rounded-end={!node.isSelected || node.isSelectedEnd ? "true" : undefined}
       className={cx(
         css(
           heightClass.raw({ height }),
-          buttonLikeClass.raw({ variant, height }),
-          buttonClass.raw({ hoverVariant, variant }),
+          treeItemClass.raw({
+            // variant, height
+          }),
           inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
           itemContentSizeClass.raw({ height }),
           cssProp,
         ),
         className,
       )}
-      disabled={disabled.disabled}
-      type={type}
       {...buttonProps}
     >
-      {" "}
-      <DesignContext.Define
-        height={nestedHeight}
-        spacing={inProps.spacing}
-        variant={inProps.variant}
-        hoverVariant={inProps.hoverVariant}
-      >
-        <DisabledContext.Define disabled={inProps.disabled}>{childrenResolved}</DisabledContext.Define>
+      <DesignContext.Define height={nestedHeight} spacing={inProps.spacing}>
+        {childrenResolved}
       </DesignContext.Define>
-    </Ariakit.Button>
+    </Ariakit.Role>
   );
 }

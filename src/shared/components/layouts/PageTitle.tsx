@@ -1,4 +1,6 @@
+import { css, cx } from "../../../../styled-system/css";
 import { HStack, styled } from "../../../../styled-system/jsx";
+import { SystemStyleObject } from "../../../../styled-system/types";
 import { isNotNil } from "../../utils/nil";
 import { IconBox } from "../common/IconBox";
 
@@ -10,11 +12,21 @@ interface PageTitleProps {
   className?: string;
   startActions?: React.ReactNode;
   endActions?: React.ReactNode;
+  css?: SystemStyleObject;
 }
 
-export function PageTitle({ icon, title, onTitleClick, details, className, startActions, endActions }: PageTitleProps) {
+export function PageTitle({
+  icon,
+  title,
+  onTitleClick,
+  details,
+  className,
+  startActions,
+  endActions,
+  css: cssProp,
+}: PageTitleProps) {
   return (
-    <HStack gap="2" className={className}>
+    <HStack gap="2" className={cx(css(cssProp), className)}>
       {startActions && <HStack gap="2">{startActions}</HStack>}
       <HStack gap="2" pl="1">
         {icon && <IconBox size="28px" icon={icon} css={{ p: "0x" }} weight="bold" />}

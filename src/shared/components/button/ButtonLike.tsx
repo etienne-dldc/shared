@@ -8,6 +8,7 @@ import { colorPaletteClass, heightClass } from "../common/styles";
 import {
   DesignContext,
   resolveDesignProps,
+  resolveNestedHeight,
   TDesignButtonHeight,
   TDesignSpacing,
   TDesignVariant,
@@ -23,13 +24,13 @@ export type ButtonLikeProps = Merge<
     // Design
     disabled?: boolean;
     height?: TDesignButtonHeight;
-    contentSize?: TDesignButtonHeight;
     spacing?: TDesignSpacing;
     variant?: TDesignVariant;
     hoverVariant?: TDesignVariant;
-    css?: SystemStyleObject;
 
     color?: TPaletteColor;
+    css?: SystemStyleObject;
+    innerHeight?: TDesignButtonHeight;
 
     // For content
     icon?: React.ReactNode;
@@ -48,11 +49,11 @@ export function ButtonLike(inProps: ButtonLikeProps) {
   const [{ design }, props] = pipePropsSplitters(inProps, {
     design: DesignContext.usePropsSplitter(),
   });
-  const { contentSize, height, variant } = resolveDesignProps(design);
 
   const {
     color,
     css: cssProp,
+    innerHeight,
 
     content,
     icon,
@@ -66,33 +67,35 @@ export function ButtonLike(inProps: ButtonLikeProps) {
     ...buttonProps
   } = props;
 
+  const { height, variant } = resolveDesignProps(design);
+  const nestedHeight = innerHeight ?? resolveNestedHeight(height);
+
   const childrenResolved = children ?? (
     <ItemContent {...{ icon, endIcon, endAction, details, loading }}>{content}</ItemContent>
   );
 
   return (
-    <DesignContext.Define
-      height={inProps.height}
-      spacing={inProps.spacing}
-      contentSize={inProps.contentSize}
-      variant={inProps.variant}
-      hoverVariant={inProps.hoverVariant}
+    <Ariakit.Role
+      className={cx(
+        css(
+          heightClass.raw({ height }),
+          buttonLikeClass.raw({ variant, height }),
+          inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
+          itemContentSizeClass.raw({ height }),
+          cssProp,
+        ),
+        className,
+      )}
+      {...buttonProps}
     >
-      <Ariakit.Role
-        className={cx(
-          css(
-            heightClass.raw({ height }),
-            buttonLikeClass.raw({ variant, height }),
-            inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
-            itemContentSizeClass.raw({ contentSize, height }),
-            cssProp,
-          ),
-          className,
-        )}
-        {...buttonProps}
+      <DesignContext.Define
+        height={nestedHeight}
+        spacing={inProps.spacing}
+        variant={inProps.variant}
+        hoverVariant={inProps.hoverVariant}
       >
         {childrenResolved}
-      </Ariakit.Role>
-    </DesignContext.Define>
+      </DesignContext.Define>
+    </Ariakit.Role>
   );
 }
