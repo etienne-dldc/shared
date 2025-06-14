@@ -364,6 +364,9 @@ export default defineConfig({
       disabled: "&:is(:disabled, [disabled], [data-disabled], [aria-disabled=true])",
       roundedStart: "&[data-rounded-start]",
       roundedEnd: "&[data-rounded-end]",
+      firstChild: "& *[data-first]",
+      betweenChild: "& *[data-between]",
+      lastChild: "& *[data-last]",
     },
   },
 });

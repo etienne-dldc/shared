@@ -109,7 +109,18 @@ export const buttonClass = cva({
     } satisfies Record<TDesignVariant, SystemStyleObject>,
     hoverVariant: {
       solid: {
-        _hover: { bg: "colorPalette.500", color: "neutral.100" },
+        _hover: {
+          bg: "colorPalette.500",
+          color: "neutral.100",
+          _after: {
+            borderColor: "transparent",
+          },
+          _focusVisible: {
+            _after: {
+              borderColor: "neutral.200",
+            },
+          },
+        },
       },
       surface: {
         _hover: {
@@ -122,7 +133,18 @@ export const buttonClass = cva({
         },
       },
       subtle: {
-        _hover: { bg: "white/10", color: "colorPalette.100" },
+        _hover: {
+          bg: "white/10",
+          color: "colorPalette.100",
+          _after: {
+            borderColor: "transparent",
+          },
+          _focusVisible: {
+            _after: {
+              borderColor: "neutral.200",
+            },
+          },
+        },
       },
       ghost: {
         _hover: { bg: "white/5", color: "colorPalette.100" },
@@ -139,46 +161,38 @@ export const buttonGroupClass = cva({
     direction: {
       horizontal: {
         flexDirection: "row",
-        "& *[data-first]": {
-          borderEndRadius: "[0!]",
+        _firstChild: {
+          borderEndRadius: "0",
+          _focusVisible: { _after: { right: "-0_x" } },
+          _hover: { _after: { right: "-0_x" } },
         },
-        "& *[data-first]:is(:hover, [data-hover], :focus-visible, [data-focus-visible]):after": {
-          right: "-0_x",
+        _betweenChild: {
+          rounded: "0",
+          _focusVisible: { _after: { left: "-0_x", right: "-0_x" } },
+          _hover: { _after: { left: "-0_x", right: "-0_x" } },
         },
-        "& *[data-between]": {
-          rounded: "[0!]",
-        },
-        "& *[data-between]:is(:hover, [data-hover], :focus-visible, [data-focus-visible]):after": {
-          left: "-0_x",
-          right: "-0_x",
-        },
-        "& *[data-last]": {
-          borderStartRadius: "[0!]",
-        },
-        "& *[data-last]:is(:hover, [data-hover], :focus-visible, [data-focus-visible]):after": {
-          left: "-0_x",
+        _lastChild: {
+          borderStartRadius: "0",
+          _focusVisible: { _after: { left: "-0_x" } },
+          _hover: { _after: { left: "-0_x" } },
         },
       },
       vertical: {
         flexDirection: "column",
-        "& > *[data-first]": {
-          borderBottomRadius: "[0!]",
+        _firstChild: {
+          borderBottomRadius: "0",
+          _focusVisible: { _after: { bottom: "-0_x" } },
+          _hover: { _after: { bottom: "-0_x" } },
         },
-        "& > *[data-first]:is(:hover, [data-hover], :focus-visible, [data-focus-visible]):after": {
-          bottom: "-0_x",
+        _betweenChild: {
+          rounded: "0",
+          _focusVisible: { _after: { top: "-0_x", bottom: "-0_x" } },
+          _hover: { _after: { top: "-0_x", bottom: "-0_x" } },
         },
-        "& > *[data-between]": {
-          rounded: "[0!]",
-        },
-        "& > *[data-between]:is(:hover, [data-hover], :focus-visible, [data-focus-visible]):after": {
-          top: "-0_x",
-          bottom: "-0_x",
-        },
-        "& > *[data-last]": {
-          borderTopRadius: "[0!]",
-        },
-        "& > *[data-last]:is(:hover, [data-hover], :focus-visible, [data-focus-visible]):after": {
-          top: "-0_x",
+        _lastChild: {
+          borderTopRadius: "0",
+          _focusVisible: { _after: { top: "-0_x" } },
+          _hover: { _after: { top: "-0_x" } },
         },
       },
     },
@@ -194,23 +208,20 @@ export const buttonGroupClass = cva({
       direction: "horizontal",
       variant: "surface",
       css: {
-        "& > *[data-first]:after": {
-          borderRightWidth: "[0!]",
+        _firstChild: {
+          _after: { borderRightWidth: "0" },
+          _focusVisible: { _after: { borderRightWidth: "0_x" } },
+          _hover: { _after: { borderRightWidth: "0_x" } },
         },
-        "& > *[data-first]:is(:hover, [data-hover], :focus-visible, [data-focus-visible]):after": {
-          borderRightWidth: "0_x!",
+        _betweenChild: {
+          _after: { borderXWidth: "0" },
+          _focusVisible: { _after: { borderXWidth: "0_x" } },
+          _hover: { _after: { borderXWidth: "0_x" } },
         },
-        "& > *[data-between]:after": {
-          borderXWidth: "[0!]",
-        },
-        "& > *[data-between]:is(:hover, [data-hover], :focus-visible, [data-focus-visible]):after": {
-          borderXWidth: "0_x!",
-        },
-        "& > *[data-last]:after": {
-          borderLeftWidth: "[0!]",
-        },
-        "& > *[data-last]:is(:hover, [data-hover], :focus-visible, [data-focus-visible]):after": {
-          borderLeftWidth: "0_x!",
+        _lastChild: {
+          _after: { borderLeftWidth: "0" },
+          _focusVisible: { _after: { borderLeftWidth: "0_x" } },
+          _hover: { _after: { borderLeftWidth: "0_x" } },
         },
       },
     },
@@ -218,23 +229,20 @@ export const buttonGroupClass = cva({
       direction: "vertical",
       variant: "surface",
       css: {
-        "& > *[data-first]:after": {
-          borderBottomWidth: "[0!]",
+        _firstChild: {
+          _after: { borderBottomWidth: "0" },
+          _focusVisible: { _after: { borderBottomWidth: "0_x" } },
+          _hover: { _after: { borderBottomWidth: "0_x" } },
         },
-        "& > *[data-first]:is(:hover, [data-hover], :focus-visible, [data-focus-visible]):after": {
-          borderBottomWidth: "0_x!",
+        _betweenChild: {
+          _after: { borderYWidth: "0" },
+          _focusVisible: { _after: { borderYWidth: "0_x" } },
+          _hover: { _after: { borderYWidth: "0_x" } },
         },
-        "& > *[data-between]:after": {
-          borderYWidth: "[0!]",
-        },
-        "& > *[data-between]:is(:hover, [data-hover], :focus-visible, [data-focus-visible]):after": {
-          borderYWidth: "0_x!",
-        },
-        "& > *[data-last]:after": {
-          borderTopWidth: "[0!]",
-        },
-        "& > *[data-last]:is(:hover, [data-hover], :focus-visible, [data-focus-visible]):after": {
-          borderTopWidth: "0_x!",
+        _lastChild: {
+          _after: { borderTopWidth: "0" },
+          _focusVisible: { _after: { borderTopWidth: "0_x" } },
+          _hover: { _after: { borderTopWidth: "0_x" } },
         },
       },
     },
