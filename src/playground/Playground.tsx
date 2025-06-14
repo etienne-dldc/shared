@@ -110,8 +110,6 @@ type RouteMenuProps = Merge<
 function RouteMenu({ items, title, icon, endIcon, ...buttonProps }: RouteMenuProps) {
   const topMenuRef = useRef<HTMLDivElement | null>(null);
 
-  console.log({ topMenuRef });
-
   return (
     <Ariakit.MenuProvider>
       <Ariakit.MenuButton render={<Button content={title} icon={icon} endIcon={endIcon} />} {...buttonProps} />
