@@ -121,7 +121,7 @@ export default function ButtonPlayground() {
       dimensions={{
         disabled: DISABLED_VARIANTS,
         height: SIZE_VARIANTS,
-        contentSize: SIZE_VARIANTS,
+        innerHeight: SIZE_VARIANTS,
         spacing: SIZE_VARIANTS,
         variant: VARIANT_VARIANTS,
         hoverVariant: VARIANT_VARIANTS,
@@ -140,7 +140,7 @@ export default function ButtonPlayground() {
       defaultSelected={{
         disabled: "default",
         height: "default",
-        contentSize: "default",
+        innerHeight: "default",
         spacing: "default",
         variant: "default",
         hoverVariant: "default",

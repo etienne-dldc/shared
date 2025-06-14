@@ -3,16 +3,18 @@ import { Merge } from "type-fest";
 
 import { css, cx } from "../../../../styled-system/css";
 import { ComponentProps, SystemStyleObject } from "../../../../styled-system/types";
+import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { colorPaletteClass, heightClass } from "../common/styles";
 import {
   DesignContext,
   resolveDesignProps,
+  resolveNestedHeight,
   TDesignButtonHeight,
-  TDesignContentSize,
   TDesignSpacing,
   TDesignVariant,
   TPaletteColor,
 } from "../core/DesignContext";
+import { DisabledContext } from "../core/DisabledContext";
 import { ItemContent } from "../item-content/ItemContent";
 import { itemContentSizeClass } from "../item-content/styles";
 import { buttonClass, buttonLikeClass } from "./styles";
@@ -21,13 +23,15 @@ export type ButtonLinkProps = Merge<
   Omit<ComponentProps<"a">, "title">,
   {
     // Design
+    disabled?: boolean;
     height?: TDesignButtonHeight;
-    contentSize?: TDesignContentSize;
     spacing?: TDesignSpacing;
     variant?: TDesignVariant;
     hoverVariant?: TDesignVariant;
+
     color?: TPaletteColor;
     css?: SystemStyleObject;
+    innerHeight?: TDesignButtonHeight;
 
     // For content
     icon?: React.ReactNode;
@@ -43,12 +47,15 @@ export type ButtonLinkProps = Merge<
 >;
 
 export function ButtonLink(inProps: ButtonLinkProps) {
-  const [design, props] = DesignContext.useProps(inProps);
-  const { contentSize, height, hoverVariant, variant } = resolveDesignProps(design);
+  const [{ design, disabled }, props] = pipePropsSplitters(inProps, {
+    design: DesignContext.usePropsSplitter(),
+    disabled: DisabledContext.usePropsSplitter(),
+  });
 
   const {
     color,
     css: cssProp,
+    innerHeight,
 
     content,
     icon,
@@ -62,35 +69,38 @@ export function ButtonLink(inProps: ButtonLinkProps) {
     ...linkProps
   } = props;
 
+  const { height, hoverVariant, variant, spacing } = resolveDesignProps(design);
+  const nestedHeight = innerHeight ?? resolveNestedHeight(height);
+
   const childrenResolved = children ?? (
     <ItemContent {...{ icon, endIcon, endAction, details, loading }}>{content}</ItemContent>
   );
 
   return (
-    <DesignContext.Define
-      height={inProps.height}
-      spacing={inProps.spacing}
-      contentSize={inProps.contentSize}
-      variant={inProps.variant}
-      hoverVariant={inProps.hoverVariant}
+    <Ariakit.Role
+      render={<a />}
+      className={cx(
+        css(
+          heightClass.raw({ height }),
+          buttonLikeClass.raw({ variant, height }),
+          buttonClass.raw({ hoverVariant, variant }),
+          inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
+          itemContentSizeClass.raw({ height }),
+          cssProp,
+        ),
+        className,
+      )}
+      disabled={disabled.disabled}
+      {...(linkProps as any)}
     >
-      <Ariakit.Role
-        render={<a />}
-        className={cx(
-          css(
-            heightClass.raw({ height }),
-            buttonLikeClass.raw({ variant, height }),
-            buttonClass.raw({ hoverVariant, variant }),
-            inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
-            itemContentSizeClass.raw({ contentSize, height }),
-            cssProp,
-          ),
-          className,
-        )}
-        {...(linkProps as any)}
+      <DesignContext.Define
+        height={nestedHeight}
+        spacing={spacing}
+        variant={inProps.variant}
+        hoverVariant={inProps.hoverVariant}
       >
-        {childrenResolved}
-      </Ariakit.Role>
-    </DesignContext.Define>
+        <DisabledContext.Define disabled={inProps.disabled}>{childrenResolved}</DisabledContext.Define>
+      </DesignContext.Define>
+    </Ariakit.Role>
   );
 }

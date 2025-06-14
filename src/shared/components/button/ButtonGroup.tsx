@@ -19,7 +19,6 @@ export type ButtonGroupProps = Merge<
     // Design
     disabled?: boolean;
     height?: TDesignButtonHeight;
-    contentSize?: TDesignButtonHeight;
     spacing?: TDesignSpacing;
     variant?: TDesignVariant;
     hoverVariant?: TDesignVariant;
@@ -64,7 +63,6 @@ export const ButtonGroup = forwardRef(function ButtonGroup(
     <DesignContext.Define
       height={inProps.height}
       spacing={inProps.spacing}
-      contentSize={inProps.contentSize}
       variant={inProps.variant}
       hoverVariant={inProps.hoverVariant}
     >

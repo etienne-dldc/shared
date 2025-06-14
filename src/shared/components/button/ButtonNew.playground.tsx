@@ -14,7 +14,7 @@ const tree = utils.root({
       bar: utils.value({ color: "red", content: "Danger" }),
     },
   },
-  text: utils.prop("content", {
+  content: utils.prop("content", {
     default: undefined,
     short: "Label",
     long: "Much longer text",
@@ -59,7 +59,7 @@ const tree = utils.root({
     primaryDotsButton: <ButtonLike icon={<DotsThreeVerticalIcon />} />,
   }),
   spacing: {
-    default: utils.value({ spacing: undefined }),
+    default: utils.value({}),
     basic: utils.prop("spacing", {
       s2x: "2x",
       s3: "3",
@@ -76,20 +76,38 @@ const tree = utils.root({
       s12: "12",
     }),
   },
-  height: utils.prop("height", {
-    default: undefined,
-    "2x": "2x",
-    "3": "3",
-    "3x": "3x",
-    "4": "4",
-    "4x": "4x",
-    "5": "5",
-    "6": "6",
-    "7": "7",
-    "8": "8",
-    "10": "10",
-    "12": "12",
-  }),
+  // height: utils.prop("height", {
+  //   default: undefined,
+  //   s2x: "2x",
+  //   s3: "3",
+  //   s3x: "3x",
+  //   s4: "4",
+  //   s4x: "4x",
+  //   s5: "5",
+  //   s6: "6",
+  //   s7: "7",
+  //   s8: "8",
+  //   s10: "10",
+  //   s12: "12",
+  // }),
+  height: {
+    default: utils.value({}),
+    small: utils.prop("height", {
+      s2x: "2x",
+      s3: "3",
+      s3x: "3x",
+    }),
+    base: utils.prop("height", {
+      s4: "4",
+      s4x: "4x",
+      s5: "5",
+      s6: "6",
+      s7: "7",
+      s8: "8",
+      s10: "10",
+      s12: "12",
+    }),
+  },
   variant: utils.prop("variant", {
     solid: "solid",
     surface: "surface",
@@ -110,35 +128,39 @@ const tree = utils.root({
   },
 });
 
-console.log(tree.data.color.indigo);
-
 export default function ButtonPlayground() {
   return (
     <VStack alignItems="stretch">
       <Variants
+        title="Color & Size"
         tree={tree}
-        render={(props) => <Button content="Label" {...props} />}
         dimentions={[
-          { name: "Color", keys: ["spacing.basic"], type: "row" },
-          { name: "Color", keys: ["color"], type: "column" },
-          { name: "Color", keys: ["spacing"], type: "config" },
+          { id: "height", name: "Height", keys: ["height.base"], type: "row" },
+          { id: "color", name: "Color", keys: ["color"], type: "column" },
+          { id: "spacing", name: "Spacing", keys: ["spacing"], type: "config" },
         ]}
+        base={["variant.solid", "content.short"]}
+        render={(props) => <Button {...props} />}
       />
       <Variants
+        title="Icon & End Action"
         tree={tree}
-        render={(props) => <Button content="Label" {...props} />}
+        render={(props) => <Button {...props} />}
         dimentions={[
-          { name: "Color", keys: ["variant"], type: "row" },
-          { name: "Color", keys: ["color"], type: "column" },
+          { id: "color1", name: "Color", keys: ["variant"], type: "row" },
+          { id: "color2", name: "Color", keys: ["color"], type: "column" },
         ]}
+        base={["content.short"]}
       />
       <Variants
+        title="State"
         tree={tree}
-        render={(props) => <Button content="Label" {...props} />}
+        render={(props) => <Button {...props} />}
+        base={["content.short"]}
         dimentions={[
-          { name: "Color", keys: ["variant"], type: "row" },
-          { name: "Color", keys: ["state"], type: "column" },
-          { name: "Color", keys: ["color"], type: "row" },
+          { id: "color1", name: "Color", keys: ["variant"], type: "row" },
+          { id: "color2", name: "Color", keys: ["state"], type: "column" },
+          { id: "color3", name: "Color", keys: ["color"], type: "row" },
         ]}
       />
     </VStack>

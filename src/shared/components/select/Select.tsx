@@ -5,13 +5,15 @@ import { Merge } from "type-fest";
 import { css, cx } from "../../../../styled-system/css";
 import { Paper, styled } from "../../../../styled-system/jsx";
 import { vstack } from "../../../../styled-system/patterns";
+import { SystemStyleObject } from "../../../../styled-system/types";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { Button } from "../button/Button";
 import { colorPaletteClass } from "../common/styles";
 import {
   DesignContext,
+  resolveDesignProps,
+  resolveNestedHeight,
   TDesignButtonHeight,
-  TDesignContentSize,
   TDesignSpacing,
   TDesignVariant,
   TPaletteColor,
@@ -28,11 +30,13 @@ export type SelectProps<Value extends string> = Merge<
     // Design
     disabled?: boolean;
     height?: TDesignButtonHeight;
-    contentSize?: TDesignContentSize;
     spacing?: TDesignSpacing;
     variant?: TDesignVariant;
     hoverVariant?: TDesignVariant;
+
     color?: TPaletteColor;
+    css?: SystemStyleObject;
+    innerHeight?: TDesignButtonHeight;
 
     caret?: boolean;
     className?: string;
@@ -58,12 +62,16 @@ export type SelectProps<Value extends string> = Merge<
 >;
 
 export function Select<Value extends string>(inProps: SelectProps<Value>) {
-  const [{ disabled }, props] = pipePropsSplitters(inProps, {
+  const [{ disabled, design }, props] = pipePropsSplitters(inProps, {
     design: DesignContext.usePropsSplitter(),
     disabled: DisabledContext.usePropsSplitter(),
   });
 
   const {
+    color,
+    css: cssProp,
+    innerHeight,
+
     items,
     label,
     name,
@@ -86,13 +94,10 @@ export function Select<Value extends string>(inProps: SelectProps<Value>) {
     ...htmlProps
   } = props;
 
-  const selectStore = Ariakit.useSelectStore({
-    value,
-    defaultValue,
-    setValue: onChange,
-    open,
-    setOpen,
-  });
+  const { height } = resolveDesignProps(design);
+  const nestedHeight = innerHeight ?? resolveNestedHeight(height);
+
+  const selectStore = Ariakit.useSelectStore({ value, defaultValue, setValue: onChange, open, setOpen });
 
   const storeValue = Ariakit.useStoreState(selectStore, (s) => s.value);
 
@@ -105,9 +110,8 @@ export function Select<Value extends string>(inProps: SelectProps<Value>) {
 
   return (
     <DesignContext.Define
-      height={inProps.height}
+      height={height}
       spacing={inProps.spacing}
-      contentSize={inProps.contentSize}
       variant={inProps.variant}
       hoverVariant={inProps.hoverVariant}
     >
@@ -130,13 +134,18 @@ export function Select<Value extends string>(inProps: SelectProps<Value>) {
             >
               {label}
             </Ariakit.SelectLabel>
-            <Ariakit.Select disabled={disabled.disabled} name={name} {...htmlProps} render={renderSelect ?? <Button />}>
+            <Ariakit.Select
+              disabled={disabled.disabled}
+              name={name}
+              {...htmlProps}
+              render={renderSelect ?? <Button innerHeight={nestedHeight} />}
+            >
               {selectedItem ? (
                 renderSelected ? (
                   renderSelected(selectedItem)
                 ) : (
                   <ItemContent
-                    endIcon={caret && <Ariakit.SelectArrow render={<CaretDownIcon />} />}
+                    endIcon={caret && <Ariakit.SelectArrow render={<CaretDownIcon children={null} />} />}
                     icon={selectedItem.icon}
                   >
                     <span className={selectedIsEmpty ? css({ opacity: 0.5 }) : undefined}>{selectedItem.content}</span>
@@ -161,7 +170,7 @@ export function Select<Value extends string>(inProps: SelectProps<Value>) {
               overflowY="auto"
             >
               {items.map((item) => (
-                <SelectItem item={item} key={item.value} />
+                <SelectItem item={item} key={item.value} innerHeight={nestedHeight} />
               ))}
             </styled.div>
           </Ariakit.SelectPopover>
