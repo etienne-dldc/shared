@@ -154,7 +154,7 @@ export function Variants<Dims extends TDimensions>({
             color="purple"
             variant="subtle"
             hoverVariant="surface"
-            icon={<ArrowsLeftRightIcon />}
+            startIcon={<ArrowsLeftRightIcon />}
             onClick={() => swapAxis()}
           />
           <MultiSelect<keyof Dims & string>
@@ -322,7 +322,7 @@ function MultiSelect<T extends string>({ label, onChange, options, selected }: M
       })}
       {available.length > 0 && (
         <Button
-          icon={<PlusIcon />}
+          startIcon={<PlusIcon />}
           onClick={() => {
             onChange([...selected, available[0]]);
           }}

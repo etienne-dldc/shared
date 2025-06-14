@@ -22,6 +22,7 @@ export type ButtonGroupProps = Merge<
     spacing?: TDesignSpacing;
     variant?: TDesignVariant;
     hoverVariant?: TDesignVariant;
+
     color?: TPaletteColor;
     css?: SystemStyleObject;
     rounded?: boolean;

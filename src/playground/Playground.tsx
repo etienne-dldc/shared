@@ -81,7 +81,7 @@ export function Playground() {
               />
             );
           })}
-          {routeMatch?.match && <ButtonLike content={routeMatch?.match.name} icon={<SquaresFourIcon />} />}
+          {routeMatch?.match && <ButtonLike content={routeMatch?.match.name} startIcon={<SquaresFourIcon />} />}
         </ButtonGroup>
       </HStack>
       <styled.div position="relative">
@@ -112,7 +112,7 @@ function RouteMenu({ items, title, icon, endIcon, ...buttonProps }: RouteMenuPro
 
   return (
     <Ariakit.MenuProvider>
-      <Ariakit.MenuButton render={<Button content={title} icon={icon} endIcon={endIcon} />} {...buttonProps} />
+      <Ariakit.MenuButton render={<Button content={title} startIcon={icon} endIcon={endIcon} />} {...buttonProps} />
       <Ariakit.Menu gutter={8} ref={topMenuRef} render={menuPaper} portal={true} unmountOnHide>
         {items.map((item) => renderItem(item, topMenuRef))}
       </Ariakit.Menu>
@@ -133,7 +133,7 @@ function NestedMenu({ item, parentRef }: NestedMenuProps) {
       <MenuItem
         render={<Ariakit.MenuButton />}
         content={item.name}
-        icon={<FolderIcon />}
+        startIcon={<FolderIcon />}
         endIcon={<CaretRightIcon />}
       />
       <Ariakit.Menu
@@ -168,7 +168,9 @@ function NavItem({ item }: NavItemProps) {
     [item.path, menuStore],
   );
 
-  return <MenuItem content={item.name} icon={<SquaresFourIcon />} render={<a href={item.path} onClick={onClick} />} />;
+  return (
+    <MenuItem content={item.name} startIcon={<SquaresFourIcon />} render={<a href={item.path} onClick={onClick} />} />
+  );
 }
 
 function renderItem(item: TRouteItem, parentRef?: RefObject<HTMLDivElement | null>) {

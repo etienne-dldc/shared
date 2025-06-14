@@ -29,11 +29,12 @@ export type MenuItemProps = Merge<
     innerHeight?: TDesignButtonHeight;
 
     // Content
-    icon?: React.ReactNode;
-    endIcon?: React.ReactNode;
-    content?: React.ReactNode;
-    details?: string | React.ReactNode;
+    startIcon?: React.ReactNode;
     loading?: boolean;
+    startSlot?: React.ReactNode;
+    endIcon?: React.ReactNode;
+    endSlot?: React.ReactNode;
+    content?: React.ReactNode;
   }
 >;
 
@@ -48,11 +49,12 @@ export function MenuItem(inProps: MenuItemProps) {
     css: cssProp,
     innerHeight,
 
-    content,
-    icon,
-    endIcon,
-    details,
+    startIcon,
     loading,
+    startSlot,
+    endIcon,
+    endSlot,
+    content,
     children,
 
     className,
@@ -62,7 +64,9 @@ export function MenuItem(inProps: MenuItemProps) {
   const { height } = resolveDesignProps(design);
   const nestedHeight = innerHeight ?? resolveNestedHeight(height);
 
-  const childrenResolved = children ?? <ItemContent {...{ icon, endIcon, details, loading }}>{content}</ItemContent>;
+  const childrenResolved = children ?? (
+    <ItemContent {...{ startIcon, endIcon, endSlot, loading, startSlot }}>{content}</ItemContent>
+  );
 
   return (
     <DesignContext.Define height={nestedHeight} spacing={inProps.spacing}>

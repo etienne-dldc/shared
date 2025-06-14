@@ -45,18 +45,18 @@ const tree = utils.root({
     neutral: "neutral",
     stone: "stone",
   }),
-  icon: utils.prop("icon", {
+  icon: utils.prop("startIcon", {
     none: undefined,
     user: <UserIcon />,
     workspace: <CirclesFourIcon />,
     select: <CaretDownIcon />,
   }),
-  endAction: utils.prop("endAction", {
+  endAction: utils.prop("endSlot", {
     none: undefined,
-    dotsButton: <ButtonLike icon={<DotsThreeVerticalIcon />} />,
-    caretButton: <ButtonLike icon={<CaretDownIcon />} />,
+    dotsButton: <ButtonLike startIcon={<DotsThreeVerticalIcon />} />,
+    caretButton: <ButtonLike startIcon={<CaretDownIcon />} />,
     cancelButton: <ButtonLike content="Cancel" color="red" />,
-    primaryDotsButton: <ButtonLike icon={<DotsThreeVerticalIcon />} />,
+    primaryDotsButton: <ButtonLike startIcon={<DotsThreeVerticalIcon />} />,
   }),
   spacing: {
     default: utils.value({}),

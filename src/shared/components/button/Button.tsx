@@ -34,12 +34,12 @@ export type ButtonProps = Merge<
     innerHeight?: TDesignButtonHeight;
 
     // For content
-    icon?: React.ReactNode;
-    endIcon?: React.ReactNode;
-    endAction?: React.ReactNode;
-    content?: React.ReactNode;
-    details?: string | React.ReactNode;
+    startIcon?: React.ReactNode;
     loading?: boolean;
+    startSlot?: React.ReactNode;
+    endIcon?: React.ReactNode;
+    endSlot?: React.ReactNode;
+    content?: React.ReactNode;
 
     // Forward to Button
     render?: React.ReactElement<any>;
@@ -61,12 +61,12 @@ export function Button(inProps: ButtonProps) {
     css: cssProp,
     innerHeight,
 
-    content,
-    icon,
-    endIcon,
-    endAction,
-    details,
+    startIcon,
     loading,
+    startSlot,
+    endIcon,
+    endSlot,
+    content,
     children,
 
     className,
@@ -78,7 +78,7 @@ export function Button(inProps: ButtonProps) {
   const nestedHeight = innerHeight ?? resolveNestedHeight(height);
 
   const childrenResolved = children ?? (
-    <ItemContent {...{ icon, endIcon, endAction, details, loading }}>{content}</ItemContent>
+    <ItemContent {...{ startIcon, endIcon, endSlot, loading, startSlot }}>{content}</ItemContent>
   );
 
   return (

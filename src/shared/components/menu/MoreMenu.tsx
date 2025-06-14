@@ -33,7 +33,7 @@ export const MoreMenu = forwardRef<HTMLDivElement, MoreMenuProps>(function MoreM
       trigger={
         <Button
           {...{ disabled, height, innerHeight, spacing, variant, hoverVariant, color }}
-          icon={open ? <CaretUpIcon /> : <CaretDownIcon />}
+          startIcon={open ? <CaretUpIcon /> : <CaretDownIcon />}
         />
       }
       content={content}

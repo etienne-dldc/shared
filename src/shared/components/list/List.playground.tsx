@@ -31,45 +31,45 @@ export default function ButtonPlayground() {
                   />
                 }
               >
-                <ListItem title="Item 1" endIcon={<CaretRightIcon />} icon={<FileIcon />} />
-                <ListItem title="Item 2" endIcon={<CaretRightIcon />} icon={<FileIcon />} />
-                <ListItem title="Item 3" endIcon={<CaretRightIcon />} icon={<FileIcon />} />
-                <ListItem title="Item 4" endIcon={<CaretRightIcon />} icon={<FileIcon />} />
-                <ListItem title="Item 5" endIcon={<CaretRightIcon />} icon={<FileIcon />} />
+                <ListItem content="Item 1" endIcon={<CaretRightIcon />} startIcon={<FileIcon />} />
+                <ListItem content="Item 2" endIcon={<CaretRightIcon />} startIcon={<FileIcon />} />
+                <ListItem content="Item 3" endIcon={<CaretRightIcon />} startIcon={<FileIcon />} />
+                <ListItem content="Item 4" endIcon={<CaretRightIcon />} startIcon={<FileIcon />} />
+                <ListItem content="Item 5" endIcon={<CaretRightIcon />} startIcon={<FileIcon />} />
                 <ListGroup
                   title="Group LG"
                   //size="lg"
                 >
-                  <ListItem title="Item 6" endIcon={<CaretRightIcon />} icon={<SquareIcon />} />
-                  <ListItem title="Item 7" endIcon={<CaretRightIcon />} icon={<FileIcon />} />
+                  <ListItem content="Item 6" endIcon={<CaretRightIcon />} startIcon={<SquareIcon />} />
+                  <ListItem content="Item 7" endIcon={<CaretRightIcon />} startIcon={<FileIcon />} />
                 </ListGroup>
                 <ListGroup
                   title="Group MD"
                   //size="md"
                 >
-                  <ListItem title="Item 8" endIcon={<CaretRightIcon />} icon={<SquareIcon />} />
-                  <ListItem title="Item 9" endIcon={<CaretRightIcon />} icon={<FileIcon />} />
+                  <ListItem content="Item 8" endIcon={<CaretRightIcon />} startIcon={<SquareIcon />} />
+                  <ListItem content="Item 9" endIcon={<CaretRightIcon />} startIcon={<FileIcon />} />
                 </ListGroup>
                 <ListGroup
                   title="Group SM"
                   //size="sm"
                 >
-                  <ListItem title="Item 10" endIcon={<CaretRightIcon />} icon={<SquareIcon />} />
-                  <ListItem title="Item 11" endIcon={<CaretRightIcon />} icon={<FileIcon />} />
+                  <ListItem content="Item 10" endIcon={<CaretRightIcon />} startIcon={<SquareIcon />} />
+                  <ListItem content="Item 11" endIcon={<CaretRightIcon />} startIcon={<FileIcon />} />
                 </ListGroup>
                 <ListGroup
                   title="Group XS"
                   //size="xs"
                 >
-                  <ListItem title="Item 10" endIcon={<CaretRightIcon />} icon={<SquareIcon />} />
-                  <ListItem title="Item 11" endIcon={<CaretRightIcon />} icon={<FileIcon />} />
+                  <ListItem content="Item 10" endIcon={<CaretRightIcon />} startIcon={<SquareIcon />} />
+                  <ListItem content="Item 11" endIcon={<CaretRightIcon />} startIcon={<FileIcon />} />
                 </ListGroup>
                 <Button
                   render={<Ariakit.CompositeItem />}
                   content="Button"
                   color="red"
                   variant="solid"
-                  icon={<SignOutIcon />}
+                  startIcon={<SignOutIcon />}
                 />
               </Ariakit.Composite>
             </Ariakit.CompositeProvider>

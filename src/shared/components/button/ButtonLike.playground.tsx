@@ -45,11 +45,11 @@ const ICON_VARIANTS = {
 
 const END_ACTION_VARIANTS = {
   none: undefined,
-  dotsButton: <Button icon={<DotsThreeVerticalIcon />} />,
-  caretButton: <Button icon={<CaretDownIcon />} />,
+  dotsButton: <Button startIcon={<DotsThreeVerticalIcon />} />,
+  caretButton: <Button startIcon={<CaretDownIcon />} />,
   cancelButton: <Button content="Cancel" color="red" />,
-  primaryDotsButton: <Button icon={<DotsThreeVerticalIcon />} variant="solid" />,
-  primaryRedDotsButton: <Button icon={<DotsThreeVerticalIcon />} variant="solid" color="red" />,
+  primaryDotsButton: <Button startIcon={<DotsThreeVerticalIcon />} variant="solid" />,
+  primaryRedDotsButton: <Button startIcon={<DotsThreeVerticalIcon />} variant="solid" color="red" />,
 } as const;
 
 const SIZE_VARIANTS = {

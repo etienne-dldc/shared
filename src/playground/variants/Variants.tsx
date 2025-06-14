@@ -61,7 +61,7 @@ function VariantsInner({ title, icon }: VariantsInnerProps) {
           icon={icon}
           title={title}
           css={{ p: "3", pb: "0" }}
-          endActions={<Button variant="ghost" onClick={() => setModalOpen(true)} icon={<GearIcon />} />}
+          endActions={<Button variant="ghost" onClick={() => setModalOpen(true)} startIcon={<GearIcon />} />}
         />
         <VariantGrid />
       </Paper>

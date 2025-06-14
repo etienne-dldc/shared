@@ -3,8 +3,6 @@ import { css, cx } from "../../../../styled-system/css";
 import { Ellipsis } from "../../../../styled-system/jsx";
 import { SystemStyleObject } from "../../../../styled-system/types";
 import { isNotNil } from "../../utils/nil";
-import { IconBox } from "../common/IconBox";
-import { LoadingIcon } from "../common/LoadingIcon";
 import {
   DesignContext,
   resolveDesignProps,
@@ -12,6 +10,7 @@ import {
   TDesignButtonHeight,
   TDesignSpacing,
 } from "../core/DesignContext";
+import { SideSlot } from "./SideSlot";
 import { itemContentClass, itemContentInnerSpacingClass, itemContentSizeClass } from "./styles";
 
 interface ItemContentProps extends Omit<ComponentPropsWithRef<"div">, "title"> {
@@ -19,11 +18,20 @@ interface ItemContentProps extends Omit<ComponentPropsWithRef<"div">, "title"> {
   spacing?: TDesignSpacing;
   innerHeight?: TDesignButtonHeight;
 
-  icon?: React.ReactNode;
-  endIcon?: React.ReactNode;
-  endAction?: React.ReactNode;
-  children?: React.ReactNode;
+  startIcon?: React.ReactNode;
+  /**
+   * Override the startIcon with a loading icon.
+   */
   loading?: boolean;
+  /**
+   * Override the startIcon and loading icon with a custom element.
+   */
+  startSlot?: React.ReactNode;
+
+  endIcon?: React.ReactNode;
+  endSlot?: React.ReactNode;
+
+  children?: React.ReactNode;
   css?: SystemStyleObject;
 }
 
@@ -36,28 +44,35 @@ interface ItemContentProps extends Omit<ComponentPropsWithRef<"div">, "title"> {
 export function ItemContent(props: ItemContentProps) {
   const [
     designBase,
-    { icon, endIcon, endAction, children, loading, className, innerHeight, css: cssProp, ...htmlProps },
+    {
+      startIcon,
+      loading,
+      startSlot,
+
+      endIcon,
+      endSlot,
+
+      children,
+
+      className,
+      innerHeight,
+      css: cssProp,
+
+      ...htmlProps
+    },
   ] = DesignContext.useProps(props);
 
   const { height } = resolveDesignProps(designBase);
   const spacing = resolveOuterHeight(height);
 
-  const hasStartIcon = Boolean(icon || loading);
-  const hasEndAction = Boolean(endAction || endIcon);
+  const hasStartSlot = Boolean(startSlot || startIcon || loading);
+  const hasEndSlot = Boolean(endSlot || endIcon);
   const hasChildren = isNotNil(children);
 
-  const iconOnly = (hasStartIcon && !hasChildren && !hasEndAction) || (hasEndAction && !hasStartIcon && !hasChildren);
-  const iconOnlyStyles = iconOnly ? css.raw({ mx: "auto" }) : null;
-
-  const endActionResolved = endAction ? (
-    <div className={css({ ml: "auto" }, iconOnlyStyles)}>{endAction}</div>
-  ) : endIcon ? (
-    <IconBox
-      data-slot={hasChildren ? "item-icon" : undefined}
-      css={css.raw({ ml: "auto" }, iconOnlyStyles)}
-      icon={endIcon}
-    />
-  ) : null;
+  /**
+   * Special case for start icon/slot only
+   */
+  const iconOnly = (hasStartSlot && !hasChildren && !hasEndSlot) || (hasEndSlot && !hasStartSlot && !hasChildren);
 
   return (
     <div
@@ -68,27 +83,23 @@ export function ItemContent(props: ItemContentProps) {
       {...htmlProps}
     >
       <DesignContext.Define spacing={props.spacing}>
-        {hasStartIcon && (
-          <IconBox
-            css={css.raw({ mr: "auto" }, iconOnlyStyles)}
-            icon={loading ? <LoadingIcon /> : icon}
-            data-slot={hasChildren ? "item-icon" : undefined}
-          />
+        {hasStartSlot && (
+          <SideSlot icon={startIcon} loading={loading} slot={startSlot} isItemIconSlot isIconOnly={iconOnly} />
         )}
         {hasChildren && (
           <div
             className={css(
               { display: "flex", flexGrow: 1, alignItems: "center", overflow: "hidden" },
               itemContentInnerSpacingClass.raw({
-                hasLeftIcon: hasStartIcon ? "yes" : "no",
-                hasRightIcon: hasEndAction ? "yes" : "no",
+                hasLeftIcon: hasStartSlot ? "yes" : "no",
+                hasRightIcon: hasEndSlot ? "yes" : "no",
               }),
             )}
           >
             {typeof children === "string" ? <Ellipsis>{children}</Ellipsis> : children}
           </div>
         )}
-        {endActionResolved}
+        {hasEndSlot && <SideSlot icon={endIcon} slot={endSlot} isItemIconSlot={false} isIconOnly={iconOnly} />}
       </DesignContext.Define>
     </div>
   );

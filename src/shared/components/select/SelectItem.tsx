@@ -34,7 +34,7 @@ export function SelectItem(inProps: SelectItemProps) {
       <DesignContext.Define height={nestedHeight}>
         <ItemContent
           endIcon={checked ? <Ariakit.SelectItemCheck render={<CheckIcon children={null} />} /> : item.endIcon}
-          icon={item.icon}
+          startIcon={item.icon}
         >
           {item.content}
         </ItemContent>

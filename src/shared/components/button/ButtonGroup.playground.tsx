@@ -107,9 +107,9 @@ export default function ButtonPlayground() {
         >
           <ButtonGroup {...props}>
             <Button content="text" />
-            <Button content="text and icon" icon={<HouseIcon />} />
-            <Button icon={<HouseIcon />} variant="solid" />
-            <Button content="text and 2 icon" icon={<HouseIcon />} endIcon={<CaretRightIcon />} />
+            <Button content="text and icon" startIcon={<HouseIcon />} />
+            <Button startIcon={<HouseIcon />} variant="solid" />
+            <Button content="text and 2 icon" startIcon={<HouseIcon />} endIcon={<CaretRightIcon />} />
           </ButtonGroup>
         </div>
       )}

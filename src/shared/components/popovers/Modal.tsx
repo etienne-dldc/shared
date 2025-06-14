@@ -125,7 +125,9 @@ export const Modal = forwardRef<HTMLButtonElement, ModalProps>(
                     <Fragment>
                       {endActions}
                       {!noCloseButton && (
-                        <Ariakit.DialogDismiss render={<Button variant="subtle" icon={<XIcon />} children={null} />} />
+                        <Ariakit.DialogDismiss
+                          render={<Button variant="subtle" startIcon={<XIcon />} children={null} />}
+                        />
                       )}
                     </Fragment>
                   }

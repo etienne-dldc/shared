@@ -206,17 +206,17 @@ export const NumberInput = forwardRef(function NumberInput(
               Voulez-vous dire <span className="font-mono px-2">{format(state.value)}</span> ?
             </p>
             <Ariakit.Tooltip content="Accepter">
-              <Button icon={<CheckIcon />} color="green" onClick={accept} />
+              <Button startIcon={<CheckIcon />} color="green" onClick={accept} />
             </Ariakit.Tooltip>
             <Ariakit.Tooltip content="Réinitialiser">
-              <Button icon={<ArrowCounterClockwiseIcon />} color="red" onClick={reset} />
+              <Button startIcon={<ArrowCounterClockwiseIcon />} color="red" onClick={reset} />
             </Ariakit.Tooltip>
           </Fragment>
         ) : (
           <Fragment>
             <p className="px-2">Nombre invalide</p>
             <Ariakit.Tooltip content="Réinitialiser">
-              <Button icon={<ArrowCounterClockwiseIcon />} color="red" onClick={reset} />
+              <Button startIcon={<ArrowCounterClockwiseIcon />} color="red" onClick={reset} />
             </Ariakit.Tooltip>
           </Fragment>
         )}

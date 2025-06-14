@@ -50,11 +50,11 @@ const ICON_VARIANTS = {
 const END_ACTION_VARIANTS = {
   default: undefined,
   none: undefined,
-  dotsButton: <ButtonLike icon={<DotsThreeVerticalIcon />} />,
-  caretButton: <ButtonLike icon={<CaretDownIcon />} />,
+  dotsButton: <ButtonLike startIcon={<DotsThreeVerticalIcon />} />,
+  caretButton: <ButtonLike startIcon={<CaretDownIcon />} />,
   cancelButton: <ButtonLike content="Cancel" color="red" />,
-  solidDotsButton: <ButtonLike icon={<DotsThreeVerticalIcon />} variant="solid" />,
-  surfaceDotsButton: <ButtonLike icon={<DotsThreeVerticalIcon />} variant="surface" />,
+  solidDotsButton: <ButtonLike startIcon={<DotsThreeVerticalIcon />} variant="solid" />,
+  surfaceDotsButton: <ButtonLike startIcon={<DotsThreeVerticalIcon />} variant="surface" />,
 } as const;
 
 const SIZE_VARIANTS = {

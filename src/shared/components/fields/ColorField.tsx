@@ -65,7 +65,7 @@ export function ColorField({
             render={
               <Ariakit.Select render={<Button className="cursor-pointer" />} disabled={disabled}>
                 <ItemContent
-                  icon={
+                  startIcon={
                     <span
                       className="w-5 h-5 rounded-sm"
                       style={

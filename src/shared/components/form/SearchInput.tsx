@@ -25,7 +25,7 @@ export function SearchInput({ value, onValueChange, ...inputProps }: SearchInput
             <Button
               className="mr-1.5"
               color="red"
-              icon={<BackspaceIcon />}
+              startIcon={<BackspaceIcon />}
               onClick={() => {
                 onValueChange("");
                 inputRef.current?.focus();

@@ -41,7 +41,7 @@ export const DimentionsTreeItem = memo(function DimentionsTreeItem({
       style={style}
       color="blue"
       content={node.data.name}
-      endAction={<ButtonLike content={node.data.type} />}
+      endSlot={<ButtonLike content={node.data.type} />}
     />
   );
 });

@@ -146,7 +146,7 @@ export function Select<Value extends string>(inProps: SelectProps<Value>) {
                 ) : (
                   <ItemContent
                     endIcon={caret && <Ariakit.SelectArrow render={<CaretDownIcon children={null} />} />}
-                    icon={selectedItem.icon}
+                    startIcon={selectedItem.icon}
                   >
                     <span className={selectedIsEmpty ? css({ opacity: 0.5 }) : undefined}>{selectedItem.content}</span>
                   </ItemContent>

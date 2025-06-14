@@ -20,10 +20,12 @@ export type ListItemProps = Merge<
     disabled?: boolean;
 
     // For content
-    icon?: React.ReactNode;
+    startIcon?: React.ReactNode;
+    loading?: boolean;
+    startSlot?: React.ReactNode;
     endIcon?: React.ReactNode;
-    title?: React.ReactNode;
-    details?: string | React.ReactNode;
+    endSlot?: React.ReactNode;
+    content?: React.ReactNode;
 
     // Forward to Button
     render?: React.ReactElement<any>;
@@ -41,10 +43,12 @@ export function ListItem(inProps: ListItemProps) {
 
     // selected = "none",
 
-    title,
-    icon,
+    startIcon,
+    loading,
+    startSlot,
     endIcon,
-    details,
+    endSlot,
+    content,
     children,
 
     className,
@@ -53,14 +57,9 @@ export function ListItem(inProps: ListItemProps) {
     ...htmlProps
   } = props;
 
-  const childrenResolved = children ?? <ItemContent {...{ children: title, icon, endIcon, details }} />;
-
-  // const spacingClass = useMemo(
-  //   () => listItemClassName({ design, selected, forceHover: false, forceActive: false }),
-  //   [design, selected],
-  // );
-
-  // const iconProps = useMemo(() => ({ size: pick(design.size, LIST_ITEM_ICON_SIZE) }), [design.size]);
+  const childrenResolved = children ?? (
+    <ItemContent {...{ startIcon, endIcon, endSlot, loading, startSlot }}>{content}</ItemContent>
+  );
 
   const compositeStore = Ariakit.useCompositeContext();
   const renderResolved = compositeStore ? (
@@ -74,18 +73,11 @@ export function ListItem(inProps: ListItemProps) {
 
   return (
     <DesignContext.Provider value={design}>
-      {/* <IconContext.Provider value={iconProps}> */}
       <DynamicColorProvider color={color}>
-        <Ariakit.Role
-          render={renderResolved}
-          ref={ref}
-          // className={cn(spacingClass, className)}
-          {...htmlProps}
-        >
+        <Ariakit.Role render={renderResolved} ref={ref} {...htmlProps}>
           {childrenResolved}
         </Ariakit.Role>
       </DynamicColorProvider>
-      {/* </IconContext.Provider> */}
     </DesignContext.Provider>
   );
 }
