@@ -12,6 +12,7 @@ import {
   TDesignButtonHeight,
   TDesignSpacing,
   TDesignVariant,
+  TNestedDesignHeight,
   TPaletteColor,
 } from "../core/DesignContext";
 import { DisabledContext } from "../core/DisabledContext";
@@ -31,7 +32,7 @@ export type ButtonLinkProps = Merge<
 
     color?: TPaletteColor;
     css?: SystemStyleObject;
-    innerHeight?: TDesignButtonHeight;
+    nestedHeight?: TNestedDesignHeight;
 
     // For content
     startIcon?: React.ReactNode;
@@ -40,6 +41,8 @@ export type ButtonLinkProps = Merge<
     endIcon?: React.ReactNode;
     endSlot?: React.ReactNode;
     content?: React.ReactNode;
+    alignStartIcon?: boolean;
+    alignEndIcon?: boolean;
 
     // Forward to Button
     render?: React.ReactElement<any>;
@@ -55,7 +58,7 @@ export function ButtonLink(inProps: ButtonLinkProps) {
   const {
     color,
     css: cssProp,
-    innerHeight,
+    nestedHeight,
 
     startIcon,
     loading,
@@ -63,6 +66,8 @@ export function ButtonLink(inProps: ButtonLinkProps) {
     endIcon,
     endSlot,
     content,
+    alignStartIcon,
+    alignEndIcon,
     children,
 
     className,
@@ -70,10 +75,14 @@ export function ButtonLink(inProps: ButtonLinkProps) {
   } = props;
 
   const { height, hoverVariant, variant, spacing } = resolveDesignProps(design);
-  const nestedHeight = innerHeight ?? resolveNestedHeight(height);
+  const nestedHeightResolved = resolveNestedHeight(height, nestedHeight);
 
   const childrenResolved = children ?? (
-    <ItemContent {...{ startIcon, endIcon, endSlot, loading, startSlot }}>{content}</ItemContent>
+    <ItemContent
+      {...{ startIcon, endIcon, endSlot, loading, startSlot, alignStartIcon, alignEndIcon, spacing: inProps.spacing }}
+    >
+      {content}
+    </ItemContent>
   );
 
   return (
@@ -94,7 +103,7 @@ export function ButtonLink(inProps: ButtonLinkProps) {
       {...(linkProps as any)}
     >
       <DesignContext.Define
-        height={nestedHeight}
+        height={nestedHeightResolved}
         spacing={spacing}
         variant={inProps.variant}
         hoverVariant={inProps.hoverVariant}

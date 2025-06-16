@@ -4,6 +4,7 @@ import { Merge } from "type-fest";
 import { NodeApi } from "react-arborist";
 import { css, cx } from "../../../../styled-system/css";
 import { ComponentProps, SystemStyleObject } from "../../../../styled-system/types";
+import { useMergeRefs } from "../../hooks/useMergeRefs";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { colorPaletteClass, heightClass } from "../common/styles";
 import {
@@ -12,6 +13,7 @@ import {
   resolveNestedHeight,
   TDesignButtonHeight,
   TDesignSpacing,
+  TNestedDesignHeight,
   TPaletteColor,
 } from "../core/DesignContext";
 import { ItemContent } from "../item-content/ItemContent";
@@ -24,12 +26,13 @@ export type TreeItemProps = Merge<
     node: NodeApi<any>;
     style: React.CSSProperties;
     dragHandle?: (el: HTMLDivElement | null) => void;
+    dargHandleMode?: "none" | "handle" | "row";
 
     // Design
     height?: TDesignButtonHeight;
     spacing?: TDesignSpacing;
 
-    innerHeight?: TDesignButtonHeight;
+    nestedHeight?: TNestedDesignHeight;
     css?: SystemStyleObject;
     color?: TPaletteColor;
 
@@ -55,10 +58,11 @@ export function TreeItem(inProps: TreeItemProps) {
     node,
     style,
     dragHandle,
+    dargHandleMode = "row",
 
     color,
     css: cssProp,
-    innerHeight,
+    nestedHeight,
 
     startIcon,
     loading,
@@ -69,15 +73,18 @@ export function TreeItem(inProps: TreeItemProps) {
     children,
 
     className,
+    ref,
     ...buttonProps
   } = props;
 
   const { height } = resolveDesignProps(design);
-  const nestedHeight = innerHeight ?? resolveNestedHeight(height);
+  const nestedHeightResolved = resolveNestedHeight(height, nestedHeight);
 
   const childrenResolved = children ?? (
     <ItemContent {...{ startIcon, endIcon, endSlot, loading, startSlot }}>{content}</ItemContent>
   );
+
+  const finalRef = useMergeRefs(ref, dargHandleMode === "row" ? dragHandle : undefined);
 
   return (
     <Ariakit.Role
@@ -97,9 +104,10 @@ export function TreeItem(inProps: TreeItemProps) {
         ),
         className,
       )}
+      ref={finalRef}
       {...buttonProps}
     >
-      <DesignContext.Define height={nestedHeight} spacing={inProps.spacing}>
+      <DesignContext.Define height={nestedHeightResolved} spacing={inProps.spacing}>
         {childrenResolved}
       </DesignContext.Define>
     </Ariakit.Role>

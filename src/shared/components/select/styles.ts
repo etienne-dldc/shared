@@ -8,19 +8,19 @@ export const selectItemClass = css.raw({
   outline: "none",
   position: "relative",
   color: "colorPalette.200",
-  '& [data-slot="item-icon"]': {
+  "& [data-item-main-icon]": {
     opacity: 0.6,
   },
   _activeItem: {
     bg: "white/5",
     color: "colorPalette.100",
-    '& [data-slot="item-icon"]': {
+    "& [data-item-main-icon]": {
       opacity: 1,
     },
   },
   _selected: {
     color: "colorPalette.100",
-    '& [data-slot="item-icon"]': {
+    "& [data-item-main-icon]": {
       opacity: 1,
     },
   },

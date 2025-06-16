@@ -66,7 +66,7 @@ function PanelContent() {
       {expanded && (
         <div className={css({ display: "flex", flexDirection: "column", gap: "2" })}>
           {Array.from({ length: 10 }).map((_, i) => (
-            <div key={i} className={css({ backgroundColor: "white/10", rounded: "1_x", height: "40" })} />
+            <div key={i} className={css({ backgroundColor: "white/10", rounded: "1_x", height: "160px" })} />
           ))}
         </div>
       )}

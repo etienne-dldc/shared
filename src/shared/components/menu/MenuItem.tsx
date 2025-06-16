@@ -10,6 +10,7 @@ import {
   resolveNestedHeight,
   TDesignButtonHeight,
   TDesignSpacing,
+  TNestedDesignHeight,
   TPaletteColor,
 } from "../core/DesignContext";
 import { DisabledContext } from "../core/DisabledContext";
@@ -26,7 +27,7 @@ export type MenuItemProps = Merge<
 
     color?: TPaletteColor;
     css?: SystemStyleObject;
-    innerHeight?: TDesignButtonHeight;
+    nestedHeight?: TNestedDesignHeight;
 
     // Content
     startIcon?: React.ReactNode;
@@ -47,7 +48,7 @@ export function MenuItem(inProps: MenuItemProps) {
   const {
     color,
     css: cssProp,
-    innerHeight,
+    nestedHeight,
 
     startIcon,
     loading,
@@ -62,14 +63,14 @@ export function MenuItem(inProps: MenuItemProps) {
   } = props;
 
   const { height } = resolveDesignProps(design);
-  const nestedHeight = innerHeight ?? resolveNestedHeight(height);
+  const nestedHeightResolved = resolveNestedHeight(height, nestedHeight);
 
   const childrenResolved = children ?? (
     <ItemContent {...{ startIcon, endIcon, endSlot, loading, startSlot }}>{content}</ItemContent>
   );
 
   return (
-    <DesignContext.Define height={nestedHeight} spacing={inProps.spacing}>
+    <DesignContext.Define height={nestedHeightResolved} spacing={inProps.spacing}>
       <DisabledContext.Define disabled={inProps.disabled}>
         <Ariakit.MenuItem
           disabled={disabled.disabled}

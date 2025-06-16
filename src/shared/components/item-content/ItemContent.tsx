@@ -1,22 +1,14 @@
 import { ComponentPropsWithRef } from "react";
 import { css, cx } from "../../../../styled-system/css";
-import { Ellipsis } from "../../../../styled-system/jsx";
 import { SystemStyleObject } from "../../../../styled-system/types";
 import { isNotNil } from "../../utils/nil";
-import {
-  DesignContext,
-  resolveDesignProps,
-  resolveOuterHeight,
-  TDesignButtonHeight,
-  TDesignSpacing,
-} from "../core/DesignContext";
-import { SideSlot } from "./SideSlot";
-import { itemContentClass, itemContentInnerSpacingClass, itemContentSizeClass } from "./styles";
+import { DesignContext, resolveDesignProps, TDesignButtonHeight, TDesignSpacing } from "../core/DesignContext";
+import { ItemContentFragment } from "./ItemContentFragment";
+import { itemContentClass, itemContentSizeClass } from "./styles";
 
-interface ItemContentProps extends Omit<ComponentPropsWithRef<"div">, "title"> {
+interface ItemContentProps extends Omit<ComponentPropsWithRef<"div">, "content"> {
   height?: TDesignButtonHeight;
   spacing?: TDesignSpacing;
-  innerHeight?: TDesignButtonHeight;
 
   startIcon?: React.ReactNode;
   /**
@@ -31,7 +23,24 @@ interface ItemContentProps extends Omit<ComponentPropsWithRef<"div">, "title"> {
   endIcon?: React.ReactNode;
   endSlot?: React.ReactNode;
 
-  children?: React.ReactNode;
+  /**
+   * Reduce left padding so the icon is squarely aligned.
+   * By default, this is computed based on the presence of startIcon or startSlot and children.
+   * You only need need to set this if
+   * - You pass a custom content that has a start icon
+   * - You pass a startSlot that is not an icon
+   */
+  startPadding?: "auto" | "icon" | "text" | "none";
+
+  /**
+   * Reduce right padding so the icon is squarely aligned.
+   * By default, this is computed based on the presence of endIcon or endSlot.
+   * You only need need to set this if
+   * - You pass a custom content that has an end icon
+   * - You pass an endSlot that is not an icon
+   */
+  endPadding?: "auto" | "icon" | "text" | "none";
+
   css?: SystemStyleObject;
 }
 
@@ -41,9 +50,9 @@ interface ItemContentProps extends Omit<ComponentPropsWithRef<"div">, "title"> {
  * - Set font size
  * - Provide nested content size
  */
-export function ItemContent(props: ItemContentProps) {
+export function ItemContent(inProps: ItemContentProps) {
   const [
-    designBase,
+    design,
     {
       startIcon,
       loading,
@@ -55,52 +64,49 @@ export function ItemContent(props: ItemContentProps) {
       children,
 
       className,
-      innerHeight,
       css: cssProp,
+
+      startPadding = "auto",
+      endPadding = "auto",
 
       ...htmlProps
     },
-  ] = DesignContext.useProps(props);
+  ] = DesignContext.useProps(inProps);
 
-  const { height } = resolveDesignProps(designBase);
-  const spacing = resolveOuterHeight(height);
+  const { height, spacing } = resolveDesignProps(design);
 
   const hasStartSlot = Boolean(startSlot || startIcon || loading);
   const hasEndSlot = Boolean(endSlot || endIcon);
   const hasChildren = isNotNil(children);
-
-  /**
-   * Special case for start icon/slot only
-   */
+  // Special case for start icon/slot only
   const iconOnly = (hasStartSlot && !hasChildren && !hasEndSlot) || (hasEndSlot && !hasStartSlot && !hasChildren);
+
+  const defaultStartPadding = iconOnly ? "none" : hasStartSlot ? "icon" : "text";
+  const startPaddingResolved = startPadding === "auto" ? defaultStartPadding : startPadding;
+
+  const defaultEndPadding = iconOnly ? "none" : hasEndSlot ? "icon" : "text";
+  const endPaddingResolved = endPadding === "auto" ? defaultEndPadding : endPadding;
 
   return (
     <div
       className={cx(
-        css(itemContentClass.raw({ spacing }), itemContentSizeClass.raw({ height }), iconOnly && { px: "0" }, cssProp),
+        css(
+          itemContentClass.raw({ spacing, startPadding: startPaddingResolved, endPadding: endPaddingResolved }),
+          itemContentSizeClass.raw({ height }),
+          cssProp,
+        ),
         className,
       )}
       {...htmlProps}
     >
-      <DesignContext.Define spacing={props.spacing}>
-        {hasStartSlot && (
-          <SideSlot icon={startIcon} loading={loading} slot={startSlot} isItemIconSlot isIconOnly={iconOnly} />
-        )}
-        {hasChildren && (
-          <div
-            className={css(
-              { display: "flex", flexGrow: 1, alignItems: "center", overflow: "hidden" },
-              itemContentInnerSpacingClass.raw({
-                hasLeftIcon: hasStartSlot ? "yes" : "no",
-                hasRightIcon: hasEndSlot ? "yes" : "no",
-              }),
-            )}
-          >
-            {typeof children === "string" ? <Ellipsis>{children}</Ellipsis> : children}
-          </div>
-        )}
-        {hasEndSlot && <SideSlot icon={endIcon} slot={endSlot} isItemIconSlot={false} isIconOnly={iconOnly} />}
-      </DesignContext.Define>
+      <ItemContentFragment
+        startIcon={startIcon}
+        loading={loading}
+        startSlot={startSlot}
+        endIcon={endIcon}
+        endSlot={endSlot}
+        children={children}
+      />
     </div>
   );
 }

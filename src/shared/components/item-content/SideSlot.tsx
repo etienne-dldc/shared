@@ -7,12 +7,12 @@ interface SideSlotProps {
   icon?: React.ReactNode;
   loading?: boolean;
   slot?: React.ReactNode;
-  isItemIconSlot?: boolean;
+  isItemMainIcon?: boolean;
   isIconOnly?: boolean;
 }
 
 export function SideSlot(props: SideSlotProps) {
-  const { icon, loading, slot, isItemIconSlot, isIconOnly } = props;
+  const { icon, loading, slot, isItemMainIcon, isIconOnly } = props;
 
   if (slot) {
     return <Fragment>{slot}</Fragment>;
@@ -21,7 +21,7 @@ export function SideSlot(props: SideSlotProps) {
   if (icon || loading) {
     return (
       <IconBox
-        data-slot={isItemIconSlot ? "item-icon" : undefined}
+        data-item-main-icon={isItemMainIcon ? "true" : undefined}
         css={css.raw({ ml: "auto" }, isIconOnly && { mx: "auto" })}
         icon={loading ? <LoadingIcon /> : icon}
       />

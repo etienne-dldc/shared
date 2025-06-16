@@ -16,6 +16,7 @@ import {
   TDesignButtonHeight,
   TDesignSpacing,
   TDesignVariant,
+  TNestedDesignHeight,
   TPaletteColor,
 } from "../core/DesignContext";
 import { DisabledContext } from "../core/DisabledContext";
@@ -36,7 +37,7 @@ export type SelectProps<Value extends string> = Merge<
 
     color?: TPaletteColor;
     css?: SystemStyleObject;
-    innerHeight?: TDesignButtonHeight;
+    nestedHeight?: TNestedDesignHeight;
 
     caret?: boolean;
     className?: string;
@@ -70,7 +71,7 @@ export function Select<Value extends string>(inProps: SelectProps<Value>) {
   const {
     color,
     css: cssProp,
-    innerHeight,
+    nestedHeight,
 
     items,
     label,
@@ -95,7 +96,7 @@ export function Select<Value extends string>(inProps: SelectProps<Value>) {
   } = props;
 
   const { height } = resolveDesignProps(design);
-  const nestedHeight = innerHeight ?? resolveNestedHeight(height);
+  const nestedHeightResolved = resolveNestedHeight(height, nestedHeight);
 
   const selectStore = Ariakit.useSelectStore({ value, defaultValue, setValue: onChange, open, setOpen });
 
@@ -138,7 +139,7 @@ export function Select<Value extends string>(inProps: SelectProps<Value>) {
               disabled={disabled.disabled}
               name={name}
               {...htmlProps}
-              render={renderSelect ?? <Button innerHeight={nestedHeight} />}
+              render={renderSelect ?? <Button nestedHeight={nestedHeightResolved} />}
             >
               {selectedItem ? (
                 renderSelected ? (
@@ -170,7 +171,7 @@ export function Select<Value extends string>(inProps: SelectProps<Value>) {
               overflowY="auto"
             >
               {items.map((item) => (
-                <SelectItem item={item} key={item.value} innerHeight={nestedHeight} />
+                <SelectItem item={item} key={item.value} nestedHeight={nestedHeightResolved} />
               ))}
             </styled.div>
           </Ariakit.SelectPopover>

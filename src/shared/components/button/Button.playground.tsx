@@ -121,7 +121,7 @@ export default function ButtonPlayground() {
       dimensions={{
         disabled: DISABLED_VARIANTS,
         height: SIZE_VARIANTS,
-        innerHeight: SIZE_VARIANTS,
+        nestedHeight: SIZE_VARIANTS,
         spacing: SIZE_VARIANTS,
         variant: VARIANT_VARIANTS,
         hoverVariant: VARIANT_VARIANTS,
@@ -129,7 +129,7 @@ export default function ButtonPlayground() {
 
         content: TEXT_VARIANTS,
         loading: LOADING_VARIANTS,
-        icon: ICON_VARIANTS,
+        startIcon: ICON_VARIANTS,
         endIcon: ICON_VARIANTS,
         endAction: END_ACTION_VARIANTS,
 
@@ -140,7 +140,7 @@ export default function ButtonPlayground() {
       defaultSelected={{
         disabled: "default",
         height: "default",
-        innerHeight: "default",
+        nestedHeight: "default",
         spacing: "default",
         variant: "default",
         hoverVariant: "default",
@@ -148,7 +148,7 @@ export default function ButtonPlayground() {
 
         content: "default",
         loading: "default",
-        icon: "default",
+        startIcon: "default",
         endIcon: "default",
         endAction: "default",
 
@@ -167,7 +167,7 @@ export default function ButtonPlayground() {
         "size & color": { column: ["height"], row: ["color"], selected: { variant: "solid" } },
         content: {
           column: ["content"],
-          row: ["icon", "endIcon"],
+          row: ["startIcon", "endIcon"],
           selected: { variant: "solid", color: "blue" },
         },
         sizes: {

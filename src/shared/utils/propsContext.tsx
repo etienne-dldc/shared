@@ -7,6 +7,7 @@ export interface TPropsContext<Props extends Record<string, any>> {
   Define: ComponentType<PropsWithChildren<Partial<Props>>>;
   Provider: ComponentType<PropsWithChildren<{ value: Props }>>;
   useProps<P>(directProps?: P & Partial<Props>): [props: Props, rest: Omit<P, keyof Props>];
+  useContextProps(): Props;
   usePropsSplitter(): TPropsSplitter<Props>;
 }
 
@@ -55,8 +56,13 @@ export function createPropsContext<Props extends Record<string, any>>(
     Define,
     Provider: InternalContext.Provider,
     useProps,
+    useContextProps,
     usePropsSplitter,
   };
+
+  function useContextProps(): Props {
+    return useContext(InternalContext);
+  }
 
   function useProps<P extends Partial<Props>>(directProps?: P): [props: Props, rest: Omit<P, keyof Props>] {
     const parentProps = useContext(InternalContext);

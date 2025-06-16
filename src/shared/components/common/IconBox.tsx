@@ -24,8 +24,8 @@ const iconClass = css.raw({
   alignItems: "center",
   justifyContent: "center",
   flexShrink: 0,
-  width: "var(--icon-size)",
-  height: "var(--icon-size)",
+  width: "var(--design-height)",
+  height: "var(--design-height)",
 });
 
 export function IconBox(props: IconBoxProps) {

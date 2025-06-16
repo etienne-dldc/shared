@@ -2,21 +2,21 @@ import * as Ariakit from "@ariakit/react";
 import { CheckIcon } from "@phosphor-icons/react";
 import { css, cx } from "../../../../styled-system/css";
 import { heightClass } from "../common/styles";
-import { DesignContext, resolveDesignProps, resolveNestedHeight, TDesignButtonHeight } from "../core/DesignContext";
+import { DesignContext, resolveDesignProps, resolveNestedHeight, TNestedDesignHeight } from "../core/DesignContext";
 import { ItemContent } from "../item-content/ItemContent";
 import { selectItemClass } from "./styles";
 import { TSelectItem } from "./types";
 
 interface SelectItemProps extends Ariakit.SelectItemProps {
-  innerHeight?: TDesignButtonHeight;
+  nestedHeight?: TNestedDesignHeight;
   item: TSelectItem<string>;
 }
 
 export function SelectItem(inProps: SelectItemProps) {
-  const [design, { item, className, innerHeight, ...props }] = DesignContext.useProps(inProps);
+  const [design, { item, className, nestedHeight, ...props }] = DesignContext.useProps(inProps);
 
   const { height } = resolveDesignProps(design);
-  const nestedHeight = innerHeight ?? resolveNestedHeight(height);
+  const nestedHeightResolved = resolveNestedHeight(height, nestedHeight);
 
   const store = Ariakit.useSelectContext();
   if (!store) {
@@ -31,7 +31,7 @@ export function SelectItem(inProps: SelectItemProps) {
       disabled={item.disabled || item.hidden}
       value={item.value}
     >
-      <DesignContext.Define height={nestedHeight}>
+      <DesignContext.Define height={nestedHeightResolved}>
         <ItemContent
           endIcon={checked ? <Ariakit.SelectItemCheck render={<CheckIcon children={null} />} /> : item.endIcon}
           startIcon={item.icon}

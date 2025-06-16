@@ -47,16 +47,23 @@ export type TPaletteColor =
   | "stone";
 
 export interface TDesignContextProps {
-  height: TDesignButtonHeight;
+  height: TDesignButtonHeight | null;
   spacing: TDesignSpacing | null;
   variant: TDesignVariant;
   hoverVariant: TDesignVariant | null;
 }
 
+export const DEFAULT_DESIGN_CONTEXT = {
+  height: "7",
+  spacing: "3",
+  variant: "surface",
+  hoverVariant: null,
+} as const satisfies TDesignContextProps;
+
 export const DesignContext = createPropsContext(
   "Design",
   {
-    height: "7",
+    height: null,
     spacing: null,
     variant: "surface",
     hoverVariant: null,
@@ -65,24 +72,24 @@ export const DesignContext = createPropsContext(
 );
 
 export function resolveDesignProps(props: TDesignContextProps) {
-  const { height, spacing, variant, hoverVariant } = props;
+  const variant = props.variant ?? DEFAULT_DESIGN_CONTEXT.variant;
 
   return {
     variant,
-    hoverVariant: hoverVariant ?? variant,
-    spacing,
-    height,
+    hoverVariant: props.hoverVariant ?? variant,
+    spacing: props.spacing ?? undefined,
+    height: props.height ?? DEFAULT_DESIGN_CONTEXT.height,
   };
 }
 
-const INNER_SIZE_MAPPING: Record<TDesignButtonHeight, TDesignButtonHeight> = {
+const DEFAULT_INNER_SIZE_MAPPING: Record<TDesignButtonHeight, TDesignButtonHeight> = {
   "2x": "2x",
   "3": "2x",
   "3x": "2x",
-  "4": "2x",
+  "4": "3",
   "4x": "3",
   "5": "3",
-  "5x": "3",
+  "5x": "3x",
   "6": "3x",
   "6x": "3x",
   "7": "4",
@@ -93,14 +100,18 @@ const INNER_SIZE_MAPPING: Record<TDesignButtonHeight, TDesignButtonHeight> = {
   "12": "5",
 };
 
-export function resolveNestedHeight(height: TDesignButtonHeight): TDesignButtonHeight {
-  return INNER_SIZE_MAPPING[height] || INNER_SIZE_MAPPING["7"];
+export function resolveDefaultNestedHeight(height: TDesignButtonHeight): TDesignButtonHeight {
+  return DEFAULT_INNER_SIZE_MAPPING[height] ?? DEFAULT_INNER_SIZE_MAPPING[DEFAULT_DESIGN_CONTEXT.height];
 }
 
-const INNER_SIZE_MAPPING_REVERSED: Record<TDesignButtonHeight, TDesignButtonHeight> = Object.fromEntries(
-  Object.entries(INNER_SIZE_MAPPING).map(([key, value]) => [value, key]),
-) as Record<TDesignButtonHeight, TDesignButtonHeight>;
+export type TNestedDesignHeight = TDesignButtonHeight | ((height: TDesignButtonHeight) => TDesignButtonHeight);
 
-export function resolveOuterHeight(nestedHeight: TDesignButtonHeight): TDesignButtonHeight {
-  return INNER_SIZE_MAPPING_REVERSED[nestedHeight] || INNER_SIZE_MAPPING_REVERSED["7"];
+export function resolveNestedHeight(
+  height: TDesignButtonHeight,
+  nestedHeight: TNestedDesignHeight | undefined,
+): TDesignButtonHeight {
+  if (typeof nestedHeight === "function") {
+    return nestedHeight(height);
+  }
+  return nestedHeight ?? resolveDefaultNestedHeight(height);
 }

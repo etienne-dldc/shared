@@ -12,6 +12,7 @@ import {
   TDesignButtonHeight,
   TDesignSpacing,
   TDesignVariant,
+  TNestedDesignHeight,
   TPaletteColor,
 } from "../core/DesignContext";
 import { ItemContent } from "../item-content/ItemContent";
@@ -30,7 +31,7 @@ export type ButtonLikeProps = Merge<
 
     color?: TPaletteColor;
     css?: SystemStyleObject;
-    innerHeight?: TDesignButtonHeight;
+    nestedHeight?: TNestedDesignHeight;
 
     // For content
     startIcon?: React.ReactNode;
@@ -39,9 +40,11 @@ export type ButtonLikeProps = Merge<
     endIcon?: React.ReactNode;
     endSlot?: React.ReactNode;
     content?: React.ReactNode;
+    startPadding?: "auto" | "icon" | "text" | "none";
+    endPadding?: "auto" | "icon" | "text" | "none";
 
     // Forward to Element
-    render?: React.ReactElement<any>;
+    render?: Ariakit.RoleProps["render"];
   }
 >;
 
@@ -53,7 +56,7 @@ export function ButtonLike(inProps: ButtonLikeProps) {
   const {
     color,
     css: cssProp,
-    innerHeight,
+    nestedHeight,
 
     startIcon,
     loading,
@@ -61,6 +64,8 @@ export function ButtonLike(inProps: ButtonLikeProps) {
     endIcon,
     endSlot,
     content,
+    startPadding,
+    endPadding,
     children,
 
     className,
@@ -68,10 +73,14 @@ export function ButtonLike(inProps: ButtonLikeProps) {
   } = props;
 
   const { height, variant } = resolveDesignProps(design);
-  const nestedHeight = innerHeight ?? resolveNestedHeight(height);
+  const nestedHeightResolved = resolveNestedHeight(height, nestedHeight);
 
   const childrenResolved = children ?? (
-    <ItemContent {...{ startIcon, endIcon, endSlot, loading, startSlot }}>{content}</ItemContent>
+    <ItemContent
+      {...{ startIcon, endIcon, endSlot, loading, startSlot, startPadding, endPadding, spacing: inProps.spacing }}
+    >
+      {content}
+    </ItemContent>
   );
 
   return (
@@ -89,7 +98,7 @@ export function ButtonLike(inProps: ButtonLikeProps) {
       {...buttonProps}
     >
       <DesignContext.Define
-        height={nestedHeight}
+        height={nestedHeightResolved}
         spacing={inProps.spacing}
         variant={inProps.variant}
         hoverVariant={inProps.hoverVariant}

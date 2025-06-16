@@ -19,7 +19,7 @@ export const treeItemClass = cva({
     alignItems: "center",
     outline: "none",
     position: "relative",
-    '& [data-slot="item-icon"]': {
+    "& [data-item-main-icon]": {
       opacity: 0.6,
     },
     _roundedStart: {

@@ -12,6 +12,7 @@ import {
   TDesignButtonHeight,
   TDesignSpacing,
   TDesignVariant,
+  TNestedDesignHeight,
   TPaletteColor,
 } from "../core/DesignContext";
 import { DisabledContext } from "../core/DisabledContext";
@@ -31,7 +32,7 @@ export type ButtonProps = Merge<
 
     color?: TPaletteColor;
     css?: SystemStyleObject;
-    innerHeight?: TDesignButtonHeight;
+    nestedHeight?: TNestedDesignHeight;
 
     // For content
     startIcon?: React.ReactNode;
@@ -40,9 +41,11 @@ export type ButtonProps = Merge<
     endIcon?: React.ReactNode;
     endSlot?: React.ReactNode;
     content?: React.ReactNode;
+    startPadding?: "auto" | "icon" | "text" | "none";
+    endPadding?: "auto" | "icon" | "text" | "none";
 
     // Forward to Button
-    render?: React.ReactElement<any>;
+    render?: Ariakit.ButtonProps["render"];
 
     // Data attributes
     "data-hover"?: boolean;
@@ -59,7 +62,7 @@ export function Button(inProps: ButtonProps) {
   const {
     color,
     css: cssProp,
-    innerHeight,
+    nestedHeight,
 
     startIcon,
     loading,
@@ -67,6 +70,8 @@ export function Button(inProps: ButtonProps) {
     endIcon,
     endSlot,
     content,
+    startPadding,
+    endPadding,
     children,
 
     className,
@@ -74,11 +79,13 @@ export function Button(inProps: ButtonProps) {
     ...buttonProps
   } = props;
 
-  const { height, hoverVariant, variant } = resolveDesignProps(design);
-  const nestedHeight = innerHeight ?? resolveNestedHeight(height);
+  const { hoverVariant, variant, height } = resolveDesignProps(design);
+  const nestedHeightResolved = resolveNestedHeight(height, nestedHeight);
 
   const childrenResolved = children ?? (
-    <ItemContent {...{ startIcon, endIcon, endSlot, loading, startSlot }}>{content}</ItemContent>
+    <ItemContent {...{ startIcon, endIcon, endSlot, loading, startSlot, startPadding, endPadding }}>
+      {content}
+    </ItemContent>
   );
 
   return (
@@ -98,9 +105,8 @@ export function Button(inProps: ButtonProps) {
       type={type}
       {...buttonProps}
     >
-      {" "}
       <DesignContext.Define
-        height={nestedHeight}
+        height={nestedHeightResolved}
         spacing={inProps.spacing}
         variant={inProps.variant}
         hoverVariant={inProps.hoverVariant}
