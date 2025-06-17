@@ -51,10 +51,14 @@ export default function Playground() {
           </ItemContent>
         }
       />
+      <PlaygroundItem height={7} />
+      <PlaygroundItem height={8} />
+      <PlaygroundItem height={9} />
+      <PlaygroundItem height={10} />
+      <PlaygroundItem height={11} />
       <PlaygroundItem height={12} />
-      <PlaygroundItem height={12} />
-      <PlaygroundItem height={12} />
-      <PlaygroundItem height={12} />
+      <PlaygroundItem height={13} />
+      <PlaygroundItem height={14} />
       <div style={{ height: 20 }} />
 
       <ButtonLike
