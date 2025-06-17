@@ -1,7 +1,7 @@
 import * as Ariakit from "@ariakit/react";
 import { CheckIcon } from "@phosphor-icons/react";
 import { css, cx } from "../../../../styled-system/css";
-import { heightClass } from "../common/styles";
+import { heightStyles } from "../common/styles";
 import { DesignContext, resolveDesignProps, resolveNestedHeight, TNestedDesignHeight } from "../core/DesignContext";
 import { ItemContent } from "../item-content/ItemContent";
 import { selectItemClass } from "./styles";
@@ -13,10 +13,11 @@ interface SelectItemProps extends Ariakit.SelectItemProps {
 }
 
 export function SelectItem(inProps: SelectItemProps) {
-  const [design, { item, className, nestedHeight, ...props }] = DesignContext.useProps(inProps);
+  const [design, { item, className, nestedHeight, style, ...props }] = DesignContext.useProps(inProps);
 
   const { height } = resolveDesignProps(design);
   const nestedHeightResolved = resolveNestedHeight(height, nestedHeight);
+  const [heightCss, heightInline] = heightStyles(height);
 
   const store = Ariakit.useSelectContext();
   if (!store) {
@@ -27,7 +28,8 @@ export function SelectItem(inProps: SelectItemProps) {
   return (
     <Ariakit.SelectItem
       {...props}
-      className={cx(css(heightClass.raw({ height }), selectItemClass, item.hidden && { display: "none" }), className)}
+      className={cx(css(heightCss, selectItemClass, item.hidden && { display: "none" }), className)}
+      style={{ ...style, ...heightInline }}
       disabled={item.disabled || item.hidden}
       value={item.value}
     >

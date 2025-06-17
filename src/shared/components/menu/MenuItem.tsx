@@ -3,27 +3,25 @@ import { Merge } from "type-fest";
 import { css, cx } from "../../../../styled-system/css";
 import { SystemStyleObject } from "../../../../styled-system/types";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
-import { colorPaletteClass, heightClass } from "../common/styles";
+import { colorPaletteClass, heightStyles } from "../common/styles";
 import {
   DesignContext,
   resolveDesignProps,
   resolveNestedHeight,
-  TDesignButtonHeight,
-  TDesignSpacing,
+  TDesignSize,
   TNestedDesignHeight,
   TPaletteColor,
 } from "../core/DesignContext";
 import { DisabledContext } from "../core/DisabledContext";
 import { ItemContent } from "../item-content/ItemContent";
-import { itemContentSizeClass } from "../item-content/styles";
 import { menuItemClass } from "./styles";
 
 export type MenuItemProps = Merge<
   Omit<Ariakit.MenuItemProps, "title" | "color" | "height">,
   {
     // Design
-    height?: TDesignButtonHeight;
-    spacing?: TDesignSpacing;
+    height?: TDesignSize;
+    spacing?: TDesignSize;
 
     color?: TPaletteColor;
     css?: SystemStyleObject;
@@ -58,12 +56,14 @@ export function MenuItem(inProps: MenuItemProps) {
     content,
     children,
 
+    style,
     className,
     ...htmlProps
   } = props;
 
   const { height } = resolveDesignProps(design);
   const nestedHeightResolved = resolveNestedHeight(height, nestedHeight);
+  const [heightCss, heightInline] = heightStyles(height);
 
   const childrenResolved = children ?? (
     <ItemContent {...{ startIcon, endIcon, endSlot, loading, startSlot }}>{content}</ItemContent>
@@ -76,14 +76,15 @@ export function MenuItem(inProps: MenuItemProps) {
           disabled={disabled.disabled}
           className={cx(
             css(
-              heightClass.raw({ height }),
+              heightCss,
               menuItemClass,
               inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
-              itemContentSizeClass.raw({ height }),
+              // itemContentSizeClass.raw({ height }),
               cssProp,
             ),
             className,
           )}
+          style={{ ...style, ...heightInline }}
           {...htmlProps}
         >
           {childrenResolved}

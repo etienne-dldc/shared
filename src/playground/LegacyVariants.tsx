@@ -208,6 +208,7 @@ export function Variants<Dims extends TDimensions>({
                     textTransform="uppercase"
                     fontWeight="bold"
                     p="1"
+                    textStyle="4"
                   >
                     {colName}
                   </styled.div>
@@ -226,6 +227,7 @@ export function Variants<Dims extends TDimensions>({
                     textTransform="uppercase"
                     fontWeight="bold"
                     p="1"
+                    textStyle="4"
                     display="flex"
                     alignItems="center"
                     justifyContent="center"

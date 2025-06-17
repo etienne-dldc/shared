@@ -4,29 +4,26 @@ import { Merge } from "type-fest";
 import { css, cx } from "../../../../styled-system/css";
 import { ComponentProps, SystemStyleObject } from "../../../../styled-system/types";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
-import { colorPaletteClass, heightClass } from "../common/styles";
 import {
   DesignContext,
   resolveDesignProps,
   resolveNestedHeight,
-  TDesignButtonHeight,
-  TDesignSpacing,
+  TDesignSize,
   TDesignVariant,
   TNestedDesignHeight,
   TPaletteColor,
 } from "../core/DesignContext";
 import { DisabledContext } from "../core/DisabledContext";
 import { ItemContent } from "../item-content/ItemContent";
-import { itemContentSizeClass } from "../item-content/styles";
-import { buttonClass, buttonLikeClass } from "./styles";
+import { buttonClass, buttonLikeStyled } from "./styles";
 
 export type ButtonLinkProps = Merge<
   Omit<ComponentProps<"a">, "title">,
   {
     // Design
     disabled?: boolean;
-    height?: TDesignButtonHeight;
-    spacing?: TDesignSpacing;
+    height?: TDesignSize;
+    spacing?: TDesignSize;
     variant?: TDesignVariant;
     hoverVariant?: TDesignVariant;
 
@@ -70,12 +67,14 @@ export function ButtonLink(inProps: ButtonLinkProps) {
     alignEndIcon,
     children,
 
+    style,
     className,
     ...linkProps
   } = props;
 
   const { height, hoverVariant, variant, spacing } = resolveDesignProps(design);
   const nestedHeightResolved = resolveNestedHeight(height, nestedHeight);
+  const [bntCss, btnInline] = buttonLikeStyled(height, nestedHeightResolved, variant, inProps.color);
 
   const childrenResolved = children ?? (
     <ItemContent
@@ -88,17 +87,8 @@ export function ButtonLink(inProps: ButtonLinkProps) {
   return (
     <Ariakit.Role
       render={<a />}
-      className={cx(
-        css(
-          heightClass.raw({ height }),
-          buttonLikeClass.raw({ variant, height }),
-          buttonClass.raw({ hoverVariant, variant }),
-          inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
-          itemContentSizeClass.raw({ height }),
-          cssProp,
-        ),
-        className,
-      )}
+      className={cx(css(bntCss, buttonClass.raw({ hoverVariant, variant }), cssProp), className)}
+      style={{ ...style, ...btnInline }}
       disabled={disabled.disabled}
       {...(linkProps as any)}
     >

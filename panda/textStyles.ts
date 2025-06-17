@@ -29,21 +29,7 @@ export const textStyles = defineTextStyles({
   "24": { value: { lineHeight: "6rem", fontSize: "6rem" } },
   "28": { value: { lineHeight: "7rem", fontSize: "7rem" } },
   "32": { value: { lineHeight: "8rem", fontSize: "8rem" } },
-  // Based on font size (isch)
-  // The actual font size is 1 size under and lineHeight = name height
-  f2x: { value: { fontSize: "0.5rem", lineHeight: "0.625rem" } },
-  f3: { value: { fontSize: "0.625rem", lineHeight: "0.75rem" } },
-  f3x: { value: { fontSize: "0.75rem", lineHeight: "0.875rem" } },
-  f4: { value: { fontSize: "0.875rem", lineHeight: "1rem" } },
-  f4x: { value: { fontSize: "1rem", lineHeight: "1.125rem" } },
-  f5: { value: { fontSize: "1.125rem", lineHeight: "1.25rem" } },
-  f5x: { value: { fontSize: "1.25rem", lineHeight: "1.375rem" } },
-  f6: { value: { fontSize: "1.375rem", lineHeight: "1.5rem" } },
-  f6x: { value: { fontSize: "1.5rem", lineHeight: "1.625rem" } },
-  f7: { value: { fontSize: "1.625rem", lineHeight: "1.75rem" } },
-  f7x: { value: { fontSize: "1.75rem", lineHeight: "1.875rem" } },
-  f8: { value: { fontSize: "1.875rem", lineHeight: "2rem" } },
-  f9: { value: { fontSize: "2rem", lineHeight: "2.25rem" } },
-  f10: { value: { fontSize: "2.25rem", lineHeight: "2.5rem" } },
-  f12: { value: { fontSize: "2.5rem", lineHeight: "3rem" } },
+
+  // Computed from line height using fixed ratio
+  dynamic: { value: { lineHeight: "var(--content-size)", fontSize: "calc(var(--content-size) * 0.88)" } },
 });

@@ -2,13 +2,14 @@ import { ComponentPropsWithRef } from "react";
 import { css, cx } from "../../../../styled-system/css";
 import { SystemStyleObject } from "../../../../styled-system/types";
 import { isNotNil } from "../../utils/nil";
-import { DesignContext, resolveDesignProps, TDesignButtonHeight, TDesignSpacing } from "../core/DesignContext";
+import { contentSize } from "../common/styles";
+import { DesignContext, resolveDesignProps, spacingToGapRem, TDesignSize } from "../core/DesignContext";
 import { ItemContentFragment } from "./ItemContentFragment";
-import { itemContentClass, itemContentSizeClass } from "./styles";
+import { itemContentClass } from "./styles";
 
 interface ItemContentProps extends Omit<ComponentPropsWithRef<"div">, "content"> {
-  height?: TDesignButtonHeight;
-  spacing?: TDesignSpacing;
+  height?: TDesignSize;
+  spacing?: TDesignSize;
 
   startIcon?: React.ReactNode;
   /**
@@ -63,17 +64,18 @@ export function ItemContent(inProps: ItemContentProps) {
 
       children,
 
-      className,
-      css: cssProp,
-
       startPadding = "auto",
       endPadding = "auto",
+
+      style,
+      className,
+      css: cssProp,
 
       ...htmlProps
     },
   ] = DesignContext.useProps(inProps);
 
-  const { height, spacing } = resolveDesignProps(design);
+  const { height, spacing, compact: isCompact } = resolveDesignProps(design);
 
   const hasStartSlot = Boolean(startSlot || startIcon || loading);
   const hasEndSlot = Boolean(endSlot || endIcon);
@@ -86,17 +88,26 @@ export function ItemContent(inProps: ItemContentProps) {
 
   const defaultEndPadding = iconOnly ? "none" : hasEndSlot ? "icon" : "text";
   const endPaddingResolved = endPadding === "auto" ? defaultEndPadding : endPadding;
+  const [contentCss, contentInline] = contentSize(height);
+
+  console.log({ isCompact });
 
   return (
     <div
       className={cx(
         css(
-          itemContentClass.raw({ spacing, startPadding: startPaddingResolved, endPadding: endPaddingResolved }),
-          itemContentSizeClass.raw({ height }),
+          itemContentClass.raw({ startPadding: startPaddingResolved, endPadding: endPaddingResolved }),
+          contentCss,
+          isCompact && { gap: "[calc(var(--spacing-gap) * 0.75)]" },
           cssProp,
         ),
         className,
       )}
+      style={{
+        ...style,
+        ...contentInline,
+        ["--spacing-gap" as string]: spacing ? spacingToGapRem(spacing) : undefined,
+      }}
       {...htmlProps}
     >
       <ItemContentFragment

@@ -4,13 +4,7 @@ import { Merge } from "type-fest";
 import { css, cx } from "../../../../styled-system/css";
 import { SystemStyleObject } from "../../../../styled-system/types";
 import { colorPaletteClass } from "../common/styles";
-import {
-  DesignContext,
-  TDesignButtonHeight,
-  TDesignSpacing,
-  TDesignVariant,
-  TPaletteColor,
-} from "../core/DesignContext";
+import { DesignContext, TDesignSize, TDesignVariant, TPaletteColor } from "../core/DesignContext";
 import { buttonGroupClass, separatorClass } from "./styles";
 
 export type ButtonGroupProps = Merge<
@@ -18,8 +12,8 @@ export type ButtonGroupProps = Merge<
   {
     // Design
     disabled?: boolean;
-    height?: TDesignButtonHeight;
-    spacing?: TDesignSpacing;
+    height?: TDesignSize;
+    spacing?: TDesignSize;
     variant?: TDesignVariant;
     hoverVariant?: TDesignVariant;
 

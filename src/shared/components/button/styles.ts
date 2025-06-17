@@ -1,6 +1,7 @@
-import { cva } from "../../../../styled-system/css";
+import { css, cva } from "../../../../styled-system/css";
 import { SystemStyleObject } from "../../../../styled-system/types";
-import { TDesignButtonHeight, TDesignVariant } from "../core/DesignContext";
+import { colorPaletteClass, contentSize, heightStyles } from "../common/styles";
+import { resolveSmallRounded, TDesignVariant, TPaletteColor } from "../core/DesignContext";
 
 export const buttonLikeClass = cva({
   base: {
@@ -9,6 +10,7 @@ export const buttonLikeClass = cva({
     alignItems: "center",
     outline: "none",
     position: "relative",
+    rounded: "1_x",
     "& [data-item-main-icon]": {
       opacity: 0.6,
     },
@@ -37,23 +39,6 @@ export const buttonLikeClass = cva({
       subtle: { bg: "white/5", color: "colorPalette.200" },
       ghost: { color: "colorPalette.200" },
     } satisfies Record<TDesignVariant, SystemStyleObject>,
-    height: {
-      "2x": { rounded: "0x" },
-      "3": { rounded: "0x" },
-      "3x": { rounded: "0x" },
-      "4": { rounded: "1_x" },
-      "4x": { rounded: "1_x" },
-      "5": { rounded: "1_x" },
-      "5x": { rounded: "1_x" },
-      "6": { rounded: "1_x" },
-      "6x": { rounded: "1_x" },
-      "7": { rounded: "1_x" },
-      "7x": { rounded: "1_x" },
-      "8": { rounded: "1_x" },
-      "9": { rounded: "1_x" },
-      "10": { rounded: "1_x" },
-      "12": { rounded: "1_x" },
-    } satisfies Record<TDesignButtonHeight, SystemStyleObject>,
   },
 });
 
@@ -266,3 +251,29 @@ export const separatorClass = cva({
     } satisfies Record<TDesignVariant, SystemStyleObject>,
   },
 });
+
+export function buttonLikeStyled(
+  height: number,
+  nestedHeight: number,
+  variant: TDesignVariant,
+  color: TPaletteColor | undefined,
+): [css: SystemStyleObject, styles: React.CSSProperties] {
+  const smallRounded = resolveSmallRounded(height);
+
+  const [heightCss, heightInline] = heightStyles(height);
+  const [contentCss, contentInline] = contentSize(nestedHeight);
+
+  return [
+    css.raw(
+      heightCss,
+      buttonLikeClass.raw({ variant }),
+      contentCss,
+      color && colorPaletteClass.raw({ colorPalette: color }),
+      smallRounded && { rounded: "0x" },
+    ),
+    {
+      ...heightInline,
+      ...contentInline,
+    },
+  ];
+}

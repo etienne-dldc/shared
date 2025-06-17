@@ -42,7 +42,7 @@ export const DimentionsTreeItem = memo(function DimentionsTreeItem({
       color="blue"
       content={node.data.name}
       endSlot={<ButtonLike content={node.data.type} />}
-      dargHandleMode="handle"
+      dragHandleMode="handle"
     />
   );
 });

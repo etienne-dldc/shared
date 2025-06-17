@@ -6,18 +6,16 @@ import { css, cx } from "../../../../styled-system/css";
 import { ComponentProps, SystemStyleObject } from "../../../../styled-system/types";
 import { useMergeRefs } from "../../hooks/useMergeRefs";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
-import { colorPaletteClass, heightClass } from "../common/styles";
+import { colorPaletteClass, heightStyles } from "../common/styles";
 import {
   DesignContext,
   resolveDesignProps,
   resolveNestedHeight,
-  TDesignButtonHeight,
-  TDesignSpacing,
+  TDesignSize,
   TNestedDesignHeight,
   TPaletteColor,
 } from "../core/DesignContext";
 import { ItemContent } from "../item-content/ItemContent";
-import { itemContentSizeClass } from "../item-content/styles";
 import { treeItemClass } from "./styles";
 
 export type TreeItemProps = Merge<
@@ -26,11 +24,11 @@ export type TreeItemProps = Merge<
     node: NodeApi<any>;
     style: React.CSSProperties;
     dragHandle?: (el: HTMLDivElement | null) => void;
-    dargHandleMode?: "none" | "handle" | "row";
+    dragHandleMode?: "none" | "handle" | "row";
 
     // Design
-    height?: TDesignButtonHeight;
-    spacing?: TDesignSpacing;
+    height?: TDesignSize;
+    spacing?: TDesignSize;
 
     nestedHeight?: TNestedDesignHeight;
     css?: SystemStyleObject;
@@ -56,9 +54,8 @@ export function TreeItem(inProps: TreeItemProps) {
 
   const {
     node,
-    style,
     dragHandle,
-    dargHandleMode = "row",
+    dragHandleMode = "row",
 
     color,
     css: cssProp,
@@ -72,6 +69,7 @@ export function TreeItem(inProps: TreeItemProps) {
     content,
     children,
 
+    style,
     className,
     ref,
     ...buttonProps
@@ -79,31 +77,30 @@ export function TreeItem(inProps: TreeItemProps) {
 
   const { height } = resolveDesignProps(design);
   const nestedHeightResolved = resolveNestedHeight(height, nestedHeight);
+  const [heightCss, heightInline] = heightStyles(height);
 
   const childrenResolved = children ?? (
     <ItemContent {...{ startIcon, endIcon, endSlot, loading, startSlot }}>{content}</ItemContent>
   );
 
-  const finalRef = useMergeRefs(ref, dargHandleMode === "row" ? dragHandle : undefined);
+  const finalRef = useMergeRefs(ref, dragHandleMode === "row" ? dragHandle : undefined);
 
   return (
     <Ariakit.Role
-      style={style}
       data-selected={node.isSelected ? "true" : undefined}
       data-rounded-start={!node.isSelected || node.isSelectedStart ? "true" : undefined}
       data-rounded-end={!node.isSelected || node.isSelectedEnd ? "true" : undefined}
       className={cx(
         css(
-          heightClass.raw({ height }),
-          treeItemClass.raw({
-            // variant, height
-          }),
+          heightCss,
+          treeItemClass.raw(),
           inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
-          itemContentSizeClass.raw({ height }),
+          // itemContentSizeClass.raw({ height }),
           cssProp,
         ),
         className,
       )}
+      style={{ ...style, ...heightInline }}
       ref={finalRef}
       {...buttonProps}
     >

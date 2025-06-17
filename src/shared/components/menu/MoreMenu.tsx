@@ -1,20 +1,14 @@
 import { CaretDownIcon, CaretUpIcon } from "@phosphor-icons/react";
 import { forwardRef, useState } from "react";
 import { Button } from "../button/Button";
-import {
-  TDesignButtonHeight,
-  TDesignSpacing,
-  TDesignVariant,
-  TNestedDesignHeight,
-  TPaletteColor,
-} from "../core/DesignContext";
+import { TDesignSize, TDesignVariant, TNestedDesignHeight, TPaletteColor } from "../core/DesignContext";
 import { Menu, MenuProps } from "./Menu";
 
 interface MoreMenuProps extends Omit<MenuProps, "trigger"> {
   // Button Design
   disabled?: boolean;
-  height?: TDesignButtonHeight;
-  spacing?: TDesignSpacing;
+  height?: TDesignSize;
+  spacing?: TDesignSize;
   variant?: TDesignVariant;
   hoverVariant?: TDesignVariant;
 

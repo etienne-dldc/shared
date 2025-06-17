@@ -71,8 +71,13 @@ const SIZE_VARIANTS = {
   size_7: "7",
   size_7x: "7x",
   size_8: "8",
+  size_8x: "8x",
   size_9: "9",
+  size_9x: "9x",
   size_10: "10",
+  size_10x: "10x",
+  size_11: "11",
+  size_11x: "11x",
   size_12: "12",
 } satisfies TVariantsValues<`size_${TDesignSize}`, TDesignSize | undefined>;
 
@@ -177,9 +182,7 @@ export default function ButtonPlayground() {
         },
       }}
       render={({ fullWidth, state, ...props }) => (
-        <styled.div
-        // className={cn("w-full h-full")}
-        >
+        <styled.div display="flex" flexDirection="column" alignItems="center" justifyContent="center" h="full" w="full">
           <Button
             {...props}
             css={{ w: fullWidth ? "full" : "auto" }}

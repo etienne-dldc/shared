@@ -2,6 +2,7 @@ import { CaretDownIcon, CaretRightIcon, DotIcon, DotsSixVerticalIcon, HouseIcon,
 import { HStack, styled } from "../../../styled-system/jsx";
 import { Button } from "./button/Button";
 import { ButtonLike } from "./button/ButtonLike";
+import { DefineNestedHeight, dynamicNestedHeight } from "./core/DesignContext";
 import { ItemContent } from "./item-content/ItemContent";
 import { ItemContentFragment } from "./item-content/ItemContentFragment";
 
@@ -26,6 +27,8 @@ export default function Playground() {
         }
         content="Playground 1"
       />
+      <div style={{ height: 20 }} />
+
       <ButtonLike
         variant="subtle"
         nestedHeight="6"
@@ -44,10 +47,14 @@ export default function Playground() {
             startPadding="none"
             endPadding="none"
           >
-            Playground
+            Playground Item
           </ItemContent>
         }
       />
+      <PlaygroundItem height={12} />
+      <PlaygroundItem height={12} />
+      <PlaygroundItem height={12} />
+      <PlaygroundItem height={12} />
       <div style={{ height: 20 }} />
 
       <ButtonLike
@@ -88,12 +95,14 @@ export default function Playground() {
         endIcon={<HouseIcon />}
         content={<ItemContentFragment endIcon={<HouseIcon />}>Playground Frag</ItemContentFragment>}
       />
+      <div style={{ height: 20 }} />
 
       <ButtonLike>
         <ItemContent startSlot={<HouseIcon />} endIcon={<HouseIcon />}>
           <ItemContentFragment endIcon={<HouseIcon />}>Playground Frag</ItemContentFragment>
         </ItemContent>
       </ButtonLike>
+      <div style={{ height: 20 }} />
 
       <ButtonLike
         startSlot={"Hello"}
@@ -101,6 +110,39 @@ export default function Playground() {
         startPadding="text"
         content={<ItemContentFragment endIcon={<HouseIcon />}>Playground Frag</ItemContentFragment>}
       />
+      <div style={{ height: 20 }} />
     </styled.div>
+  );
+}
+
+function PlaygroundItem({ height }: { height: number }) {
+  return (
+    <ButtonLike
+      variant="subtle"
+      height={height}
+      nestedHeight={dynamicNestedHeight(0.65)}
+      className="group"
+      startSlot={
+        <HStack gap="0">
+          <Button
+            variant="ghost"
+            nestedHeight={dynamicNestedHeight(0.5)}
+            startIcon={<DotsSixVerticalIcon />}
+            css={{ mr: "[calc(var(--spacing-gap) * -1)]", opacity: 0.3, _groupHover: { opacity: 1 } }}
+          />
+          <Button variant="ghost" nestedHeight={dynamicNestedHeight(0.5)} startIcon={<CaretRightIcon />} />
+        </HStack>
+      }
+      endPadding="icon"
+      content={
+        <ItemContent endSlot={<Button variant="ghost" startIcon={<PenIcon />} />} startPadding="none" endPadding="none">
+          <DefineNestedHeight nestedHeight={dynamicNestedHeight(0.5)}>
+            <ItemContent startSlot={<HouseIcon />} startPadding="none" endPadding="none">
+              Playground Item
+            </ItemContent>
+          </DefineNestedHeight>
+        </ItemContent>
+      }
+    />
   );
 }

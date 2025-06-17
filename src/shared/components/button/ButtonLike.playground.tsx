@@ -1,6 +1,6 @@
 import { CaretDownIcon, CirclesFourIcon, DotsThreeVerticalIcon, UserIcon } from "@phosphor-icons/react";
 import { Variants } from "../../../playground/LegacyVariants";
-import { TDesignButtonHeight } from "../core/DesignContext";
+import { TDesignSize } from "../core/DesignContext";
 import { Button } from "./Button";
 import { ButtonLike } from "./ButtonLike";
 
@@ -65,10 +65,15 @@ const SIZE_VARIANTS = {
   "7": "7",
   "7x": "7x",
   "8": "8",
+  "8x": "8x",
   "9": "9",
+  "9x": "9x",
   "10": "10",
+  "10x": "10x",
+  "11": "11",
+  "11x": "11x",
   "12": "12",
-} satisfies Record<TDesignButtonHeight, TDesignButtonHeight>;
+} satisfies Record<TDesignSize, TDesignSize>;
 
 const DIR_SIZE_VARIANTS = { default: undefined, xs: "xs", sm: "sm", md: "md", lg: "lg" } as const;
 

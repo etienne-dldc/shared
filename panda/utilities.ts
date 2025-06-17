@@ -4,20 +4,9 @@ import { designHeightVar, spacingGapVar } from "./globalVars";
 const designHeight = defineUtility({
   className: "dh",
   values: "sizes",
-  property: "minHeight",
   transform: (value) => {
     return {
       [designHeightVar]: value,
-    };
-  },
-});
-
-const itemContentParentHeight = defineUtility({
-  className: "icph",
-  values: "sizes",
-  transform: (value) => {
-    return {
-      "--item-content-parent-height": value,
     };
   },
 });
@@ -27,7 +16,7 @@ const spacingGap = defineUtility({
   values: "sizes",
   transform: (value) => {
     if (value === "auto") {
-      return { [spacingGapVar]: "calc((var(--item-content-parent-height) - var(--design-height)) / 2)" };
+      return { [spacingGapVar]: "calc((var(--design-height) - var(--content-size)) / 2)" };
     }
     return { [spacingGapVar]: value };
   },
@@ -35,6 +24,5 @@ const spacingGap = defineUtility({
 
 export const utilities = {
   designHeight,
-  itemContentParentHeight,
   spacingGap,
 };

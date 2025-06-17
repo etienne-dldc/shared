@@ -13,8 +13,7 @@ import {
   DesignContext,
   resolveDesignProps,
   resolveNestedHeight,
-  TDesignButtonHeight,
-  TDesignSpacing,
+  TDesignSize,
   TDesignVariant,
   TNestedDesignHeight,
   TPaletteColor,
@@ -30,8 +29,8 @@ export type SelectProps<Value extends string> = Merge<
   {
     // Design
     disabled?: boolean;
-    height?: TDesignButtonHeight;
-    spacing?: TDesignSpacing;
+    height?: TDesignSize;
+    spacing?: TDesignSize;
     variant?: TDesignVariant;
     hoverVariant?: TDesignVariant;
 
