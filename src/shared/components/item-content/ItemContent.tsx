@@ -90,8 +90,6 @@ export function ItemContent(inProps: ItemContentProps) {
   const endPaddingResolved = endPadding === "auto" ? defaultEndPadding : endPadding;
   const [contentCss, contentInline] = contentSize(height);
 
-  console.log({ isCompact });
-
   return (
     <div
       className={cx(

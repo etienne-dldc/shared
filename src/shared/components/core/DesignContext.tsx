@@ -82,12 +82,6 @@ export function resolveDesignProps(props: TDesignContextProps) {
   const variant = props.variant ?? DEFAULT_DESIGN_CONTEXT.variant;
   const height = parseSize(props.height ?? DEFAULT_DESIGN_CONTEXT.height);
 
-  console.log({
-    props,
-    height,
-    compact: props.compact ?? (height >= 12 ? true : undefined),
-  });
-
   return {
     variant,
     hoverVariant: props.hoverVariant ?? variant,
@@ -149,8 +143,6 @@ export function sizeToRem(size: string | number): number {
   const parsedSize = typeof size === "number" ? size : parseSize(size);
   return (parsedSize * 4) / 16;
 }
-
-console.log(sizeToRemString(1));
 
 export function sizeToRemString(size: string | number): string {
   return `${sizeToRem(size)}rem`;

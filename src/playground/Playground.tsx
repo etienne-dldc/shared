@@ -67,7 +67,7 @@ export function Playground() {
 
   return (
     <styled.div display="grid" gridTemplateRows="auto 1fr" gridTemplateColumns="100%" gap="4" p="4" minH="screen">
-      <HStack>
+      <HStack gap="2">
         <ButtonGroup variant="solid" height="10" color="blue">
           <RouteMenu items={routes} icon={<ListIcon />} />
           {routeMatch?.parents.map((parent) => {
@@ -81,8 +81,10 @@ export function Playground() {
               />
             );
           })}
-          {routeMatch?.match && <ButtonLike content={routeMatch?.match.name} startIcon={<SquaresFourIcon />} />}
         </ButtonGroup>
+        {routeMatch?.match && (
+          <ButtonLike height="10" color="blue" content={routeMatch?.match.name} startIcon={<SquaresFourIcon />} />
+        )}
       </HStack>
       <styled.div position="relative">
         <Suspense fallback={<LoadingBlock />}>
