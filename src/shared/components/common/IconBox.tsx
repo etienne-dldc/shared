@@ -3,6 +3,7 @@ import { ComponentProps, useContext, useMemo } from "react";
 import { Merge } from "type-fest";
 import { css, cx } from "../../../../styled-system/css";
 import { SystemStyleObject } from "../../../../styled-system/types";
+import { sizeToRemString, TDesignSize } from "../core/DesignContext";
 
 type IconBoxProps = Merge<
   Omit<ComponentProps<"div">, "title" | "height">,
@@ -12,7 +13,7 @@ type IconBoxProps = Merge<
     color?: string;
     weight?: IconWeight;
     mirrored?: boolean;
-    size?: string;
+    size?: TDesignSize;
     className?: string;
     css?: SystemStyleObject;
   }
@@ -48,7 +49,7 @@ export function IconBox(props: IconBoxProps) {
     <IconContext.Provider value={mergedProps}>
       <div
         className={cx(css(iconClass, cssProp), className)}
-        style={size ? { ["--icon-size" as string]: size, ...style } : style}
+        style={size ? { ["--content-size" as string]: sizeToRemString(size), ...style } : style}
         {...htmlProps}
       >
         {icon}

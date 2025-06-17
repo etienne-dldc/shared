@@ -10,7 +10,7 @@ interface EmptyStateProps {
 export function EmptyState({ icon, text, action }: EmptyStateProps) {
   return (
     <VStack alignItems="center" justifyContent="center" p="6" gap="2" color="zinc.600">
-      <IconBox icon={icon} size="100px" weight="light" />
+      <IconBox icon={icon} size={25} weight="light" />
       <VStack gap="4" alignItems="center">
         <styled.p textStyle="7">{text}</styled.p>
         {action}

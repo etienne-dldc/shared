@@ -8,12 +8,23 @@ import {
   SquaresFourIcon,
 } from "@phosphor-icons/react";
 import { createBrowserHistory } from "history";
-import { ComponentPropsWithRef, RefObject, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  ComponentPropsWithRef,
+  Fragment,
+  RefObject,
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Merge } from "type-fest";
 import { HStack, Paper, styled } from "../../styled-system/jsx";
 import { Button } from "../shared/components/button/Button";
 import { ButtonGroup } from "../shared/components/button/ButtonGroup";
 import { ButtonLike } from "../shared/components/button/ButtonLike";
+import { IconBox } from "../shared/components/common/IconBox";
 import { LoadingBlock } from "../shared/components/common/LoadingBlock";
 import { EmptyState } from "../shared/components/layouts/EmptyState";
 import { MenuItem } from "../shared/components/menu/MenuItem";
@@ -83,7 +94,16 @@ export function Playground() {
           })}
         </ButtonGroup>
         {routeMatch?.match && (
-          <ButtonLike height="10" color="blue" content={routeMatch?.match.name} startIcon={<SquaresFourIcon />} />
+          <Fragment>
+            <IconBox icon={<CaretRightIcon />} size="3" css={{ opacity: 0.6 }} />
+            <ButtonLike
+              height="10"
+              color="blue"
+              variant="subtle"
+              content={routeMatch?.match.name}
+              startIcon={<SquaresFourIcon />}
+            />
+          </Fragment>
         )}
       </HStack>
       <styled.div position="relative">
