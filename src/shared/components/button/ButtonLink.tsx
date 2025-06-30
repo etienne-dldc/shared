@@ -72,14 +72,12 @@ export function ButtonLink(inProps: ButtonLinkProps) {
     ...linkProps
   } = props;
 
-  const { height, hoverVariant, variant, spacing } = resolveDesignProps(design);
+  const { height, hoverVariant, variant } = resolveDesignProps(design);
   const nestedHeightResolved = resolveNestedHeight(height, nestedHeight);
   const [bntCss, btnInline] = buttonLikeStyled(height, nestedHeightResolved, variant, inProps.color);
 
   const childrenResolved = children ?? (
-    <ItemContent
-      {...{ startIcon, endIcon, endSlot, loading, startSlot, alignStartIcon, alignEndIcon, spacing: inProps.spacing }}
-    >
+    <ItemContent {...{ startIcon, endIcon, endSlot, loading, startSlot, alignStartIcon, alignEndIcon }}>
       {content}
     </ItemContent>
   );
@@ -94,7 +92,7 @@ export function ButtonLink(inProps: ButtonLinkProps) {
     >
       <DesignContext.Define
         height={nestedHeightResolved}
-        spacing={spacing}
+        spacing={inProps.spacing}
         variant={inProps.variant}
         hoverVariant={inProps.hoverVariant}
       >

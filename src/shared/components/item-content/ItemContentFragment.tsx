@@ -26,25 +26,7 @@ export function ItemContentFragment(props: ItemContentFragmentProps) {
       {hasStartSlot && (
         <SideSlot icon={startIcon} loading={loading} slot={startSlot} isItemMainIcon isIconOnly={iconOnly} />
       )}
-      {hasChildren &&
-        (typeof children === "string" ? (
-          // <div
-          //   className={css({
-          //     flexGrow: 1,
-          //     overflow: "hidden",
-          //     display: "flex",
-          //     flexDirection: "row",
-          //     alignItems: "center",
-          //     flex: "1",
-          //     maxW: "full",
-          //   })}
-          // >
-          //   <Ellipsis>{children}</Ellipsis>
-          // </div>
-          <Ellipsis flex="1">{children}</Ellipsis>
-        ) : (
-          children
-        ))}
+      {hasChildren && (typeof children === "string" ? <Ellipsis flex="1">{children}</Ellipsis> : children)}
       {hasEndSlot && <SideSlot icon={endIcon} slot={endSlot} isItemMainIcon={false} isIconOnly={iconOnly} />}
     </Fragment>
   );

@@ -6,17 +6,18 @@ import { css, cx } from "../../../../styled-system/css";
 import { ComponentProps, SystemStyleObject } from "../../../../styled-system/types";
 import { useMergeRefs } from "../../hooks/useMergeRefs";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
-import { colorPaletteClass, heightStyles } from "../common/styles";
+import { colorPaletteClass } from "../common/styles";
 import {
   DesignContext,
+  dynamicNestedHeight,
   resolveDesignProps,
   resolveNestedHeight,
   TDesignSize,
   TNestedDesignHeight,
   TPaletteColor,
 } from "../core/DesignContext";
-import { ItemContent } from "../item-content/ItemContent";
-import { treeItemClass } from "./styles";
+import { treeItemClass, treeItemStyles } from "./styles";
+import { TreeItemContent } from "./TreeItemContent";
 
 export type TreeItemProps = Merge<
   Omit<ComponentProps<"div">, "title" | "height">,
@@ -59,7 +60,7 @@ export function TreeItem(inProps: TreeItemProps) {
 
     color,
     css: cssProp,
-    nestedHeight,
+    nestedHeight = dynamicNestedHeight(0.65),
 
     startIcon,
     loading,
@@ -77,11 +78,9 @@ export function TreeItem(inProps: TreeItemProps) {
 
   const { height } = resolveDesignProps(design);
   const nestedHeightResolved = resolveNestedHeight(height, nestedHeight);
-  const [heightCss, heightInline] = heightStyles(height);
+  const [itemCss, itemInline] = treeItemStyles(height, nestedHeightResolved, inProps.color);
 
-  const childrenResolved = children ?? (
-    <ItemContent {...{ startIcon, endIcon, endSlot, loading, startSlot }}>{content}</ItemContent>
-  );
+  const childrenResolved = children ?? <TreeItemContent>{content}</TreeItemContent>;
 
   const finalRef = useMergeRefs(ref, dragHandleMode === "row" ? dragHandle : undefined);
 
@@ -92,7 +91,7 @@ export function TreeItem(inProps: TreeItemProps) {
       data-rounded-end={!node.isSelected || node.isSelectedEnd ? "true" : undefined}
       className={cx(
         css(
-          heightCss,
+          itemCss,
           treeItemClass.raw(),
           inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
           // itemContentSizeClass.raw({ height }),
@@ -100,7 +99,7 @@ export function TreeItem(inProps: TreeItemProps) {
         ),
         className,
       )}
-      style={{ ...style, ...heightInline }}
+      style={{ ...style, ...itemInline }}
       ref={finalRef}
       {...buttonProps}
     >

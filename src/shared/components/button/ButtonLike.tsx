@@ -75,9 +75,7 @@ export function ButtonLike(inProps: ButtonLikeProps) {
   const [bntCss, btnInline] = buttonLikeStyled(height, nestedHeightResolved, variant, inProps.color);
 
   const childrenResolved = children ?? (
-    <ItemContent
-      {...{ startIcon, endIcon, endSlot, loading, startSlot, startPadding, endPadding, spacing: inProps.spacing }}
-    >
+    <ItemContent {...{ startIcon, endIcon, endSlot, loading, startSlot, startPadding, endPadding }}>
       {content}
     </ItemContent>
   );

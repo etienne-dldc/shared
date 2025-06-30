@@ -75,7 +75,7 @@ export function ItemContent(inProps: ItemContentProps) {
     },
   ] = DesignContext.useProps(inProps);
 
-  const { height, spacing, compact: isCompact } = resolveDesignProps(design);
+  const { height, spacing } = resolveDesignProps(design);
 
   const hasStartSlot = Boolean(startSlot || startIcon || loading);
   const hasEndSlot = Boolean(endSlot || endIcon);
@@ -96,7 +96,6 @@ export function ItemContent(inProps: ItemContentProps) {
         css(
           itemContentClass.raw({ startPadding: startPaddingResolved, endPadding: endPaddingResolved }),
           contentCss,
-          isCompact && { gap: "[calc(var(--spacing-gap) * 0.75)]" },
           cssProp,
         ),
         className,

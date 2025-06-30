@@ -24,7 +24,6 @@ export type ButtonProps = Merge<
     disabled?: boolean;
     height?: TDesignSize;
     spacing?: TDesignSize;
-    compact?: boolean;
     variant?: TDesignVariant;
     hoverVariant?: TDesignVariant;
 
@@ -78,7 +77,7 @@ export function Button(inProps: ButtonProps) {
     ...buttonProps
   } = props;
 
-  const { hoverVariant, variant, height, compact } = resolveDesignProps(design);
+  const { hoverVariant, variant, height } = resolveDesignProps(design);
   const nestedHeightResolved = resolveNestedHeight(height, nestedHeight);
   const [bntCss, btnInline] = buttonLikeStyled(height, nestedHeightResolved, variant, inProps.color);
 
@@ -98,7 +97,6 @@ export function Button(inProps: ButtonProps) {
     >
       <DesignContext.Define
         height={nestedHeightResolved}
-        compact={compact}
         spacing={inProps.spacing}
         variant={inProps.variant}
         hoverVariant={inProps.hoverVariant}

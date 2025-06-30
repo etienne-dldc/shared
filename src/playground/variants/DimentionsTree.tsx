@@ -43,6 +43,7 @@ export const DimentionsTreeItem = memo(function DimentionsTreeItem({
       content={node.data.name}
       endSlot={<ButtonLike content={node.data.type} />}
       dragHandleMode="handle"
+      height="10"
     />
   );
 });

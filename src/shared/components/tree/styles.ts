@@ -1,4 +1,7 @@
 import { css, cva } from "../../../../styled-system/css";
+import { SystemStyleObject } from "../../../../styled-system/types";
+import { colorPaletteClass, contentSize, heightStyles } from "../common/styles";
+import { resolveSmallRounded, TPaletteColor } from "../core/DesignContext";
 
 // const className = cn(
 //   tw`h-full mx-2`,
@@ -66,3 +69,28 @@ export const treeItemClass = cva({
     },
   },
 });
+
+export function treeItemStyles(
+  height: number,
+  nestedHeight: number,
+  color: TPaletteColor | undefined,
+): [css: SystemStyleObject, styles: React.CSSProperties] {
+  const smallRounded = resolveSmallRounded(height);
+
+  const [heightCss, heightInline] = heightStyles(height);
+  const [contentCss, contentInline] = contentSize(nestedHeight);
+
+  return [
+    css.raw(
+      heightCss,
+      treeItemClass.raw(),
+      contentCss,
+      color && colorPaletteClass.raw({ colorPalette: color }),
+      smallRounded && { rounded: "0x" },
+    ),
+    {
+      ...heightInline,
+      ...contentInline,
+    },
+  ];
+}

@@ -29,28 +29,6 @@ export default function Playground() {
       />
       <div style={{ height: 20 }} />
 
-      <ButtonLike
-        variant="subtle"
-        nestedHeight="6"
-        startSlot={
-          <HStack gap="0">
-            <Button variant="ghost" startIcon={<DotsSixVerticalIcon />} css={{ mr: "-1" }} />
-            <Button variant="ghost" startIcon={<CaretRightIcon />} />
-          </HStack>
-        }
-        endPadding="icon"
-        content={
-          <ItemContent
-            height="4"
-            startSlot={<HouseIcon />}
-            endSlot={<Button variant="ghost" startIcon={<PenIcon />} />}
-            startPadding="none"
-            endPadding="none"
-          >
-            Playground Item
-          </ItemContent>
-        }
-      />
       <PlaygroundItem height={7} />
       <PlaygroundItem height={8} />
       <PlaygroundItem height={9} />

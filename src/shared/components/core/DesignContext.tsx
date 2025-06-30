@@ -53,7 +53,6 @@ export type TPaletteColor =
 export interface TDesignContextProps {
   height: TDesignSize | null;
   spacing: TDesignSize | null;
-  compact: boolean | null;
   variant: TDesignVariant;
   hoverVariant: TDesignVariant | null;
 }
@@ -61,7 +60,6 @@ export interface TDesignContextProps {
 export const DEFAULT_DESIGN_CONTEXT = {
   height: 7,
   spacing: null,
-  compact: false,
   variant: "surface",
   hoverVariant: null,
 } as const satisfies TDesignContextProps;
@@ -71,7 +69,6 @@ export const DesignContext = createPropsContext<TDesignContextProps>(
   {
     height: null,
     spacing: null,
-    compact: null,
     variant: "surface",
     hoverVariant: null,
   },
@@ -87,7 +84,6 @@ export function resolveDesignProps(props: TDesignContextProps) {
     hoverVariant: props.hoverVariant ?? variant,
     spacing: props.spacing ? parseSize(props.spacing) : undefined,
     height,
-    compact: props.compact ?? (height >= 12 ? true : undefined),
   };
 }
 
