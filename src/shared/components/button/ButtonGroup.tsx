@@ -73,7 +73,7 @@ export const ButtonGroup = forwardRef(function ButtonGroup(
         )}
         {...divProps}
       >
-        {dividerBefore && <span className={separatorClass({ direction, variant })} />}
+        {dividerBefore && <span className={css(separatorClass(variant, direction))} />}
         {Children.map(childrenFiltered, (child, i) => {
           if (!child) return null;
 
@@ -85,7 +85,7 @@ export const ButtonGroup = forwardRef(function ButtonGroup(
 
           return (
             <Fragment>
-              {innerDividers && !isFirst && <span className={separatorClass({ direction, variant })} />}
+              {innerDividers && !isFirst && <span className={css(separatorClass(variant, direction))} />}
               {cloneElement(child as any, {
                 ["data-first"]: roundedBase === "start" ? "true" : undefined,
                 ["data-last"]: roundedBase === "end" ? "true" : undefined,
@@ -94,7 +94,7 @@ export const ButtonGroup = forwardRef(function ButtonGroup(
             </Fragment>
           );
         })}
-        {dividerAfter && <span className={separatorClass({ direction, variant })} />}
+        {dividerAfter && <span className={css(separatorClass(variant, direction))} />}
       </Ariakit.Role>
     </DesignContext.Define>
   );

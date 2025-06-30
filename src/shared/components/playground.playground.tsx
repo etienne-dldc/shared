@@ -1,6 +1,7 @@
 import { CaretDownIcon, CaretRightIcon, DotIcon, DotsSixVerticalIcon, HouseIcon, PenIcon } from "@phosphor-icons/react";
 import { HStack, styled } from "../../../styled-system/jsx";
 import { Button } from "./button/Button";
+import { ButtonGroup } from "./button/ButtonGroup";
 import { ButtonLike } from "./button/ButtonLike";
 import { DefineNestedHeight, dynamicNestedHeight } from "./core/DesignContext";
 import { ItemContent } from "./item-content/ItemContent";
@@ -93,6 +94,16 @@ export default function Playground() {
         content={<ItemContentFragment endIcon={<HouseIcon />}>Playground Frag</ItemContentFragment>}
       />
       <div style={{ height: 20 }} />
+      <ButtonGroup direction="vertical">
+        <Button content="Open" />
+        <Button content="Reset" />
+        <Button content="Close" />
+      </ButtonGroup>
+      <ButtonGroup direction="horizontal">
+        <Button content="Open" />
+        <Button content="Reset" />
+        <Button content="Close" />
+      </ButtonGroup>
     </styled.div>
   );
 }

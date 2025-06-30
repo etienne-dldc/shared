@@ -25,19 +25,32 @@ export const buttonLikeClass = cva({
   variants: {
     variant: {
       solid: {
-        bg: "colorPalette.600",
         color: "neutral.200",
       },
       surface: {
-        bg: "white/5",
         color: "colorPalette.200",
         _after: {
           borderColor: "white/10",
           borderWidth: "0_x",
         },
       },
-      subtle: { bg: "white/5", color: "colorPalette.200" },
+      subtle: { color: "colorPalette.200" },
       ghost: { color: "colorPalette.200" },
+    } satisfies Record<TDesignVariant, SystemStyleObject>,
+  },
+});
+
+export const buttonLikeBackgroundClass = cva({
+  variants: {
+    variant: {
+      solid: {
+        bg: "colorPalette.600",
+      },
+      surface: {
+        bg: "white/5",
+      },
+      subtle: { bg: "white/5" },
+      ghost: {},
     } satisfies Record<TDesignVariant, SystemStyleObject>,
   },
 });
@@ -141,6 +154,10 @@ export const buttonClass = cva({
 export const buttonGroupClass = cva({
   base: {
     display: "flex",
+    position: "relative",
+    _firstChild: { zIndex: 2, position: "relative" },
+    _betweenChild: { zIndex: 2, position: "relative" },
+    _lastChild: { zIndex: 2, position: "relative" },
   },
   variants: {
     direction: {
@@ -234,9 +251,18 @@ export const buttonGroupClass = cva({
   ],
 });
 
-export const separatorClass = cva({
+export const separatorBaseClass = cva({
   base: {
     alignSelf: "stretch",
+    position: "relative",
+    zIndex: 1,
+    _after: {
+      rounded: "[inherit]",
+      pointerEvents: "none",
+      content: "''",
+      position: "absolute",
+      inset: "0",
+    },
   },
   variants: {
     direction: {
@@ -244,13 +270,23 @@ export const separatorClass = cva({
       vertical: { h: "0_x" },
     },
     variant: {
-      solid: { bg: "colorPalette.700" },
-      surface: { bg: "neutral.800" },
+      solid: {
+        bg: "colorPalette.700",
+      },
+      surface: {
+        _after: {
+          bg: "white/10",
+        },
+      },
       subtle: {},
       ghost: {},
     } satisfies Record<TDesignVariant, SystemStyleObject>,
   },
 });
+
+export function separatorClass(variant: TDesignVariant, direction: "horizontal" | "vertical") {
+  return css.raw(buttonLikeBackgroundClass.raw({ variant: "surface" }), separatorBaseClass.raw({ direction, variant }));
+}
 
 export function buttonLikeStyled(
   height: number,
@@ -267,6 +303,7 @@ export function buttonLikeStyled(
     css.raw(
       heightCss,
       buttonLikeClass.raw({ variant }),
+      buttonLikeBackgroundClass.raw({ variant }),
       contentCss,
       color && colorPaletteClass.raw({ colorPalette: color }),
       smallRounded && { rounded: "0x" },
