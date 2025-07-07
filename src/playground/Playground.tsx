@@ -96,13 +96,9 @@ export function Playground() {
         {routeMatch?.match && (
           <Fragment>
             <IconBox icon={<CaretRightIcon />} size="3" css={{ opacity: 0.6 }} />
-            <ButtonLike
-              height="10"
-              color="blue"
-              variant="subtle"
-              content={routeMatch?.match.name}
-              startIcon={<SquaresFourIcon />}
-            />
+            <ButtonLike height="10" color="blue" variant="subtle" startIcon={<SquaresFourIcon />}>
+              {routeMatch?.match.name}
+            </ButtonLike>
           </Fragment>
         )}
       </HStack>
@@ -134,7 +130,9 @@ function RouteMenu({ items, title, icon, endIcon, ...buttonProps }: RouteMenuPro
 
   return (
     <Ariakit.MenuProvider>
-      <Ariakit.MenuButton render={<Button content={title} startIcon={icon} endIcon={endIcon} />} {...buttonProps} />
+      <Ariakit.MenuButton render={<Button startIcon={icon} endIcon={endIcon} />} {...buttonProps}>
+        {title}
+      </Ariakit.MenuButton>
       <Ariakit.Menu gutter={8} ref={topMenuRef} render={menuPaper} portal={true} unmountOnHide>
         {items.map((item) => renderItem(item, topMenuRef))}
       </Ariakit.Menu>
@@ -152,12 +150,9 @@ function NestedMenu({ item, parentRef }: NestedMenuProps) {
 
   return (
     <Ariakit.MenuProvider>
-      <MenuItem
-        render={<Ariakit.MenuButton />}
-        content={item.name}
-        startIcon={<FolderIcon />}
-        endIcon={<CaretRightIcon />}
-      />
+      <MenuItem render={<Ariakit.MenuButton />} startIcon={<FolderIcon />} endIcon={<CaretRightIcon />}>
+        {item.name}
+      </MenuItem>
       <Ariakit.Menu
         gutter={8}
         getAnchorRect={parentRef ? () => parentRef.current?.getBoundingClientRect() ?? null : undefined}
@@ -191,7 +186,9 @@ function NavItem({ item }: NavItemProps) {
   );
 
   return (
-    <MenuItem content={item.name} startIcon={<SquaresFourIcon />} render={<a href={item.path} onClick={onClick} />} />
+    <MenuItem startIcon={<SquaresFourIcon />} render={<a href={item.path} onClick={onClick} />}>
+      {item.name}
+    </MenuItem>
   );
 }
 

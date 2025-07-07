@@ -1,16 +1,9 @@
-import { cva } from "../../../../styled-system/css";
+import { css, cva } from "../../../../styled-system/css";
+import { SystemStyleObject } from "../../../../styled-system/types";
+import { sizeToRemString, spacingToGapRem } from "../../design/sizes";
+import { TItemlContentPaddingResolved } from "./types";
 
 export const itemContentClass = cva({
-  base: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    flex: "1",
-    maxW: "full",
-    gap: "var(--spacing-gap)",
-    px: "var(--spacing-gap)",
-    spacingGap: "[auto]",
-  },
   variants: {
     startPadding: {
       icon: {},
@@ -24,3 +17,34 @@ export const itemContentClass = cva({
     },
   },
 });
+
+export const itemContentLayoutClass = css.raw({
+  display: "flex",
+  flexDirection: "row",
+  alignItems: "center",
+  maxW: "full",
+  gap: "[calc(min(var(--spacing-gap), var(--content-size)))]",
+  px: "var(--spacing-gap)",
+});
+
+export function itemlContentStyles(
+  contentHeight: number,
+  spacing: number | null,
+  startPadding: TItemlContentPaddingResolved,
+  endPadding: TItemlContentPaddingResolved,
+  noLayout: boolean,
+): [css: SystemStyleObject, styles: React.CSSProperties] {
+  return [
+    css.raw(
+      { textStyle: "dynamic" },
+      itemContentClass.raw({ startPadding, endPadding }),
+      !noLayout && itemContentLayoutClass,
+    ),
+    {
+      ["--content-size" as string]: sizeToRemString(contentHeight),
+      ["--spacing-gap" as string]: spacing
+        ? spacingToGapRem(spacing)
+        : "calc((var(--design-height) - var(--content-size)) / 2)",
+    },
+  ];
+}

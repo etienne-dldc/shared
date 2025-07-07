@@ -1,23 +1,24 @@
 import * as Ariakit from "@ariakit/react";
 import { CheckIcon } from "@phosphor-icons/react";
 import { css, cx } from "../../../../styled-system/css";
+import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { heightStyles } from "../common/styles";
-import { DesignContext, resolveDesignProps, resolveNestedHeight, TNestedDesignHeight } from "../core/DesignContext";
-import { ItemContent } from "../item-content/ItemContent";
+import { DesignContext, designPropsSplitter, useContainerDesignProps } from "../core/DesignContext";
+import { itemlContentStyles } from "../item-content/styles";
+import { useItemContentFragment } from "../item-content/useItemContentFragment";
 import { selectItemClass } from "./styles";
 import { TSelectItem } from "./types";
 
 interface SelectItemProps extends Ariakit.SelectItemProps {
-  nestedHeight?: TNestedDesignHeight;
   item: TSelectItem<string>;
 }
 
 export function SelectItem(inProps: SelectItemProps) {
-  const [design, { item, className, nestedHeight, style, ...props }] = DesignContext.useProps(inProps);
+  const [{ localDesign }, props] = pipePropsSplitters(inProps, {
+    localDesign: designPropsSplitter,
+  });
 
-  const { height } = resolveDesignProps(design);
-  const nestedHeightResolved = resolveNestedHeight(height, nestedHeight);
-  const [heightCss, heightInline] = heightStyles(height);
+  const { item, className, style, ...htmlProps } = props;
 
   const store = Ariakit.useSelectContext();
   if (!store) {
@@ -25,22 +26,27 @@ export function SelectItem(inProps: SelectItemProps) {
   }
   const checked = Ariakit.useStoreState(store, (state) => state.value === item.value);
 
+  const { startPadding, endPadding, fragment, noLayout } = useItemContentFragment(
+    {
+      endIcon: checked ? <Ariakit.SelectItemCheck render={<CheckIcon children={null} />} /> : item.endIcon,
+      startIcon: item.icon,
+    },
+    item.content,
+  );
+
+  const { height, contentHeight, spacing } = useContainerDesignProps(localDesign);
+  const [heightCss, heightInline] = heightStyles(height);
+  const [contentCss, contentInline] = itemlContentStyles(contentHeight, spacing, startPadding, endPadding, noLayout);
+
   return (
     <Ariakit.SelectItem
-      {...props}
-      className={cx(css(heightCss, selectItemClass, item.hidden && { display: "none" }), className)}
-      style={{ ...style, ...heightInline }}
+      {...htmlProps}
+      className={cx(css(heightCss, selectItemClass, contentCss, item.hidden && { display: "none" }), className)}
+      style={{ ...style, ...heightInline, ...contentInline }}
       disabled={item.disabled || item.hidden}
       value={item.value}
     >
-      <DesignContext.Define height={nestedHeightResolved}>
-        <ItemContent
-          endIcon={checked ? <Ariakit.SelectItemCheck render={<CheckIcon children={null} />} /> : item.endIcon}
-          startIcon={item.icon}
-        >
-          {item.content}
-        </ItemContent>
-      </DesignContext.Define>
+      <DesignContext.Define {...localDesign}>{fragment}</DesignContext.Define>
     </Ariakit.SelectItem>
   );
 }

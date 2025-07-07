@@ -1,6 +1,6 @@
 import * as Ariakit from "@ariakit/react";
 import { ComponentPropsWithRef } from "react";
-import { DesignContext, TDesignSize } from "../core/DesignContext";
+import { TDesignSize } from "../../design/types";
 
 export interface ListGroupProps extends ComponentPropsWithRef<"div"> {
   title: string;
@@ -10,8 +10,10 @@ export interface ListGroupProps extends ComponentPropsWithRef<"div"> {
 }
 
 export function ListGroup(props: ListGroupProps) {
-  const [design, { title, children, className, ...htmlProps }] = DesignContext.useProps(props);
+  // const [design, { title, children, className, ...htmlProps }] = DesignContext.useProps(props);
   // const { xSize } = resolveDesignProps(design);
+
+  const { title, children, className, ...htmlProps } = props;
 
   // const sizeClass = pick(xSize, {
   //   xs: cn("ml-1"),
@@ -25,18 +27,18 @@ export function ListGroup(props: ListGroupProps) {
   // });
 
   return (
-    <DesignContext.Provider value={design}>
-      <Ariakit.CompositeGroup
-        {...htmlProps}
-        // className={cn("flex flex-col gap-1", className)}
+    // <DesignContext.Provider value={design}>
+    <Ariakit.CompositeGroup
+      {...htmlProps}
+      // className={cn("flex flex-col gap-1", className)}
+    >
+      <Ariakit.CompositeGroupLabel
+      // className={cn("uppercase text-xs px-1 py-0.5 mt-3 tracking-wide text-white/70", sizeClass)}
       >
-        <Ariakit.CompositeGroupLabel
-        // className={cn("uppercase text-xs px-1 py-0.5 mt-3 tracking-wide text-white/70", sizeClass)}
-        >
-          {title}
-        </Ariakit.CompositeGroupLabel>
-        {children}
-      </Ariakit.CompositeGroup>
-    </DesignContext.Provider>
+        {title}
+      </Ariakit.CompositeGroupLabel>
+      {children}
+    </Ariakit.CompositeGroup>
+    // </DesignContext.Provider>
   );
 }

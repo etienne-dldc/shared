@@ -2,7 +2,7 @@ import { CaretDownIcon, CirclesFourIcon, DotsThreeVerticalIcon, UserIcon } from 
 import { VStack } from "../../../../styled-system/jsx";
 import { createVariantsTreeUtils } from "../../../playground/variants/tree";
 import { Variants } from "../../../playground/variants/Variants";
-import { TDesignVariant } from "../core/DesignContext";
+import { TDesignVariant } from "../../design/types";
 import { Button, ButtonProps } from "./Button";
 import { ButtonLike } from "./ButtonLike";
 
@@ -11,10 +11,10 @@ const utils = createVariantsTreeUtils<ButtonProps>();
 const tree = utils.root({
   yolo: {
     foo: {
-      bar: utils.value({ color: "red", content: "Danger" }),
+      bar: utils.value({ color: "red", children: "Danger" }),
     },
   },
-  content: utils.prop("content", {
+  children: utils.prop("children", {
     default: undefined,
     short: "Label",
     long: "Much longer text",
@@ -55,7 +55,7 @@ const tree = utils.root({
     none: undefined,
     dotsButton: <ButtonLike startIcon={<DotsThreeVerticalIcon />} />,
     caretButton: <ButtonLike startIcon={<CaretDownIcon />} />,
-    cancelButton: <ButtonLike content="Cancel" color="red" />,
+    cancelButton: <ButtonLike color="red">Cancel</ButtonLike>,
     primaryDotsButton: <ButtonLike startIcon={<DotsThreeVerticalIcon />} />,
   }),
   spacing: {
@@ -139,7 +139,7 @@ export default function ButtonPlayground() {
           { id: "color", name: "Color", keys: ["color"], type: "column" },
           { id: "spacing", name: "Spacing", keys: ["spacing"], type: "config" },
         ]}
-        base={["variant.solid", "content.short"]}
+        base={["variant.solid", "children.short"]}
         render={(props) => <Button {...props} />}
       />
       <Variants
@@ -150,13 +150,13 @@ export default function ButtonPlayground() {
           { id: "color1", name: "Color", keys: ["variant"], type: "row" },
           { id: "color2", name: "Color", keys: ["color"], type: "column" },
         ]}
-        base={["content.short"]}
+        base={["children.short"]}
       />
       <Variants
         title="State"
         tree={tree}
         render={(props) => <Button {...props} />}
-        base={["content.short"]}
+        base={["children.short"]}
         dimentions={[
           { id: "color1", name: "Color", keys: ["variant"], type: "row" },
           { id: "color2", name: "Color", keys: ["state"], type: "column" },

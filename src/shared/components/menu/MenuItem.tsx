@@ -2,58 +2,40 @@ import * as Ariakit from "@ariakit/react";
 import { Merge } from "type-fest";
 import { css, cx } from "../../../../styled-system/css";
 import { SystemStyleObject } from "../../../../styled-system/types";
+import { TDesignSize, TPaletteColor } from "../../design/types";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { colorPaletteClass, heightStyles } from "../common/styles";
-import {
-  DesignContext,
-  resolveDesignProps,
-  resolveNestedHeight,
-  TDesignSize,
-  TNestedDesignHeight,
-  TPaletteColor,
-} from "../core/DesignContext";
+import { DesignContext, designPropsSplitter, useContainerDesignProps } from "../core/DesignContext";
 import { DisabledContext } from "../core/DisabledContext";
-import { ItemContent } from "../item-content/ItemContent";
+import { itemlContentStyles } from "../item-content/styles";
+import { TItemContentFragmentProps } from "../item-content/types";
+import { itemContentPropsSplitter, useItemContentFragment } from "../item-content/useItemContentFragment";
 import { menuItemClass } from "./styles";
 
 export type MenuItemProps = Merge<
-  Omit<Ariakit.MenuItemProps, "title" | "color" | "height">,
-  {
+  Omit<Ariakit.MenuItemProps, "title" | "color" | "height" | "content">,
+  TItemContentFragmentProps & {
     // Design
     height?: TDesignSize;
+    heightRatio?: number;
     spacing?: TDesignSize;
 
     color?: TPaletteColor;
     css?: SystemStyleObject;
-    nestedHeight?: TNestedDesignHeight;
-
-    // Content
-    startIcon?: React.ReactNode;
-    loading?: boolean;
-    startSlot?: React.ReactNode;
-    endIcon?: React.ReactNode;
-    endSlot?: React.ReactNode;
-    content?: React.ReactNode;
   }
 >;
 
 export function MenuItem(inProps: MenuItemProps) {
-  const [{ design, disabled }, props] = pipePropsSplitters(inProps, {
-    design: DesignContext.usePropsSplitter(),
-    disabled: DisabledContext.usePropsSplitter(),
+  const [{ localDesign, localDisabled, localItemContent }, props] = pipePropsSplitters(inProps, {
+    localDesign: designPropsSplitter,
+    localDisabled: DisabledContext.propsSplitter,
+    localItemContent: itemContentPropsSplitter,
   });
 
   const {
     color,
     css: cssProp,
-    nestedHeight,
 
-    startIcon,
-    loading,
-    startSlot,
-    endIcon,
-    endSlot,
-    content,
     children,
 
     style,
@@ -61,33 +43,33 @@ export function MenuItem(inProps: MenuItemProps) {
     ...htmlProps
   } = props;
 
-  const { height } = resolveDesignProps(design);
-  const nestedHeightResolved = resolveNestedHeight(height, nestedHeight);
-  const [heightCss, heightInline] = heightStyles(height);
+  const { height, contentHeight, spacing } = useContainerDesignProps(localDesign);
 
-  const childrenResolved = children ?? (
-    <ItemContent {...{ startIcon, endIcon, endSlot, loading, startSlot }}>{content}</ItemContent>
-  );
+  const { startPadding, endPadding, fragment, noLayout } = useItemContentFragment(localItemContent, children);
+
+  const [heightCss, heightInline] = heightStyles(height);
+  const [contentCss, contentInline] = itemlContentStyles(contentHeight, spacing, startPadding, endPadding, noLayout);
 
   return (
-    <DesignContext.Define height={nestedHeightResolved} spacing={inProps.spacing}>
+    <DesignContext.Define height={contentHeight} spacing={inProps.spacing}>
       <DisabledContext.Define disabled={inProps.disabled}>
         <Ariakit.MenuItem
-          disabled={disabled.disabled}
+          disabled={localDisabled.disabled}
           className={cx(
             css(
               heightCss,
               menuItemClass,
               inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
+              contentCss,
               // itemContentSizeClass.raw({ height }),
               cssProp,
             ),
             className,
           )}
-          style={{ ...style, ...heightInline }}
+          style={{ ...style, ...heightInline, ...contentInline }}
           {...htmlProps}
         >
-          {childrenResolved}
+          {fragment}
         </Ariakit.MenuItem>
       </DisabledContext.Define>
     </DesignContext.Define>

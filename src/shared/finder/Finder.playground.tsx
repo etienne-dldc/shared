@@ -29,9 +29,9 @@ export default function FinderPlayground() {
         {keys.map((key, i) => (
           <FinderPanel key={key} css={{ w: "full", md: { w: "[600px]" } }} isActive={i === keys.length - 1}>
             <ButtonGroup direction="vertical" css={{ p: "2" }}>
-              <Button onClick={open(i)} content="Open" />
-              <Button onClick={reset(i)} content="Reset" />
-              {i > 0 && <Button onClick={close(i)} content="Close" />}
+              <Button onClick={open(i)}>Open</Button>
+              <Button onClick={reset(i)}>Reset</Button>
+              {i > 0 && <Button onClick={close(i)}>Close</Button>}
             </ButtonGroup>
             <PanelContent />
           </FinderPanel>
@@ -62,9 +62,10 @@ function PanelContent() {
               scrollIntoView(panelRef.current);
             }
           }}
-          content="Scroll into view"
-        />
-        <Button onClick={() => setExpanded((prev) => !prev)} content={expanded ? "Collapse" : "Expand"} />
+        >
+          Scroll into view
+        </Button>
+        <Button onClick={() => setExpanded((prev) => !prev)}>{expanded ? "Collapse" : "Expand"}</Button>
       </ButtonGroup>
       {expanded && (
         <div className={css({ display: "flex", flexDirection: "column", gap: "2" })}>

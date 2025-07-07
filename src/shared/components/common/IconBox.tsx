@@ -3,7 +3,8 @@ import { ComponentProps, useContext, useMemo } from "react";
 import { Merge } from "type-fest";
 import { css, cx } from "../../../../styled-system/css";
 import { SystemStyleObject } from "../../../../styled-system/types";
-import { sizeToRemString, TDesignSize } from "../core/DesignContext";
+import { sizeToRemString } from "../../design/sizes";
+import { TDesignSize } from "../../design/types";
 
 type IconBoxProps = Merge<
   Omit<ComponentProps<"div">, "title" | "height">,

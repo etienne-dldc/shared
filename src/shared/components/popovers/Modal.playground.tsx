@@ -8,7 +8,7 @@ export default function ModalPlayground() {
 
   return (
     <Fragment>
-      <Button content="Open" onClick={() => setOpen(true)} />
+      <Button onClick={() => setOpen(true)}>Open</Button>
       <Modal
         title="Modal Title"
         content={<div className="p-4">This is the modal content.</div>}

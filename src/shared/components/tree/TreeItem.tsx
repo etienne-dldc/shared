@@ -4,18 +4,11 @@ import { Merge } from "type-fest";
 import { NodeApi } from "react-arborist";
 import { css, cx } from "../../../../styled-system/css";
 import { ComponentProps, SystemStyleObject } from "../../../../styled-system/types";
+import { TDesignSize, TPaletteColor } from "../../design/types";
 import { useMergeRefs } from "../../hooks/useMergeRefs";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { colorPaletteClass } from "../common/styles";
-import {
-  DesignContext,
-  dynamicNestedHeight,
-  resolveDesignProps,
-  resolveNestedHeight,
-  TDesignSize,
-  TNestedDesignHeight,
-  TPaletteColor,
-} from "../core/DesignContext";
+import { DesignContext, designPropsSplitter, useContainerDesignProps } from "../core/DesignContext";
 import { treeItemClass, treeItemStyles } from "./styles";
 import { TreeItemContent } from "./TreeItemContent";
 
@@ -29,9 +22,9 @@ export type TreeItemProps = Merge<
 
     // Design
     height?: TDesignSize;
+    heightRatio?: number;
     spacing?: TDesignSize;
 
-    nestedHeight?: TNestedDesignHeight;
     css?: SystemStyleObject;
     color?: TPaletteColor;
 
@@ -49,8 +42,8 @@ export type TreeItemProps = Merge<
 >;
 
 export function TreeItem(inProps: TreeItemProps) {
-  const [{ design }, props] = pipePropsSplitters(inProps, {
-    design: DesignContext.usePropsSplitter(),
+  const [{ localDesign }, props] = pipePropsSplitters(inProps, {
+    localDesign: designPropsSplitter,
   });
 
   const {
@@ -60,7 +53,6 @@ export function TreeItem(inProps: TreeItemProps) {
 
     color,
     css: cssProp,
-    nestedHeight = dynamicNestedHeight(0.65),
 
     startIcon,
     loading,
@@ -76,9 +68,8 @@ export function TreeItem(inProps: TreeItemProps) {
     ...buttonProps
   } = props;
 
-  const { height } = resolveDesignProps(design);
-  const nestedHeightResolved = resolveNestedHeight(height, nestedHeight);
-  const [itemCss, itemInline] = treeItemStyles(height, nestedHeightResolved, inProps.color);
+  const { height, contentHeight } = useContainerDesignProps({ heightRatio: 0.8, ...localDesign });
+  const [itemCss, itemInline] = treeItemStyles(height, contentHeight, inProps.color);
 
   const childrenResolved = children ?? <TreeItemContent>{content}</TreeItemContent>;
 
@@ -103,7 +94,7 @@ export function TreeItem(inProps: TreeItemProps) {
       ref={finalRef}
       {...buttonProps}
     >
-      <DesignContext.Define height={nestedHeightResolved} spacing={inProps.spacing}>
+      <DesignContext.Define height={contentHeight} spacing={inProps.spacing}>
         {childrenResolved}
       </DesignContext.Define>
     </Ariakit.Role>

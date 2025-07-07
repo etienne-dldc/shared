@@ -64,13 +64,9 @@ export default function ButtonPlayground() {
                   <ListItem content="Item 10" endIcon={<CaretRightIcon />} startIcon={<SquareIcon />} />
                   <ListItem content="Item 11" endIcon={<CaretRightIcon />} startIcon={<FileIcon />} />
                 </ListGroup>
-                <Button
-                  render={<Ariakit.CompositeItem />}
-                  content="Button"
-                  color="red"
-                  variant="solid"
-                  startIcon={<SignOutIcon />}
-                />
+                <Button render={<Ariakit.CompositeItem />} color="red" variant="solid" startIcon={<SignOutIcon />}>
+                  Button
+                </Button>
               </Ariakit.Composite>
             </Ariakit.CompositeProvider>
           </DesignContext.Define>

@@ -1,49 +1,27 @@
 import { ComponentPropsWithRef } from "react";
+import { Merge } from "type-fest";
 import { css, cx } from "../../../../styled-system/css";
 import { SystemStyleObject } from "../../../../styled-system/types";
-import { isNotNil } from "../../utils/nil";
-import { contentSize } from "../common/styles";
-import { DesignContext, resolveDesignProps, spacingToGapRem, TDesignSize } from "../core/DesignContext";
-import { ItemContentFragment } from "./ItemContentFragment";
-import { itemContentClass } from "./styles";
+import { TDesignProps } from "../../design/types";
+import { pipePropsSplitters } from "../../utils/propsSplitters";
+import { heightStyles } from "../common/styles";
+import {
+  DesignContext,
+  designPropsSplitter,
+  SizeContextProvider,
+  useContainerDesignProps,
+} from "../core/DesignContext";
+import { itemContentClass, itemlContentStyles } from "./styles";
+import { TItemContentFragmentProps } from "./types";
+import { itemContentPropsSplitter, useItemContentFragment } from "./useItemContentFragment";
 
-interface ItemContentProps extends Omit<ComponentPropsWithRef<"div">, "content"> {
-  height?: TDesignSize;
-  spacing?: TDesignSize;
-
-  startIcon?: React.ReactNode;
-  /**
-   * Override the startIcon with a loading icon.
-   */
-  loading?: boolean;
-  /**
-   * Override the startIcon and loading icon with a custom element.
-   */
-  startSlot?: React.ReactNode;
-
-  endIcon?: React.ReactNode;
-  endSlot?: React.ReactNode;
-
-  /**
-   * Reduce left padding so the icon is squarely aligned.
-   * By default, this is computed based on the presence of startIcon or startSlot and children.
-   * You only need need to set this if
-   * - You pass a custom content that has a start icon
-   * - You pass a startSlot that is not an icon
-   */
-  startPadding?: "auto" | "icon" | "text" | "none";
-
-  /**
-   * Reduce right padding so the icon is squarely aligned.
-   * By default, this is computed based on the presence of endIcon or endSlot.
-   * You only need need to set this if
-   * - You pass a custom content that has an end icon
-   * - You pass an endSlot that is not an icon
-   */
-  endPadding?: "auto" | "icon" | "text" | "none";
-
-  css?: SystemStyleObject;
-}
+type ItemContentProps = Merge<
+  Omit<ComponentPropsWithRef<"div">, "content">,
+  TItemContentFragmentProps &
+    TDesignProps & {
+      css?: SystemStyleObject;
+    }
+>;
 
 /**
  * Render items horizontally
@@ -52,69 +30,40 @@ interface ItemContentProps extends Omit<ComponentPropsWithRef<"div">, "content">
  * - Provide nested content size
  */
 export function ItemContent(inProps: ItemContentProps) {
-  const [
-    design,
-    {
-      startIcon,
-      loading,
-      startSlot,
+  const [{ localDesign, localItemContent }, props] = pipePropsSplitters(inProps, {
+    localDesign: designPropsSplitter,
+    localItemContent: itemContentPropsSplitter,
+  });
 
-      endIcon,
-      endSlot,
+  const {
+    children,
 
-      children,
+    style,
+    className,
+    css: cssProp,
 
-      startPadding = "auto",
-      endPadding = "auto",
+    ...htmlProps
+  } = props;
 
-      style,
-      className,
-      css: cssProp,
+  const { spacing, contentHeight, height, heightRatio } = useContainerDesignProps(localDesign);
 
-      ...htmlProps
-    },
-  ] = DesignContext.useProps(inProps);
+  const { startPadding, endPadding, fragment } = useItemContentFragment(localItemContent, children);
 
-  const { height, spacing } = resolveDesignProps(design);
-
-  const hasStartSlot = Boolean(startSlot || startIcon || loading);
-  const hasEndSlot = Boolean(endSlot || endIcon);
-  const hasChildren = isNotNil(children);
-  // Special case for start icon/slot only
-  const iconOnly = (hasStartSlot && !hasChildren && !hasEndSlot) || (hasEndSlot && !hasStartSlot && !hasChildren);
-
-  const defaultStartPadding = iconOnly ? "none" : hasStartSlot ? "icon" : "text";
-  const startPaddingResolved = startPadding === "auto" ? defaultStartPadding : startPadding;
-
-  const defaultEndPadding = iconOnly ? "none" : hasEndSlot ? "icon" : "text";
-  const endPaddingResolved = endPadding === "auto" ? defaultEndPadding : endPadding;
-  const [contentCss, contentInline] = contentSize(height);
+  const [heightCss, heightInline] = heightStyles(height);
+  const [contentCss, contentInline] = itemlContentStyles(contentHeight, spacing, startPadding, endPadding, false);
+  const itemContentCss = itemContentClass.raw({ startPadding, endPadding });
 
   return (
     <div
-      className={cx(
-        css(
-          itemContentClass.raw({ startPadding: startPaddingResolved, endPadding: endPaddingResolved }),
-          contentCss,
-          cssProp,
-        ),
-        className,
-      )}
-      style={{
-        ...style,
-        ...contentInline,
-        ["--spacing-gap" as string]: spacing ? spacingToGapRem(spacing) : undefined,
-      }}
+      className={cx(css(itemContentCss, heightCss, contentCss, cssProp), className)}
+      style={{ ...style, ...heightInline, ...contentInline }}
       {...htmlProps}
     >
-      <ItemContentFragment
-        startIcon={startIcon}
-        loading={loading}
-        startSlot={startSlot}
-        endIcon={endIcon}
-        endSlot={endSlot}
-        children={children}
-      />
+      <DesignContext.Define {...localDesign} height={null}>
+        <SizeContextProvider parentHeight={height} parentHeightRatio={heightRatio}>
+          {fragment}
+        </SizeContextProvider>
+      </DesignContext.Define>
     </div>
   );
 }

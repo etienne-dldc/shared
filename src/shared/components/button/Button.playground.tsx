@@ -1,7 +1,7 @@
 import { CaretDownIcon, CirclesFourIcon, DotsThreeVerticalIcon, UserIcon } from "@phosphor-icons/react";
 import { styled } from "../../../../styled-system/jsx";
 import { TVariantsValues, Variants } from "../../../playground/LegacyVariants";
-import { TDesignSize, TDesignVariant, TPaletteColor } from "../core/DesignContext";
+import { TDesignSize, TDesignVariant, TPaletteColor } from "../../design/types";
 import { Button } from "./Button";
 import { ButtonLike } from "./ButtonLike";
 
@@ -52,7 +52,7 @@ const END_ACTION_VARIANTS = {
   none: undefined,
   dotsButton: <ButtonLike startIcon={<DotsThreeVerticalIcon />} />,
   caretButton: <ButtonLike startIcon={<CaretDownIcon />} />,
-  cancelButton: <ButtonLike content="Cancel" color="red" />,
+  cancelButton: <ButtonLike color="red">Cancel</ButtonLike>,
   solidDotsButton: <ButtonLike startIcon={<DotsThreeVerticalIcon />} variant="solid" />,
   surfaceDotsButton: <ButtonLike startIcon={<DotsThreeVerticalIcon />} variant="surface" />,
 } as const;
@@ -132,7 +132,7 @@ export default function ButtonPlayground() {
         hoverVariant: VARIANT_VARIANTS,
         color: DYNAMIC_COLOR_VARIANTS,
 
-        content: TEXT_VARIANTS,
+        children: TEXT_VARIANTS,
         loading: LOADING_VARIANTS,
         startIcon: ICON_VARIANTS,
         endIcon: ICON_VARIANTS,
@@ -151,7 +151,7 @@ export default function ButtonPlayground() {
         hoverVariant: "default",
         color: "default",
 
-        content: "default",
+        children: "default",
         loading: "default",
         startIcon: "default",
         endIcon: "default",
@@ -171,7 +171,7 @@ export default function ButtonPlayground() {
         },
         "size & color": { column: ["height"], row: ["color"], selected: { variant: "solid" } },
         content: {
-          column: ["content"],
+          column: ["children"],
           row: ["startIcon", "endIcon"],
           selected: { variant: "solid", color: "blue" },
         },

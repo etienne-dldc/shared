@@ -1,6 +1,7 @@
 import { css, cva } from "../../../../styled-system/css";
 import { SystemStyleObject } from "../../../../styled-system/types";
-import { sizeToRemString, TPaletteColor } from "../core/DesignContext";
+import { sizeToRemString } from "../../design/sizes";
+import { TPaletteColor } from "../../design/types";
 
 export const colorPaletteClass = cva({
   variants: {
@@ -34,10 +35,7 @@ export const colorPaletteClass = cva({
 
 export function heightStyles(height: number): [css: SystemStyleObject, styles: React.CSSProperties] {
   return [
-    css.raw({
-      minH: "var(--design-height)",
-      minW: "var(--design-height)",
-    }),
+    css.raw({ minH: "var(--design-height)", minW: "var(--design-height)" }),
     {
       ["--design-height" as string]: sizeToRemString(height),
     },

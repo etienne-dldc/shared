@@ -3,68 +3,45 @@ import { Merge } from "type-fest";
 
 import { css, cx } from "../../../../styled-system/css";
 import { ComponentProps, SystemStyleObject } from "../../../../styled-system/types";
+import { TDesignProps, TPaletteColor } from "../../design/types";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import {
   DesignContext,
-  resolveDesignProps,
-  resolveNestedHeight,
-  TDesignSize,
-  TDesignVariant,
-  TNestedDesignHeight,
-  TPaletteColor,
+  designPropsSplitter,
+  SizeContextProvider,
+  useContainerDesignProps,
 } from "../core/DesignContext";
 import { DisabledContext } from "../core/DisabledContext";
-import { ItemContent } from "../item-content/ItemContent";
+import { itemlContentStyles } from "../item-content/styles";
+import { TItemContentFragmentProps } from "../item-content/types";
+import { itemContentPropsSplitter, useItemContentFragment } from "../item-content/useItemContentFragment";
 import { buttonClass, buttonLikeStyled } from "./styles";
 
 export type ButtonLinkProps = Merge<
   Omit<ComponentProps<"a">, "title">,
-  {
-    // Design
-    disabled?: boolean;
-    height?: TDesignSize;
-    spacing?: TDesignSize;
-    variant?: TDesignVariant;
-    hoverVariant?: TDesignVariant;
+  TItemContentFragmentProps &
+    TDesignProps & {
+      disabled?: boolean;
 
-    color?: TPaletteColor;
-    css?: SystemStyleObject;
-    nestedHeight?: TNestedDesignHeight;
+      color?: TPaletteColor;
+      css?: SystemStyleObject;
 
-    // For content
-    startIcon?: React.ReactNode;
-    loading?: boolean;
-    startSlot?: React.ReactNode;
-    endIcon?: React.ReactNode;
-    endSlot?: React.ReactNode;
-    content?: React.ReactNode;
-    alignStartIcon?: boolean;
-    alignEndIcon?: boolean;
-
-    // Forward to Button
-    render?: React.ReactElement<any>;
-  }
+      // Forward to Button
+      render?: React.ReactElement<any>;
+    }
 >;
 
 export function ButtonLink(inProps: ButtonLinkProps) {
-  const [{ design, disabled }, props] = pipePropsSplitters(inProps, {
-    design: DesignContext.usePropsSplitter(),
-    disabled: DisabledContext.usePropsSplitter(),
+  const [{ localDesign, localDisabled, localItemContent }, props] = pipePropsSplitters(inProps, {
+    localDesign: designPropsSplitter,
+    localDisabled: DisabledContext.propsSplitter,
+    localItemContent: itemContentPropsSplitter,
   });
 
   const {
     color,
     css: cssProp,
-    nestedHeight,
 
-    startIcon,
-    loading,
-    startSlot,
-    endIcon,
-    endSlot,
-    content,
-    alignStartIcon,
-    alignEndIcon,
     children,
 
     style,
@@ -72,31 +49,26 @@ export function ButtonLink(inProps: ButtonLinkProps) {
     ...linkProps
   } = props;
 
-  const { height, hoverVariant, variant } = resolveDesignProps(design);
-  const nestedHeightResolved = resolveNestedHeight(height, nestedHeight);
-  const [bntCss, btnInline] = buttonLikeStyled(height, nestedHeightResolved, variant, inProps.color);
+  const { height, hoverVariant, variant, contentHeight, spacing, heightRatio, rounded } =
+    useContainerDesignProps(localDesign);
 
-  const childrenResolved = children ?? (
-    <ItemContent {...{ startIcon, endIcon, endSlot, loading, startSlot, alignStartIcon, alignEndIcon }}>
-      {content}
-    </ItemContent>
-  );
+  const { startPadding, endPadding, fragment, noLayout } = useItemContentFragment(localItemContent, children);
+
+  const [bntCss, btnInline] = buttonLikeStyled(height, contentHeight, variant, inProps.color, rounded);
+  const [contentCss, contentInline] = itemlContentStyles(contentHeight, spacing, startPadding, endPadding, noLayout);
 
   return (
     <Ariakit.Role
       render={<a />}
-      className={cx(css(bntCss, buttonClass.raw({ hoverVariant, variant }), cssProp), className)}
-      style={{ ...style, ...btnInline }}
-      disabled={disabled.disabled}
+      className={cx(css(bntCss, buttonClass.raw({ hoverVariant, variant }), contentCss, cssProp), className)}
+      style={{ ...style, ...btnInline, ...contentInline }}
+      disabled={localDisabled.disabled}
       {...(linkProps as any)}
     >
-      <DesignContext.Define
-        height={nestedHeightResolved}
-        spacing={inProps.spacing}
-        variant={inProps.variant}
-        hoverVariant={inProps.hoverVariant}
-      >
-        <DisabledContext.Define disabled={inProps.disabled}>{childrenResolved}</DisabledContext.Define>
+      <DesignContext.Define {...localDesign} height={null}>
+        <SizeContextProvider parentHeight={height} parentHeightRatio={heightRatio}>
+          <DisabledContext.Define disabled={inProps.disabled}>{fragment}</DisabledContext.Define>
+        </SizeContextProvider>
       </DesignContext.Define>
     </Ariakit.Role>
   );

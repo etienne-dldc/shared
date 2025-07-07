@@ -3,8 +3,10 @@ import { Children, cloneElement, ComponentPropsWithoutRef, ForwardedRef, forward
 import { Merge } from "type-fest";
 import { css, cx } from "../../../../styled-system/css";
 import { SystemStyleObject } from "../../../../styled-system/types";
+import { TDesignSize, TDesignVariant, TPaletteColor } from "../../design/types";
+import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { colorPaletteClass } from "../common/styles";
-import { DesignContext, TDesignSize, TDesignVariant, TPaletteColor } from "../core/DesignContext";
+import { DesignContext, designPropsSplitter, useContainerDesignProps } from "../core/DesignContext";
 import { buttonGroupClass, separatorClass } from "./styles";
 
 export type ButtonGroupProps = Merge<
@@ -31,9 +33,11 @@ export const ButtonGroup = forwardRef(function ButtonGroup(
   inProps: ButtonGroupProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
-  const [design, props] = DesignContext.useProps(inProps);
+  const [{ localDesign }, props] = pipePropsSplitters(inProps, {
+    localDesign: designPropsSplitter,
+  });
 
-  const { variant } = design;
+  const { variant } = useContainerDesignProps(localDesign);
   const {
     color,
     className,
@@ -55,12 +59,7 @@ export const ButtonGroup = forwardRef(function ButtonGroup(
   if (childrenLength === 0) return null;
 
   return (
-    <DesignContext.Define
-      height={inProps.height}
-      spacing={inProps.spacing}
-      variant={inProps.variant}
-      hoverVariant={inProps.hoverVariant}
-    >
+    <DesignContext.Define {...localDesign}>
       <Ariakit.Role
         ref={ref}
         className={cx(

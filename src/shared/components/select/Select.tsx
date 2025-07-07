@@ -6,21 +6,14 @@ import { css, cx } from "../../../../styled-system/css";
 import { Paper, styled } from "../../../../styled-system/jsx";
 import { vstack } from "../../../../styled-system/patterns";
 import { SystemStyleObject } from "../../../../styled-system/types";
+import { TDesignSize, TDesignVariant, TPaletteColor } from "../../design/types";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { Button } from "../button/Button";
 import { colorPaletteClass } from "../common/styles";
-import {
-  DesignContext,
-  resolveDesignProps,
-  resolveNestedHeight,
-  TDesignSize,
-  TDesignVariant,
-  TNestedDesignHeight,
-  TPaletteColor,
-} from "../core/DesignContext";
+import { DesignContext, designPropsSplitter } from "../core/DesignContext";
 import { DisabledContext } from "../core/DisabledContext";
 import { Label } from "../form/Label";
-import { ItemContent } from "../item-content/ItemContent";
+import { ItemContentFragment } from "../item-content/ItemContentFragment";
 import { SelectItem } from "./SelectItem";
 import { TSelectItem } from "./types";
 
@@ -30,13 +23,13 @@ export type SelectProps<Value extends string> = Merge<
     // Design
     disabled?: boolean;
     height?: TDesignSize;
+    heightRatio?: number;
     spacing?: TDesignSize;
     variant?: TDesignVariant;
     hoverVariant?: TDesignVariant;
 
     color?: TPaletteColor;
     css?: SystemStyleObject;
-    nestedHeight?: TNestedDesignHeight;
 
     caret?: boolean;
     className?: string;
@@ -62,15 +55,14 @@ export type SelectProps<Value extends string> = Merge<
 >;
 
 export function Select<Value extends string>(inProps: SelectProps<Value>) {
-  const [{ disabled, design }, props] = pipePropsSplitters(inProps, {
-    design: DesignContext.usePropsSplitter(),
-    disabled: DisabledContext.usePropsSplitter(),
+  const [{ localDesign, localDisabled }, props] = pipePropsSplitters(inProps, {
+    localDesign: designPropsSplitter,
+    localDisabled: DisabledContext.propsSplitter,
   });
 
   const {
     color,
     css: cssProp,
-    nestedHeight,
 
     items,
     label,
@@ -94,9 +86,6 @@ export function Select<Value extends string>(inProps: SelectProps<Value>) {
     ...htmlProps
   } = props;
 
-  const { height } = resolveDesignProps(design);
-  const nestedHeightResolved = resolveNestedHeight(height, nestedHeight);
-
   const selectStore = Ariakit.useSelectStore({ value, defaultValue, setValue: onChange, open, setOpen });
 
   const storeValue = Ariakit.useStoreState(selectStore, (s) => s.value);
@@ -109,12 +98,7 @@ export function Select<Value extends string>(inProps: SelectProps<Value>) {
   const selectedIsEmpty = emptyValue !== undefined && storeValue === emptyValue;
 
   return (
-    <DesignContext.Define
-      height={height}
-      spacing={inProps.spacing}
-      variant={inProps.variant}
-      hoverVariant={inProps.hoverVariant}
-    >
+    <DesignContext.Define {...localDesign}>
       <DisabledContext.Define disabled={inProps.disabled}>
         <Ariakit.SelectProvider store={selectStore}>
           <Ariakit.Role
@@ -129,27 +113,35 @@ export function Select<Value extends string>(inProps: SelectProps<Value>) {
           >
             <Ariakit.SelectLabel
               render={
-                labelHidden ? <Ariakit.VisuallyHidden /> : (renderLabel ?? <Label disabled={disabled.disabled} />)
+                labelHidden ? <Ariakit.VisuallyHidden /> : (renderLabel ?? <Label disabled={localDisabled.disabled} />)
               }
             >
               {label}
             </Ariakit.SelectLabel>
             <Ariakit.Select
-              disabled={disabled.disabled}
+              disabled={localDisabled.disabled}
               name={name}
               {...htmlProps}
-              render={renderSelect ?? <Button nestedHeight={nestedHeightResolved} />}
+              render={
+                renderSelect ?? (
+                  <Button endPadding="icon" startPadding={selectedItem && selectedItem.icon ? "icon" : "text"} />
+                )
+              }
             >
               {selectedItem ? (
                 renderSelected ? (
                   renderSelected(selectedItem)
                 ) : (
-                  <ItemContent
+                  <ItemContentFragment
                     endIcon={caret && <Ariakit.SelectArrow render={<CaretDownIcon children={null} />} />}
                     startIcon={selectedItem.icon}
                   >
-                    <span className={selectedIsEmpty ? css({ opacity: 0.5 }) : undefined}>{selectedItem.content}</span>
-                  </ItemContent>
+                    {selectedIsEmpty ? (
+                      <span className={css({ opacity: 0.5 })}>{selectedItem.content}</span>
+                    ) : (
+                      selectedItem.content
+                    )}
+                  </ItemContentFragment>
                 )
               ) : null}
             </Ariakit.Select>
@@ -170,7 +162,11 @@ export function Select<Value extends string>(inProps: SelectProps<Value>) {
               overflowY="auto"
             >
               {items.map((item) => (
-                <SelectItem item={item} key={item.value} nestedHeight={nestedHeightResolved} />
+                <SelectItem
+                  item={item}
+                  key={item.value}
+                  // nestedHeight={contentHeight}
+                />
               ))}
             </styled.div>
           </Ariakit.SelectPopover>

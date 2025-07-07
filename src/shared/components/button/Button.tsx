@@ -3,72 +3,44 @@ import { Merge } from "type-fest";
 
 import { css, cx } from "../../../../styled-system/css";
 import { ComponentProps, SystemStyleObject } from "../../../../styled-system/types";
+import { TDesignProps, TPaletteColor } from "../../design/types";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
-import {
-  DesignContext,
-  resolveDesignProps,
-  resolveNestedHeight,
-  TDesignSize,
-  TDesignVariant,
-  TNestedDesignHeight,
-  TPaletteColor,
-} from "../core/DesignContext";
+import { designPropsSplitter, SizeContextProvider, useContainerDesignProps } from "../core/DesignContext";
 import { DisabledContext } from "../core/DisabledContext";
-import { ItemContent } from "../item-content/ItemContent";
+import { itemlContentStyles } from "../item-content/styles";
+import { TItemContentFragmentProps } from "../item-content/types";
+import { itemContentPropsSplitter, useItemContentFragment } from "../item-content/useItemContentFragment";
 import { buttonClass, buttonLikeStyled } from "./styles";
 
 export type ButtonProps = Merge<
-  Omit<ComponentProps<"button">, "title" | "height" | "color">,
-  {
-    // Design
-    disabled?: boolean;
-    height?: TDesignSize;
-    spacing?: TDesignSize;
-    variant?: TDesignVariant;
-    hoverVariant?: TDesignVariant;
+  Omit<ComponentProps<"button">, "title" | "height" | "color" | "content">,
+  TItemContentFragmentProps &
+    TDesignProps & {
+      disabled?: boolean;
 
-    color?: TPaletteColor;
-    css?: SystemStyleObject;
-    nestedHeight?: TNestedDesignHeight;
+      color?: TPaletteColor;
+      css?: SystemStyleObject;
 
-    // For content
-    startIcon?: React.ReactNode;
-    loading?: boolean;
-    startSlot?: React.ReactNode;
-    endIcon?: React.ReactNode;
-    endSlot?: React.ReactNode;
-    content?: React.ReactNode;
-    startPadding?: "auto" | "icon" | "text" | "none";
-    endPadding?: "auto" | "icon" | "text" | "none";
+      // Forward to Button
+      render?: Ariakit.ButtonProps["render"];
 
-    // Forward to Button
-    render?: Ariakit.ButtonProps["render"];
-
-    // Data attributes
-    "data-hover"?: boolean;
-    "data-focus-visible"?: boolean;
-  }
+      // Data attributes
+      "data-hover"?: boolean;
+      "data-focus-visible"?: boolean;
+    }
 >;
 
 export function Button(inProps: ButtonProps) {
-  const [{ design, disabled }, props] = pipePropsSplitters(inProps, {
-    design: DesignContext.usePropsSplitter(),
-    disabled: DisabledContext.usePropsSplitter(),
+  const [{ localDesign, localDisabled, localItemContent }, props] = pipePropsSplitters(inProps, {
+    localDesign: designPropsSplitter,
+    localDisabled: DisabledContext.propsSplitter,
+    localItemContent: itemContentPropsSplitter,
   });
 
   const {
     color,
     css: cssProp,
-    nestedHeight,
 
-    startIcon,
-    loading,
-    startSlot,
-    endIcon,
-    endSlot,
-    content,
-    startPadding,
-    endPadding,
     children,
 
     className,
@@ -77,32 +49,26 @@ export function Button(inProps: ButtonProps) {
     ...buttonProps
   } = props;
 
-  const { hoverVariant, variant, height } = resolveDesignProps(design);
-  const nestedHeightResolved = resolveNestedHeight(height, nestedHeight);
-  const [bntCss, btnInline] = buttonLikeStyled(height, nestedHeightResolved, variant, inProps.color);
+  const { hoverVariant, variant, height, contentHeight, spacing, heightRatio, rounded } =
+    useContainerDesignProps(localDesign);
 
-  const childrenResolved = children ?? (
-    <ItemContent {...{ startIcon, endIcon, endSlot, loading, startSlot, startPadding, endPadding }}>
-      {content}
-    </ItemContent>
-  );
+  const { startPadding, endPadding, fragment, noLayout } = useItemContentFragment(localItemContent, children);
+
+  const [btnCss, btnInline] = buttonLikeStyled(height, contentHeight, variant, inProps.color, rounded);
+  const [contentCss, contentInline] = itemlContentStyles(contentHeight, spacing, startPadding, endPadding, noLayout);
+  const buttonCss = buttonClass.raw({ hoverVariant, variant });
 
   return (
     <Ariakit.Button
-      className={cx(css(bntCss, buttonClass.raw({ hoverVariant, variant }), cssProp), className)}
-      style={{ ...style, ...btnInline }}
-      disabled={disabled.disabled}
+      className={cx(css(btnCss, buttonCss, contentCss, cssProp), className)}
+      style={{ ...style, ...btnInline, ...contentInline }}
+      disabled={localDisabled.disabled}
       type={type}
       {...buttonProps}
     >
-      <DesignContext.Define
-        height={nestedHeightResolved}
-        spacing={inProps.spacing}
-        variant={inProps.variant}
-        hoverVariant={inProps.hoverVariant}
-      >
-        <DisabledContext.Define disabled={inProps.disabled}>{childrenResolved}</DisabledContext.Define>
-      </DesignContext.Define>
+      <SizeContextProvider parentHeight={height} parentHeightRatio={heightRatio}>
+        <DisabledContext.Define disabled={inProps.disabled}>{fragment}</DisabledContext.Define>
+      </SizeContextProvider>
     </Ariakit.Button>
   );
 }

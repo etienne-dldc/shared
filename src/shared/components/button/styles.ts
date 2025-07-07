@@ -1,7 +1,7 @@
 import { css, cva } from "../../../../styled-system/css";
 import { SystemStyleObject } from "../../../../styled-system/types";
+import { TDesignVariant, TPaletteColor, TRoundedSize } from "../../design/types";
 import { colorPaletteClass, contentSize, heightStyles } from "../common/styles";
-import { resolveSmallRounded, TDesignVariant, TPaletteColor } from "../core/DesignContext";
 
 export const buttonLikeClass = cva({
   base: {
@@ -10,7 +10,6 @@ export const buttonLikeClass = cva({
     alignItems: "center",
     outline: "none",
     position: "relative",
-    rounded: "1_x",
     "& [data-item-main-icon]": {
       opacity: 0.6,
     },
@@ -37,6 +36,17 @@ export const buttonLikeClass = cva({
       subtle: { color: "colorPalette.200" },
       ghost: { color: "colorPalette.200" },
     } satisfies Record<TDesignVariant, SystemStyleObject>,
+    rounded: {
+      small: {
+        rounded: "0x",
+      },
+      medium: {
+        rounded: "1_x",
+      },
+      large: {
+        rounded: "2",
+      },
+    } satisfies Record<TRoundedSize, SystemStyleObject>,
   },
 });
 
@@ -155,6 +165,7 @@ export const buttonGroupClass = cva({
   base: {
     display: "flex",
     position: "relative",
+    isolation: "isolate",
     _firstChild: { zIndex: 2, position: "relative" },
     _betweenChild: { zIndex: 2, position: "relative" },
     _lastChild: { zIndex: 2, position: "relative" },
@@ -285,28 +296,26 @@ export const separatorBaseClass = cva({
 });
 
 export function separatorClass(variant: TDesignVariant, direction: "horizontal" | "vertical") {
-  return css.raw(buttonLikeBackgroundClass.raw({ variant: "surface" }), separatorBaseClass.raw({ direction, variant }));
+  return separatorBaseClass.raw({ direction, variant });
 }
 
 export function buttonLikeStyled(
   height: number,
-  nestedHeight: number,
+  contentHeight: number,
   variant: TDesignVariant,
   color: TPaletteColor | undefined,
+  rounded: TRoundedSize,
 ): [css: SystemStyleObject, styles: React.CSSProperties] {
-  const smallRounded = resolveSmallRounded(height);
-
   const [heightCss, heightInline] = heightStyles(height);
-  const [contentCss, contentInline] = contentSize(nestedHeight);
+  const [contentCss, contentInline] = contentSize(contentHeight);
 
   return [
     css.raw(
       heightCss,
-      buttonLikeClass.raw({ variant }),
+      buttonLikeClass.raw({ variant, rounded }),
       buttonLikeBackgroundClass.raw({ variant }),
       contentCss,
       color && colorPaletteClass.raw({ colorPalette: color }),
-      smallRounded && { rounded: "0x" },
     ),
     {
       ...heightInline,

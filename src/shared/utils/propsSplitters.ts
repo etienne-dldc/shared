@@ -1,6 +1,6 @@
 import { UnionToIntersection } from "type-fest";
 
-type BaseRecord = Record<string, any>;
+export type BaseRecord = Record<string, any>;
 
 export type TPropsSplitter<Out> = (props: BaseRecord) => Out;
 

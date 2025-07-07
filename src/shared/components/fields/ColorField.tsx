@@ -3,7 +3,7 @@ import { CaretDownIcon, CaretUpIcon } from "@phosphor-icons/react";
 import { useEffect } from "react";
 // import colors from "tailwindcss/colors";
 import { Paper } from "../../../../styled-system/jsx";
-import { COLOR_NAMES, toColor, VALID_COLORS } from "../../styles/colors";
+import { COLOR_NAMES, toColor, VALID_COLORS } from "../../design/colors";
 import { Button } from "../button/Button";
 import { DynamicColorProvider } from "../core/DynamicColorProvider";
 import { FieldError } from "../form/FieldError";

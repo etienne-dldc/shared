@@ -4,7 +4,6 @@ import { Grid, HStack, styled, VStack } from "../../styled-system/jsx";
 import { Button } from "../shared/components/button/Button";
 import { ButtonGroup } from "../shared/components/button/ButtonGroup";
 import { ButtonLike } from "../shared/components/button/ButtonLike";
-import { ItemContent } from "../shared/components/item-content/ItemContent";
 import { Select } from "../shared/components/select/Select";
 import { TSelectItem } from "../shared/components/select/types";
 import { useLatestRef } from "../shared/hooks/useLatestRef";
@@ -128,7 +127,7 @@ export function Variants<Dims extends TDimensions>({
         )}
         <HStack gap="4">
           <ButtonGroup color="blue" variant="solid">
-            <ButtonLike content="preset" css={{ textTransform: "uppercase", fontWeight: "bold" }} />
+            <ButtonLike css={{ textTransform: "uppercase", fontWeight: "bold" }}>{preset}</ButtonLike>
             <Select<string>
               label="preset"
               labelHidden
@@ -163,7 +162,9 @@ export function Variants<Dims extends TDimensions>({
             options={Object.keys(dimensions)}
             onChange={(selected) => setRowAxis(selected)}
           />
-          <Button content="Reset" onClick={() => resetAxis()} color="red" variant="subtle" hoverVariant="surface" />
+          <Button onClick={() => resetAxis()} color="red" variant="subtle" hoverVariant="surface">
+            Reset
+          </Button>
         </HStack>
       </HStack>
       <HStack gap="8" alignItems="start">
@@ -174,11 +175,7 @@ export function Variants<Dims extends TDimensions>({
               return (
                 <Select<string>
                   key={dimKey}
-                  label={
-                    <ItemContent css={{ textTransform: "uppercase", fontWeight: "bold", minW: "[150px]" }}>
-                      {dimKey}
-                    </ItemContent>
-                  }
+                  label={dimKey}
                   value={selected[dimKey] as string}
                   items={Object.keys(dim).map((key) => ({
                     value: key,
@@ -187,11 +184,17 @@ export function Variants<Dims extends TDimensions>({
                   onChange={(value) => setSelected({ ...selected, [dimKey]: value })}
                   renderSelect={<Button css={{ flex: "1" }} />}
                   renderWrapper={<ButtonGroup color="teal" />}
-                  renderLabel={<ButtonLike content={dimKey} css={{ flex: "1" }} />}
+                  renderLabel={
+                    <ButtonLike css={{ flex: "1", textTransform: "uppercase", fontWeight: "bold", minW: "[150px]" }}>
+                      {dimKey}
+                    </ButtonLike>
+                  }
                 />
               );
             })}
-          <Button onClick={() => setSelected(defaultSelected)} content="Reset" color="red" variant="subtle" />
+          <Button onClick={() => setSelected(defaultSelected)} color="red" variant="subtle">
+            Reset
+          </Button>
         </VStack>
         <styled.div maxH="[90vh]" overflow="auto" flex="1">
           <Grid gap="4" py="4">
@@ -299,7 +302,7 @@ function MultiSelect<T extends string>({ label, onChange, options, selected }: M
 
   return (
     <ButtonGroup variant="solid" color="blue">
-      <ButtonLike content={label} css={{ textTransform: "uppercase", fontWeight: "bold" }} />
+      <ButtonLike css={{ textTransform: "uppercase", fontWeight: "bold" }}>{label}</ButtonLike>
       {selected.map((selectedItem, index) => {
         return (
           <Select<T | "REMOVE">

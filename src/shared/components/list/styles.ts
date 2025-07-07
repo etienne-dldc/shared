@@ -1,10 +1,10 @@
-import { TDesignContextProps } from "../core/DesignContext";
-
 // export const LIST_ITEM_ICON_SIZE: Record<TDesignSize, number> = {
 //   xs: 16,
 //   sm: 18,
 //   md: 20,
 //   lg: 26,
+
+import { TDesignContext } from "../../design/types";
 
 //   smInner: 16,
 //   mdInner: 20,
@@ -12,7 +12,7 @@ import { TDesignContextProps } from "../core/DesignContext";
 // };
 
 export interface ListItemStylesParams {
-  design: TDesignContextProps;
+  design: TDesignContext;
   selected: "none" | "secondary" | "primary";
   forceHover: boolean;
   forceActive: boolean;

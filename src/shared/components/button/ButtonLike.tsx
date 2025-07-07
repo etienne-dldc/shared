@@ -3,66 +3,38 @@ import { Merge } from "type-fest";
 
 import { css, cx } from "../../../../styled-system/css";
 import { ComponentProps, SystemStyleObject } from "../../../../styled-system/types";
+import { TDesignProps, TPaletteColor } from "../../design/types";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
-import {
-  DesignContext,
-  resolveDesignProps,
-  resolveNestedHeight,
-  TDesignSize,
-  TDesignVariant,
-  TNestedDesignHeight,
-  TPaletteColor,
-} from "../core/DesignContext";
-import { ItemContent } from "../item-content/ItemContent";
+import { designPropsSplitter, SizeContextProvider, useContainerDesignProps } from "../core/DesignContext";
+import { itemlContentStyles } from "../item-content/styles";
+import { TItemContentFragmentProps } from "../item-content/types";
+import { itemContentPropsSplitter, useItemContentFragment } from "../item-content/useItemContentFragment";
 import { buttonLikeStyled } from "./styles";
 
 export type ButtonLikeProps = Merge<
-  Omit<ComponentProps<"div">, "title" | "height">,
-  {
-    // Design
-    disabled?: boolean;
-    height?: TDesignSize;
-    spacing?: TDesignSize;
-    variant?: TDesignVariant;
-    hoverVariant?: TDesignVariant;
+  Omit<ComponentProps<"div">, "title" | "height" | "content">,
+  TItemContentFragmentProps &
+    TDesignProps & {
+      disabled?: boolean;
 
-    color?: TPaletteColor;
-    css?: SystemStyleObject;
-    nestedHeight?: TNestedDesignHeight;
+      color?: TPaletteColor;
+      css?: SystemStyleObject;
 
-    // For content
-    startIcon?: React.ReactNode;
-    loading?: boolean;
-    startSlot?: React.ReactNode;
-    endIcon?: React.ReactNode;
-    endSlot?: React.ReactNode;
-    content?: React.ReactNode;
-    startPadding?: "auto" | "icon" | "text" | "none";
-    endPadding?: "auto" | "icon" | "text" | "none";
-
-    // Forward to Element
-    render?: Ariakit.RoleProps["render"];
-  }
+      // Forward to Element
+      render?: Ariakit.RoleProps["render"];
+    }
 >;
 
 export function ButtonLike(inProps: ButtonLikeProps) {
-  const [{ design }, props] = pipePropsSplitters(inProps, {
-    design: DesignContext.usePropsSplitter(),
+  const [{ localDesign, localItemContent }, props] = pipePropsSplitters(inProps, {
+    localDesign: designPropsSplitter,
+    localItemContent: itemContentPropsSplitter,
   });
 
   const {
     color,
     css: cssProp,
-    nestedHeight,
 
-    startIcon,
-    loading,
-    startSlot,
-    endIcon,
-    endSlot,
-    content,
-    startPadding,
-    endPadding,
     children,
 
     style,
@@ -70,26 +42,22 @@ export function ButtonLike(inProps: ButtonLikeProps) {
     ...buttonProps
   } = props;
 
-  const { height, variant } = resolveDesignProps(design);
-  const nestedHeightResolved = resolveNestedHeight(height, nestedHeight);
-  const [bntCss, btnInline] = buttonLikeStyled(height, nestedHeightResolved, variant, inProps.color);
+  const { height, variant, contentHeight, spacing, heightRatio, rounded } = useContainerDesignProps(localDesign);
 
-  const childrenResolved = children ?? (
-    <ItemContent {...{ startIcon, endIcon, endSlot, loading, startSlot, startPadding, endPadding }}>
-      {content}
-    </ItemContent>
-  );
+  const { startPadding, endPadding, fragment, noLayout } = useItemContentFragment(localItemContent, children);
+
+  const [btnCss, btnInline] = buttonLikeStyled(height, contentHeight, variant, inProps.color, rounded);
+  const [contentCss, contentInline] = itemlContentStyles(contentHeight, spacing, startPadding, endPadding, noLayout);
 
   return (
-    <Ariakit.Role className={cx(css(bntCss, cssProp), className)} style={{ ...style, ...btnInline }} {...buttonProps}>
-      <DesignContext.Define
-        height={nestedHeightResolved}
-        spacing={inProps.spacing}
-        variant={inProps.variant}
-        hoverVariant={inProps.hoverVariant}
-      >
-        {childrenResolved}
-      </DesignContext.Define>
+    <Ariakit.Role
+      className={cx(css(btnCss, contentCss, cssProp), className)}
+      style={{ ...style, ...btnInline, ...contentInline }}
+      {...buttonProps}
+    >
+      <SizeContextProvider parentHeight={height} parentHeightRatio={heightRatio}>
+        {fragment}
+      </SizeContextProvider>
     </Ariakit.Role>
   );
 }

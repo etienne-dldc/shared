@@ -36,7 +36,14 @@ export default function ButtonPlayground() {
           base: { row: [], column: [], selected: {} },
         }}
         render={({ disabled }) => (
-          <Select items={selectItems} label="Select a fruit" defaultValue="apple" disabled={disabled} />
+          <Select
+            items={selectItems}
+            label="Select a fruit"
+            defaultValue="apple"
+            disabled={disabled}
+            height={12}
+            heightRatio={0.8}
+          />
         )}
       />
       <div>

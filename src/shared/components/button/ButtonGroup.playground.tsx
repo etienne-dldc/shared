@@ -1,6 +1,6 @@
 import { CaretRightIcon, HouseIcon } from "@phosphor-icons/react";
 import { TVariantsValues, Variants } from "../../../playground/LegacyVariants";
-import { TDesignSize, TDesignVariant, TPaletteColor } from "../core/DesignContext";
+import { TDesignSize, TDesignVariant, TPaletteColor } from "../../design/types";
 import { Button } from "./Button";
 import { ButtonGroup } from "./ButtonGroup";
 
@@ -128,13 +128,17 @@ export default function ButtonPlayground() {
         // className={cn("w-full h-full", background, margin)}
         >
           <ButtonGroup {...props}>
-            <Button content="text" />
-            <Button content="text" />
-            <Button content="text and icon" startIcon={<HouseIcon />} />
-            <Button startIcon={<HouseIcon />} variant="solid" />
-            <Button content="text" />
-            <Button content="text" variant="subtle" />
-            <Button content="text and 2 icon" startIcon={<HouseIcon />} endIcon={<CaretRightIcon />} />
+            <Button>text</Button>
+            <Button>text</Button>
+            <Button>text and icon</Button>
+            <Button startIcon={<HouseIcon />} variant="solid">
+              text
+            </Button>
+            <Button>text</Button>
+            <Button>text</Button>
+            <Button startIcon={<HouseIcon />} endIcon={<CaretRightIcon />}>
+              text and 2 icon
+            </Button>
           </ButtonGroup>
         </div>
       )}
