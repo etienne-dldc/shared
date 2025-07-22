@@ -54,7 +54,7 @@ export function Button(inProps: ButtonProps) {
 
   const { startPadding, endPadding, fragment, noLayout } = useItemContentFragment(localItemContent, children);
 
-  const [btnCss, btnInline] = buttonLikeStyled(height, contentHeight, variant, inProps.color, rounded);
+  const [btnCss, btnInline] = buttonLikeStyled(height, contentHeight, rounded, variant, inProps.color);
   const [contentCss, contentInline] = itemlContentStyles(contentHeight, spacing, startPadding, endPadding, noLayout);
   const buttonCss = buttonClass.raw({ hoverVariant, variant });
 
@@ -66,7 +66,7 @@ export function Button(inProps: ButtonProps) {
       type={type}
       {...buttonProps}
     >
-      <SizeContextProvider parentHeight={height} parentHeightRatio={heightRatio}>
+      <SizeContextProvider height={height} heightRatio={heightRatio} rounded={rounded}>
         <DisabledContext.Define disabled={inProps.disabled}>{fragment}</DisabledContext.Define>
       </SizeContextProvider>
     </Ariakit.Button>

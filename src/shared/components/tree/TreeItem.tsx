@@ -8,7 +8,7 @@ import { TDesignSize, TPaletteColor } from "../../design/types";
 import { useMergeRefs } from "../../hooks/useMergeRefs";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { colorPaletteClass } from "../common/styles";
-import { DesignContext, designPropsSplitter, useContainerDesignProps } from "../core/DesignContext";
+import { DefaultDesignContext, designPropsSplitter, useContainerDesignProps } from "../core/DesignContext";
 import { treeItemClass, treeItemStyles } from "./styles";
 import { TreeItemContent } from "./TreeItemContent";
 
@@ -94,9 +94,9 @@ export function TreeItem(inProps: TreeItemProps) {
       ref={finalRef}
       {...buttonProps}
     >
-      <DesignContext.Define height={contentHeight} spacing={inProps.spacing}>
+      <DefaultDesignContext.Define height={contentHeight} spacing={inProps.spacing}>
         {childrenResolved}
-      </DesignContext.Define>
+      </DefaultDesignContext.Define>
     </Ariakit.Role>
   );
 }

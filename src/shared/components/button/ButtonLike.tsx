@@ -46,7 +46,7 @@ export function ButtonLike(inProps: ButtonLikeProps) {
 
   const { startPadding, endPadding, fragment, noLayout } = useItemContentFragment(localItemContent, children);
 
-  const [btnCss, btnInline] = buttonLikeStyled(height, contentHeight, variant, inProps.color, rounded);
+  const [btnCss, btnInline] = buttonLikeStyled(height, contentHeight, rounded, variant, inProps.color);
   const [contentCss, contentInline] = itemlContentStyles(contentHeight, spacing, startPadding, endPadding, noLayout);
 
   return (
@@ -55,7 +55,7 @@ export function ButtonLike(inProps: ButtonLikeProps) {
       style={{ ...style, ...btnInline, ...contentInline }}
       {...buttonProps}
     >
-      <SizeContextProvider parentHeight={height} parentHeightRatio={heightRatio}>
+      <SizeContextProvider height={height} heightRatio={heightRatio} rounded={rounded}>
         {fragment}
       </SizeContextProvider>
     </Ariakit.Role>

@@ -3,25 +3,20 @@ import { Children, cloneElement, ComponentPropsWithoutRef, ForwardedRef, forward
 import { Merge } from "type-fest";
 import { css, cx } from "../../../../styled-system/css";
 import { SystemStyleObject } from "../../../../styled-system/types";
-import { TDesignSize, TDesignVariant, TPaletteColor } from "../../design/types";
+import { TDesignProps, TPaletteColor } from "../../design/types";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { colorPaletteClass } from "../common/styles";
-import { DesignContext, designPropsSplitter, useContainerDesignProps } from "../core/DesignContext";
+import { DefaultDesignContext, designPropsSplitter, useContainerDesignProps } from "../core/DesignContext";
 import { buttonGroupClass, separatorClass } from "./styles";
 
 export type ButtonGroupProps = Merge<
   Omit<ComponentPropsWithoutRef<"div">, "title" | "height" | "color">,
-  {
-    // Design
+  TDesignProps & {
     disabled?: boolean;
-    height?: TDesignSize;
-    spacing?: TDesignSize;
-    variant?: TDesignVariant;
-    hoverVariant?: TDesignVariant;
 
     color?: TPaletteColor;
     css?: SystemStyleObject;
-    rounded?: boolean;
+    // rounded?: boolean;
 
     direction?: "horizontal" | "vertical";
     outerDividers?: "start" | "end" | "both" | "none";
@@ -45,7 +40,7 @@ export const ButtonGroup = forwardRef(function ButtonGroup(
     direction = "horizontal",
     outerDividers = "none",
     innerDividers = true,
-    rounded = true,
+    // rounded = true,
     css: cssProp,
     ...divProps
   } = props;
@@ -58,8 +53,10 @@ export const ButtonGroup = forwardRef(function ButtonGroup(
 
   if (childrenLength === 0) return null;
 
+  const rounded = true;
+
   return (
-    <DesignContext.Define {...localDesign}>
+    <DefaultDesignContext.Define {...localDesign}>
       <Ariakit.Role
         ref={ref}
         className={cx(
@@ -95,6 +92,6 @@ export const ButtonGroup = forwardRef(function ButtonGroup(
         })}
         {dividerAfter && <span className={css(separatorClass(variant, direction))} />}
       </Ariakit.Role>
-    </DesignContext.Define>
+    </DefaultDesignContext.Define>
   );
 });

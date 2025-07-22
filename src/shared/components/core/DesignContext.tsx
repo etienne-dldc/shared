@@ -2,27 +2,33 @@
 
 import { createContext, PropsWithChildren, useContext, useMemo } from "react";
 import { BASE_HEIGHT, BASE_HEIGHT_RATIO, resolveContainerDesignProps } from "../../design/sizes";
-import { TDesignContext, TDesignContextResolved, TSizeContext } from "../../design/types";
+import { TDefaultDesignContext, TDesignContextResolved, TParentDesignContext } from "../../design/types";
 import { createPropsContext } from "../../utils/propsContext";
 import { withoutUndefined } from "../../utils/withoutUndefined";
 
-export const SizeContext = createContext<TSizeContext | null>(null);
+export const ParentDesignContext = createContext<TParentDesignContext | null>(null);
 
-export function SizeContextProvider({ parentHeight, parentHeightRatio, children }: PropsWithChildren<TSizeContext>) {
-  const value = useMemo(() => ({ parentHeight, parentHeightRatio }), [parentHeight, parentHeightRatio]);
-  return <SizeContext.Provider value={value}>{children}</SizeContext.Provider>;
+export function SizeContextProvider({
+  height,
+  heightRatio,
+  rounded,
+  children,
+}: PropsWithChildren<TParentDesignContext>) {
+  const value = useMemo(() => ({ height, heightRatio, rounded }), [height, heightRatio, rounded]);
+  return <ParentDesignContext.Provider value={value}>{children}</ParentDesignContext.Provider>;
 }
 
-export const DesignContext = createPropsContext<TDesignContext>("Design", {
+export const DefaultDesignContext = createPropsContext<TDefaultDesignContext>("Design", {
   height: null,
   heightRatio: null,
+  rounded: null,
   spacing: null,
   variant: "surface",
   hoverVariant: null,
 });
 
-export function designPropsSplitter(props: Partial<TDesignContext>) {
-  const base = DesignContext.propsSplitter(props);
+export function designPropsSplitter(props: Partial<TDefaultDesignContext>) {
+  const base = DefaultDesignContext.propsSplitter(props);
   return withoutUndefined({
     ...base,
     // Use null as default value for height and heightRatio
@@ -31,8 +37,8 @@ export function designPropsSplitter(props: Partial<TDesignContext>) {
   });
 }
 
-export function useContainerDesignProps(localProps: Partial<TDesignContext>): TDesignContextResolved {
-  const sizeCtx = useContext(SizeContext);
-  const parentCtx = DesignContext.useProps();
+export function useContainerDesignProps(localProps: Partial<TDefaultDesignContext>): TDesignContextResolved {
+  const sizeCtx = useContext(ParentDesignContext);
+  const parentCtx = DefaultDesignContext.useProps();
   return resolveContainerDesignProps(sizeCtx, parentCtx, localProps);
 }

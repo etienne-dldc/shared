@@ -1,21 +1,51 @@
 import { clamp } from "../utils/math";
-import { TDesignContext, TDesignContextResolved, TDesignSize, THeightRatio, TRoundedSize, TSizeContext } from "./types";
+import {
+  TDefaultDesignContext,
+  TDesignContextResolved,
+  TDesignSize,
+  THeightRatio,
+  TParentDesignContext,
+} from "./types";
 
 export const BASE_HEIGHT = 7;
 export const BASE_HEIGHT_RATIO = 0.68;
 
+// small: {
+//   rounded: "0x",
+// },
+// medium: {
+//   rounded: "1_x",
+// },
+// large: {
+//   rounded: "2",
+// },
+
+export const ROUNDED = {
+  small: parseSize("0x"),
+  base: parseSize("1_x"),
+  medium: parseSize("1"),
+};
+
 export function resolveSmallRounded(height: number): boolean {
   return height <= 4;
+}
+
+export function powerValue(value: number, power: number): number {
+  const powerClamped = clamp(power, 0, 1);
+  return Math.pow(value + 1, powerClamped) - 1;
 }
 
 export function powerSize(size: number, power: number = 0.68): number {
   if (size < 2.5) {
     return size;
   }
-  const powerClamped = clamp(power, 0, 1);
-  const val = Math.pow(size, powerClamped);
-  const valRounded = Math.round(val * 2) / 2;
-  return clamp(valRounded, 2.5, size);
+  const val = powerValue(size, power);
+  return roundToSize(val);
+}
+
+export function roundToSize(value: number): number {
+  const valRounded = Math.round(value * 2) / 2;
+  return clamp(valRounded, 0, Infinity);
 }
 
 export function clampHeightRatio(value: number): number {
@@ -71,25 +101,45 @@ export function spacingToGapRem(spacing: TDesignSize): string {
 }
 
 export function resolveContainerDesignProps(
-  sizeCtx: TSizeContext | null,
-  designCtx: TDesignContext,
-  localProps: Partial<TDesignContext>,
+  sizeCtx: TParentDesignContext | null,
+  defaultDesignCtx: TDefaultDesignContext,
+  localProps: Partial<TDefaultDesignContext>,
 ): TDesignContextResolved {
-  const heightFromParent = sizeCtx ? powerSize(sizeCtx.parentHeight, sizeCtx.parentHeightRatio) : null;
-
-  const height = parseSize(localProps.height ?? heightFromParent ?? designCtx.height ?? BASE_HEIGHT);
-  const heightRatioValue = localProps.heightRatio ?? designCtx.heightRatio ?? BASE_HEIGHT_RATIO;
-  const heightRatio = resolveHeightRatio(
-    heightRatioValue,
-    resolveHeightRatio(sizeCtx?.parentHeightRatio ?? designCtx.heightRatio ?? BASE_HEIGHT_RATIO, BASE_HEIGHT_RATIO),
-  );
-  const contentHeight = powerSize(height, heightRatio);
-
-  const variant = localProps.variant ?? designCtx.variant;
-  const hoverVariant = localProps.hoverVariant ?? designCtx.hoverVariant ?? variant;
+  const variant = localProps.variant ?? defaultDesignCtx.variant;
+  const hoverVariant = localProps.hoverVariant ?? defaultDesignCtx.hoverVariant ?? variant;
   const spacing = parseMaybeSize(localProps.spacing);
 
-  const rounded: TRoundedSize = sizeCtx ? "small" : "medium";
+  const heightRatioValue = localProps.heightRatio ?? defaultDesignCtx.heightRatio ?? BASE_HEIGHT_RATIO;
+  const heightRatio = resolveHeightRatio(
+    heightRatioValue,
+    resolveHeightRatio(sizeCtx?.heightRatio ?? defaultDesignCtx.heightRatio ?? BASE_HEIGHT_RATIO, BASE_HEIGHT_RATIO),
+  );
+
+  if (sizeCtx) {
+    // We are in a nested context
+    const autoHeight = powerSize(sizeCtx.height, sizeCtx.heightRatio);
+    const height = parseSize(localProps.height ?? autoHeight);
+    const contentHeight = powerSize(height, heightRatio);
+
+    const padding = (sizeCtx.height - height) / 2;
+
+    const autoRounded = clamp(roundToSize(radiusScale(sizeCtx.rounded, padding)), 0.5, Infinity);
+    const rounded = parseSize(localProps.rounded ?? autoRounded);
+
+    console.log({
+      height,
+      contentHeight,
+      parentRounded: sizeCtx.rounded,
+      padding,
+      rounded,
+    });
+
+    return { height, heightRatio, contentHeight, variant, hoverVariant, spacing, rounded };
+  }
+  // We are in a root context
+  const height = parseSize(localProps.height ?? defaultDesignCtx.height ?? BASE_HEIGHT);
+  const rounded = parseSize(localProps.rounded ?? defaultDesignCtx.rounded ?? ROUNDED.base);
+  const contentHeight = powerSize(height, heightRatio);
 
   return {
     height,
@@ -107,4 +157,8 @@ function resolveHeightRatio(value: THeightRatio, parentHeight: number): number {
     return clampHeightRatio(value(parentHeight));
   }
   return clampHeightRatio(value);
+}
+
+function radiusScale(parentRadius: number, distance: number, scale = 1): number {
+  return parentRadius * Math.exp(-(scale * distance) / parentRadius);
 }

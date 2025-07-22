@@ -5,7 +5,7 @@ import { css, cx } from "../../../../styled-system/css";
 import { TDesignProps } from "../../design/types";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import {
-  DesignContext,
+  DefaultDesignContext,
   designPropsSplitter,
   SizeContextProvider,
   useContainerDesignProps,
@@ -38,7 +38,7 @@ export function ListItem(inProps: ListItemProps) {
 
   const { color, children, style, className, render, ref, ...htmlProps } = props;
 
-  const { height, contentHeight, spacing, heightRatio } = useContainerDesignProps(localDesign);
+  const { height, contentHeight, spacing, heightRatio, rounded } = useContainerDesignProps(localDesign);
   const { startPadding, endPadding, fragment, noLayout } = useItemContentFragment(localItemContent, children);
 
   const [contentCss, contentInline] = itemlContentStyles(contentHeight, spacing, startPadding, endPadding, noLayout);
@@ -62,11 +62,11 @@ export function ListItem(inProps: ListItemProps) {
         ref={ref}
         {...htmlProps}
       >
-        <DesignContext.Define {...localDesign} height={null}>
-          <SizeContextProvider parentHeight={height} parentHeightRatio={heightRatio}>
+        <DefaultDesignContext.Define {...localDesign} height={null}>
+          <SizeContextProvider height={height} heightRatio={heightRatio} rounded={rounded}>
             {fragment}
           </SizeContextProvider>
-        </DesignContext.Define>
+        </DefaultDesignContext.Define>
       </Ariakit.Role>
     </DynamicColorProvider>
   );

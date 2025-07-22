@@ -3,7 +3,7 @@ import { CheckIcon } from "@phosphor-icons/react";
 import { css, cx } from "../../../../styled-system/css";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { heightStyles } from "../common/styles";
-import { DesignContext, designPropsSplitter, useContainerDesignProps } from "../core/DesignContext";
+import { DefaultDesignContext, designPropsSplitter, useContainerDesignProps } from "../core/DesignContext";
 import { itemlContentStyles } from "../item-content/styles";
 import { useItemContentFragment } from "../item-content/useItemContentFragment";
 import { selectItemClass } from "./styles";
@@ -46,7 +46,7 @@ export function SelectItem(inProps: SelectItemProps) {
       disabled={item.disabled || item.hidden}
       value={item.value}
     >
-      <DesignContext.Define {...localDesign}>{fragment}</DesignContext.Define>
+      <DefaultDesignContext.Define {...localDesign}>{fragment}</DefaultDesignContext.Define>
     </Ariakit.SelectItem>
   );
 }

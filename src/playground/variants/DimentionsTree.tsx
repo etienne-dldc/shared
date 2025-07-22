@@ -2,7 +2,7 @@ import { memo, useCallback } from "react";
 import { MoveHandler, NodeRendererProps, Tree } from "react-arborist";
 import { css, cx } from "../../../styled-system/css";
 import { ButtonLike } from "../../shared/components/button/ButtonLike";
-import { DesignContext } from "../../shared/components/core/DesignContext";
+import { DefaultDesignContext } from "../../shared/components/core/DesignContext";
 import { ItemContent } from "../../shared/components/item-content/ItemContent";
 import { TreeItem } from "../../shared/components/tree/TreeItem";
 import { TDimention } from "./types";
@@ -14,7 +14,7 @@ export function DimentionsTree() {
   const onMove = useCallback<MoveHandler<TDimention<string>>>(() => {}, []);
 
   return (
-    <DesignContext.Define height="10">
+    <DefaultDesignContext.Define height="10">
       <Tree
         rowHeight={40}
         data={dimentions}
@@ -24,7 +24,7 @@ export function DimentionsTree() {
       >
         {DimentionsTreeItem}
       </Tree>
-    </DesignContext.Define>
+    </DefaultDesignContext.Define>
   );
 }
 

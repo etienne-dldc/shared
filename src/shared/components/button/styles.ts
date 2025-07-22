@@ -1,7 +1,7 @@
 import { css, cva } from "../../../../styled-system/css";
 import { SystemStyleObject } from "../../../../styled-system/types";
-import { TDesignVariant, TPaletteColor, TRoundedSize } from "../../design/types";
-import { colorPaletteClass, contentSize, heightStyles } from "../common/styles";
+import { TDesignVariant, TPaletteColor } from "../../design/types";
+import { colorPaletteClass, contentSize, heightStyles, roundedStyles } from "../common/styles";
 
 export const buttonLikeClass = cva({
   base: {
@@ -36,17 +36,6 @@ export const buttonLikeClass = cva({
       subtle: { color: "colorPalette.200" },
       ghost: { color: "colorPalette.200" },
     } satisfies Record<TDesignVariant, SystemStyleObject>,
-    rounded: {
-      small: {
-        rounded: "0x",
-      },
-      medium: {
-        rounded: "1_x",
-      },
-      large: {
-        rounded: "2",
-      },
-    } satisfies Record<TRoundedSize, SystemStyleObject>,
   },
 });
 
@@ -302,24 +291,27 @@ export function separatorClass(variant: TDesignVariant, direction: "horizontal" 
 export function buttonLikeStyled(
   height: number,
   contentHeight: number,
+  rounded: number,
   variant: TDesignVariant,
   color: TPaletteColor | undefined,
-  rounded: TRoundedSize,
 ): [css: SystemStyleObject, styles: React.CSSProperties] {
   const [heightCss, heightInline] = heightStyles(height);
+  const [roundedCss, roundedInline] = roundedStyles(rounded);
   const [contentCss, contentInline] = contentSize(contentHeight);
 
   return [
     css.raw(
       heightCss,
-      buttonLikeClass.raw({ variant, rounded }),
+      buttonLikeClass.raw({ variant }),
       buttonLikeBackgroundClass.raw({ variant }),
       contentCss,
+      roundedCss,
       color && colorPaletteClass.raw({ colorPalette: color }),
     ),
     {
       ...heightInline,
       ...contentInline,
+      ...roundedInline,
     },
   ];
 }

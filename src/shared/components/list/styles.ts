@@ -4,7 +4,7 @@
 //   md: 20,
 //   lg: 26,
 
-import { TDesignContext } from "../../design/types";
+import { TDefaultDesignContext } from "../../design/types";
 
 //   smInner: 16,
 //   mdInner: 20,
@@ -12,7 +12,7 @@ import { TDesignContext } from "../../design/types";
 // };
 
 export interface ListItemStylesParams {
-  design: TDesignContext;
+  design: TDefaultDesignContext;
   selected: "none" | "secondary" | "primary";
   forceHover: boolean;
   forceActive: boolean;

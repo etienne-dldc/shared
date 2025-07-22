@@ -6,7 +6,7 @@ import { TDesignProps } from "../../design/types";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { heightStyles } from "../common/styles";
 import {
-  DesignContext,
+  DefaultDesignContext,
   designPropsSplitter,
   SizeContextProvider,
   useContainerDesignProps,
@@ -45,7 +45,7 @@ export function ItemContent(inProps: ItemContentProps) {
     ...htmlProps
   } = props;
 
-  const { spacing, contentHeight, height, heightRatio } = useContainerDesignProps(localDesign);
+  const { spacing, contentHeight, height, heightRatio, rounded } = useContainerDesignProps(localDesign);
 
   const { startPadding, endPadding, fragment } = useItemContentFragment(localItemContent, children);
 
@@ -59,11 +59,11 @@ export function ItemContent(inProps: ItemContentProps) {
       style={{ ...style, ...heightInline, ...contentInline }}
       {...htmlProps}
     >
-      <DesignContext.Define {...localDesign} height={null}>
-        <SizeContextProvider parentHeight={height} parentHeightRatio={heightRatio}>
+      <DefaultDesignContext.Define {...localDesign} height={null}>
+        <SizeContextProvider height={height} heightRatio={heightRatio} rounded={rounded}>
           {fragment}
         </SizeContextProvider>
-      </DesignContext.Define>
+      </DefaultDesignContext.Define>
     </div>
   );
 }

@@ -42,6 +42,15 @@ export function heightStyles(height: number): [css: SystemStyleObject, styles: R
   ];
 }
 
+export function roundedStyles(rounded: number): [css: SystemStyleObject, styles: React.CSSProperties] {
+  return [
+    css.raw({ borderRadius: "var(--design-rounded)" }),
+    {
+      ["--design-rounded" as string]: sizeToRemString(rounded),
+    },
+  ];
+}
+
 export function contentSize(height: number): [css: SystemStyleObject, styles: React.CSSProperties] {
   return [
     css.raw({ textStyle: "dynamic" }),

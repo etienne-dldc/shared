@@ -2,13 +2,13 @@ import { CaretDownIcon, CaretRightIcon, DotIcon, DotsSixVerticalIcon, HouseIcon,
 import { ComponentPropsWithRef, Fragment, useState } from "react";
 import { Merge } from "type-fest";
 import { HStack, styled } from "../../../styled-system/jsx";
-import { BASE_HEIGHT_RATIO } from "../design/sizes";
+import { BASE_HEIGHT_RATIO, ROUNDED } from "../design/sizes";
 import { clamp } from "../utils/math";
 import { pipePropsSplitters } from "../utils/propsSplitters";
 import { Button } from "./button/Button";
 import { ButtonGroup } from "./button/ButtonGroup";
 import { ButtonLike } from "./button/ButtonLike";
-import { DesignContext, designPropsSplitter, useContainerDesignProps } from "./core/DesignContext";
+import { DefaultDesignContext, designPropsSplitter, useContainerDesignProps } from "./core/DesignContext";
 import { ItemContent } from "./item-content/ItemContent";
 import { ItemContentFragment } from "./item-content/ItemContentFragment";
 import { TItemContentFragmentProps } from "./item-content/types";
@@ -16,6 +16,9 @@ import { TItemContentFragmentProps } from "./item-content/types";
 export default function Playground() {
   return (
     <styled.div display="flex" flexDirection="column" gap="1" alignItems="start">
+      <NestedButtonPlayground />
+      <div style={{ height: 20 }} />
+
       <ButtonLike height={6} variant="subtle" startIcon={null} startPadding="icon" endPadding="icon">
         <ButtonLike variant="solid" startIcon={<DotsSixVerticalIcon />} />
         <ButtonLike variant="solid" startIcon={<CaretRightIcon />} />
@@ -177,7 +180,7 @@ function ButtonPlayground() {
         // className={colorPaletteClass({ colorPalette: "blue" })}
         // css={{ "& *": { outline: "[1px solid blue]" } }}
       >
-        <DesignContext.Define height={height} heightRatio={heightRatio}>
+        <DefaultDesignContext.Define height={height} heightRatio={heightRatio}>
           <Button>Text</Button>
           <Button startIcon={<HouseIcon />}>Text</Button>
           <Button endIcon={<HouseIcon />}>Text</Button>
@@ -198,7 +201,7 @@ function ButtonPlayground() {
           >
             Nested Button added ratio
           </ButtonLike>
-        </DesignContext.Define>
+        </DefaultDesignContext.Define>
       </styled.div>
     </Fragment>
   );
@@ -233,7 +236,7 @@ function TreePlayground() {
       />
 
       <styled.div display="flex" flexDirection="column" alignItems="stretch" w="320px">
-        <DesignContext.Define height={height} heightRatio={heightRatio}>
+        <DefaultDesignContext.Define height={height} heightRatio={heightRatio}>
           <PlaygroundItem endSlot={<Button variant="ghost" startIcon={<PenIcon />} />}>Hey</PlaygroundItem>
           <PlaygroundItem
             style={{ paddingLeft: 4 * height }}
@@ -249,7 +252,7 @@ function TreePlayground() {
           </PlaygroundItem>
           <PlaygroundItem endSlot={<Button variant="ghost" startIcon={<PenIcon />} />}>Hey</PlaygroundItem>
           <PlaygroundItem endSlot={<Button variant="ghost" startIcon={<PenIcon />} />}>Hey</PlaygroundItem>
-        </DesignContext.Define>
+        </DefaultDesignContext.Define>
       </styled.div>
     </Fragment>
   );
@@ -274,10 +277,10 @@ function PlaygroundItem({
   startSlot,
   ...htmlProps
 }: PlaygroundItemProps) {
-  const parentHeightRation = DesignContext.useProps().heightRatio;
+  const parentHeightRation = DefaultDesignContext.useProps().heightRatio;
 
   return (
-    <DesignContext.Define heightRatio={parentHeightRation ?? 0.85}>
+    <DefaultDesignContext.Define heightRatio={parentHeightRation ?? 0.85}>
       <Button
         variant="ghost"
         className="group"
@@ -324,7 +327,7 @@ function PlaygroundItem({
           </ItemContent>
         </ItemContentFragment>
       </Button>
-    </DesignContext.Define>
+    </DefaultDesignContext.Define>
   );
 }
 
@@ -332,7 +335,7 @@ function PowerSizeDemo() {
   const [power, setPower] = useState(0.68);
 
   return (
-    <DesignContext.Define heightRatio={power}>
+    <DefaultDesignContext.Define heightRatio={power}>
       <styled.div display="flex" flexDirection="column" gap="1" alignItems="start">
         {/* Power slider */}
         <input
@@ -378,7 +381,7 @@ function PowerSizeDemo() {
           </PowerButtonContent>
         </PowerButton>
         <PowerButton height={14}>
-          <DesignContext.Define height={10} heightRatio={1}>
+          <DefaultDesignContext.Define height={10} heightRatio={1}>
             <PowerButtonContent>
               <span>Button 14</span>
               <PowerButton>Button 14</PowerButton>
@@ -387,10 +390,10 @@ function PowerSizeDemo() {
                 <PowerButton>N2</PowerButton>
               </PowerButtonContent>
             </PowerButtonContent>
-          </DesignContext.Define>
+          </DefaultDesignContext.Define>
         </PowerButton>
       </styled.div>
-    </DesignContext.Define>
+    </DefaultDesignContext.Define>
   );
 }
 
@@ -421,9 +424,9 @@ function PowerButton(inProps: PowerButtonProps) {
         justifyContent: "center",
       }}
     >
-      <DesignContext.Define height={inProps.height} heightRatio={inProps.heightRatio}>
+      <DefaultDesignContext.Define height={inProps.height} heightRatio={inProps.heightRatio}>
         {children}
-      </DesignContext.Define>
+      </DefaultDesignContext.Define>
     </div>
   );
 }
@@ -453,9 +456,65 @@ function PowerButtonContent(inProps: PowerButtonContentProps) {
         justifyContent: "center",
       }}
     >
-      <DesignContext.Define height={contentHeight} heightRatio={inProps.heightRatio}>
+      <DefaultDesignContext.Define height={contentHeight} heightRatio={inProps.heightRatio}>
         {children}
-      </DesignContext.Define>
+      </DefaultDesignContext.Define>
     </div>
+  );
+}
+
+function NestedButtonPlayground() {
+  const [height, setHeight] = useState(6);
+  const [heightRatio, setHeightRatio] = useState(BASE_HEIGHT_RATIO);
+  const [rounded, setRounded] = useState(ROUNDED.base);
+
+  return (
+    <styled.div display="flex" flexDirection="column" gap="1" alignItems="start">
+      <p>Height {height}</p>
+      <input
+        type="range"
+        min={6}
+        max={20}
+        step={1}
+        value={height}
+        onChange={(e) => setHeight(parseInt(e.target.value, 10))}
+        style={{ width: 300 }}
+      />
+
+      <p>Height Ratio {heightRatio}</p>
+      <input
+        type="range"
+        min={0.01}
+        max={1}
+        step={0.01}
+        value={heightRatio}
+        onChange={(e) => setHeightRatio(parseFloat(e.target.value))}
+        style={{ width: 300 }}
+      />
+
+      <p>Rounded {rounded}</p>
+      <input
+        type="range"
+        min={0}
+        max={6}
+        step={0.5}
+        value={rounded}
+        onChange={(e) => setRounded(parseFloat(e.target.value))}
+        style={{ width: 300 }}
+      />
+
+      <DefaultDesignContext.Define heightRatio={heightRatio} height={height}>
+        <ButtonLike padding="icon" rounded={rounded}>
+          <ButtonLike padding="icon">Hey</ButtonLike>
+        </ButtonLike>
+      </DefaultDesignContext.Define>
+      {/* <DefaultDesignContext.Define heightRatio={heightRatio} height={height}>
+        <ButtonLike padding="icon" rounded={rounded}>
+          <ButtonLike padding="icon">
+            <ButtonLike padding="icon">Hey</ButtonLike>
+          </ButtonLike>
+        </ButtonLike>
+      </DefaultDesignContext.Define> */}
+    </styled.div>
   );
 }
