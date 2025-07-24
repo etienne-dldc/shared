@@ -49,7 +49,7 @@ export function Button(inProps: ButtonProps) {
     ...buttonProps
   } = props;
 
-  const { hoverVariant, variant, height, contentHeight, spacing, heightRatio, rounded } =
+  const { hoverVariant, variant, height, contentHeight, spacing, rounded, depth } =
     useContainerDesignProps(localDesign);
 
   const { startPadding, endPadding, fragment, noLayout } = useItemContentFragment(localItemContent, children);
@@ -66,7 +66,7 @@ export function Button(inProps: ButtonProps) {
       type={type}
       {...buttonProps}
     >
-      <SizeContextProvider height={height} heightRatio={heightRatio} rounded={rounded}>
+      <SizeContextProvider height={height} contentHeight={contentHeight} rounded={rounded} depth={depth}>
         <DisabledContext.Define disabled={inProps.disabled}>{fragment}</DisabledContext.Define>
       </SizeContextProvider>
     </Ariakit.Button>

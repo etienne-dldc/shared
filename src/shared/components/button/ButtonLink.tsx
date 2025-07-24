@@ -6,7 +6,7 @@ import { ComponentProps, SystemStyleObject } from "../../../../styled-system/typ
 import { TDesignProps, TPaletteColor } from "../../design/types";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import {
-  DefaultDesignContext,
+  DefaultDesignProvider,
   designPropsSplitter,
   SizeContextProvider,
   useContainerDesignProps,
@@ -49,7 +49,7 @@ export function ButtonLink(inProps: ButtonLinkProps) {
     ...linkProps
   } = props;
 
-  const { height, hoverVariant, variant, contentHeight, spacing, heightRatio, rounded } =
+  const { height, hoverVariant, variant, contentHeight, spacing, rounded, depth } =
     useContainerDesignProps(localDesign);
 
   const { startPadding, endPadding, fragment, noLayout } = useItemContentFragment(localItemContent, children);
@@ -65,11 +65,11 @@ export function ButtonLink(inProps: ButtonLinkProps) {
       disabled={localDisabled.disabled}
       {...(linkProps as any)}
     >
-      <DefaultDesignContext.Define {...localDesign} height={null}>
-        <SizeContextProvider height={height} heightRatio={heightRatio} rounded={rounded}>
+      <DefaultDesignProvider {...localDesign} height={null}>
+        <SizeContextProvider height={height} contentHeight={contentHeight} rounded={rounded} depth={depth}>
           <DisabledContext.Define disabled={inProps.disabled}>{fragment}</DisabledContext.Define>
         </SizeContextProvider>
-      </DefaultDesignContext.Define>
+      </DefaultDesignProvider>
     </Ariakit.Role>
   );
 }

@@ -1,24 +1,17 @@
+import { DEFAULT_DESIGN } from "../components/core/DesignContext";
 import { clamp } from "../utils/math";
+import { withoutUndefined } from "../utils/withoutUndefined";
 import {
   TDefaultDesignContext,
   TDesignContextResolved,
   TDesignSize,
-  THeightRatio,
+  TNestedDefaultDesignContext,
   TParentDesignContext,
 } from "./types";
 
 export const BASE_HEIGHT = 7;
-export const BASE_HEIGHT_RATIO = 0.68;
-
-// small: {
-//   rounded: "0x",
-// },
-// medium: {
-//   rounded: "1_x",
-// },
-// large: {
-//   rounded: "2",
-// },
+export const MIN_HEIGHT = 2.5;
+export const BASE_HEIGHT_RATIO = 0.7;
 
 export const ROUNDED = {
   small: parseSize("0x"),
@@ -28,19 +21,6 @@ export const ROUNDED = {
 
 export function resolveSmallRounded(height: number): boolean {
   return height <= 4;
-}
-
-export function powerValue(value: number, power: number): number {
-  const powerClamped = clamp(power, 0, 1);
-  return Math.pow(value + 1, powerClamped) - 1;
-}
-
-export function powerSize(size: number, power: number = 0.68): number {
-  if (size < 2.5) {
-    return size;
-  }
-  const val = powerValue(size, power);
-  return roundToSize(val);
 }
 
 export function roundToSize(value: number): number {
@@ -101,64 +81,88 @@ export function spacingToGapRem(spacing: TDesignSize): string {
 }
 
 export function resolveContainerDesignProps(
-  sizeCtx: TParentDesignContext | null,
-  defaultDesignCtx: TDefaultDesignContext,
+  parentCtx: TParentDesignContext | null,
+  nestedCtx: TNestedDefaultDesignContext | null,
   localProps: Partial<TDefaultDesignContext>,
 ): TDesignContextResolved {
-  const variant = localProps.variant ?? defaultDesignCtx.variant;
-  const hoverVariant = localProps.hoverVariant ?? defaultDesignCtx.hoverVariant ?? variant;
-  const spacing = parseMaybeSize(localProps.spacing);
+  const depth = !parentCtx ? 0 : parentCtx.depth + 1;
+  const props = resolveProps(nestedCtx, localProps, depth);
+  const contentHeightFromNestedHeight = resolveProps(nestedCtx, {}, depth + 1).height;
+  const contentHeightProp = props.contentHeight ?? contentHeightFromNestedHeight;
 
-  const heightRatioValue = localProps.heightRatio ?? defaultDesignCtx.heightRatio ?? BASE_HEIGHT_RATIO;
-  const heightRatio = resolveHeightRatio(
-    heightRatioValue,
-    resolveHeightRatio(sizeCtx?.heightRatio ?? defaultDesignCtx.heightRatio ?? BASE_HEIGHT_RATIO, BASE_HEIGHT_RATIO),
-  );
+  const hoverVariant = props.hoverVariant ?? props.variant;
+  const spacing = parseMaybeSize(props.spacing);
 
-  if (sizeCtx) {
-    // We are in a nested context
-    const autoHeight = powerSize(sizeCtx.height, sizeCtx.heightRatio);
-    const height = parseSize(localProps.height ?? autoHeight);
-    const contentHeight = powerSize(height, heightRatio);
+  if (!parentCtx) {
+    // We are in a root context
+    const height = parseSize(props.height ?? BASE_HEIGHT);
+    const rounded = parseSize(props.rounded ?? ROUNDED.base);
+    const contentHeight = resolveContentHeight(height, contentHeightProp);
 
-    const padding = (sizeCtx.height - height) / 2;
-
-    const autoRounded = clamp(roundToSize(radiusScale(sizeCtx.rounded, padding)), 0.5, Infinity);
-    const rounded = parseSize(localProps.rounded ?? autoRounded);
-
-    console.log({
-      height,
-      contentHeight,
-      parentRounded: sizeCtx.rounded,
-      padding,
-      rounded,
-    });
-
-    return { height, heightRatio, contentHeight, variant, hoverVariant, spacing, rounded };
+    return { height, contentHeight, variant: props.variant, hoverVariant, spacing, rounded, depth };
   }
-  // We are in a root context
-  const height = parseSize(localProps.height ?? defaultDesignCtx.height ?? BASE_HEIGHT);
-  const rounded = parseSize(localProps.rounded ?? defaultDesignCtx.rounded ?? ROUNDED.base);
-  const contentHeight = powerSize(height, heightRatio);
+  // We are in a nested context
+  const autoHeight = parentCtx.contentHeight;
+  const height = parseSize(props.height ?? autoHeight);
+  const contentHeight = resolveContentHeight(height, contentHeightProp);
 
+  const padding = (parentCtx.height - height) / 2;
+
+  const autoRounded = clamp(roundToSize(radiusScale(parentCtx.rounded, padding)), 0.5, Infinity);
+  const rounded = parseSize(props.rounded ?? autoRounded);
+
+  return { height, contentHeight, variant: props.variant, hoverVariant, spacing, rounded, depth };
+}
+
+function resolveProps(
+  nestedCtx: TNestedDefaultDesignContext | null,
+  localProps: Partial<TDefaultDesignContext>,
+  depth: number,
+): TDefaultDesignContext {
+  const resolvedDefault = resolveDefaultProps(nestedCtx, depth);
   return {
-    height,
-    heightRatio,
-    contentHeight,
-    variant,
-    hoverVariant,
-    spacing,
-    rounded,
+    ...resolvedDefault,
+    ...withoutUndefined(localProps),
   };
 }
 
-function resolveHeightRatio(value: THeightRatio, parentHeight: number): number {
-  if (typeof value === "function") {
-    return clampHeightRatio(value(parentHeight));
+function resolveDefaultProps(nestedCtx: TNestedDefaultDesignContext | null, depth: number): TDefaultDesignContext {
+  if (!nestedCtx) {
+    return DEFAULT_DESIGN;
   }
-  return clampHeightRatio(value);
+  const parentDepth = nestedCtx.depth;
+  if (depth < parentDepth) {
+    return DEFAULT_DESIGN;
+  }
+  const diff = depth - parentDepth;
+  const values = nestedCtx.values[diff] ?? {};
+  return {
+    ...DEFAULT_DESIGN,
+    ...withoutUndefined(values),
+  };
+}
+
+function resolveContentHeight(height: number, contentHeight: TDesignSize | null): number {
+  if (contentHeight !== null) {
+    return clamp(parseSize(contentHeight), MIN_HEIGHT, height);
+  }
+  // Auto content height based on the height
+  return clamp(powerSize(height, BASE_HEIGHT_RATIO), MIN_HEIGHT, height);
 }
 
 function radiusScale(parentRadius: number, distance: number, scale = 1): number {
   return parentRadius * Math.exp(-(scale * distance) / parentRadius);
+}
+
+export function powerValue(value: number, power: number): number {
+  const powerClamped = clamp(power, 0, 1);
+  return Math.pow(value + 1, powerClamped) - 1;
+}
+
+export function powerSize(size: number, power: number = 0.68): number {
+  if (size < MIN_HEIGHT) {
+    return size;
+  }
+  const val = powerValue(size, power);
+  return roundToSize(val);
 }

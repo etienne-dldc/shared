@@ -2,7 +2,7 @@ import * as Ariakit from "@ariakit/react";
 import { ComponentPropsWithRef } from "react";
 import { Merge } from "type-fest";
 import { TDesignSize } from "../../design/types";
-import { DefaultDesignContext } from "../core/DesignContext";
+import { DefaultDesignProvider } from "../core/DesignContext";
 import { DynamicColorProvider, TDynamicColor } from "../core/DynamicColorProvider";
 
 export type ListProps = Merge<
@@ -40,7 +40,7 @@ export function List(inProps: ListProps) {
   // const groupClass = cn(tw`flex gap-1`, dirClass, className);
 
   return (
-    <DefaultDesignContext.Define
+    <DefaultDesignProvider
     // height={inProps.height}
     // direction={direction}
     // variant={localDesign.variant}
@@ -56,6 +56,6 @@ export function List(inProps: ListProps) {
           {children}
         </Ariakit.Role>
       </DynamicColorProvider>
-    </DefaultDesignContext.Define>
+    </DefaultDesignProvider>
   );
 }

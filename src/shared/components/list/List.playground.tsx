@@ -2,7 +2,7 @@ import * as Ariakit from "@ariakit/react";
 import { CaretRightIcon, FileIcon, SignOutIcon, SquareIcon } from "@phosphor-icons/react";
 import { Variants } from "../../../playground/LegacyVariants";
 import { Button } from "../button/Button";
-import { DefaultDesignContext } from "../core/DesignContext";
+import { DefaultDesignProvider } from "../core/DesignContext";
 import { List } from "./List";
 import { ListGroup } from "./ListGroup";
 import { ListItem } from "./ListItem";
@@ -19,7 +19,7 @@ export default function ButtonPlayground() {
         <div
         // className={cn("w-full h-full")}
         >
-          <DefaultDesignContext.Define
+          <DefaultDesignProvider
           // size="lg"
           >
             <Ariakit.CompositeProvider>
@@ -69,7 +69,7 @@ export default function ButtonPlayground() {
                 </Button>
               </Ariakit.Composite>
             </Ariakit.CompositeProvider>
-          </DefaultDesignContext.Define>
+          </DefaultDesignProvider>
         </div>
       )}
     />

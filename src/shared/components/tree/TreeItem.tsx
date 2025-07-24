@@ -8,7 +8,7 @@ import { TDesignSize, TPaletteColor } from "../../design/types";
 import { useMergeRefs } from "../../hooks/useMergeRefs";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { colorPaletteClass } from "../common/styles";
-import { DefaultDesignContext, designPropsSplitter, useContainerDesignProps } from "../core/DesignContext";
+import { DefaultDesignProvider, designPropsSplitter, useContainerDesignProps } from "../core/DesignContext";
 import { treeItemClass, treeItemStyles } from "./styles";
 import { TreeItemContent } from "./TreeItemContent";
 
@@ -68,7 +68,10 @@ export function TreeItem(inProps: TreeItemProps) {
     ...buttonProps
   } = props;
 
-  const { height, contentHeight } = useContainerDesignProps({ heightRatio: 0.8, ...localDesign });
+  const { height, contentHeight } = useContainerDesignProps({
+    // heightRatio: 0.8,
+    ...localDesign,
+  });
   const [itemCss, itemInline] = treeItemStyles(height, contentHeight, inProps.color);
 
   const childrenResolved = children ?? <TreeItemContent>{content}</TreeItemContent>;
@@ -94,9 +97,9 @@ export function TreeItem(inProps: TreeItemProps) {
       ref={finalRef}
       {...buttonProps}
     >
-      <DefaultDesignContext.Define height={contentHeight} spacing={inProps.spacing}>
+      <DefaultDesignProvider height={contentHeight} spacing={inProps.spacing}>
         {childrenResolved}
-      </DefaultDesignContext.Define>
+      </DefaultDesignProvider>
     </Ariakit.Role>
   );
 }

@@ -135,7 +135,7 @@ export default function ButtonPlayground() {
         title="Color & Size"
         tree={tree}
         dimentions={[
-          { id: "height", name: "Height", keys: ["height.base"], type: "row" },
+          { id: "height", name: "Height", keys: ["height.small", "height.base"], type: "row" },
           { id: "color", name: "Color", keys: ["color"], type: "column" },
           { id: "spacing", name: "Spacing", keys: ["spacing"], type: "config" },
         ]}

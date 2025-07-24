@@ -6,7 +6,7 @@ import { SystemStyleObject } from "../../../../styled-system/types";
 import { TDesignProps, TPaletteColor } from "../../design/types";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { colorPaletteClass } from "../common/styles";
-import { DefaultDesignContext, designPropsSplitter, useContainerDesignProps } from "../core/DesignContext";
+import { DefaultDesignProvider, designPropsSplitter, useContainerDesignProps } from "../core/DesignContext";
 import { buttonGroupClass, separatorClass } from "./styles";
 
 export type ButtonGroupProps = Merge<
@@ -56,7 +56,7 @@ export const ButtonGroup = forwardRef(function ButtonGroup(
   const rounded = true;
 
   return (
-    <DefaultDesignContext.Define {...localDesign}>
+    <DefaultDesignProvider {...localDesign}>
       <Ariakit.Role
         ref={ref}
         className={cx(
@@ -92,6 +92,6 @@ export const ButtonGroup = forwardRef(function ButtonGroup(
         })}
         {dividerAfter && <span className={css(separatorClass(variant, direction))} />}
       </Ariakit.Role>
-    </DefaultDesignContext.Define>
+    </DefaultDesignProvider>
   );
 });

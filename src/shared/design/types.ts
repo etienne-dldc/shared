@@ -47,11 +47,9 @@ export type TPaletteColor =
   | "neutral"
   | "stone";
 
-export type THeightRatio = number | ((parent: number) => number);
-
 export interface TDesignProps {
   height?: TDesignSize | null;
-  heightRatio?: THeightRatio | null;
+  contentHeight?: TDesignSize | null;
   rounded?: TDesignSize | null;
   spacing?: TDesignSize | null;
   variant?: TDesignVariant;
@@ -60,7 +58,7 @@ export interface TDesignProps {
 
 export interface TDefaultDesignContext {
   height: TDesignSize | null;
-  heightRatio: THeightRatio | null;
+  contentHeight: TDesignSize | null;
   rounded: TDesignSize | null;
   spacing: TDesignSize | null;
   variant: TDesignVariant;
@@ -68,17 +66,25 @@ export interface TDefaultDesignContext {
 }
 
 export interface TParentDesignContext {
+  depth: number;
   height: number;
-  heightRatio: number;
+  contentHeight: number;
   rounded: number;
 }
 
 export interface TDesignContextResolved {
+  depth: number;
   height: number;
-  heightRatio: number;
   contentHeight: number;
   variant: TDesignVariant;
   hoverVariant: TDesignVariant;
   spacing: number | null;
   rounded: number;
+}
+
+export type TNestedDesignValues = Partial<TDefaultDesignContext>[];
+
+export interface TNestedDefaultDesignContext {
+  depth: number;
+  values: TNestedDesignValues;
 }

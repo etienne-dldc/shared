@@ -5,7 +5,7 @@ import { SystemStyleObject } from "../../../../styled-system/types";
 import { TDesignSize, TPaletteColor } from "../../design/types";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { colorPaletteClass, heightStyles } from "../common/styles";
-import { DefaultDesignContext, designPropsSplitter, useContainerDesignProps } from "../core/DesignContext";
+import { DefaultDesignProvider, designPropsSplitter, useContainerDesignProps } from "../core/DesignContext";
 import { DisabledContext } from "../core/DisabledContext";
 import { itemlContentStyles } from "../item-content/styles";
 import { TItemContentFragmentProps } from "../item-content/types";
@@ -51,7 +51,7 @@ export function MenuItem(inProps: MenuItemProps) {
   const [contentCss, contentInline] = itemlContentStyles(contentHeight, spacing, startPadding, endPadding, noLayout);
 
   return (
-    <DefaultDesignContext.Define height={contentHeight} spacing={inProps.spacing}>
+    <DefaultDesignProvider height={contentHeight} spacing={inProps.spacing}>
       <DisabledContext.Define disabled={inProps.disabled}>
         <Ariakit.MenuItem
           disabled={localDisabled.disabled}
@@ -72,6 +72,6 @@ export function MenuItem(inProps: MenuItemProps) {
           {fragment}
         </Ariakit.MenuItem>
       </DisabledContext.Define>
-    </DefaultDesignContext.Define>
+    </DefaultDesignProvider>
   );
 }

@@ -10,7 +10,7 @@ import { TDesignSize, TDesignVariant, TPaletteColor } from "../../design/types";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { Button } from "../button/Button";
 import { colorPaletteClass } from "../common/styles";
-import { DefaultDesignContext, designPropsSplitter } from "../core/DesignContext";
+import { DefaultDesignProvider, designPropsSplitter } from "../core/DesignContext";
 import { DisabledContext } from "../core/DisabledContext";
 import { Label } from "../form/Label";
 import { ItemContentFragment } from "../item-content/ItemContentFragment";
@@ -98,7 +98,7 @@ export function Select<Value extends string>(inProps: SelectProps<Value>) {
   const selectedIsEmpty = emptyValue !== undefined && storeValue === emptyValue;
 
   return (
-    <DefaultDesignContext.Define {...localDesign}>
+    <DefaultDesignProvider {...localDesign}>
       <DisabledContext.Define disabled={inProps.disabled}>
         <Ariakit.SelectProvider store={selectStore}>
           <Ariakit.Role
@@ -172,6 +172,6 @@ export function Select<Value extends string>(inProps: SelectProps<Value>) {
           </Ariakit.SelectPopover>
         </Ariakit.SelectProvider>
       </DisabledContext.Define>
-    </DefaultDesignContext.Define>
+    </DefaultDesignProvider>
   );
 }
