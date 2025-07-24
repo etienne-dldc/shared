@@ -17,6 +17,9 @@ importers:
       '@dldc/chemin':
         specifier: jsr:^13.0.0
         version: '@jsr/dldc__chemin@13.0.0'
+      '@dldc/panda-preset':
+        specifier: jsr:^1.0.1
+        version: '@jsr/dldc__panda-preset@1.0.1(typescript@5.8.3)'
       '@dldc/safe-search-params':
         specifier: jsr:^1.1.1
         version: '@jsr/dldc__safe-search-params@1.1.1'
@@ -588,6 +591,9 @@ packages:
 
   '@jsr/dldc__erreur@7.1.1':
     resolution: {integrity: sha512-NqS59hO/2ITktUa5RzBYigZ01ZuZQARYDPP/JF6/I6orFmL72zzZcRQPDeL1kWgn3nlwTuW3iPIGl2nOuY581g==, tarball: https://npm.jsr.io/~/11/@jsr/dldc__erreur/7.1.1.tgz}
+
+  '@jsr/dldc__panda-preset@1.0.1':
+    resolution: {integrity: sha512-UG3eZr/ucdJ/uNAlh6MOQGpHyjuqbiWuiwoBlyqLM0C+GQHx+M9qdwnoCPEIJ2NE5ID9oB7TndWRqGHNT/fclA==, tarball: https://npm.jsr.io/~/11/@jsr/dldc__panda-preset/1.0.1.tgz}
 
   '@jsr/dldc__safe-search-params@1.1.1':
     resolution: {integrity: sha512-Wi/yJCOe4qZEnIWCGdqdEbNWp7VEPbsY7Gnmk4UnzfW20L9SFltcWdQ2PA/qoffWMs3DdyVNyAT/80v7yjDT8Q==, tarball: https://npm.jsr.io/~/11/@jsr/dldc__safe-search-params/1.1.1.tgz}
@@ -2547,6 +2553,14 @@ snapshots:
   '@jsr/dldc__chemin@13.0.0': {}
 
   '@jsr/dldc__erreur@7.1.1': {}
+
+  '@jsr/dldc__panda-preset@1.0.1(typescript@5.8.3)':
+    dependencies:
+      '@pandacss/dev': 0.54.0(typescript@5.8.3)
+      '@pandacss/preset-panda': 0.54.0
+    transitivePeerDependencies:
+      - jsdom
+      - typescript
 
   '@jsr/dldc__safe-search-params@1.1.1':
     dependencies:

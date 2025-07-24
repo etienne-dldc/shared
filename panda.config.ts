@@ -1,5 +1,4 @@
 import { defineConfig } from "@pandacss/dev";
-import { dldcPreset } from "./panda/preset";
 
 export default defineConfig({
   preflight: true,
@@ -9,5 +8,5 @@ export default defineConfig({
   strictTokens: true,
   strictPropertyValues: true,
   jsxFramework: "react",
-  presets: [dldcPreset],
+  presets: ["@dldc/panda-preset"],
 });

@@ -16,6 +16,7 @@
     "@ariakit/core": "^0.4.15",
     "@ariakit/react": "^0.4.17",
     "@dldc/chemin": "jsr:^13.0.0",
+    "@dldc/panda-preset": "jsr:^1.0.1",
     "@dldc/safe-search-params": "jsr:^1.1.1",
     "@phosphor-icons/react": "^2.1.10",
     "@react-hookz/deep-equal": "^3.0.4",
