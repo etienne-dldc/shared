@@ -2,7 +2,6 @@ import * as Ariakit from "@ariakit/react";
 import type { ComponentPropsWithoutRef, ForwardedRef } from "react";
 import { forwardRef, useId, useMemo, useRef } from "react";
 import { useMergeRefs } from "../../hooks/useMergeRefs";
-import { cn, tw } from "../../styles/utils";
 import { pick } from "../../utils/pick";
 
 interface TextareaProps extends Omit<ComponentPropsWithoutRef<"textarea">, "size"> {
@@ -21,13 +20,13 @@ export const Textarea = forwardRef(function Textarea(
   {
     renderTextarea,
     className,
-    colored = false,
+    // colored = false,
     disabled,
     textareaClassName,
-    noBackground = false,
-    noHightlight = false,
+    // noBackground = false,
+    // noHightlight = false,
     noHorizontalPadding = false,
-    isError = false,
+    // isError = false,
     onChange,
     onValueChange,
     size = "md",
@@ -41,28 +40,28 @@ export const Textarea = forwardRef(function Textarea(
 
   const finalRef = useMergeRefs(ref, textareaRef);
 
-  const inputContainerClasses = cn(
-    tw`appearance-none relative w-full flex flex-row items-center rounded-md sm:text-sm`,
-    tw`autofill:bg-transparent`,
-    !noHightlight && tw`focus:outline-hidden focus-within:ring-2 focus-within:ring-purple-400/40`,
-    isError && tw`ring-2 ring-red-500/40`,
-    colored
-      ? disabled
-        ? tw`text-dynamic-300/50`
-        : tw`text-dynamic-200`
-      : disabled
-        ? tw`text-stone-700`
-        : tw`text-white`,
-    !noBackground && (disabled ? tw`bg-black/10` : tw`bg-black/30`),
-    !disabled && !noBackground && tw`hover:bg-black/20`,
-    className,
-  );
+  // const inputContainerClasses = cn(
+  //   tw`appearance-none relative w-full flex flex-row items-center rounded-md sm:text-sm`,
+  //   tw`autofill:bg-transparent`,
+  //   !noHightlight && tw`focus:outline-hidden focus-within:ring-2 focus-within:ring-purple-400/40`,
+  //   isError && tw`ring-2 ring-red-500/40`,
+  //   colored
+  //     ? disabled
+  //       ? tw`text-dynamic-300/50`
+  //       : tw`text-dynamic-200`
+  //     : disabled
+  //       ? tw`text-stone-700`
+  //       : tw`text-white`,
+  //   !noBackground && (disabled ? tw`bg-black/10` : tw`bg-black/30`),
+  //   !disabled && !noBackground && tw`hover:bg-black/20`,
+  //   className,
+  // );
 
-  const sizeClasses = pick(size, {
-    xs: tw`py-1 text-sm`,
-    sm: tw`py-1 text-base`,
-    md: tw`py-2 text-base`,
-  });
+  // const sizeClasses = pick(size, {
+  //   xs: tw`py-1 text-sm`,
+  //   sm: tw`py-1 text-base`,
+  //   md: tw`py-2 text-base`,
+  // });
 
   const hPadding = pick(size, {
     xs: 8,
@@ -70,13 +69,13 @@ export const Textarea = forwardRef(function Textarea(
     md: 12,
   });
 
-  const textareaClasses = cn(
-    tw`block grow bg-transparent rounded-sm outline-hidden border-none placeholder-white/30 text-left w-10 autofill:bg-transparent`,
-    sizeClasses,
-    // !noHorizontalPadding && hPaddingClass,
-    disabled && tw`cursor-not-allowed placeholder-white/20 text-stone-400`,
-    textareaClassName,
-  );
+  // const textareaClasses = cn(
+  //   tw`block grow bg-transparent rounded-sm outline-hidden border-none placeholder-white/30 text-left w-10 autofill:bg-transparent`,
+  //   sizeClasses,
+  //   // !noHorizontalPadding && hPaddingClass,
+  //   disabled && tw`cursor-not-allowed placeholder-white/20 text-stone-400`,
+  //   textareaClassName,
+  // );
 
   const id = useId();
 
@@ -91,12 +90,14 @@ export const Textarea = forwardRef(function Textarea(
   }, [onChange, onValueChange]);
 
   return (
-    <div className={inputContainerClasses}>
+    <div
+    // className={inputContainerClasses}
+    >
       <Ariakit.Role.textarea
         render={renderTextarea}
         ref={finalRef}
         id={id}
-        className={textareaClasses}
+        // className={textareaClasses}
         disabled={disabled}
         value={value}
         onChange={inputOnChange}

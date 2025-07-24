@@ -1,66 +1,63 @@
-import { ComponentPropsWithoutRef, forwardRef, useMemo } from "react";
+import * as Ariakit from "@ariakit/react";
 import { Merge } from "type-fest";
-import { cn } from "../../styles/utils";
-import { DesignContext, TDesignRounded, TDesignSize } from "../core/DesignContext";
-import { DynamicColorProvider, TDynamicColor } from "../core/DynamicColorProvider";
-import { ButtonContent } from "./ButtonContent";
-import { buttonClassName } from "./styles";
+
+import { css, cx } from "../../../../styled-system/css";
+import { ComponentProps, SystemStyleObject } from "../../../../styled-system/types";
+import { TDesignProps, TPaletteColor } from "../../design/types";
+import { pipePropsSplitters } from "../../utils/propsSplitters";
+import { designPropsSplitter, SizeContextProvider, useContainerDesignProps } from "../core/DesignContext";
+import { itemlContentStyles } from "../item-content/styles";
+import { TItemContentFragmentProps } from "../item-content/types";
+import { itemContentPropsSplitter, useItemContentFragment } from "../item-content/useItemContentFragment";
+import { buttonLikeStyled } from "./styles";
 
 export type ButtonLikeProps = Merge<
-  ComponentPropsWithoutRef<"div">,
-  {
-    // Design
-    color?: TDynamicColor;
-    size?: TDesignSize;
-    rounded?: TDesignRounded;
+  Omit<ComponentProps<"div">, "title" | "height" | "content">,
+  TItemContentFragmentProps &
+    TDesignProps & {
+      disabled?: boolean;
 
-    filled?: boolean;
-    primary?: boolean;
+      color?: TPaletteColor;
+      css?: SystemStyleObject;
 
-    // For content
-    icon?: React.ReactNode;
-    endIcon?: React.ReactNode;
-    endAction?: React.ReactNode;
-    title?: React.ReactNode;
-    details?: string | React.ReactNode;
-    loading?: boolean;
-  }
+      // Forward to Element
+      render?: Ariakit.RoleProps["render"];
+    }
 >;
 
-/**
- * ButtonLike is a component that looks like a button but is a div and has not hover styles/active styles
- */
-export const ButtonLike = forwardRef((inProps: ButtonLikeProps, ref: React.Ref<HTMLDivElement>) => {
-  const [
-    design,
-    {
-      color,
+export function ButtonLike(inProps: ButtonLikeProps) {
+  const [{ localDesign, localItemContent }, props] = pipePropsSplitters(inProps, {
+    localDesign: designPropsSplitter,
+    localItemContent: itemContentPropsSplitter,
+  });
 
-      title,
-      icon,
-      endIcon,
-      endAction,
-      details,
-      loading,
-      children = <ButtonContent interactive={false} {...{ title, icon, endIcon, endAction, details, loading }} />,
+  const {
+    color,
+    css: cssProp,
 
-      className,
-      ...divProps
-    },
-  ] = DesignContext.useProps(inProps);
+    children,
 
-  const mainClass = useMemo(
-    () => buttonClassName({ design, interactive: false, forceActive: false, forceHover: false }),
-    [design],
-  );
+    style,
+    className,
+    ...buttonProps
+  } = props;
+
+  const { height, variant, contentHeight, spacing, rounded, depth } = useContainerDesignProps(localDesign);
+
+  const { startPadding, endPadding, fragment, noLayout } = useItemContentFragment(localItemContent, children);
+
+  const [btnCss, btnInline] = buttonLikeStyled(height, contentHeight, rounded, variant, inProps.color);
+  const [contentCss, contentInline] = itemlContentStyles(contentHeight, spacing, startPadding, endPadding, noLayout);
 
   return (
-    <DesignContext.Provider value={design}>
-      <DynamicColorProvider color={color}>
-        <div ref={ref} className={cn(mainClass, className)} {...divProps}>
-          {children}
-        </div>
-      </DynamicColorProvider>
-    </DesignContext.Provider>
+    <Ariakit.Role
+      className={cx(css(btnCss, contentCss, cssProp), className)}
+      style={{ ...style, ...btnInline, ...contentInline }}
+      {...buttonProps}
+    >
+      <SizeContextProvider height={height} contentHeight={contentHeight} rounded={rounded} depth={depth}>
+        {fragment}
+      </SizeContextProvider>
+    </Ariakit.Role>
   );
-});
+}

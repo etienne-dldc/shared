@@ -1,75 +1,52 @@
 import * as Ariakit from "@ariakit/react";
-import { IconContext } from "@phosphor-icons/react";
-import { ComponentPropsWithRef, useMemo } from "react";
+import { ComponentPropsWithRef } from "react";
 import { Merge } from "type-fest";
-import { cn } from "../../styles/utils";
-import { pick } from "../../utils/pick";
+import { css, cx } from "../../../../styled-system/css";
+import { TDesignProps } from "../../design/types";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
-import { ButtonContent } from "../button/ButtonContent";
-import { DesignContext, TDesignSize } from "../core/DesignContext";
+import {
+  DefaultDesignProvider,
+  designPropsSplitter,
+  SizeContextProvider,
+  useContainerDesignProps,
+} from "../core/DesignContext";
 import { DisabledContext } from "../core/DisabledContext";
 import { DynamicColorProvider, TDynamicColor } from "../core/DynamicColorProvider";
-import { LIST_ITEM_ICON_SIZE, listItemClassName } from "./styles";
+import { itemlContentStyles } from "../item-content/styles";
+import { TItemContentFragmentProps } from "../item-content/types";
+import { itemContentPropsSplitter, useItemContentFragment } from "../item-content/useItemContentFragment";
 
 export type TListItemSelected = "none" | "secondary" | "primary";
 
 export type ListItemProps = Merge<
   ComponentPropsWithRef<"div">,
-  {
-    size?: TDesignSize;
-    color?: TDynamicColor;
-
-    // Design
-    selected?: TListItemSelected;
-    disabled?: boolean;
-
-    // For content
-    icon?: React.ReactNode;
-    endIcon?: React.ReactNode;
-    title?: React.ReactNode;
-    details?: string | React.ReactNode;
-
-    // Forward to Button
-    render?: React.ReactElement<any>;
-  }
+  TItemContentFragmentProps &
+    TDesignProps & {
+      color?: TDynamicColor;
+      selected?: TListItemSelected;
+      disabled?: boolean;
+      render?: React.ReactElement<any>;
+    }
 >;
 
 export function ListItem(inProps: ListItemProps) {
-  const [{ design, disabled }, props] = pipePropsSplitters(inProps, {
-    design: DesignContext.usePropsSplitter(),
-    disabled: DisabledContext.usePropsSplitter(),
+  const [{ localDisabled, localItemContent, localDesign }, props] = pipePropsSplitters(inProps, {
+    localDesign: designPropsSplitter,
+    localDisabled: DisabledContext.propsSplitter,
+    localItemContent: itemContentPropsSplitter,
   });
 
-  const {
-    color,
+  const { color, children, style, className, render, ref, ...htmlProps } = props;
 
-    selected = "none",
+  const { height, contentHeight, spacing, rounded, depth } = useContainerDesignProps(localDesign);
+  const { startPadding, endPadding, fragment, noLayout } = useItemContentFragment(localItemContent, children);
 
-    title,
-    icon,
-    endIcon,
-    details,
-    children,
-
-    className,
-    render,
-    ref,
-    ...htmlProps
-  } = props;
-
-  const childrenResolved = children ?? <ButtonContent {...{ title, icon, endIcon, details }} />;
-
-  const mainClass = useMemo(
-    () => listItemClassName({ design, selected, forceHover: false, forceActive: false }),
-    [design, selected],
-  );
-
-  const iconProps = useMemo(() => ({ size: pick(design.size, LIST_ITEM_ICON_SIZE) }), [design.size]);
+  const [contentCss, contentInline] = itemlContentStyles(contentHeight, spacing, startPadding, endPadding, noLayout);
 
   const compositeStore = Ariakit.useCompositeContext();
   const renderResolved = compositeStore ? (
     <Ariakit.CompositeHover
-      render={<Ariakit.CompositeItem render={render} disabled={disabled.disabled} />}
+      render={<Ariakit.CompositeItem render={render} disabled={localDisabled.disabled} />}
       focusOnHover
     />
   ) : (
@@ -77,14 +54,20 @@ export function ListItem(inProps: ListItemProps) {
   );
 
   return (
-    <DesignContext.Provider value={design}>
-      <IconContext.Provider value={iconProps}>
-        <DynamicColorProvider color={color}>
-          <Ariakit.Role render={renderResolved} ref={ref} className={cn(mainClass, className)} {...htmlProps}>
-            {childrenResolved}
-          </Ariakit.Role>
-        </DynamicColorProvider>
-      </IconContext.Provider>
-    </DesignContext.Provider>
+    <DynamicColorProvider color={color}>
+      <Ariakit.Role
+        className={cx(css(contentCss), className)}
+        style={{ ...style, ...contentInline }}
+        render={renderResolved}
+        ref={ref}
+        {...htmlProps}
+      >
+        <DefaultDesignProvider {...localDesign} height={null}>
+          <SizeContextProvider height={height} contentHeight={contentHeight} rounded={rounded} depth={depth}>
+            {fragment}
+          </SizeContextProvider>
+        </DefaultDesignProvider>
+      </Ariakit.Role>
+    </DynamicColorProvider>
   );
 }

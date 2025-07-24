@@ -1,8 +1,8 @@
 import * as Ariakit from "@ariakit/react";
 import { ComponentPropsWithRef } from "react";
 import { Merge } from "type-fest";
-import { cn, tw } from "../../styles/utils";
-import { DesignContext, TDesignSize } from "../core/DesignContext";
+import { TDesignSize } from "../../design/types";
+import { DefaultDesignProvider } from "../core/DesignContext";
 import { DynamicColorProvider, TDynamicColor } from "../core/DynamicColorProvider";
 
 export type ListProps = Merge<
@@ -19,32 +19,43 @@ export type ListProps = Merge<
 >;
 
 export function List(inProps: ListProps) {
-  const [
-    design,
-    {
-      color,
+  // const [{ localDesign }, props] = pipePropsSplitters(inProps, {
+  //   localDesign: designPropsSplitter,
+  // });
 
-      direction = "vertical",
+  const {
+    color,
 
-      render,
+    // direction = "vertical",
 
-      children,
-      className,
-      ref,
-      ...divProps
-    },
-  ] = DesignContext.useProps(inProps);
+    render,
 
-  const dirClass = direction === "horizontal" ? "flex-row" : "flex-col";
-  const groupClass = cn(tw`flex gap-1`, dirClass, className);
+    children,
+    className,
+    ref,
+    ...divProps
+  } = inProps;
+
+  // const dirClass = direction === "horizontal" ? "flex-row" : "flex-col";
+  // const groupClass = cn(tw`flex gap-1`, dirClass, className);
 
   return (
-    <DesignContext.Provider value={design}>
+    <DefaultDesignProvider
+    // height={inProps.height}
+    // direction={direction}
+    // variant={localDesign.variant}
+    // hoverVariant={localDesign.hoverVariant}
+    >
       <DynamicColorProvider color={color}>
-        <Ariakit.Role ref={ref} className={groupClass} {...divProps} render={render}>
+        <Ariakit.Role
+          ref={ref}
+          // className={groupClass}
+          {...divProps}
+          render={render}
+        >
           {children}
         </Ariakit.Role>
       </DynamicColorProvider>
-    </DesignContext.Provider>
+    </DefaultDesignProvider>
   );
 }

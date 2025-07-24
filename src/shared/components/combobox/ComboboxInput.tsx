@@ -1,10 +1,10 @@
 import * as Ariakit from "@ariakit/react";
-import { Backspace } from "@phosphor-icons/react";
+import { BackspaceIcon } from "@phosphor-icons/react";
 import { forwardRef } from "react";
-import { cn } from "../../styles/utils";
+import { css, cx } from "../../../../styled-system/css";
 import { Button } from "../button/Button";
-import { ButtonContent } from "../button/ButtonContent";
 import { TextInput, TextInputProps } from "../form/TextInput";
+import { ItemContent } from "../item-content/ItemContent";
 
 interface ComboboxInputProps extends TextInputProps {
   value: string;
@@ -22,14 +22,11 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(fu
       placeholder={placeholder}
       noHightlight
       value={value}
-      className={cn("flex-1", className)}
+      className={cx(css({ flexGrow: 1 }), className)}
       endActions={
         value.length > 0 && (
-          <Ariakit.ComboboxCancel
-            render={<Button filled={false} size="xs" rounded="all" className="mr-1.5" color="red" />}
-            onClick={onClear}
-          >
-            <ButtonContent icon={<Backspace />} />
+          <Ariakit.ComboboxCancel render={<Button spacing="4" className="mr-1.5" color="red" />} onClick={onClear}>
+            <ItemContent startIcon={<BackspaceIcon />} />
           </Ariakit.ComboboxCancel>
         )
       }

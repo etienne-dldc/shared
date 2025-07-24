@@ -1,336 +1,317 @@
-import { cn, tw } from "../../styles/utils";
-import { pick, pickBoolStrict } from "../../utils/pick";
-import {
-  TDesignContextProps,
-  TDesignFilled,
-  TDesignPrimary,
-  TDesignRounded,
-  TDesignSize,
-  resolveDesignProps,
-} from "../core/DesignContext";
+import { css, cva } from "../../../../styled-system/css";
+import { SystemStyleObject } from "../../../../styled-system/types";
+import { TDesignVariant, TPaletteColor } from "../../design/types";
+import { colorPaletteClass, contentSize, heightStyles, roundedStyles } from "../common/styles";
 
-export const BUTTON_Y_SIZE_CLASS: Record<TDesignSize, string> = {
-  xs: tw`min-h-7`, // 28px
-  sm: tw`min-h-8`, // 32px
-  md: tw`min-h-10`, // 40px
-  lg: tw`min-h-14`, // 56px
-  // Inner size are equal to height - yPadding
-  smInner: tw`min-h-5`, // 20px
-  mdInner: tw`min-h-7`, // 28px
-  lgInner: tw`min-h-8.5`, // 34px
-};
+export const buttonLikeClass = cva({
+  base: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    outline: "none",
+    position: "relative",
+    "& [data-item-main-icon]": {
+      opacity: 0.6,
+    },
+    _after: {
+      rounded: "[inherit]",
+      pointerEvents: "none",
+      content: "''",
+      position: "absolute",
+      inset: "0",
+    },
+  },
+  variants: {
+    variant: {
+      solid: {
+        color: "neutral.200",
+      },
+      surface: {
+        color: "colorPalette.200",
+        _after: {
+          borderColor: "white/10",
+          borderWidth: "0_x",
+        },
+      },
+      subtle: { color: "colorPalette.200" },
+      ghost: { color: "colorPalette.200" },
+    } satisfies Record<TDesignVariant, SystemStyleObject>,
+  },
+});
 
-export const ICON_Y_SIZE_CLASS: Record<TDesignSize, string> = {
-  xs: tw`py-0.5`, // 2px
-  sm: tw`py-0.5`, // 2px
-  md: tw`py-1`, // 4px
-  lg: tw`py-1`, // 4px
-  // Inner don't have icon padding
-  smInner: "",
-  mdInner: "",
-  lgInner: "",
-};
+export const buttonLikeBackgroundClass = cva({
+  variants: {
+    variant: {
+      solid: {
+        bg: "colorPalette.600",
+      },
+      surface: {
+        bg: "white/5",
+      },
+      subtle: { bg: "white/5" },
+      ghost: {},
+    } satisfies Record<TDesignVariant, SystemStyleObject>,
+  },
+});
 
-export const BUTTON_ICON_SIZE: Record<TDesignSize, number> = {
-  xs: 16,
-  sm: 16,
-  md: 20,
-  lg: 26,
-  // Inner icon sizes are same as outer
-  smInner: 16,
-  mdInner: 20,
-  lgInner: 26,
-};
+export const buttonClass = cva({
+  base: {
+    _hover: {
+      "& [data-item-main-icon]": {
+        opacity: 1,
+      },
+    },
+    _focusVisible: {
+      _after: {
+        borderColor: "neutral.300",
+        borderWidth: "0_x",
+      },
+    },
+  },
+  variants: {
+    variant: {
+      solid: {
+        _focusVisible: {
+          bg: "colorPalette.800",
+          _after: {
+            borderColor: "neutral.200",
+            borderWidth: "0x",
+          },
+        },
+        _disabled: {
+          bg: "colorPalette.900",
+          color: "neutral.200/60",
+        },
+      },
+      surface: {
+        _disabled: {
+          color: "colorPalette.200/40",
+          bg: "white/3",
+          _after: {
+            borderColor: "neutral.900",
+          },
+        },
+      },
+      subtle: {
+        _disabled: {
+          color: "colorPalette.200/40",
+          bg: "white/3",
+        },
+      },
+      ghost: {
+        _disabled: {
+          color: "colorPalette.200/40",
+        },
+      },
+    } satisfies Record<TDesignVariant, SystemStyleObject>,
+    hoverVariant: {
+      solid: {
+        _hover: {
+          bg: "colorPalette.500",
+          color: "neutral.100",
+          _after: {
+            borderColor: "transparent",
+          },
+          _focusVisible: {
+            _after: {
+              borderColor: "neutral.200",
+            },
+          },
+        },
+      },
+      surface: {
+        _hover: {
+          bg: "white/10",
+          color: "colorPalette.100",
+          _after: {
+            borderColor: "colorPalette.700",
+            borderWidth: "0_x",
+          },
+        },
+      },
+      subtle: {
+        _hover: {
+          bg: "white/10",
+          color: "colorPalette.100",
+          _after: {
+            borderColor: "transparent",
+          },
+          _focusVisible: {
+            _after: {
+              borderColor: "neutral.200",
+            },
+          },
+        },
+      },
+      ghost: {
+        _hover: { bg: "white/5", color: "colorPalette.100" },
+      },
+    } satisfies Record<TDesignVariant, SystemStyleObject>,
+  },
+});
 
-export const BUTTON_CONTENT_Y_SIZE_CLASS: Record<TDesignSize, string> = {
-  xs: tw`py-1`, // 4px
-  sm: tw`py-1.5`, // 6px
-  md: tw`py-1.5`, // 6px
-  lg: tw`py-2.5`, // 10px
-  // Inner padding is same as icon padding
-  smInner: tw`py-0.5`, // 2px
-  mdInner: tw`py-1`, // 4px
-  lgInner: tw`py-1`, // 4px
-};
+export const buttonGroupClass = cva({
+  base: {
+    display: "flex",
+    position: "relative",
+    isolation: "isolate",
+    _firstChild: { zIndex: 2, position: "relative" },
+    _betweenChild: { zIndex: 2, position: "relative" },
+    _lastChild: { zIndex: 2, position: "relative" },
+  },
+  variants: {
+    direction: {
+      horizontal: {
+        flexDirection: "row",
+        _firstChild: {
+          borderEndRadius: "0",
+          _focusVisible: { _after: { right: "-0_x" } },
+          _hover: { _after: { right: "-0_x" } },
+        },
+        _betweenChild: {
+          rounded: "0",
+          _focusVisible: { _after: { left: "-0_x", right: "-0_x" } },
+          _hover: { _after: { left: "-0_x", right: "-0_x" } },
+        },
+        _lastChild: {
+          borderStartRadius: "0",
+          _focusVisible: { _after: { left: "-0_x" } },
+          _hover: { _after: { left: "-0_x" } },
+        },
+      },
+      vertical: {
+        flexDirection: "column",
+        _firstChild: {
+          borderBottomRadius: "0",
+          _focusVisible: { _after: { bottom: "-0_x" } },
+          _hover: { _after: { bottom: "-0_x" } },
+        },
+        _betweenChild: {
+          rounded: "0",
+          _focusVisible: { _after: { top: "-0_x", bottom: "-0_x" } },
+          _hover: { _after: { top: "-0_x", bottom: "-0_x" } },
+        },
+        _lastChild: {
+          borderTopRadius: "0",
+          _focusVisible: { _after: { top: "-0_x" } },
+          _hover: { _after: { top: "-0_x" } },
+        },
+      },
+    },
+    variant: {
+      solid: {},
+      surface: {},
+      subtle: {},
+      ghost: {},
+    } satisfies Record<TDesignVariant, SystemStyleObject>,
+  },
+  compoundVariants: [
+    {
+      direction: "horizontal",
+      variant: "surface",
+      css: {
+        _firstChild: {
+          _after: { borderRightWidth: "0" },
+          _focusVisible: { _after: { borderRightWidth: "0_x" } },
+          _hover: { _after: { borderRightWidth: "0_x" } },
+        },
+        _betweenChild: {
+          _after: { borderXWidth: "0" },
+          _focusVisible: { _after: { borderXWidth: "0_x" } },
+          _hover: { _after: { borderXWidth: "0_x" } },
+        },
+        _lastChild: {
+          _after: { borderLeftWidth: "0" },
+          _focusVisible: { _after: { borderLeftWidth: "0_x" } },
+          _hover: { _after: { borderLeftWidth: "0_x" } },
+        },
+      },
+    },
+    {
+      direction: "vertical",
+      variant: "surface",
+      css: {
+        _firstChild: {
+          _after: { borderBottomWidth: "0" },
+          _focusVisible: { _after: { borderBottomWidth: "0_x" } },
+          _hover: { _after: { borderBottomWidth: "0_x" } },
+        },
+        _betweenChild: {
+          _after: { borderYWidth: "0" },
+          _focusVisible: { _after: { borderYWidth: "0_x" } },
+          _hover: { _after: { borderYWidth: "0_x" } },
+        },
+        _lastChild: {
+          _after: { borderTopWidth: "0" },
+          _focusVisible: { _after: { borderTopWidth: "0_x" } },
+          _hover: { _after: { borderTopWidth: "0_x" } },
+        },
+      },
+    },
+  ],
+});
 
-// -- X
+export const separatorBaseClass = cva({
+  base: {
+    alignSelf: "stretch",
+    position: "relative",
+    zIndex: 1,
+    _after: {
+      rounded: "[inherit]",
+      pointerEvents: "none",
+      content: "''",
+      position: "absolute",
+      inset: "0",
+    },
+  },
+  variants: {
+    direction: {
+      horizontal: { w: "0_x" },
+      vertical: { h: "0_x" },
+    },
+    variant: {
+      solid: {
+        bg: "colorPalette.700",
+      },
+      surface: {
+        _after: {
+          bg: "white/10",
+        },
+      },
+      subtle: {},
+      ghost: {},
+    } satisfies Record<TDesignVariant, SystemStyleObject>,
+  },
+});
 
-export const BUTTON_X_SIZE_CLASS: Record<TDesignSize, string> = {
-  xs: tw`min-w-7`, // 28px
-  sm: tw`min-w-8`, // 32px
-  md: tw`min-w-10`, // 40px
-  lg: tw`min-w-14`, // 56px
-  // Inner size are equal to width - xPadding
-  smInner: tw`min-w-5`, // 20px
-  mdInner: tw`min-w-7`, // 28px
-  lgInner: tw`min-w-8.5`, // 34px
-};
-
-export const ICON_X_SIZE_CLASS: Record<TDesignSize, string> = {
-  xs: tw`px-0.5`,
-  sm: tw`px-0.5 `,
-  md: tw`px-1`,
-  lg: tw`px-1`,
-  // Inner don't have icon padding
-  smInner: "",
-  mdInner: "",
-  lgInner: "",
-};
-
-export const BUTTON_CONTENT_X_SIZE_CLASS: Record<TDesignSize, string> = {
-  xs: tw`px-1`,
-  sm: tw`px-1.5`,
-  md: tw`px-1.5`,
-  lg: tw`px-2.5`,
-  // Inner padding is same as icon padding
-  smInner: tw`px-0.5`, // 2px
-  mdInner: tw`px-1`, // 4px
-  lgInner: tw`px-1`, // 4px
-};
-
-export const BUTTON_TEXT_SIZE_CLASS: Record<TDesignSize, string> = {
-  xs: tw`text-sm`,
-  sm: tw`text-sm`,
-  md: tw`text-base`,
-  lg: tw`text-lg`,
-  // Inner text sizes are same as outer
-  smInner: tw`text-sm`,
-  mdInner: tw`text-base`,
-  lgInner: tw`text-lg`,
-};
-
-export const INNER_SIZE_MAPPING: Record<TDesignSize, TDesignSize> = {
-  xs: "smInner",
-  sm: "smInner",
-  md: "mdInner",
-  lg: "lgInner",
-  smInner: "smInner",
-  mdInner: "mdInner",
-  lgInner: "lgInner",
-};
-
-export const BUTTON_CONTENT_TEXT_LEFT_SPACE: Record<TDesignSize, string> = {
-  xs: tw`pl-1`,
-  sm: tw`pl-1`,
-  md: tw`pl-1.5`,
-  lg: tw`pl-2`,
-  // Inner == Outer
-  smInner: tw`pl-1`,
-  mdInner: tw`pl-1.5`,
-  lgInner: tw`pl-2`,
-};
-
-export const BUTTON_CONTENT_TEXT_LEFT_SPACE_NO_ICON: Record<TDesignSize, string> = {
-  xs: tw`pl-1.5`,
-  sm: tw`pl-1.5`,
-  md: tw`pl-2`,
-  lg: tw`pl-2.5`,
-  // Inner == Outer
-  smInner: tw`pl-1.5`,
-  mdInner: tw`pl-2`,
-  lgInner: tw`pl-2.5`,
-};
-
-export const BUTTON_CONTENT_TEXT_RIGHT_SPACE: Record<TDesignSize, string> = {
-  xs: tw`pr-1`,
-  sm: tw`pr-1`,
-  md: tw`pr-1.5`,
-  lg: tw`pr-2`,
-  // Inner == Outer
-  smInner: tw`pr-1`,
-  mdInner: tw`pr-1.5`,
-  lgInner: tw`pr-2`,
-};
-
-export const BUTTON_CONTENT_TEXT_RIGHT_SPACE_NO_ICON: Record<TDesignSize, string> = {
-  xs: tw`pr-1.5`,
-  sm: tw`pr-1.5`,
-  md: tw`pr-2`,
-  lg: tw`pr-2.5`,
-  // Inner == Outer
-  smInner: tw`pr-1.5`,
-  mdInner: tw`pr-2`,
-  lgInner: tw`pr-2.5`,
-};
-
-export const BUTTON_CONTENT_SIZE_CLASS: Record<TDesignSize, string> = {
-  xs: tw`flex-row gap-1`,
-  sm: tw`flex-row gap-2`,
-  md: tw`flex-col -my-1.5`,
-  lg: tw`flex-col -my-2.5`,
-  // Inner == Outer
-  smInner: tw`flex-row gap-1`,
-  mdInner: tw`flex-col -my-1.5`,
-  lgInner: tw`flex-col -my-2.5`,
-};
-
-export const BUTTON_CONTENT_DETAIL_SIZE_CLASS: Record<TDesignSize, string> = {
-  xs: tw``,
-  sm: tw``,
-  md: tw`text-xs -mt-1 mb-0.5`,
-  lg: tw`text-base -mt-1`,
-  // Inner == Outer
-  smInner: tw``,
-  mdInner: tw`text-xs -mt-1 mb-0.5`,
-  lgInner: tw`text-base -mt-1`,
-};
-
-export const BUTTON_CONTENT_INNER_LEFT_PADDING_CLASS: Record<TDesignSize, string> = {
-  // Same as Icon xPadding
-  xs: tw`pl-0.5`,
-  sm: tw`pl-0.5 `,
-  md: tw`pl-1`,
-  lg: tw`pl-1`,
-  // Inner == Outer
-  smInner: tw``,
-  mdInner: tw``,
-  lgInner: tw``,
-};
-
-export const BUTTON_ROUNDED_BASE_CLASS: Record<TDesignRounded, string> = {
-  left: tw`rounded-l-md`,
-  right: tw`rounded-r-md`,
-  top: tw`rounded-t-md`,
-  bottom: tw`rounded-b-md`,
-  none: tw``,
-  all: tw`rounded-md`,
-};
-
-export const BUTTON_ROUNDED_INNER_CLASS: Record<TDesignRounded, string> = {
-  left: tw`rounded-l-sm`,
-  right: tw`rounded-r-sm`,
-  top: tw`rounded-t-sm`,
-  bottom: tw`rounded-b-sm`,
-  none: tw``,
-  all: tw`rounded-sm`,
-};
-
-export function buttonSizeClass(size: TDesignSize, xSize: TDesignSize, ySize: TDesignSize) {
-  return cn(pick(size, BUTTON_TEXT_SIZE_CLASS), pick(xSize, BUTTON_X_SIZE_CLASS), pick(ySize, BUTTON_Y_SIZE_CLASS));
+export function separatorClass(variant: TDesignVariant, direction: "horizontal" | "vertical") {
+  return separatorBaseClass.raw({ direction, variant });
 }
 
-export function buttonRoundedClass(rounded: TDesignRounded, size: TDesignSize) {
-  const isInner = pick(size, {
-    xs: false,
-    sm: false,
-    md: false,
-    lg: false,
-    smInner: true,
-    mdInner: true,
-    lgInner: true,
-  });
+export function buttonLikeStyled(
+  height: number,
+  contentHeight: number,
+  rounded: number,
+  variant: TDesignVariant,
+  color: TPaletteColor | undefined,
+): [css: SystemStyleObject, styles: React.CSSProperties] {
+  const [heightCss, heightInline] = heightStyles(height);
+  const [roundedCss, roundedInline] = roundedStyles(rounded);
+  const [contentCss, contentInline] = contentSize(contentHeight);
 
-  return pick(rounded, isInner ? BUTTON_ROUNDED_INNER_CLASS : BUTTON_ROUNDED_BASE_CLASS);
-}
-
-export interface ButtonStylesParams {
-  design: TDesignContextProps;
-  interactive: boolean;
-  forceHover: boolean;
-  forceActive: boolean;
-}
-
-export function innerPrimaryFilled(
-  primary: TDesignPrimary,
-  filled: TDesignFilled,
-): {
-  primary: TDesignPrimary;
-  filled: TDesignFilled;
-} {
-  const filledStr = pickBoolStrict(filled, "filled", "transparent");
-  const primaryStr = pickBoolStrict(primary, "primary", "base");
-  const filled_primary = `${filledStr}_${primaryStr}` as const;
-
-  return pick(filled_primary, {
-    filled_primary: { primary: true, filled: true },
-    filled_base: { primary: false, filled: true },
-    transparent_primary: { primary: false, filled: true },
-    transparent_base: { primary: false, filled: true },
-  });
-}
-
-export function buttonClassName({ design, interactive, forceHover, forceActive }: ButtonStylesParams) {
-  const { filled, hoverFilled, primary, rounded, size, xSize, ySize } = resolveDesignProps(design);
-  const filledStr = pickBoolStrict(filled, "filled", "transparent");
-  const primaryStr = pickBoolStrict(primary, "primary", "base");
-  const filled_primary = `${filledStr}_${primaryStr}` as const;
-
-  const variantClassBase = pick(filled_primary, {
-    filled_primary: cn(tw`bg-dynamic-600 text-white`),
-    filled_base: cn(tw`bg-white/5 text-dynamic-200`),
-    transparent_primary: cn(tw`bg-transparent text-dynamic-300`),
-    transparent_base: cn(tw`bg-transparent text-white`),
-  });
-
-  const activeClass = cn(
-    tw`active:bg-dynamic-700 active:text-white`,
-    forceActive && tw`bg-dynamic-700 text-white`,
-    tw`data-focus-visible:active:bg-dynamic-700 data-focus-visible:active:text-white`,
-    forceActive && tw`data-focus-visible:bg-dynamic-700 data-focus-visible:text-white`,
-    tw`aria-disabled:active:bg-dynamic-700 aria-disabled:active:text-white/50`,
-    forceActive && tw`aria-disabled:bg-dynamic-700 aria-disabled:text-white/50`,
-  );
-
-  const disabledClass = pick(filled_primary, {
-    filled_primary: cn(tw`aria-disabled:bg-dynamic-700 aria-disabled:text-white/50`),
-    filled_base: cn(tw`aria-disabled:bg-white/5 aria-disabled:text-dynamic-200/50`),
-    transparent_primary: cn(tw`aria-disabled:text-dynamic-200/40`),
-    transparent_base: cn(tw`aria-disabled:text-white/40`),
-  });
-
-  const hoverFilledBaseClass = pickBoolStrict(
-    hoverFilled,
-    cn(
-      tw`hover:bg-dynamic-500 hover:text-white`,
-      forceHover && tw`bg-dynamic-500 text-white`,
-
-      // Disabled hover style
-      tw`aria-disabled:hover:bg-dynamic-700 aria-disabled:hover:text-white/50`,
-      forceHover && tw`aria-disabled:bg-dynamic-700 aria-disabled:text-white/50`,
+  return [
+    css.raw(
+      heightCss,
+      buttonLikeClass.raw({ variant }),
+      buttonLikeBackgroundClass.raw({ variant }),
+      contentCss,
+      roundedCss,
+      color && colorPaletteClass.raw({ colorPalette: color }),
     ),
-    cn(
-      tw`hover:bg-white/5 hover:text-dynamic-200`,
-      forceHover && tw`bg-white/5 text-dynamic-200`,
-
-      // Disabled hover style
-      tw`aria-disabled:hover:bg-white/5 aria-disabled:hover:text-dynamic-200/50`,
-      forceHover && tw`aria-disabled:bg-white/5 aria-disabled:text-dynamic-200/50`,
-    ),
-  );
-
-  const hoverFilledFocusClass = pickBoolStrict(
-    hoverFilled,
-    cn(
-      // Focused style
-      tw`data-focus-visible:bg-dynamic-600 data-focus-visible:text-white`,
-      tw`data-focus-visible:inset-ring-white data-focus-visible:inset-ring-1`,
-      tw`data-focus-visible:ring-white data-focus-visible:ring-1`,
-      // Copy disabled hover style
-      tw`aria-disabled:data-focus-visible:bg-dynamic-700 aria-disabled:data-focus-visible:text-white/50`,
-      forceHover && tw`aria-disabled:data-focus-visible:bg-dynamic-700 aria-disabled:data-focus-visible:text-white/50`,
-    ),
-    cn(
-      // Focused style
-      tw`data-focus-visible:bg-white/5 data-focus-visible:text-dynamic-200`,
-      tw`data-focus-visible:inset-ring-dynamic-200 data-focus-visible:inset-ring-1`,
-      tw`data-focus-visible:ring-dynamic-200 data-focus-visible:ring-1`,
-      // Copy disabled hover style
-      tw`aria-disabled:data-focus-visible:bg-white/5 aria-disabled:data-focus-visible:text-dynamic-200/50`,
-      forceHover &&
-        tw`aria-disabled:data-focus-visible:bg-white/5 aria-disabled:data-focus-visible:text-dynamic-200/50`,
-    ),
-  );
-
-  return cn(
-    tw`flex flex-row items-center justify-center text-left group overflow-hidden relative`,
-    tw`outline-hidden`,
-    buttonRoundedClass(rounded, size),
-    buttonSizeClass(size, xSize, ySize),
-    variantClassBase,
-    interactive && disabledClass,
-    interactive && hoverFilledBaseClass,
-    interactive && hoverFilledFocusClass,
-    interactive && activeClass,
-    tw`disabled:cursor-not-allowed data-focus-visible:z-10`,
-  );
+    {
+      ...heightInline,
+      ...contentInline,
+      ...roundedInline,
+    },
+  ];
 }

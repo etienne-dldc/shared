@@ -1,73 +1,75 @@
-import { ComponentPropsWithoutRef, forwardRef, useMemo } from "react";
+import * as Ariakit from "@ariakit/react";
 import { Merge } from "type-fest";
-import { cn, TInteractiveState } from "../../styles/utils";
-import { DesignContext, TDesignRounded, TDesignSize } from "../core/DesignContext";
-import { DynamicColorProvider, TDynamicColor } from "../core/DynamicColorProvider";
-import { ButtonContent } from "./ButtonContent";
-import { buttonClassName } from "./styles";
+
+import { css, cx } from "../../../../styled-system/css";
+import { ComponentProps, SystemStyleObject } from "../../../../styled-system/types";
+import { TDesignProps, TPaletteColor } from "../../design/types";
+import { pipePropsSplitters } from "../../utils/propsSplitters";
+import {
+  DefaultDesignProvider,
+  designPropsSplitter,
+  SizeContextProvider,
+  useContainerDesignProps,
+} from "../core/DesignContext";
+import { DisabledContext } from "../core/DisabledContext";
+import { itemlContentStyles } from "../item-content/styles";
+import { TItemContentFragmentProps } from "../item-content/types";
+import { itemContentPropsSplitter, useItemContentFragment } from "../item-content/useItemContentFragment";
+import { buttonClass, buttonLikeStyled } from "./styles";
 
 export type ButtonLinkProps = Merge<
-  ComponentPropsWithoutRef<"a">,
-  {
-    // Design
-    dynamicColor?: TDynamicColor;
-    size?: TDesignSize;
-    rounded?: TDesignRounded;
+  Omit<ComponentProps<"a">, "title">,
+  TItemContentFragmentProps &
+    TDesignProps & {
+      disabled?: boolean;
 
-    filled?: boolean;
-    primary?: boolean;
+      color?: TPaletteColor;
+      css?: SystemStyleObject;
 
-    __forceState?: null | TInteractiveState;
-
-    // For content
-    icon?: React.ReactNode;
-    endIcon?: React.ReactNode;
-    title?: React.ReactNode;
-    details?: string | React.ReactNode;
-    loading?: boolean;
-  }
+      // Forward to Button
+      render?: React.ReactElement<any>;
+    }
 >;
 
-export const ButtonLink = forwardRef((inProps: ButtonLinkProps, ref: React.Ref<HTMLAnchorElement>) => {
-  const [
-    design,
-    {
-      dynamicColor,
-      __forceState,
+export function ButtonLink(inProps: ButtonLinkProps) {
+  const [{ localDesign, localDisabled, localItemContent }, props] = pipePropsSplitters(inProps, {
+    localDesign: designPropsSplitter,
+    localDisabled: DisabledContext.propsSplitter,
+    localItemContent: itemContentPropsSplitter,
+  });
 
-      title,
-      icon,
-      endIcon,
-      details,
-      loading,
-      children = <ButtonContent {...{ title, icon, endIcon, details, loading }} />,
+  const {
+    color,
+    css: cssProp,
 
-      className,
-      ...divProps
-    },
-  ] = DesignContext.useProps(inProps);
+    children,
 
-  const forceHover = __forceState === "hover";
-  const forceActive = __forceState === "active";
-  const forceFocus = __forceState === "focus";
+    style,
+    className,
+    ...linkProps
+  } = props;
 
-  const mainClass = useMemo(
-    () => buttonClassName({ design, interactive: true, forceActive, forceHover }),
-    [design, forceActive, forceHover],
-  );
+  const { height, hoverVariant, variant, contentHeight, spacing, rounded, depth } =
+    useContainerDesignProps(localDesign);
+
+  const { startPadding, endPadding, fragment, noLayout } = useItemContentFragment(localItemContent, children);
+
+  const [bntCss, btnInline] = buttonLikeStyled(height, contentHeight, rounded, variant, inProps.color);
+  const [contentCss, contentInline] = itemlContentStyles(contentHeight, spacing, startPadding, endPadding, noLayout);
 
   return (
-    <DesignContext.Provider value={design}>
-      <DynamicColorProvider color={dynamicColor}>
-        <a
-          ref={ref}
-          className={cn(mainClass, className)}
-          {...(forceFocus ? { "data-focus-visible": true } : {})}
-          {...divProps}
-        >
-          {children}
-        </a>
-      </DynamicColorProvider>
-    </DesignContext.Provider>
+    <Ariakit.Role
+      render={<a />}
+      className={cx(css(bntCss, buttonClass.raw({ hoverVariant, variant }), contentCss, cssProp), className)}
+      style={{ ...style, ...btnInline, ...contentInline }}
+      disabled={localDisabled.disabled}
+      {...(linkProps as any)}
+    >
+      <DefaultDesignProvider {...localDesign} height={null}>
+        <SizeContextProvider height={height} contentHeight={contentHeight} rounded={rounded} depth={depth}>
+          <DisabledContext.Define disabled={inProps.disabled}>{fragment}</DisabledContext.Define>
+        </SizeContextProvider>
+      </DefaultDesignProvider>
+    </Ariakit.Role>
   );
-});
+}

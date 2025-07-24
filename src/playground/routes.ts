@@ -51,4 +51,20 @@ function resolveRouteFolder(path: string[]): TRouteFolder {
   return current;
 }
 
+function sortRoutes(items: TRouteItem[]): void {
+  items.sort((a, b) => {
+    if (a.kind === b.kind) {
+      return a.name.localeCompare(b.name);
+    }
+    return a.kind === "folder" ? -1 : 1;
+  });
+  for (const item of items) {
+    if (item.kind === "folder") {
+      sortRoutes(item.routes);
+    }
+  }
+}
+
+sortRoutes(rootRoute.routes);
+
 export const routes = rootRoute.routes;

@@ -1,16 +1,18 @@
 import { nanoid } from "nanoid";
 import { OverlayScrollbars } from "overlayscrollbars";
-import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import { useCallback, useRef, useState } from "react";
-
-import "overlayscrollbars/overlayscrollbars.css";
-import { cn } from "../styles/utils";
+import { css, cx } from "../../../styled-system/css";
+import { styled } from "../../../styled-system/jsx";
+import { paper } from "../../../styled-system/patterns";
+import { SystemStyleObject } from "../../../styled-system/types";
+import { Scrollbars } from "../components/common/Scrollbars";
 
 export type FinderProps = React.PropsWithChildren<{
   className?: string;
+  css?: SystemStyleObject;
 }>;
 
-export function Finder({ children, className }: FinderProps) {
+export function Finder({ children, className, css: cssProp }: FinderProps) {
   const parentRef = useRef<HTMLDivElement>(null);
 
   const setScrollWidth = useCallback((val: number) => {
@@ -42,8 +44,8 @@ export function Finder({ children, className }: FinderProps) {
   );
 
   return (
-    <OverlayScrollbarsComponent
-      className={cn("bg-neutral-900 border-[0.5px] border-white/5", className)}
+    <Scrollbars
+      className={cx(css(paper.raw({ level: "card" }), cssProp), className)}
       events={{
         initialized: onInitUpdate,
         updated: onInitUpdate,
@@ -51,15 +53,18 @@ export function Finder({ children, className }: FinderProps) {
       }}
       options={{ scrollbars: { autoHide: "scroll" } }}
     >
-      <div
+      <styled.div
         ref={parentRef}
         style={{
           ["--scroll-content-min-width" as string]: `var(${contentMinSizeVarName})`,
         }}
-        className="flex flex-row h-full min-w-[var(--scroll-content-min-width)]"
+        display="flex"
+        flexDirection="row"
+        height="full"
+        minWidth="[var(--scroll-content-min-width)]"
       >
         {children}
-      </div>
-    </OverlayScrollbarsComponent>
+      </styled.div>
+    </Scrollbars>
   );
 }

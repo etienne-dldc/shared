@@ -1,108 +1,74 @@
 import * as Ariakit from "@ariakit/react";
-import { IconContext } from "@phosphor-icons/react";
-import { ComponentProps, useMemo } from "react";
 import { Merge } from "type-fest";
-import { cn, TInteractiveState } from "../../styles/utils";
-import { pick } from "../../utils/pick";
+
+import { css, cx } from "../../../../styled-system/css";
+import { ComponentProps, SystemStyleObject } from "../../../../styled-system/types";
+import { TDesignProps, TPaletteColor } from "../../design/types";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
-import {
-  DesignContext,
-  TDesignDirSize,
-  TDesignFilled,
-  TDesignHoverFilled,
-  TDesignPrimary,
-  TDesignRounded,
-  TDesignSize,
-} from "../core/DesignContext";
+import { designPropsSplitter, SizeContextProvider, useContainerDesignProps } from "../core/DesignContext";
 import { DisabledContext } from "../core/DisabledContext";
-import { DynamicColorProvider, TDynamicColor } from "../core/DynamicColorProvider";
-import { ButtonContent } from "./ButtonContent";
-import { BUTTON_ICON_SIZE, buttonClassName } from "./styles";
+import { itemlContentStyles } from "../item-content/styles";
+import { TItemContentFragmentProps } from "../item-content/types";
+import { itemContentPropsSplitter, useItemContentFragment } from "../item-content/useItemContentFragment";
+import { buttonClass, buttonLikeStyled } from "./styles";
 
 export type ButtonProps = Merge<
-  ComponentProps<"button">,
-  {
-    // Design
-    disabled?: boolean;
-    size?: TDesignSize;
-    xSize?: TDesignDirSize;
-    ySize?: TDesignDirSize;
-    rounded?: TDesignRounded;
-    filled?: TDesignFilled;
-    primary?: TDesignPrimary;
-    hoverFilled?: TDesignHoverFilled;
+  Omit<ComponentProps<"button">, "title" | "height" | "color" | "content">,
+  TItemContentFragmentProps &
+    TDesignProps & {
+      disabled?: boolean;
 
-    color?: TDynamicColor;
-    __forceState?: null | TInteractiveState;
+      color?: TPaletteColor;
+      css?: SystemStyleObject;
 
-    // For content
-    icon?: React.ReactNode;
-    endIcon?: React.ReactNode;
-    endAction?: React.ReactNode;
-    title?: React.ReactNode;
-    details?: string | React.ReactNode;
-    loading?: boolean;
+      // Forward to Button
+      render?: Ariakit.ButtonProps["render"];
 
-    // Forward to Button
-    render?: React.ReactElement<any>;
-  }
+      // Data attributes
+      "data-hover"?: boolean;
+      "data-focus-visible"?: boolean;
+    }
 >;
 
-export const Button = (inProps: ButtonProps) => {
-  const [{ design, disabled }, props] = pipePropsSplitters(inProps, {
-    design: DesignContext.usePropsSplitter(),
-    disabled: DisabledContext.usePropsSplitter(),
+export function Button(inProps: ButtonProps) {
+  const [{ localDesign, localDisabled, localItemContent }, props] = pipePropsSplitters(inProps, {
+    localDesign: designPropsSplitter,
+    localDisabled: DisabledContext.propsSplitter,
+    localItemContent: itemContentPropsSplitter,
   });
 
   const {
     color,
-    __forceState,
+    css: cssProp,
 
-    title,
-    icon,
-    endIcon,
-    endAction,
-    details,
-    loading,
     children,
 
     className,
     type = "button",
-    ref,
+    style,
     ...buttonProps
   } = props;
 
-  const childrenResolved = children ?? (
-    <ButtonContent interactive {...{ title, icon, endIcon, endAction, details, loading }} />
-  );
+  const { hoverVariant, variant, height, contentHeight, spacing, rounded, depth } =
+    useContainerDesignProps(localDesign);
 
-  const forceHover = __forceState === "hover";
-  const forceActive = __forceState === "active";
-  const forceFocus = __forceState === "focus";
+  const { startPadding, endPadding, fragment, noLayout } = useItemContentFragment(localItemContent, children);
 
-  const mainClass = useMemo(
-    () => buttonClassName({ design, interactive: true, forceActive, forceHover }),
-    [design, forceActive, forceHover],
-  );
-
-  const iconProps = useMemo(() => ({ size: pick(design.size, BUTTON_ICON_SIZE) }), [design.size]);
+  const [btnCss, btnInline] = buttonLikeStyled(height, contentHeight, rounded, variant, inProps.color);
+  const [contentCss, contentInline] = itemlContentStyles(contentHeight, spacing, startPadding, endPadding, noLayout);
+  const buttonCss = buttonClass.raw({ hoverVariant, variant });
 
   return (
-    <DesignContext.Provider value={design}>
-      <IconContext.Provider value={iconProps}>
-        <DynamicColorProvider color={color}>
-          <Ariakit.Button
-            ref={ref}
-            className={cn(mainClass, className)}
-            disabled={disabled.disabled}
-            type={type}
-            {...(forceFocus ? { "data-focus-visible": true } : {})}
-            {...buttonProps}
-          >
-            {childrenResolved}
-          </Ariakit.Button>
-        </DynamicColorProvider>
-      </IconContext.Provider>
-    </DesignContext.Provider>
+    <Ariakit.Button
+      className={cx(css(btnCss, buttonCss, contentCss, cssProp), className)}
+      style={{ ...style, ...btnInline, ...contentInline }}
+      disabled={localDisabled.disabled}
+      type={type}
+      {...buttonProps}
+    >
+      <SizeContextProvider height={height} contentHeight={contentHeight} rounded={rounded} depth={depth}>
+        <DisabledContext.Define disabled={inProps.disabled}>{fragment}</DisabledContext.Define>
+      </SizeContextProvider>
+    </Ariakit.Button>
   );
-};
+}

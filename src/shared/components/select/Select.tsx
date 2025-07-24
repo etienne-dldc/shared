@@ -1,77 +1,92 @@
 import * as Ariakit from "@ariakit/react";
 import { CaretDownIcon } from "@phosphor-icons/react";
-import { ForwardedRef, forwardRef, useMemo, type JSX } from "react";
-import { cn, tw } from "../../styles/utils";
+import { ComponentPropsWithRef, useMemo } from "react";
+import { Merge } from "type-fest";
+import { css, cx } from "../../../../styled-system/css";
+import { Paper, styled } from "../../../../styled-system/jsx";
+import { vstack } from "../../../../styled-system/patterns";
+import { SystemStyleObject } from "../../../../styled-system/types";
+import { TDesignSize, TDesignVariant, TPaletteColor } from "../../design/types";
+import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { Button } from "../button/Button";
-import { ButtonContent } from "../button/ButtonContent";
-import { buttonRoundedClass, buttonSizeClass } from "../button/styles";
-import { Paper } from "../common/Paper";
-import { DesignContext, resolveDesignProps } from "../core/DesignContext";
+import { colorPaletteClass } from "../common/styles";
+import { DefaultDesignProvider, designPropsSplitter } from "../core/DesignContext";
+import { DisabledContext } from "../core/DisabledContext";
 import { Label } from "../form/Label";
+import { ItemContentFragment } from "../item-content/ItemContentFragment";
+import { SelectItem } from "./SelectItem";
+import { TSelectItem } from "./types";
 
-export interface TSelectItem<Value extends string> {
-  value: Value;
-  title?: React.ReactNode;
-  icon?: React.ReactNode;
-  endIcon?: React.ReactNode;
-  details?: string | React.ReactNode;
-  disabled?: boolean;
-  hidden?: boolean;
-}
-
-interface SelectProps<Value extends string> {
-  caret?: boolean;
-  className?: string;
-  defaultValue?: Value;
-  disabled?: boolean;
-  items: TSelectItem<Value>[];
-  label: React.ReactNode;
-  name?: string;
-  labelHidden?: boolean;
-  onChange?: (value: Value) => void;
-  open?: boolean;
-  renderSelected?: (item: TSelectItem<Value>) => React.ReactNode;
-  setOpen?: (open: boolean) => void;
-  issues?: React.ReactNode;
-  value?: Value;
-  emptyValue?: Value;
-
-  renderSelect?: React.ReactElement<any>;
-  renderLabel?: React.ReactElement<any>;
-  renderWrapper?: React.ReactElement<any>;
-}
-
-const SelectAny = forwardRef(function Select(
+export type SelectProps<Value extends string> = Merge<
+  ComponentPropsWithRef<"button">,
   {
+    // Design
+    disabled?: boolean;
+    height?: TDesignSize;
+    heightRatio?: number;
+    spacing?: TDesignSize;
+    variant?: TDesignVariant;
+    hoverVariant?: TDesignVariant;
+
+    color?: TPaletteColor;
+    css?: SystemStyleObject;
+
+    caret?: boolean;
+    className?: string;
+    defaultValue?: Value;
+    items: TSelectItem<Value>[];
+    label: React.ReactNode;
+    name?: string;
+    labelHidden?: boolean;
+    onChange?: (value: Value) => void;
+    open?: boolean;
+    setOpen?: (open: boolean) => void;
+    issues?: React.ReactNode;
+    value?: Value;
+    emptyValue?: Value;
+    sameWidth?: boolean;
+
+    renderSelected?: (item: TSelectItem<Value>) => React.ReactNode;
+
+    renderSelect?: React.ReactElement<any>;
+    renderLabel?: React.ReactElement<any>;
+    renderWrapper?: React.ReactElement<any>;
+  }
+>;
+
+export function Select<Value extends string>(inProps: SelectProps<Value>) {
+  const [{ localDesign, localDisabled }, props] = pipePropsSplitters(inProps, {
+    localDesign: designPropsSplitter,
+    localDisabled: DisabledContext.propsSplitter,
+  });
+
+  const {
+    color,
+    css: cssProp,
+
     items,
-    onChange,
-    value,
-    emptyValue,
-    disabled,
     label,
     name,
-    labelHidden,
+    labelHidden = false,
+    onChange,
     open,
     setOpen,
-    renderSelected,
-    caret = true,
-    className,
-    issues = null,
-    defaultValue,
-
-    renderLabel,
-    renderSelect,
-    renderWrapper,
-  }: SelectProps<string>,
-  ref: ForwardedRef<HTMLDivElement>,
-) {
-  const selectStore = Ariakit.useSelectStore({
+    issues,
     value,
+    caret = true,
     defaultValue,
-    setValue: onChange ? (value) => onChange(value as string) : undefined,
-    open,
-    setOpen,
-  });
+    emptyValue,
+    sameWidth = false,
+    className,
+    renderSelected,
+    renderSelect,
+    renderLabel,
+    renderWrapper,
+    ref,
+    ...htmlProps
+  } = props;
+
+  const selectStore = Ariakit.useSelectStore({ value, defaultValue, setValue: onChange, open, setOpen });
 
   const storeValue = Ariakit.useStoreState(selectStore, (s) => s.value);
 
@@ -83,73 +98,80 @@ const SelectAny = forwardRef(function Select(
   const selectedIsEmpty = emptyValue !== undefined && storeValue === emptyValue;
 
   return (
-    <Ariakit.SelectProvider store={selectStore}>
-      <Ariakit.Role render={renderWrapper ?? <div className={cn("flex flex-col", className)} />} ref={ref}>
-        <Ariakit.SelectLabel
-          render={labelHidden ? <Ariakit.VisuallyHidden /> : (renderLabel ?? <Label disabled={disabled} />)}
-        >
-          {label}
-        </Ariakit.SelectLabel>
-        <Ariakit.Select disabled={disabled} name={name} render={renderSelect ?? <Button />}>
-          {selectedItem ? (
-            renderSelected ? (
-              renderSelected(selectedItem)
-            ) : (
-              <ButtonContent
-                details={selectedItem.details}
-                endIcon={caret && <Ariakit.SelectArrow render={<CaretDownIcon />} />}
-                icon={selectedItem.icon}
-                title={<span className={selectedIsEmpty ? "opacity-50" : ""}>{selectedItem.title}</span>}
-              />
-            )
-          ) : null}
-        </Ariakit.Select>
-        {issues}
-      </Ariakit.Role>
-      <Ariakit.SelectPopover
-        gutter={4}
-        portal
-        render={<Paper className="p-2 outline-hidden" />}
-        sameWidth
-        unmountOnHide
-      >
-        {items.map((item) => (
-          <SelectItem item={item} key={item.value} />
-        ))}
-      </Ariakit.SelectPopover>
-    </Ariakit.SelectProvider>
+    <DefaultDesignProvider {...localDesign}>
+      <DisabledContext.Define disabled={inProps.disabled}>
+        <Ariakit.SelectProvider store={selectStore}>
+          <Ariakit.Role
+            render={renderWrapper ?? <div />}
+            className={cx(
+              css(
+                vstack.raw({ alignItems: "start", gap: "0" }),
+                inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
+              ),
+              className,
+            )}
+          >
+            <Ariakit.SelectLabel
+              render={
+                labelHidden ? <Ariakit.VisuallyHidden /> : (renderLabel ?? <Label disabled={localDisabled.disabled} />)
+              }
+            >
+              {label}
+            </Ariakit.SelectLabel>
+            <Ariakit.Select
+              disabled={localDisabled.disabled}
+              name={name}
+              {...htmlProps}
+              render={
+                renderSelect ?? (
+                  <Button endPadding="icon" startPadding={selectedItem && selectedItem.icon ? "icon" : "text"} />
+                )
+              }
+            >
+              {selectedItem ? (
+                renderSelected ? (
+                  renderSelected(selectedItem)
+                ) : (
+                  <ItemContentFragment
+                    endIcon={caret && <Ariakit.SelectArrow render={<CaretDownIcon children={null} />} />}
+                    startIcon={selectedItem.icon}
+                  >
+                    {selectedIsEmpty ? (
+                      <span className={css({ opacity: 0.5 })}>{selectedItem.content}</span>
+                    ) : (
+                      selectedItem.content
+                    )}
+                  </ItemContentFragment>
+                )
+              ) : null}
+            </Ariakit.Select>
+            {issues}
+          </Ariakit.Role>
+          <Ariakit.SelectPopover
+            gutter={4}
+            portal
+            render={<Paper level="select" outline="none" />}
+            sameWidth={sameWidth}
+            unmountOnHide
+          >
+            <styled.div
+              p="1"
+              minW="var(--popover-anchor-width)"
+              maxW="var(--popover-available-width)"
+              maxH="var(--popover-available-height)"
+              overflowY="auto"
+            >
+              {items.map((item) => (
+                <SelectItem
+                  item={item}
+                  key={item.value}
+                  // nestedHeight={contentHeight}
+                />
+              ))}
+            </styled.div>
+          </Ariakit.SelectPopover>
+        </Ariakit.SelectProvider>
+      </DisabledContext.Define>
+    </DefaultDesignProvider>
   );
-});
-
-export const Select = SelectAny as <Value extends string>(props: SelectProps<Value>) => JSX.Element;
-
-interface SelectItemProps extends Ariakit.SelectItemProps {
-  item: TSelectItem<string>;
 }
-
-const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(function SelectItem(inProps, ref) {
-  const [design, { item, ...props }] = DesignContext.useProps(inProps);
-  const { size, xSize, ySize } = resolveDesignProps(design);
-
-  const className = cn(
-    tw`flex flex-row items-center justify-center text-left group overflow-hidden relative`,
-    tw`outline-hidden cursor-pointer`,
-    buttonRoundedClass("all", size),
-    buttonSizeClass(size, xSize, ySize),
-    tw`disabled:cursor-not-allowed`,
-    tw`data-active-item:bg-dynamic-600 data-active-item:text-white`,
-    item.hidden && tw`hidden`,
-  );
-
-  return (
-    <Ariakit.SelectItem
-      ref={ref}
-      {...props}
-      className={className}
-      disabled={item.disabled || item.hidden}
-      value={item.value}
-    >
-      <ButtonContent details={item.details} endIcon={item.endIcon} icon={item.icon} title={item.title} />
-    </Ariakit.SelectItem>
-  );
-});

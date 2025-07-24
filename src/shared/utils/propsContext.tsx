@@ -1,33 +1,25 @@
 import { ComponentType, Fragment, PropsWithChildren, createContext, useContext, useMemo } from "react";
 import { useMemoRecord } from "../hooks/useMemoRecord";
 import { TPropsSplitter } from "./propsSplitters";
+import { withoutUndefined } from "./withoutUndefined";
+
+export type TDefineProps<Props extends Record<string, any>, Meta> = PropsWithChildren<Partial<Props> & { meta: Meta }>;
 
 export interface TPropsContext<Props extends Record<string, any>> {
   defaultProps: Props;
   Define: ComponentType<PropsWithChildren<Partial<Props>>>;
   Provider: ComponentType<PropsWithChildren<{ value: Props }>>;
-  useProps<P>(directProps?: P & Partial<Props>): [props: Props, rest: Omit<P, keyof Props>];
-  usePropsSplitter(): TPropsSplitter<Props>;
+  useProps(): Props;
+  propsSplitter: TPropsSplitter<Partial<Props>>;
 }
 
 export function createPropsContext<Props extends Record<string, any>>(
   name: string,
   defaultProps: Props,
-  mergeProps: (parent: Props, child: Partial<Props>) => Props,
 ): TPropsContext<Props> {
   const InternalContext = createContext<Props>(defaultProps);
 
   const keys = Object.keys(defaultProps) as Array<keyof Props>;
-
-  function withoutUndefined<T extends Record<string, any>>(value: T): T {
-    const result: Record<string, any> = {};
-    for (const key in value) {
-      if (value[key] !== undefined) {
-        result[key] = value[key];
-      }
-    }
-    return result as T;
-  }
 
   function pickProps(props: Record<string, any>): Partial<Props> {
     const pickedProps: Partial<Props> = {};
@@ -42,7 +34,7 @@ export function createPropsContext<Props extends Record<string, any>>(
     const pickedProps = useMemoRecord(pickProps(props));
 
     const mergedProps = useMemo(
-      () => mergeProps(parentProps, withoutUndefined(pickedProps)),
+      () => ({ ...parentProps, ...withoutUndefined(pickedProps) }),
       [parentProps, pickedProps],
     );
 
@@ -50,37 +42,25 @@ export function createPropsContext<Props extends Record<string, any>>(
   };
   Define.displayName = `${name}Props.Define`;
 
+  const propsSplitter: TPropsSplitter<Partial<Props>> = (props) => {
+    const result: Partial<Props> = {};
+    keys.forEach((key) => {
+      if (key in props) {
+        result[key] = (props as any)[key];
+      }
+    });
+    return result;
+  };
+
   return {
     defaultProps,
     Define,
     Provider: InternalContext.Provider,
     useProps,
-    usePropsSplitter,
+    propsSplitter,
   };
 
-  function useProps<P extends Partial<Props>>(directProps?: P): [props: Props, rest: Omit<P, keyof Props>] {
-    const parentProps = useContext(InternalContext);
-    const pickedProps = useMemoRecord(pickProps(directProps ?? {}));
-    const mergedProps = useMemo(
-      () => mergeProps(parentProps, withoutUndefined(pickedProps)),
-      [parentProps, pickedProps],
-    );
-
-    const remainingProps = { ...directProps } as Omit<P, keyof Props>;
-    keys.forEach((key) => {
-      if (key in remainingProps) {
-        delete (remainingProps as any)[key];
-      }
-    });
-
-    return [mergedProps, remainingProps];
-  }
-
-  function usePropsSplitter(): TPropsSplitter<Props> {
-    const parentProps = useContext(InternalContext);
-    return (props) => {
-      const mergedProps = mergeProps(parentProps, withoutUndefined(pickProps(props)));
-      return mergedProps;
-    };
+  function useProps(): Props {
+    return useContext(InternalContext);
   }
 }

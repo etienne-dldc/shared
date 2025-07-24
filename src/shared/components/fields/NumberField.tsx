@@ -1,6 +1,5 @@
 import * as Ariakit from "@ariakit/react";
 import { ForwardedRef, forwardRef } from "react";
-import { cn } from "../../styles/utils";
 import { FieldError } from "../form/FieldError";
 import { Label } from "../form/Label";
 import { NumberInput, NumberInputProps } from "../form/NumberInput";
@@ -34,7 +33,9 @@ export const NumberField = forwardRef(function NumberField(
   });
 
   return (
-    <div className={cn("flex flex-col", className)}>
+    <div
+    // className={cn("flex flex-col", className)}
+    >
       <Label hidden={labelHidden} disabled={disabled} render={<Ariakit.FormLabel name={name} />}>
         {label}
       </Label>

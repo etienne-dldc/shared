@@ -4,8 +4,4 @@ export interface TDisabledContextProps {
   disabled: boolean;
 }
 
-export const DisabledContext = createPropsContext(
-  "Disabled",
-  { disabled: false } as TDisabledContextProps,
-  (parent, props) => ({ ...parent, ...props }),
-);
+export const DisabledContext = createPropsContext("Disabled", { disabled: false } as TDisabledContextProps);

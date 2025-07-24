@@ -1,4 +1,6 @@
-import { cn } from "../../styles/utils";
+import { css, cx } from "../../../../styled-system/css";
+import { HStack, styled } from "../../../../styled-system/jsx";
+import { SystemStyleObject } from "../../../../styled-system/types";
 import { isNotNil } from "../../utils/nil";
 import { IconBox } from "../common/IconBox";
 
@@ -10,25 +12,41 @@ interface PageTitleProps {
   className?: string;
   startActions?: React.ReactNode;
   endActions?: React.ReactNode;
+  css?: SystemStyleObject;
 }
 
-export function PageTitle({ icon, title, onTitleClick, details, className, startActions, endActions }: PageTitleProps) {
+export function PageTitle({
+  icon,
+  title,
+  onTitleClick,
+  details,
+  className,
+  startActions,
+  endActions,
+  css: cssProp,
+}: PageTitleProps) {
   return (
-    <div className={cn("flex flex-row items-center gap-2", className)}>
-      {startActions && <div className="flex flex-row gap-2">{startActions}</div>}
-      <div className="flex flex-row pl-1 gap-2">
-        {icon && <IconBox size={28} icon={icon} className="p-0.5" weight="bold" />}
-        <h1 className="text-2xl font-semibold" onClick={onTitleClick}>
+    <HStack gap="2" className={cx(css(cssProp), className)}>
+      {startActions && <HStack gap="2">{startActions}</HStack>}
+      <HStack gap="2" pl="1">
+        {icon && <IconBox size={7} icon={icon} css={{ p: "0x" }} weight="bold" />}
+        <styled.h1 textStyle="7" fontWeight="semibold" onClick={onTitleClick}>
           {title}
           {isNotNil(details) && (
             <>
               {" "}
-              <span className="font-normal text-white/60">{details}</span>
+              <styled.span fontWeight="normal" color="white/60">
+                {details}
+              </styled.span>
             </>
           )}
-        </h1>
-      </div>
-      {endActions && <div className="flex flex-row gap-2 ml-auto">{endActions}</div>}
-    </div>
+        </styled.h1>
+      </HStack>
+      {endActions && (
+        <HStack gap="2" ml="auto">
+          {endActions}
+        </HStack>
+      )}
+    </HStack>
   );
 }

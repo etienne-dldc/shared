@@ -1,19 +1,20 @@
 import { Fragment } from "react/jsx-runtime";
-import { Variants } from "../../../playground/Variants";
-import { Select, TSelectItem } from "./Select";
+import { Variants } from "../../../playground/LegacyVariants";
+import { Select } from "./Select";
+import { TSelectItem } from "./types";
 
 const selectItems: TSelectItem<string>[] = [
   {
     value: "apple",
-    title: "Apple",
+    content: "Apple",
   },
   {
     value: "banana",
-    title: "Banana",
+    content: "Banana",
   },
   {
     value: "cherry",
-    title: "Cherry",
+    content: "Cherry",
   },
 ];
 
@@ -35,7 +36,14 @@ export default function ButtonPlayground() {
           base: { row: [], column: [], selected: {} },
         }}
         render={({ disabled }) => (
-          <Select items={selectItems} label="Select a fruit" defaultValue="apple" disabled={disabled} />
+          <Select
+            items={selectItems}
+            label="Select a fruit"
+            defaultValue="apple"
+            disabled={disabled}
+            height={12}
+            heightRatio={0.8}
+          />
         )}
       />
       <div>
@@ -44,7 +52,7 @@ export default function ButtonPlayground() {
           items={[
             {
               value: "",
-              title: "Select a fruit",
+              content: "Select a fruit",
               hidden: true,
             },
             ...selectItems,

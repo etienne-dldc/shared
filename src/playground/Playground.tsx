@@ -8,19 +8,42 @@ import {
   SquaresFourIcon,
 } from "@phosphor-icons/react";
 import { createBrowserHistory } from "history";
-import { RefObject, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  ComponentPropsWithRef,
+  Fragment,
+  RefObject,
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { Merge } from "type-fest";
+import { HStack, Paper, styled } from "../../styled-system/jsx";
 import { Button } from "../shared/components/button/Button";
 import { ButtonGroup } from "../shared/components/button/ButtonGroup";
 import { ButtonLike } from "../shared/components/button/ButtonLike";
+import { IconBox } from "../shared/components/common/IconBox";
 import { LoadingBlock } from "../shared/components/common/LoadingBlock";
-import { Paper } from "../shared/components/common/Paper";
-import { DesignContext } from "../shared/components/core/DesignContext";
 import { EmptyState } from "../shared/components/layouts/EmptyState";
 import { MenuItem } from "../shared/components/menu/MenuItem";
-import { cn } from "../shared/styles/utils";
 import { routes, TRoute, TRouteFolder, TRouteItem } from "./routes";
 
 const history = createBrowserHistory();
+
+const menuPaper = (
+  <Paper
+    level="select"
+    outline="none"
+    p="1"
+    minW="var(--popover-anchor-width)"
+    maxW="var(--popover-available-width)"
+    maxH="var(--popover-available-height)"
+    height="[300px]"
+    overflowY="auto"
+  />
+);
 
 export function Playground() {
   const [location, setLocation] = useState(() => history.location);
@@ -54,9 +77,9 @@ export function Playground() {
   }, [location.pathname]);
 
   return (
-    <div className="grid min-h-screen gap-4 p-4" style={{ gridTemplateRows: "auto 1fr" }}>
-      <div className="flex flex-row">
-        <ButtonGroup primary>
+    <styled.div display="grid" gridTemplateRows="auto 1fr" gridTemplateColumns="100%" gap="4" p="4" minH="screen">
+      <HStack gap="2">
+        <ButtonGroup variant="solid" height="10" color="blue">
           <RouteMenu items={routes} icon={<ListIcon />} />
           {routeMatch?.parents.map((parent) => {
             return (
@@ -69,10 +92,17 @@ export function Playground() {
               />
             );
           })}
-          {routeMatch?.match && <ButtonLike title={routeMatch?.match.name} icon={<SquaresFourIcon />} />}
         </ButtonGroup>
-      </div>
-      <div className="relative">
+        {routeMatch?.match && (
+          <Fragment>
+            <IconBox icon={<CaretRightIcon />} size="3" css={{ opacity: 0.6 }} />
+            <ButtonLike height="10" color="blue" variant="subtle" startIcon={<SquaresFourIcon />}>
+              {routeMatch?.match.name}
+            </ButtonLike>
+          </Fragment>
+        )}
+      </HStack>
+      <styled.div position="relative">
         <Suspense fallback={<LoadingBlock />}>
           {routeMatch ? (
             <routeMatch.match.component />
@@ -80,33 +110,31 @@ export function Playground() {
             <EmptyState text="Route not found" icon={<CircleDashedIcon />} />
           )}
         </Suspense>
-      </div>
-    </div>
+      </styled.div>
+    </styled.div>
   );
 }
 
-interface RouteMenuProps {
-  title?: string;
-  icon?: React.ReactNode;
-  endIcon?: React.ReactNode;
-  items: TRouteItem[];
-}
+type RouteMenuProps = Merge<
+  ComponentPropsWithRef<"button">,
+  {
+    title?: string;
+    icon?: React.ReactNode;
+    endIcon?: React.ReactNode;
+    items: TRouteItem[];
+  }
+>;
 
-function RouteMenu({ items, title, icon, endIcon }: RouteMenuProps) {
+function RouteMenu({ items, title, icon, endIcon, ...buttonProps }: RouteMenuProps) {
   const topMenuRef = useRef<HTMLDivElement | null>(null);
 
   return (
     <Ariakit.MenuProvider>
-      <Ariakit.MenuButton render={<Button title={title} icon={icon} endIcon={endIcon} />} />
-      <Ariakit.Menu
-        gutter={8}
-        ref={topMenuRef}
-        render={<Paper />}
-        className={cn("p-2 outline-hidden h-[300px] min-w-36")}
-        portal={true}
-        unmountOnHide
-      >
-        <DesignContext.Define rounded="all">{items.map((item) => renderItem(item, topMenuRef))}</DesignContext.Define>
+      <Ariakit.MenuButton render={<Button startIcon={icon} endIcon={endIcon} />} {...buttonProps}>
+        {title}
+      </Ariakit.MenuButton>
+      <Ariakit.Menu gutter={8} ref={topMenuRef} render={menuPaper} portal={true} unmountOnHide>
+        {items.map((item) => renderItem(item, topMenuRef))}
       </Ariakit.Menu>
     </Ariakit.MenuProvider>
   );
@@ -122,13 +150,15 @@ function NestedMenu({ item, parentRef }: NestedMenuProps) {
 
   return (
     <Ariakit.MenuProvider>
-      <MenuItem render={<Ariakit.MenuButton />} title={item.name} icon={<FolderIcon />} endIcon={<CaretRightIcon />} />
+      <MenuItem render={<Ariakit.MenuButton />} startIcon={<FolderIcon />} endIcon={<CaretRightIcon />}>
+        {item.name}
+      </MenuItem>
       <Ariakit.Menu
         gutter={8}
         getAnchorRect={parentRef ? () => parentRef.current?.getBoundingClientRect() ?? null : undefined}
-        render={<Paper />}
-        className={cn("p-2 outline-hidden h-[300px] min-w-36")}
+        render={menuPaper}
         ref={menuRef}
+        portal={true}
       >
         {item.routes.map((item) => renderItem(item, menuRef))}
       </Ariakit.Menu>
@@ -155,7 +185,11 @@ function NavItem({ item }: NavItemProps) {
     [item.path, menuStore],
   );
 
-  return <MenuItem title={item.name} icon={<SquaresFourIcon />} render={<a href={item.path} onClick={onClick} />} />;
+  return (
+    <MenuItem startIcon={<SquaresFourIcon />} render={<a href={item.path} onClick={onClick} />}>
+      {item.name}
+    </MenuItem>
+  );
 }
 
 function renderItem(item: TRouteItem, parentRef?: RefObject<HTMLDivElement | null>) {

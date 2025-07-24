@@ -1,12 +1,15 @@
 import { ArrowsLeftRightIcon, PlusIcon } from "@phosphor-icons/react";
 import { Fragment, SetStateAction, useCallback, useMemo, type JSX } from "react";
+import { Grid, HStack, styled, VStack } from "../../styled-system/jsx";
 import { Button } from "../shared/components/button/Button";
-import { ButtonContent } from "../shared/components/button/ButtonContent";
 import { ButtonGroup } from "../shared/components/button/ButtonGroup";
 import { ButtonLike } from "../shared/components/button/ButtonLike";
-import { Select, TSelectItem } from "../shared/components/select/Select";
+import { Select } from "../shared/components/select/Select";
+import { TSelectItem } from "../shared/components/select/types";
 import { useLatestRef } from "../shared/hooks/useLatestRef";
 import { useLocalStorageState } from "../shared/hooks/useLocalStorageState";
+
+export type TVariantsValues<K, Value> = Record<(K & string) | "default", Value>;
 
 export type TDimensions = Record<string, Record<string, unknown>>;
 
@@ -107,100 +110,133 @@ export function Variants<Dims extends TDimensions>({
       ...Object.keys(presets).map(
         (key): TSelectItem<string> => ({
           value: key,
-          title: key,
+          content: key,
         }),
       ),
-      { value: "", title: "--NO PRESET--" },
+      { value: "", content: "--NO PRESET--" },
     ];
   }, [presets]);
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex flex-row gap-4 items-center">
-        {title && <h2 className="text-2xl px-6">{title}</h2>}
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-row gap-4 items-center">
-            <ButtonGroup size="xs" color="blue" primary>
-              <ButtonLike title="preset" className="uppercase font-bold" />
-              <Select<string>
-                label="preset"
-                labelHidden
-                value={preset ?? ""}
-                items={presetItems}
-                onChange={(value) => {
-                  if (value === "") {
-                    setPreset(null);
-                  } else {
-                    setPreset(value);
-                  }
-                }}
-                renderSelect={<Button className="min-w-[100px]" />}
-              />
-            </ButtonGroup>
-            <MultiSelect<keyof Dims & string>
-              label="column"
-              selected={colAxis as string[]}
-              options={Object.keys(dimensions)}
-              onChange={(selected) => setColAxis(selected)}
+    <VStack gap="2" alignItems="stretch">
+      <HStack gap="4">
+        {title && (
+          <styled.h2 textStyle="7" px="6">
+            {title}
+          </styled.h2>
+        )}
+        <HStack gap="4">
+          <ButtonGroup color="blue" variant="solid">
+            <ButtonLike css={{ textTransform: "uppercase", fontWeight: "bold" }}>{preset}</ButtonLike>
+            <Select<string>
+              label="preset"
+              labelHidden
+              value={preset ?? ""}
+              items={presetItems}
+              onChange={(value) => {
+                if (value === "") {
+                  setPreset(null);
+                } else {
+                  setPreset(value);
+                }
+              }}
+              renderSelect={<Button css={{ minW: "[100px]" }} />}
             />
-            <Button color="purple" size="xs" icon={<ArrowsLeftRightIcon />} onClick={() => swapAxis()} />
-            <MultiSelect<keyof Dims & string>
-              label="row"
-              selected={rowAxis as string[]}
-              options={Object.keys(dimensions)}
-              onChange={(selected) => setRowAxis(selected)}
-            />
-            <Button title="Reset" onClick={() => resetAxis()} color="red" size="xs" />
-          </div>
-        </div>
-      </div>
-      <div className="flex flex-row gap-8">
-        <div className="flex flex-col gap-3 pt-4">
+          </ButtonGroup>
+          <MultiSelect<keyof Dims & string>
+            label="column"
+            selected={colAxis as string[]}
+            options={Object.keys(dimensions)}
+            onChange={(selected) => setColAxis(selected)}
+          />
+          <Button
+            color="purple"
+            variant="subtle"
+            hoverVariant="surface"
+            startIcon={<ArrowsLeftRightIcon />}
+            onClick={() => swapAxis()}
+          />
+          <MultiSelect<keyof Dims & string>
+            label="row"
+            selected={rowAxis as string[]}
+            options={Object.keys(dimensions)}
+            onChange={(selected) => setRowAxis(selected)}
+          />
+          <Button onClick={() => resetAxis()} color="red" variant="subtle" hoverVariant="surface">
+            Reset
+          </Button>
+        </HStack>
+      </HStack>
+      <HStack gap="8" alignItems="start">
+        <VStack gap="3" pt="4" alignItems="stretch">
           {Object.entries(dimensions)
             .filter(([key]) => !colAxis.includes(key) && !rowAxis.includes(key))
-            .map(([dimKey, dim]) => (
-              <Select<string>
-                key={dimKey}
-                label={<ButtonContent title={dimKey} className="uppercase font-bold" />}
-                value={selected[dimKey] as string}
-                items={Object.keys(dim).map((key) => ({
-                  value: key,
-                  title: key,
-                }))}
-                onChange={(value) => setSelected({ ...selected, [dimKey]: value })}
-                renderSelect={<Button className="flex-1" />}
-                renderWrapper={<ButtonGroup size="sm" color="teal" />}
-                renderLabel={<ButtonLike title={dimKey} className="flex-1" />}
-              />
-            ))}
-          <Button onClick={() => setSelected(defaultSelected)} title="Reset" color="red" size="sm" />
-        </div>
-        <div className="max-h-[90vh] overflow-auto flex-1">
-          <div className="grid gap-4 py-4">
+            .map(([dimKey, dim]) => {
+              return (
+                <Select<string>
+                  key={dimKey}
+                  label={dimKey}
+                  value={selected[dimKey] as string}
+                  items={Object.keys(dim).map((key) => ({
+                    value: key,
+                    content: key,
+                  }))}
+                  onChange={(value) => setSelected({ ...selected, [dimKey]: value })}
+                  renderSelect={<Button css={{ flex: "1" }} />}
+                  renderWrapper={<ButtonGroup color="teal" />}
+                  renderLabel={
+                    <ButtonLike css={{ flex: "1", textTransform: "uppercase", fontWeight: "bold", minW: "[150px]" }}>
+                      {dimKey}
+                    </ButtonLike>
+                  }
+                />
+              );
+            })}
+          <Button onClick={() => setSelected(defaultSelected)} color="red" variant="subtle">
+            Reset
+          </Button>
+        </VStack>
+        <styled.div maxH="[90vh]" overflow="auto" flex="1">
+          <Grid gap="4" py="4">
             {cols.length > 1 &&
               cols.map((col, colIndex) => {
                 const colName = Object.values(col).join(" & ");
                 return (
-                  <div
+                  <styled.div
                     key={`col-${colIndex}`}
                     style={{ gridColumn: 1 + colOffset + colIndex, gridRow: 1 }}
-                    className="text-center bg-white/5 rounded-sm uppercase font-bold p-1"
+                    textAlign="center"
+                    bg="white/5"
+                    rounded="1_x"
+                    textTransform="uppercase"
+                    fontWeight="bold"
+                    p="1"
+                    textStyle="4"
                   >
                     {colName}
-                  </div>
+                  </styled.div>
                 );
               })}
             {rows.length > 1 &&
               rows.map((row, rowIndex) => {
                 const rowName = Object.values(row).join(" & ");
                 return (
-                  <div
+                  <styled.div
                     key={`row-${rowIndex}`}
                     style={{ gridColumn: 1, gridRow: 1 + rowOffset + rowIndex }}
-                    className="text-center bg-white/5 rounded-sm uppercase font-bold p-1 flex items-center justify-center"
+                    textAlign="center"
+                    bg="white/5"
+                    rounded="1_x"
+                    textTransform="uppercase"
+                    fontWeight="bold"
+                    p="1"
+                    textStyle="4"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
                   >
                     {rowName}
-                  </div>
+                  </styled.div>
                 );
               })}
             {cols.map((col, colIndex) => (
@@ -215,25 +251,27 @@ export function Variants<Dims extends TDimensions>({
                   }, {});
                   const key = `cell-${colIndex}-${rowIndex}`;
                   return (
-                    <div
+                    <styled.div
                       style={{
                         gridColumn: 1 + colOffset + colIndex,
                         gridRow: 1 + rowOffset + rowIndex,
                         minWidth: cellMinWidth,
                       }}
-                      className="flex flex-col items-start"
+                      display="flex"
+                      flexDirection="column"
+                      alignItems="center"
                       key={key}
                     >
                       {render(data as any, key)}
-                    </div>
+                    </styled.div>
                   );
                 })}
               </Fragment>
             ))}
-          </div>
-        </div>
-      </div>
-    </div>
+          </Grid>
+        </styled.div>
+      </HStack>
+    </VStack>
   );
 }
 
@@ -263,22 +301,22 @@ function MultiSelect<T extends string>({ label, onChange, options, selected }: M
   const available = options.filter((option) => !selected.includes(option));
 
   return (
-    <ButtonGroup size="xs" primary>
-      <ButtonLike title={label} className="uppercase font-bold" />
+    <ButtonGroup variant="solid" color="blue">
+      <ButtonLike css={{ textTransform: "uppercase", fontWeight: "bold" }}>{label}</ButtonLike>
       {selected.map((selectedItem, index) => {
         return (
           <Select<T | "REMOVE">
             key={index}
             value={selectedItem}
-            renderSelect={<Button className="min-w-[100px]" />}
+            renderSelect={<Button css={{ minWidth: "[100px]" }} />}
             items={[
               ...options.map((option) => ({
                 value: option,
-                title: option,
+                content: option,
               })),
               {
                 value: "REMOVE",
-                title: "--REMOVE--",
+                content: "--REMOVE--",
               },
             ]}
             label={label}
@@ -289,7 +327,7 @@ function MultiSelect<T extends string>({ label, onChange, options, selected }: M
       })}
       {available.length > 0 && (
         <Button
-          icon={<PlusIcon />}
+          startIcon={<PlusIcon />}
           onClick={() => {
             onChange([...selected, available[0]]);
           }}
@@ -386,10 +424,10 @@ function useVariantsState<Dims extends TDimensions>({
   }, [defaultSelected, dimensions]);
 
   const selected = useMemo(() => {
-    const base = presetObj ? presetObj.selected : storage.selected;
     return {
       ...internalDefaultSelected,
-      ...base,
+      ...presetObj?.selected,
+      ...storage.selected,
     };
   }, [internalDefaultSelected, presetObj, storage.selected]);
 

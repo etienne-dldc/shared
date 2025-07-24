@@ -1,20 +1,26 @@
 import { CaretDownIcon, CaretUpIcon } from "@phosphor-icons/react";
 import { forwardRef, useState } from "react";
+import { TDesignSize, TDesignVariant, TPaletteColor } from "../../design/types";
 import { Button } from "../button/Button";
-import { TDesignSize } from "../core/DesignContext";
-import { TDynamicColor } from "../core/DynamicColorProvider";
 import { Menu, MenuProps } from "./Menu";
 
 interface MoreMenuProps extends Omit<MenuProps, "trigger"> {
+  // Button Design
+  disabled?: boolean;
+  height?: TDesignSize;
+  heightRatio?: number;
+  spacing?: TDesignSize;
+  variant?: TDesignVariant;
+  hoverVariant?: TDesignVariant;
+
+  color?: TPaletteColor;
+
   content: React.ReactNode;
-  primary?: boolean;
-  size?: TDesignSize;
-  color?: TDynamicColor;
   className?: string;
 }
 
 export const MoreMenu = forwardRef<HTMLDivElement, MoreMenuProps>(function MoreMenu(
-  { primary, size, color, content, className, ...props },
+  { disabled, height, heightRatio, spacing, variant, hoverVariant, color, content, className, ...props },
   ref,
 ) {
   const [open, setOpen] = useState(false);
@@ -24,7 +30,12 @@ export const MoreMenu = forwardRef<HTMLDivElement, MoreMenuProps>(function MoreM
       open={open}
       setOpen={setOpen}
       className={className}
-      trigger={<Button primary={primary} size={size} icon={open ? <CaretUpIcon /> : <CaretDownIcon />} color={color} />}
+      trigger={
+        <Button
+          {...{ disabled, height, heightRatio, spacing, variant, hoverVariant, color }}
+          startIcon={open ? <CaretUpIcon /> : <CaretDownIcon />}
+        />
+      }
       content={content}
       {...props}
       ref={ref}
