@@ -54,7 +54,7 @@ export function Button(inProps: ButtonProps) {
 
   const { startPadding, endPadding, fragment, noLayout } = useItemContentFragment(localItemContent, children);
 
-  const [btnCss, btnInline] = buttonLikeStyled(height, contentHeight, rounded, variant, inProps.color);
+  const [btnCss, btnInline] = buttonLikeStyled(height, contentHeight, rounded, variant, color);
   const [contentCss, contentInline] = itemlContentStyles(contentHeight, spacing, startPadding, endPadding, noLayout);
   const buttonCss = buttonClass.raw({ hoverVariant, variant });
 

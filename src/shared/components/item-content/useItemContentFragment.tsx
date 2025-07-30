@@ -1,6 +1,5 @@
 import { Fragment } from "react/jsx-runtime";
 import { Ellipsis } from "../../../../styled-system/jsx";
-import { isNotNil } from "../../utils/nil";
 import { TPropsSplitter } from "../../utils/propsSplitters";
 import { SideSlot } from "./SideSlot";
 import { TItemContentFragmentProps, TItemlContentPaddingResolved } from "./types";
@@ -30,7 +29,7 @@ export function useItemContentFragment(
 
   const hasStartSlot = Boolean(startSlot || startIcon || loading);
   const hasEndSlot = Boolean(endSlot || endIcon);
-  const hasChildren = isNotNil(content);
+  const hasChildren = Boolean(content);
   // Special case for start icon/slot only
   const iconOnly = (hasStartSlot && !hasChildren && !hasEndSlot) || (hasEndSlot && !hasStartSlot && !hasChildren);
 
