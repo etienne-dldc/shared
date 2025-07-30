@@ -72,7 +72,7 @@ export function TreeItem(inProps: TreeItemProps) {
     // heightRatio: 0.8,
     ...localDesign,
   });
-  const [itemCss, itemInline] = treeItemStyles(height, contentHeight, inProps.color);
+  const [itemCss, itemInline] = treeItemStyles(height, contentHeight, color);
 
   const childrenResolved = children ?? <TreeItemContent>{content}</TreeItemContent>;
 

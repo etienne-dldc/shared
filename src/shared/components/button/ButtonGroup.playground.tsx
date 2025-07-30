@@ -123,7 +123,7 @@ export default function ButtonPlayground() {
       presets={{
         base: { column: [], row: [], selected: {} },
       }}
-      render={({ margin, ...props }) => (
+      render={({ margin: _margin, ...props }) => (
         <div
         // className={cn("w-full h-full", background, margin)}
         >

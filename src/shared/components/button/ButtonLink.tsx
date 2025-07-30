@@ -54,7 +54,7 @@ export function ButtonLink(inProps: ButtonLinkProps) {
 
   const { startPadding, endPadding, fragment, noLayout } = useItemContentFragment(localItemContent, children);
 
-  const [bntCss, btnInline] = buttonLikeStyled(height, contentHeight, rounded, variant, inProps.color);
+  const [bntCss, btnInline] = buttonLikeStyled(height, contentHeight, rounded, variant, color);
   const [contentCss, contentInline] = itemlContentStyles(contentHeight, spacing, startPadding, endPadding, noLayout);
 
   return (

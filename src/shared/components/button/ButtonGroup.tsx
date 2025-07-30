@@ -62,7 +62,7 @@ export const ButtonGroup = forwardRef(function ButtonGroup(
         className={cx(
           css(
             buttonGroupClass.raw({ direction, variant }),
-            inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
+            color && colorPaletteClass.raw({ colorPalette: color }),
             cssProp,
           ),
           className,
