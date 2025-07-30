@@ -1,7 +1,6 @@
 import { css, cx } from "../../../../styled-system/css";
 import { HStack, styled } from "../../../../styled-system/jsx";
 import { SystemStyleObject } from "../../../../styled-system/types";
-import { isNotNil } from "../../utils/nil";
 import { IconBox } from "../common/IconBox";
 
 interface PageTitleProps {
@@ -11,6 +10,7 @@ interface PageTitleProps {
   details?: React.ReactNode;
   className?: string;
   startActions?: React.ReactNode;
+  middleActions?: React.ReactNode;
   endActions?: React.ReactNode;
   css?: SystemStyleObject;
 }
@@ -22,6 +22,7 @@ export function PageTitle({
   details,
   className,
   startActions,
+  middleActions,
   endActions,
   css: cssProp,
 }: PageTitleProps) {
@@ -32,7 +33,7 @@ export function PageTitle({
         {icon && <IconBox size={7} icon={icon} css={{ p: "0x" }} weight="bold" />}
         <styled.h1 textStyle="7" fontWeight="semibold" onClick={onTitleClick}>
           {title}
-          {isNotNil(details) && (
+          {Boolean(details) && (
             <>
               {" "}
               <styled.span fontWeight="normal" color="white/60">
@@ -42,6 +43,11 @@ export function PageTitle({
           )}
         </styled.h1>
       </HStack>
+      {middleActions && (
+        <HStack gap="2" mr="auto">
+          {middleActions}
+        </HStack>
+      )}
       {endActions && (
         <HStack gap="2" ml="auto">
           {endActions}

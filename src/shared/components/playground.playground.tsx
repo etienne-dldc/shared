@@ -17,6 +17,7 @@ import {
 import { ItemContent } from "./item-content/ItemContent";
 import { ItemContentFragment } from "./item-content/ItemContentFragment";
 import { TItemContentFragmentProps } from "./item-content/types";
+import { Tooltip } from "./popovers/Tooltip";
 
 export default function Playground() {
   const [_state, setState] = useState(0);
@@ -151,6 +152,18 @@ export default function Playground() {
       <div style={{ height: 20 }} />
 
       <PowerSizeDemo />
+      <div style={{ height: 20 }} />
+      <ButtonGroup height="12">
+        <Tooltip content="This is a tooltip">
+          <Button>Btn 1</Button>
+        </Tooltip>
+        <Tooltip content="This is a tooltip">
+          <Button>Btn 1</Button>
+        </Tooltip>
+        <Tooltip content="This is a tooltip">
+          <Button>Btn 1</Button>
+        </Tooltip>
+      </ButtonGroup>
     </styled.div>
   );
 }

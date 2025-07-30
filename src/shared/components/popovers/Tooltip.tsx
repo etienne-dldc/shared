@@ -1,25 +1,40 @@
 import * as Ariakit from "@ariakit/react";
 import { forwardRef } from "react";
+import { Paper } from "../../../../styled-system/jsx";
+import { SystemStyleObject } from "../../../../styled-system/types";
+import { forwardButtonGroupAttributes } from "../../utils/forwardButtonGroupAttributes";
 
 interface TooltipProps extends Omit<Ariakit.TooltipProviderProps, "children"> {
   children: React.ReactElement<any>;
   content?: React.ReactNode;
+  css?: SystemStyleObject;
 }
 
 export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip(
-  { children, showTimeout = 300, content, ...props },
+  { children, showTimeout = 300, content, css: cssProp, ...props },
   ref,
 ) {
+  const childrenWithAttrs = forwardButtonGroupAttributes(props, children);
+
   if (!content) {
-    return <>{children}</>;
+    return <>{childrenWithAttrs}</>;
   }
 
   return (
     <Ariakit.TooltipProvider showTimeout={showTimeout} {...props}>
-      <Ariakit.TooltipAnchor ref={ref} render={children} />
+      <Ariakit.TooltipAnchor ref={ref} render={childrenWithAttrs} />
       <Ariakit.Tooltip
-        // className={cn("bg-stone-950 px-3 py-1.5 rounded-sm leading-relaxed shadow-xl text-stone-200 select-none")}
         unmountOnHide
+        render={
+          <Paper
+            level="modal"
+            px="3"
+            py="1x"
+            userSelect="none"
+            // eslint-disable-next-line @pandacss/no-dynamic-styling, @pandacss/no-property-renaming
+            css={cssProp}
+          />
+        }
       >
         {content}
       </Ariakit.Tooltip>
