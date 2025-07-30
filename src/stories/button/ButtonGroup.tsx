@@ -1,8 +1,8 @@
 import { CaretRightIcon, HouseIcon } from "@phosphor-icons/react";
-import { TVariantsValues, Variants } from "../../../playground/LegacyVariants";
-import { TDesignSize, TDesignVariant, TPaletteColor } from "../../design/types";
-import { Button } from "./Button";
-import { ButtonGroup } from "./ButtonGroup";
+import { TVariantsValues, Variants } from "../../playground/LegacyVariants";
+import { Button } from "../../shared/components/button/Button";
+import { ButtonGroup } from "../../shared/components/button/ButtonGroup";
+import { TDesignSize, TDesignVariant, TPaletteColor } from "../../shared/design/types";
 
 const DYNAMIC_COLOR_VARIANTS = {
   default: undefined,

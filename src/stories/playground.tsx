@@ -1,23 +1,23 @@
 import { CaretDownIcon, CaretRightIcon, DotIcon, DotsSixVerticalIcon, HouseIcon, PenIcon } from "@phosphor-icons/react";
 import { ComponentPropsWithRef, Fragment, useMemo, useState } from "react";
 import { Merge } from "type-fest";
-import { HStack, styled } from "../../../styled-system/jsx";
-import { ROUNDED } from "../design/sizes";
-import { TNestedDesignValues } from "../design/types";
-import { pipePropsSplitters } from "../utils/propsSplitters";
-import { Button } from "./button/Button";
-import { ButtonGroup } from "./button/ButtonGroup";
-import { ButtonLike } from "./button/ButtonLike";
+import { HStack, styled } from "../../styled-system/jsx";
+import { Button } from "../shared/components/button/Button";
+import { ButtonGroup } from "../shared/components/button/ButtonGroup";
+import { ButtonLike } from "../shared/components/button/ButtonLike";
 import {
   DefaultDesignProvider,
   NestedDefaultDesignProvider,
   designPropsSplitter,
   useContainerDesignProps,
-} from "./core/DesignContext";
-import { ItemContent } from "./item-content/ItemContent";
-import { ItemContentFragment } from "./item-content/ItemContentFragment";
-import { TItemContentFragmentProps } from "./item-content/types";
-import { Tooltip } from "./popovers/Tooltip";
+} from "../shared/components/core/DesignContext";
+import { ItemContent } from "../shared/components/item-content/ItemContent";
+import { ItemContentFragment } from "../shared/components/item-content/ItemContentFragment";
+import { TItemContentFragmentProps } from "../shared/components/item-content/types";
+import { Tooltip } from "../shared/components/popovers/Tooltip";
+import { ROUNDED } from "../shared/design/sizes";
+import { TNestedDesignValues } from "../shared/design/types";
+import { pipePropsSplitters } from "../shared/utils/propsSplitters";
 
 export default function Playground() {
   const [_state, setState] = useState(0);

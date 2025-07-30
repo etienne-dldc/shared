@@ -1,12 +1,12 @@
 import { nanoid } from "nanoid";
 import { useState } from "react";
 import scrollIntoView from "smooth-scroll-into-view-if-needed";
-import { css } from "../../../styled-system/css";
-import { Button } from "../components/button/Button";
-import { ButtonGroup } from "../components/button/ButtonGroup";
-import { useIsMobile } from "../hooks/useIsMobile";
-import { Finder } from "./Finder";
-import { FinderPanel, useFinderPanelRefOrFail, useFinderPanelSize } from "./FinderPanel";
+import { css } from "../../styled-system/css";
+import { Button } from "../shared/components/button/Button";
+import { ButtonGroup } from "../shared/components/button/ButtonGroup";
+import { Finder } from "../shared/finder/Finder";
+import { FinderPanel, useFinderPanelRefOrFail, useFinderPanelSize } from "../shared/finder/FinderPanel";
+import { useIsMobile } from "../shared/hooks/useIsMobile";
 
 export default function FinderPlayground() {
   const [keys, setKeys] = useState<string[]>([nanoid()]);

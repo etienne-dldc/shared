@@ -1,9 +1,7 @@
 import { CaretDownIcon, CirclesFourIcon, DotsThreeVerticalIcon, UserIcon } from "@phosphor-icons/react";
-import { styled } from "../../../../styled-system/jsx";
-import { TVariantsValues, Variants } from "../../../playground/LegacyVariants";
-import { TDesignSize, TDesignVariant, TPaletteColor } from "../../design/types";
-import { Button } from "./Button";
-import { ButtonLike } from "./ButtonLike";
+import { TVariantsValues, Variants } from "../../playground/LegacyVariants";
+import { ButtonLike } from "../../shared/components/button/ButtonLike";
+import { TDesignSize, TDesignVariant, TPaletteColor } from "../../shared/design/types";
 
 const TEXT_VARIANTS = {
   default: "Label",
@@ -81,6 +79,8 @@ const SIZE_VARIANTS = {
   size_12: "12",
 } satisfies TVariantsValues<`size_${TDesignSize}`, TDesignSize | undefined>;
 
+const LOADING_VARIANTS = { default: undefined, no: false, yes: true } as const;
+
 const VARIANT_VARIANTS = {
   default: undefined,
   solid: "solid",
@@ -89,42 +89,12 @@ const VARIANT_VARIANTS = {
   ghost: "ghost",
 } satisfies TVariantsValues<TDesignVariant, TDesignVariant | undefined>;
 
-// const BACKGROUND_COLORS = {
-//   none: "",
-//   blue: tw`bg-blue-950`,
-//   indigo: tw`bg-indigo-950`,
-//   green: tw`bg-green-950`,
-//   orange: tw`bg-orange-950`,
-//   teal: tw`bg-teal-950`,
-//   red: tw`bg-red-950`,
-//   slate: tw`bg-slate-950`,
-// } as const;
-
-const INTERACTIVE_STATE = {
-  default: undefined,
-  base: null,
-  hover: "hover",
-  focus: "focus",
-} as const;
-
-const DISABLED_VARIANTS = {
-  default: undefined,
-  no: false,
-  yes: true,
-} as const;
-
-const LOADING_VARIANTS = { default: undefined, no: false, yes: true } as const;
-
-const FULL_WIDTH_VARIANTS = { default: undefined, no: false, yes: true } as const;
-
-export default function ButtonPlayground() {
+export default function ButtonLikePlayground() {
   return (
     <Variants
-      title="Button"
-      localStorageKey="button"
+      localStorageKey="button-like"
       cellMinWidth={200}
       dimensions={{
-        disabled: DISABLED_VARIANTS,
         height: SIZE_VARIANTS,
         nestedHeight: SIZE_VARIANTS,
         spacing: SIZE_VARIANTS,
@@ -137,13 +107,8 @@ export default function ButtonPlayground() {
         startIcon: ICON_VARIANTS,
         endIcon: ICON_VARIANTS,
         endAction: END_ACTION_VARIANTS,
-
-        // background: BACKGROUND_COLORS,
-        fullWidth: FULL_WIDTH_VARIANTS,
-        state: INTERACTIVE_STATE,
       }}
       defaultSelected={{
-        disabled: "default",
         height: "default",
         nestedHeight: "default",
         spacing: "default",
@@ -156,19 +121,20 @@ export default function ButtonPlayground() {
         startIcon: "default",
         endIcon: "default",
         endAction: "default",
-
-        // background: "default",
-        fullWidth: "default",
-        state: "default",
       }}
       presets={{
         base: { column: [], row: [], selected: {} },
-        variants: { column: ["state"], row: ["variant", "hoverVariant"], selected: {} },
-        focused: {
-          column: ["color"],
-          row: ["height", "variant"],
-          selected: { state: "focus" },
-        },
+        // "size & color": { column: ["size"], row: ["color"], selected: { primary: "primary", filled: "filled" } },
+        // content: {
+        //   column: ["title"],
+        //   row: ["details", "icon", "endIcon"],
+        //   selected: { primary: "primary", filled: "filled" },
+        // },
+        // sizes: {
+        //   column: ["xSize"],
+        //   row: ["ySize"],
+        //   selected: { primary: "primary", filled: "filled" },
+        // },
         "size & color": { column: ["height"], row: ["color"], selected: { variant: "solid" } },
         content: {
           column: ["children"],
@@ -181,15 +147,15 @@ export default function ButtonPlayground() {
           selected: { variant: "solid", color: "blue" },
         },
       }}
-      render={({ fullWidth, state, ...props }) => (
-        <styled.div display="flex" flexDirection="column" alignItems="center" justifyContent="center" h="full" w="full">
-          <Button
+      render={({ ...props }) => (
+        <div
+        // className={cn("w-full h-full", fullWidth ? "" : "flex flex-row")}
+        >
+          <ButtonLike
             {...props}
-            css={{ w: fullWidth ? "full" : "auto" }}
-            data-focus-visible={state === "focus" ? true : undefined}
-            data-hover={state === "hover" ? true : undefined}
+            // className={cn(fullWidth ? "w-full" : "")}
           />
-        </styled.div>
+        </div>
       )}
     />
   );

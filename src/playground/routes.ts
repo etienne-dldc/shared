@@ -1,6 +1,6 @@
 import { lazy } from "react";
 
-const modules = import.meta.glob("../shared/**/*.playground.{ts,tsx}");
+const stories = import.meta.glob("../stories/**/*.{ts,tsx}");
 
 export interface TRouteFolder {
   kind: "folder";
@@ -24,8 +24,8 @@ const rootRoute: TRouteFolder = {
   routes: [],
 };
 
-Object.entries(modules).forEach(([rawPath, module]) => {
-  const path = rawPath.replace("../shared/", "").replace(/\.playground\.(ts|tsx)$/, "");
+Object.entries(stories).forEach(([rawPath, module]) => {
+  const path = rawPath.replace("../stories/", "").replace(/\.(ts|tsx)$/, "");
 
   const parts = path.split("/");
   const parent = resolveRouteFolder(parts.slice(0, -1));

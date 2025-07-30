@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Variants } from "../../playground/LegacyVariants";
-import { CheckBox } from "./form/CheckBox";
+import { Variants } from "../playground/LegacyVariants";
+import { CheckBox } from "../shared/components/form/CheckBox";
 
 const CHECKED_VARIANTS = {
   yes: true,

@@ -1,7 +1,7 @@
 import { Fragment } from "react/jsx-runtime";
-import { Variants } from "../../../playground/LegacyVariants";
-import { Select } from "./Select";
-import { TSelectItem } from "./types";
+import { Variants } from "../playground/LegacyVariants";
+import { Select } from "../shared/components/select/Select";
+import { TSelectItem } from "../shared/components/select/types";
 
 const selectItems: TSelectItem<string>[] = [
   {

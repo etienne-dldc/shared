@@ -1,10 +1,10 @@
 import { CaretDownIcon, CirclesFourIcon, DotsThreeVerticalIcon, UserIcon } from "@phosphor-icons/react";
-import { VStack } from "../../../../styled-system/jsx";
-import { createVariantsTreeUtils } from "../../../playground/variants/tree";
-import { Variants } from "../../../playground/variants/Variants";
-import { TDesignVariant } from "../../design/types";
-import { Button, ButtonProps } from "./Button";
-import { ButtonLike } from "./ButtonLike";
+import { VStack } from "../../../styled-system/jsx";
+import { createVariantsTreeUtils } from "../../playground/variants/tree";
+import { Variants } from "../../playground/variants/Variants";
+import { Button, ButtonProps } from "../../shared/components/button/Button";
+import { ButtonLike } from "../../shared/components/button/ButtonLike";
+import { TDesignVariant } from "../../shared/design/types";
 
 const utils = createVariantsTreeUtils<ButtonProps>();
 
