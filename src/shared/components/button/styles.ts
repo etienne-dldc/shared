@@ -1,7 +1,7 @@
 import { css, cva } from "../../../../styled-system/css";
 import { SystemStyleObject } from "../../../../styled-system/types";
+import { colorPaletteClass, contentSize, heightStyles, roundedStyles } from "../../design/styles";
 import { TDesignVariant, TPaletteColor } from "../../design/types";
-import { colorPaletteClass, contentSize, heightStyles, roundedStyles } from "../common/styles";
 
 export const buttonLikeClass = cva({
   base: {

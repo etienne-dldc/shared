@@ -3,9 +3,9 @@ import { Children, cloneElement, ComponentPropsWithoutRef, ForwardedRef, forward
 import { Merge } from "type-fest";
 import { css, cx } from "../../../../styled-system/css";
 import { SystemStyleObject } from "../../../../styled-system/types";
+import { colorPaletteClass } from "../../design/styles";
 import { TDesignProps, TPaletteColor } from "../../design/types";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
-import { colorPaletteClass } from "../common/styles";
 import { DefaultDesignProvider, designPropsSplitter, useContainerDesignProps } from "../core/DesignContext";
 import { buttonGroupClass, separatorClass } from "./styles";
 

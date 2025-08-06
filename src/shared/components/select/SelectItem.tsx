@@ -1,8 +1,8 @@
 import * as Ariakit from "@ariakit/react";
 import { CheckIcon } from "@phosphor-icons/react";
 import { css, cx } from "../../../../styled-system/css";
+import { heightStyles } from "../../design/styles";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
-import { heightStyles } from "../common/styles";
 import { DefaultDesignProvider, designPropsSplitter, useContainerDesignProps } from "../core/DesignContext";
 import { itemlContentStyles } from "../item-content/styles";
 import { useItemContentFragment } from "../item-content/useItemContentFragment";

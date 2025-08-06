@@ -1,7 +1,7 @@
-import { css, cva } from "../../../../styled-system/css";
-import { SystemStyleObject } from "../../../../styled-system/types";
-import { sizeToRemString } from "../../design/sizes";
-import { TPaletteColor } from "../../design/types";
+import { css, cva } from "../../../styled-system/css";
+import { SystemStyleObject } from "../../../styled-system/types";
+import { sizeToRemString } from "./sizes";
+import { TPaletteColor } from "./types";
 
 export const colorPaletteClass = cva({
   variants: {
@@ -54,6 +54,15 @@ export function roundedStyles(rounded: number): [css: SystemStyleObject, styles:
 export function contentSize(height: number): [css: SystemStyleObject, styles: React.CSSProperties] {
   return [
     css.raw({ textStyle: "dynamic" }),
+    {
+      ["--content-size" as string]: sizeToRemString(height),
+    },
+  ];
+}
+
+export function prose(height: number): [css: SystemStyleObject, styles: React.CSSProperties] {
+  return [
+    css.raw({}),
     {
       ["--content-size" as string]: sizeToRemString(height),
     },
