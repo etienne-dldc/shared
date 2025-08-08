@@ -16,7 +16,7 @@
     "@ariakit/core": "^0.4.15",
     "@ariakit/react": "^0.4.17",
     "@dldc/chemin": "jsr:^13.0.0",
-    "@dldc/panda-preset": "jsr:^1.1.2",
+    "@dldc/panda-preset": "jsr:^1.1.4",
     "@dldc/safe-search-params": "jsr:^1.1.1",
     "@phosphor-icons/react": "^2.1.10",
     "@react-hookz/deep-equal": "^3.0.4",
@@ -46,7 +46,7 @@
     "@tailwindcss/vite": "^4.1.11",
     "@types/react": "^19.1.9",
     "@types/react-dom": "^19.1.7",
-    "@vitejs/plugin-react-swc": "^3.11.0",
+    "@vitejs/plugin-react-swc": "^4.0.0",
     "eslint": "^9.32.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
@@ -54,7 +54,7 @@
     "prettier": "^3.6.2",
     "typescript": "~5.9.2",
     "typescript-eslint": "^8.39.0",
-    "vite": "^7.0.6"
+    "vite": "^7.1.0"
   },
   "packageManager": "pnpm@10.14.0+sha512.ad27a79641b49c3e481a16a805baa71817a04bbe06a38d17e60e2eaee83f6a146c6a688125f5792e48dd5ba30e7da52a5cda4c3992b9ccf333f9ce223af84748",
   "pnpm": {

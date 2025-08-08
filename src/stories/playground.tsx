@@ -1,8 +1,8 @@
 import { CaretDownIcon, CaretRightIcon, DotIcon, DotsSixVerticalIcon, HouseIcon, PenIcon } from "@phosphor-icons/react";
 import { ComponentPropsWithRef, Fragment, useMemo, useState } from "react";
 import { Merge } from "type-fest";
-import { css } from "../../styled-system/css";
 import { HStack, styled } from "../../styled-system/jsx";
+import { prose } from "../../styled-system/recipes";
 import { Button } from "../shared/components/button/Button";
 import { ButtonGroup } from "../shared/components/button/ButtonGroup";
 import { ButtonLike } from "../shared/components/button/ButtonLike";
@@ -168,10 +168,7 @@ export default function Playground() {
       </ButtonGroup>
       <div style={{ height: 20 }} />
 
-      <div
-        style={{ ["--content-size" as string]: sizeToRemString(10) }}
-        className={css({ prose: true, proseInvert: true })}
-      >
+      <div style={{ ["--content-size" as string]: sizeToRemString(10) }} className={prose({})}>
         <ProseContent />
       </div>
     </styled.div>
