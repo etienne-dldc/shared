@@ -59,12 +59,3 @@ export function contentSize(height: number): [css: SystemStyleObject, styles: Re
     },
   ];
 }
-
-export function prose(height: number): [css: SystemStyleObject, styles: React.CSSProperties] {
-  return [
-    css.raw({}),
-    {
-      ["--content-size" as string]: sizeToRemString(height),
-    },
-  ];
-}
