@@ -27,7 +27,7 @@ export const Menu = forwardRef<HTMLDivElement, MenuProps>(function Menu(
       <Ariakit.Menu
         gutter={4}
         ref={ref}
-        render={<Paper level="select" outline="none" />}
+        render={<Paper bg="neutral.900" outline="none" />}
         className={className}
         portal={portal}
         unmountOnHide

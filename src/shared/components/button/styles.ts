@@ -30,7 +30,7 @@ export const buttonLikeClass = cva({
         color: "colorPalette.200",
         _after: {
           borderColor: "white/10",
-          borderWidth: "0_x",
+          borderWidth: "0__x",
         },
       },
       subtle: { color: "colorPalette.200" },
@@ -48,7 +48,9 @@ export const buttonLikeBackgroundClass = cva({
       surface: {
         bg: "white/5",
       },
-      subtle: { bg: "white/5" },
+      subtle: {
+        bg: "white/5",
+      },
       ghost: {},
     } satisfies Record<TDesignVariant, SystemStyleObject>,
   },
@@ -109,42 +111,25 @@ export const buttonClass = cva({
         _hover: {
           bg: "colorPalette.500",
           color: "neutral.100",
-          _after: {
-            borderColor: "transparent",
-          },
-          _focusVisible: {
-            _after: {
-              borderColor: "neutral.200",
-            },
-          },
         },
       },
       surface: {
         _hover: {
           bg: "white/10",
           color: "colorPalette.100",
-          _after: {
-            borderColor: "colorPalette.700",
-            borderWidth: "0_x",
-          },
         },
       },
       subtle: {
         _hover: {
           bg: "white/10",
           color: "colorPalette.100",
-          _after: {
-            borderColor: "transparent",
-          },
-          _focusVisible: {
-            _after: {
-              borderColor: "neutral.200",
-            },
-          },
         },
       },
       ghost: {
-        _hover: { bg: "white/5", color: "colorPalette.100" },
+        _hover: {
+          bg: "white/5",
+          color: "colorPalette.100",
+        },
       },
     } satisfies Record<TDesignVariant, SystemStyleObject>,
   },
@@ -165,36 +150,30 @@ export const buttonGroupClass = cva({
         flexDirection: "row",
         _firstChild: {
           borderEndRadius: "0",
-          _focusVisible: { _after: { right: "-0_x" } },
-          _hover: { _after: { right: "-0_x" } },
+          _after: { borderEndWidth: "0" },
         },
         _betweenChild: {
           rounded: "0",
-          _focusVisible: { _after: { left: "-0_x", right: "-0_x" } },
-          _hover: { _after: { left: "-0_x", right: "-0_x" } },
+          _after: { borderXWidth: "0" },
         },
         _lastChild: {
           borderStartRadius: "0",
-          _focusVisible: { _after: { left: "-0_x" } },
-          _hover: { _after: { left: "-0_x" } },
+          _after: { borderStartWidth: "0" },
         },
       },
       vertical: {
         flexDirection: "column",
         _firstChild: {
           borderBottomRadius: "0",
-          _focusVisible: { _after: { bottom: "-0_x" } },
-          _hover: { _after: { bottom: "-0_x" } },
+          _after: { borderBottomWidth: "0" },
         },
         _betweenChild: {
           rounded: "0",
-          _focusVisible: { _after: { top: "-0_x", bottom: "-0_x" } },
-          _hover: { _after: { top: "-0_x", bottom: "-0_x" } },
+          _after: { borderYWidth: "0" },
         },
         _lastChild: {
           borderTopRadius: "0",
-          _focusVisible: { _after: { top: "-0_x" } },
-          _hover: { _after: { top: "-0_x" } },
+          _after: { borderTopWidth: "0" },
         },
       },
     },
@@ -205,50 +184,6 @@ export const buttonGroupClass = cva({
       ghost: {},
     } satisfies Record<TDesignVariant, SystemStyleObject>,
   },
-  compoundVariants: [
-    {
-      direction: "horizontal",
-      variant: "surface",
-      css: {
-        _firstChild: {
-          _after: { borderRightWidth: "0" },
-          _focusVisible: { _after: { borderRightWidth: "0_x" } },
-          _hover: { _after: { borderRightWidth: "0_x" } },
-        },
-        _betweenChild: {
-          _after: { borderXWidth: "0" },
-          _focusVisible: { _after: { borderXWidth: "0_x" } },
-          _hover: { _after: { borderXWidth: "0_x" } },
-        },
-        _lastChild: {
-          _after: { borderLeftWidth: "0" },
-          _focusVisible: { _after: { borderLeftWidth: "0_x" } },
-          _hover: { _after: { borderLeftWidth: "0_x" } },
-        },
-      },
-    },
-    {
-      direction: "vertical",
-      variant: "surface",
-      css: {
-        _firstChild: {
-          _after: { borderBottomWidth: "0" },
-          _focusVisible: { _after: { borderBottomWidth: "0_x" } },
-          _hover: { _after: { borderBottomWidth: "0_x" } },
-        },
-        _betweenChild: {
-          _after: { borderYWidth: "0" },
-          _focusVisible: { _after: { borderYWidth: "0_x" } },
-          _hover: { _after: { borderYWidth: "0_x" } },
-        },
-        _lastChild: {
-          _after: { borderTopWidth: "0" },
-          _focusVisible: { _after: { borderTopWidth: "0_x" } },
-          _hover: { _after: { borderTopWidth: "0_x" } },
-        },
-      },
-    },
-  ],
 });
 
 export const separatorBaseClass = cva({
@@ -257,7 +192,6 @@ export const separatorBaseClass = cva({
     position: "relative",
     zIndex: 1,
     _after: {
-      rounded: "[inherit]",
       pointerEvents: "none",
       content: "''",
       position: "absolute",
@@ -274,6 +208,7 @@ export const separatorBaseClass = cva({
         bg: "colorPalette.700",
       },
       surface: {
+        bg: "white/5",
         _after: {
           bg: "white/10",
         },
@@ -282,6 +217,18 @@ export const separatorBaseClass = cva({
       ghost: {},
     } satisfies Record<TDesignVariant, SystemStyleObject>,
   },
+  compoundVariants: [
+    {
+      variant: "surface",
+      direction: "horizontal",
+      css: { w: "0__x" },
+    },
+    {
+      variant: "surface",
+      direction: "vertical",
+      css: { h: "0__x" },
+    },
+  ],
 });
 
 export function separatorClass(variant: TDesignVariant, direction: "horizontal" | "vertical") {

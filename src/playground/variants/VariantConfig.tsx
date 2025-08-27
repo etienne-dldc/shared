@@ -16,7 +16,7 @@ export function VariantConfig() {
           <DimentionsTree />
         </styled.div>
         <DragHandle direction="horizontal" onPointerDown={onPointerDown} />
-        <Paper level="card" display="flex" flexDirection="column" flex="1">
+        <Paper bg="neutral.900" display="flex" flexDirection="column" flex="1">
           <VariantGrid />
         </Paper>
       </VStack>

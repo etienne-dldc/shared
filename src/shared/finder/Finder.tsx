@@ -45,7 +45,7 @@ export function Finder({ children, className, css: cssProp }: FinderProps) {
 
   return (
     <Scrollbars
-      className={cx(css(paper.raw({ level: "card" }), cssProp), className)}
+      className={cx(css(paper.raw({ bg: "neutral.900" }), cssProp), className)}
       events={{
         initialized: onInitUpdate,
         updated: onInitUpdate,

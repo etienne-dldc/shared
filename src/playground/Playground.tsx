@@ -20,12 +20,14 @@ import {
   useState,
 } from "react";
 import { Merge } from "type-fest";
+import { css } from "../../styled-system/css";
 import { HStack, Paper, styled } from "../../styled-system/jsx";
 import { Button } from "../shared/components/button/Button";
 import { ButtonGroup } from "../shared/components/button/ButtonGroup";
 import { ButtonLike } from "../shared/components/button/ButtonLike";
 import { IconBox } from "../shared/components/common/IconBox";
 import { LoadingBlock } from "../shared/components/common/LoadingBlock";
+import { Scrollbars } from "../shared/components/common/Scrollbars";
 import { EmptyState } from "../shared/components/layouts/EmptyState";
 import { MenuItem } from "../shared/components/menu/MenuItem";
 import { routes, TRoute, TRouteFolder, TRouteItem } from "./routes";
@@ -34,14 +36,13 @@ const history = createBrowserHistory();
 
 const menuPaper = (
   <Paper
-    level="select"
+    bg="neutral.900"
     outline="none"
-    p="1"
-    minW="var(--popover-anchor-width)"
+    w="[150px]"
     maxW="var(--popover-available-width)"
     maxH="var(--popover-available-height)"
     height="[300px]"
-    overflowY="auto"
+    position="relative"
   />
 );
 
@@ -134,7 +135,9 @@ function RouteMenu({ items, title, icon, endIcon, ...buttonProps }: RouteMenuPro
         {title}
       </Ariakit.MenuButton>
       <Ariakit.Menu gutter={8} ref={topMenuRef} render={menuPaper} portal={true} unmountOnHide>
-        {items.map((item) => renderItem(item, topMenuRef))}
+        <Scrollbars className={css({ inset: "0", position: "absolute", p: "1" })}>
+          {items.map((item) => renderItem(item, topMenuRef))}
+        </Scrollbars>
       </Ariakit.Menu>
     </Ariakit.MenuProvider>
   );
@@ -160,7 +163,9 @@ function NestedMenu({ item, parentRef }: NestedMenuProps) {
         ref={menuRef}
         portal={true}
       >
-        {item.routes.map((item) => renderItem(item, menuRef))}
+        <Scrollbars className={css({ inset: "0", position: "absolute", p: "1" })}>
+          {item.routes.map((item) => renderItem(item, menuRef))}
+        </Scrollbars>
       </Ariakit.Menu>
     </Ariakit.MenuProvider>
   );

@@ -37,16 +37,14 @@ export function parseSize(size: string | number): number {
     return size;
   }
   const base = parseInt(size, 10);
-  if (size.endsWith("_x")) {
-    return base + 1 / 4;
-  }
-  if (size.endsWith("xx")) {
-    return base + 3 / 4;
-  }
-  if (size.endsWith("x")) {
-    return base + 2 / 4;
-  }
-  return base;
+  const rest = (size.match(/[_x]*$/)?.[0] ?? "")
+    .split("")
+    .map((char, index) => {
+      if (char === "x") return 1 / Math.pow(2, index + 1);
+      return 0;
+    })
+    .reduce((a, b) => a + b, 0);
+  return base + (base < 0 ? -rest : rest);
 }
 
 export function parseMaybeSize(size: string | number | null | undefined): number | null {

@@ -56,7 +56,7 @@ function VariantsInner({ title, icon }: VariantsInnerProps) {
 
   return (
     <Fragment>
-      <Paper level="card" display="flex" flexDirection="column">
+      <Paper bg="neutral.900" display="flex" flexDirection="column">
         <PageTitle
           icon={icon}
           title={title}

@@ -27,7 +27,7 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip
         unmountOnHide
         render={
           <Paper
-            level="modal"
+            bg="neutral.950"
             px="3"
             py="1x"
             userSelect="none"

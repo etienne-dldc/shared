@@ -3,7 +3,7 @@ import { CaretDownIcon } from "@phosphor-icons/react";
 import { ComponentPropsWithRef, useMemo } from "react";
 import { Merge } from "type-fest";
 import { css, cx } from "../../../../styled-system/css";
-import { Paper, styled } from "../../../../styled-system/jsx";
+import { styled } from "../../../../styled-system/jsx";
 import { vstack } from "../../../../styled-system/patterns";
 import { SystemStyleObject } from "../../../../styled-system/types";
 import { colorPaletteClass } from "../../design/styles";
@@ -150,7 +150,17 @@ export function Select<Value extends string>(inProps: SelectProps<Value>) {
           <Ariakit.SelectPopover
             gutter={4}
             portal
-            render={<Paper level="select" outline="none" />}
+            render={
+              <styled.div
+                overflow="hidden"
+                background="neutral.800"
+                rounded="2"
+                borderWidth="0__x"
+                borderColor="white/10"
+                boxShadow="md"
+                outline="none"
+              />
+            }
             sameWidth={sameWidth}
             unmountOnHide
           >

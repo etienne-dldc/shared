@@ -99,7 +99,7 @@ export const Modal = forwardRef<HTMLButtonElement, ModalProps>(
               style={{ gridTemplateRows: `1fr`, gridTemplateColumns: `auto` }}
             >
               <Paper
-                level="modal"
+                bg="neutral.900"
                 className={cx(
                   css(
                     {

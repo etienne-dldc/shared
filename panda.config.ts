@@ -9,4 +9,11 @@ export default defineConfig({
   strictPropertyValues: true,
   jsxFramework: "react",
   presets: ["@dldc/panda-preset"],
+  globalCss: {
+    extend: {
+      html: {
+        bg: "neutral.950",
+      },
+    },
+  },
 });

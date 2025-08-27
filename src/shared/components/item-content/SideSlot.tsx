@@ -21,7 +21,7 @@ export function SideSlot(props: SideSlotProps) {
   if (icon || loading) {
     return (
       <IconBox
-        data-item-main-icon={isItemMainIcon ? "true" : undefined}
+        data-item-main-icon={isItemMainIcon && !isIconOnly ? "true" : undefined}
         css={css.raw({ ml: "auto" }, isIconOnly && { mx: "auto" })}
         icon={loading ? <LoadingIcon /> : icon}
       />

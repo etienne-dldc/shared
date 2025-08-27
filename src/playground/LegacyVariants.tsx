@@ -127,7 +127,7 @@ export function Variants<Dims extends TDimensions>({
         )}
         <HStack gap="4">
           <ButtonGroup color="blue" variant="solid">
-            <ButtonLike css={{ textTransform: "uppercase", fontWeight: "bold" }}>{preset}</ButtonLike>
+            <ButtonLike css={{ textTransform: "uppercase", fontWeight: "bold" }}>Preset</ButtonLike>
             <Select<string>
               label="preset"
               labelHidden
