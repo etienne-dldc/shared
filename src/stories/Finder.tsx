@@ -1,9 +1,13 @@
+import { ArrowCounterClockwiseIcon, PlusIcon, XIcon } from "@phosphor-icons/react";
 import { nanoid } from "nanoid";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import scrollIntoView from "smooth-scroll-into-view-if-needed";
 import { css } from "../../styled-system/css";
+import { VStack } from "../../styled-system/jsx";
+import { paper } from "../../styled-system/patterns";
 import { Button } from "../shared/components/button/Button";
 import { ButtonGroup } from "../shared/components/button/ButtonGroup";
+import { DefaultDesignProvider } from "../shared/components/core/DesignContext";
 import { Finder } from "../shared/finder/Finder";
 import { FinderPanel, useFinderPanelRefOrFail, useFinderPanelSize } from "../shared/finder/FinderPanel";
 import { useIsMobile } from "../shared/hooks/useIsMobile";
@@ -28,12 +32,24 @@ export default function FinderPlayground() {
       <Finder css={{ h: "full", w: "full", rounded: "2", shadow: "lg", position: "absolute", inset: "0" }}>
         {keys.map((key, i) => (
           <FinderPanel key={key} css={{ w: "full", md: { w: "[600px]" } }} isActive={i === keys.length - 1}>
-            <ButtonGroup direction="vertical" css={{ p: "2" }}>
-              <Button onClick={open(i)}>Open</Button>
-              <Button onClick={reset(i)}>Reset</Button>
-              {i > 0 && <Button onClick={close(i)}>Close</Button>}
-            </ButtonGroup>
-            <PanelContent />
+            <VStack gap="4" p="4" alignItems="stretch">
+              <VStack alignItems="stretch" className={paper()} p="2" gap="1" bg="neutral.850">
+                <DefaultDesignProvider variant="subtle" height="8">
+                  <Button onClick={open(i)} startIcon={<PlusIcon />} hoverVariant="solid">
+                    Open
+                  </Button>
+                  <Button onClick={reset(i)} startIcon={<ArrowCounterClockwiseIcon />}>
+                    Reset
+                  </Button>
+                  {i > 0 && (
+                    <Button onClick={close(i)} startIcon={<XIcon />} color="red" hoverVariant="solid">
+                      Close
+                    </Button>
+                  )}
+                </DefaultDesignProvider>
+              </VStack>
+              <PanelContent />
+            </VStack>
           </FinderPanel>
         ))}
       </Finder>
@@ -49,7 +65,7 @@ function PanelContent() {
   const isCompact = size === "auto" ? isMobile : size < 600;
 
   return (
-    <div className={css({ display: "flex", flexDirection: "column", gap: "2", padding: "2" })}>
+    <Fragment>
       <div className={css({ display: "flex", gap: "3" }, isCompact && { flexDirection: "column" })}>
         <div className={css({ height: "10", rounded: "1_x", backgroundColor: "white/25", flexGrow: 1 })} />
         <div className={css({ height: "10", rounded: "1_x", backgroundColor: "white/25", flexGrow: 1 })} />
@@ -74,6 +90,6 @@ function PanelContent() {
           ))}
         </div>
       )}
-    </div>
+    </Fragment>
   );
 }
