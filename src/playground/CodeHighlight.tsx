@@ -47,6 +47,7 @@ export function CodeHighlight({ language, theme, children, className }: CodeHigh
           filepath: "file.tsx",
           semi: false,
           singleQuote: true,
+          printWidth: 40,
         });
         // remove leading semi if any
         const withoutLeadingSemi = formatted.replace(/^;\s*/, "");
@@ -128,13 +129,7 @@ export function CodeHighlight({ language, theme, children, className }: CodeHigh
             className,
           )}
         >
-          {!language || !highlightedCode ? (
-            <pre>
-              <code>{children}</code>
-            </pre>
-          ) : (
-            highlightedCode
-          )}
+          {highlightedCode}
         </styled.div>
       </Scrollbars>
     </styled.div>

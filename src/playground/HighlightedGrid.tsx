@@ -19,25 +19,25 @@ export interface HeighligedCellParams<TRow, TColumn> {
 }
 
 export interface HighlightedGridProps<TRow, TColumn> {
-  rows?: TRow[];
-  columns?: TColumn[];
+  rowsDims?: TRow[];
+  columnsDims?: TColumn[];
   renderCell: (params: HeighligedCellParams<TRow, TColumn>) => React.ReactNode;
-  onHightlightedCell?: (params: HeighligedCellParams<TRow, TColumn>) => void;
+  onHighlightedCell?: (params: HeighligedCellParams<TRow, TColumn>) => void;
   css?: SystemStyleObject;
 }
 
 export function HighlightedGrid<TRow, TColumn>({
-  rows,
-  columns,
+  rowsDims,
+  columnsDims,
   renderCell,
-  onHightlightedCell,
+  onHighlightedCell,
   css: cssProp,
 }: HighlightedGridProps<TRow, TColumn>) {
-  const hasRows = rows && rows.length > 0;
-  const hasColumns = columns && columns.length > 0;
+  const hasRows = rowsDims && rowsDims.length > 0;
+  const hasColumns = columnsDims && columnsDims.length > 0;
 
-  const safeRows = hasRows ? rows : ([null] as TRow[]);
-  const safeColumns = hasColumns ? columns : ([null] as TColumn[]);
+  const safeRows = hasRows ? rowsDims : ([null] as TRow[]);
+  const safeColumns = hasColumns ? columnsDims : ([null] as TColumn[]);
 
   const columnOffset = hasRows ? 2 : 1;
   const rowOffset = hasColumns ? 2 : 1;
@@ -47,9 +47,9 @@ export function HighlightedGrid<TRow, TColumn>({
   const onHightlighted = useCallback(
     (params: HeighligedCellParams<TRow, TColumn>) => {
       setHighlighted(params ? { columnIndex: params.columnIndex, rowIndex: params.rowIndex } : null);
-      onHightlightedCell?.(params);
+      onHighlightedCell?.(params);
     },
-    [onHightlightedCell],
+    [onHighlightedCell],
   );
 
   return (
@@ -59,8 +59,8 @@ export function HighlightedGrid<TRow, TColumn>({
           gap="3"
           position="relative"
           style={{
-            gridTemplateRows: hasColumns ? "4px" : undefined,
-            gridTemplateColumns: hasRows ? "4px" : undefined,
+            gridTemplateRows: `${hasColumns ? "4px " : ""} repeat(${safeRows.length}, max-content)`,
+            gridTemplateColumns: `${hasRows ? "4px " : ""} repeat(${safeColumns.length}, max-content)`,
           }}
         >
           {highlighted && hasRows && (
