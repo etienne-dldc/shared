@@ -41,8 +41,6 @@ export const COLOR_NAMES: Record<TColorName, string> = {
   rose: "Rouge",
 };
 
-// export { colors };
-
 export function toColor(color?: string): TColorName {
   if (color && VALID_COLORS.includes(color as TColorName)) {
     return color as TColorName;
