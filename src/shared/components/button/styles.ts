@@ -235,7 +235,7 @@ export function separatorClass(variant: TDesignVariant, direction: "horizontal" 
   return separatorBaseClass.raw({ direction, variant });
 }
 
-export function buttonLikeStyled(
+export function buttonLikeStyles(
   height: number,
   contentHeight: number,
   rounded: number,

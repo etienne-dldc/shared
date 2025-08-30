@@ -10,7 +10,7 @@ import { DisabledContext } from "../core/DisabledContext";
 import { itemlContentStyles } from "../item-content/styles";
 import { TItemContentFragmentProps } from "../item-content/types";
 import { itemContentPropsSplitter, useItemContentFragment } from "../item-content/useItemContentFragment";
-import { buttonClass, buttonLikeStyled } from "./styles";
+import { buttonClass, buttonLikeStyles } from "./styles";
 
 export type ButtonProps = Merge<
   Omit<ComponentProps<"button">, "title" | "height" | "color" | "content">,
@@ -44,8 +44,10 @@ export function Button(inProps: ButtonProps) {
     children,
 
     className,
-    type = "button",
     style,
+
+    type = "button",
+
     ...buttonProps
   } = props;
 
@@ -54,7 +56,7 @@ export function Button(inProps: ButtonProps) {
 
   const { startPadding, endPadding, fragment, noLayout } = useItemContentFragment(localItemContent, children);
 
-  const [btnCss, btnInline] = buttonLikeStyled(height, contentHeight, rounded, variant, color);
+  const [btnCss, btnInline] = buttonLikeStyles(height, contentHeight, rounded, variant, color);
   const [contentCss, contentInline] = itemlContentStyles(contentHeight, spacing, startPadding, endPadding, noLayout);
   const buttonCss = buttonClass.raw({ hoverVariant, variant });
 

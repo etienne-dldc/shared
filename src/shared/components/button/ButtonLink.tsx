@@ -15,7 +15,7 @@ import { DisabledContext } from "../core/DisabledContext";
 import { itemlContentStyles } from "../item-content/styles";
 import { TItemContentFragmentProps } from "../item-content/types";
 import { itemContentPropsSplitter, useItemContentFragment } from "../item-content/useItemContentFragment";
-import { buttonClass, buttonLikeStyled } from "./styles";
+import { buttonClass, buttonLikeStyles } from "./styles";
 
 export type ButtonLinkProps = Merge<
   Omit<ComponentProps<"a">, "title">,
@@ -54,7 +54,7 @@ export function ButtonLink(inProps: ButtonLinkProps) {
 
   const { startPadding, endPadding, fragment, noLayout } = useItemContentFragment(localItemContent, children);
 
-  const [bntCss, btnInline] = buttonLikeStyled(height, contentHeight, rounded, variant, color);
+  const [bntCss, btnInline] = buttonLikeStyles(height, contentHeight, rounded, variant, color);
   const [contentCss, contentInline] = itemlContentStyles(contentHeight, spacing, startPadding, endPadding, noLayout);
 
   return (
