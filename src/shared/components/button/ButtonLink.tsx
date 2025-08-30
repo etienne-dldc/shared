@@ -1,24 +1,13 @@
 import * as Ariakit from "@ariakit/react";
 import { Merge } from "type-fest";
 
-import { css, cx } from "../../../../styled-system/css";
 import { ComponentProps, SystemStyleObject } from "../../../../styled-system/types";
 import { TDesignProps, TPaletteColor } from "../../design/types";
-import { pipePropsSplitters } from "../../utils/propsSplitters";
-import {
-  DefaultDesignProvider,
-  designPropsSplitter,
-  SizeContextProvider,
-  useContainerDesignProps,
-} from "../core/DesignContext";
-import { DisabledContext } from "../core/DisabledContext";
-import { itemlContentStyles } from "../item-content/styles";
+import { Frame } from "../frame/Frame";
 import { TItemContentFragmentProps } from "../item-content/types";
-import { itemContentPropsSplitter, useItemContentFragment } from "../item-content/useItemContentFragment";
-import { buttonClass, buttonLikeStyles } from "./styles";
 
 export type ButtonLinkProps = Merge<
-  Omit<ComponentProps<"a">, "title">,
+  Omit<ComponentProps<"a">, "title" | "height" | "color" | "content">,
   TItemContentFragmentProps &
     TDesignProps & {
       disabled?: boolean;
@@ -28,48 +17,15 @@ export type ButtonLinkProps = Merge<
 
       // Forward to Button
       render?: React.ReactElement<any>;
+
+      // Data attributes
+      "data-hover"?: boolean;
+      "data-focus-visible"?: boolean;
     }
 >;
 
 export function ButtonLink(inProps: ButtonLinkProps) {
-  const [{ localDesign, localDisabled, localItemContent }, props] = pipePropsSplitters(inProps, {
-    localDesign: designPropsSplitter,
-    localDisabled: DisabledContext.propsSplitter,
-    localItemContent: itemContentPropsSplitter,
-  });
+  const { href, ...frameProps } = inProps;
 
-  const {
-    color,
-    css: cssProp,
-
-    children,
-
-    style,
-    className,
-    ...linkProps
-  } = props;
-
-  const { height, hoverVariant, variant, contentHeight, spacing, rounded, depth } =
-    useContainerDesignProps(localDesign);
-
-  const { startPadding, endPadding, fragment, noLayout } = useItemContentFragment(localItemContent, children);
-
-  const [bntCss, btnInline] = buttonLikeStyles(height, contentHeight, rounded, variant, color);
-  const [contentCss, contentInline] = itemlContentStyles(contentHeight, spacing, startPadding, endPadding, noLayout);
-
-  return (
-    <Ariakit.Role
-      render={<a />}
-      className={cx(css(bntCss, buttonClass.raw({ hoverVariant, variant }), contentCss, cssProp), className)}
-      style={{ ...style, ...btnInline, ...contentInline }}
-      disabled={localDisabled.disabled}
-      {...(linkProps as any)}
-    >
-      <DefaultDesignProvider {...localDesign} height={null}>
-        <SizeContextProvider height={height} contentHeight={contentHeight} rounded={rounded} depth={depth}>
-          <DisabledContext.Define disabled={inProps.disabled}>{fragment}</DisabledContext.Define>
-        </SizeContextProvider>
-      </DefaultDesignProvider>
-    </Ariakit.Role>
-  );
+  return <Ariakit.Role href={href} render={<Frame render={<a />} />} interactive {...(frameProps as any)} />;
 }

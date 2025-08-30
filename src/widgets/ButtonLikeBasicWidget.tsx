@@ -7,7 +7,7 @@ import { ButtonLike } from "../shared/components/button/ButtonLike";
 import { TDesignVariant } from "../shared/design/types";
 
 export function ButtonLikeBasicWidget() {
-  const variants: TDesignVariant[] = ["solid", "surface", "subtle", "ghost"];
+  const variants: TDesignVariant[] = ["solid", "surface", "subtle", "ghost", "input"];
   const examples = [
     { label: "Basic", props: {} },
     { label: "With Icon", props: { startIcon: <UserIcon /> } },

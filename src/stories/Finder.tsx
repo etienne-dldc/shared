@@ -6,8 +6,8 @@ import { css } from "../../styled-system/css";
 import { VStack } from "../../styled-system/jsx";
 import { paper } from "../../styled-system/patterns";
 import { Button } from "../shared/components/button/Button";
-import { ButtonGroup } from "../shared/components/button/ButtonGroup";
 import { DefaultDesignProvider } from "../shared/components/core/DesignContext";
+import { FrameGroup } from "../shared/components/frame/FrameGroup";
 import { Finder } from "../shared/finder/Finder";
 import { FinderPanel, useFinderPanelRefOrFail, useFinderPanelSize } from "../shared/finder/FinderPanel";
 import { useIsMobile } from "../shared/hooks/useIsMobile";
@@ -71,7 +71,7 @@ function PanelContent() {
         <div className={css({ height: "10", rounded: "1_x", backgroundColor: "white/25", flexGrow: 1 })} />
         <div className={css({ height: "10", rounded: "1_x", backgroundColor: "white/25", flexGrow: 1 })} />
       </div>
-      <ButtonGroup direction="vertical">
+      <FrameGroup direction="vertical">
         <Button
           onClick={() => {
             if (panelRef.current) {
@@ -82,7 +82,7 @@ function PanelContent() {
           Scroll into view
         </Button>
         <Button onClick={() => setExpanded((prev) => !prev)}>{expanded ? "Collapse" : "Expand"}</Button>
-      </ButtonGroup>
+      </FrameGroup>
       {expanded && (
         <div className={css({ display: "flex", flexDirection: "column", gap: "2" })}>
           {Array.from({ length: 10 }).map((_, i) => (

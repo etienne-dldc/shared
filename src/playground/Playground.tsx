@@ -23,11 +23,11 @@ import { Merge } from "type-fest";
 import { css } from "../../styled-system/css";
 import { HStack, Paper, styled } from "../../styled-system/jsx";
 import { Button } from "../shared/components/button/Button";
-import { ButtonGroup } from "../shared/components/button/ButtonGroup";
 import { ButtonLike } from "../shared/components/button/ButtonLike";
 import { IconBox } from "../shared/components/common/IconBox";
 import { LoadingBlock } from "../shared/components/common/LoadingBlock";
 import { Scrollbars } from "../shared/components/common/Scrollbars";
+import { FrameGroup } from "../shared/components/frame/FrameGroup";
 import { EmptyState } from "../shared/components/layouts/EmptyState";
 import { MenuItem } from "../shared/components/menu/MenuItem";
 import { routes, TRoute, TRouteFolder, TRouteItem } from "./routes";
@@ -80,7 +80,7 @@ export function Playground() {
   return (
     <styled.div display="grid" gridTemplateRows="auto 1fr" gridTemplateColumns="100%" gap="4" p="4" minH="screen">
       <HStack gap="2">
-        <ButtonGroup variant="solid" height="10" color="blue">
+        <FrameGroup variant="solid" height="10" color="blue">
           <RouteMenu items={routes} icon={<ListIcon />} />
           {routeMatch?.parents.map((parent) => {
             return (
@@ -93,7 +93,7 @@ export function Playground() {
               />
             );
           })}
-        </ButtonGroup>
+        </FrameGroup>
         {routeMatch?.match && (
           <Fragment>
             <IconBox icon={<CaretRightIcon />} size="3" css={{ opacity: 0.6 }} />

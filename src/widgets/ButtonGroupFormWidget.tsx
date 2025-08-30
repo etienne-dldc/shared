@@ -1,7 +1,7 @@
-import { Grid } from "../../styled-system/jsx";
+import { Grid, Paper } from "../../styled-system/jsx";
 import { CodeHighlight } from "../playground/CodeHighlight";
 import { Button } from "../shared/components/button/Button";
-import { ButtonGroup } from "../shared/components/button/ButtonGroup";
+import { FrameGroup } from "../shared/components/frame/FrameGroup";
 
 export function ButtonGroupFormWidget() {
   return (
@@ -13,15 +13,15 @@ export function ButtonGroupFormWidget() {
   <Button color="gray">Reset</Button>
 </ButtonGroup>`}
       </CodeHighlight>
-      <div>
-        <ButtonGroup height="10">
+      <Paper bg="neutral.900" p="3">
+        <FrameGroup height="10">
           <Button variant="solid" color="blue">
             Save
           </Button>
           <Button>Cancel</Button>
           <Button color="gray">Reset</Button>
-        </ButtonGroup>
-      </div>
+        </FrameGroup>
+      </Paper>
     </Grid>
   );
 }

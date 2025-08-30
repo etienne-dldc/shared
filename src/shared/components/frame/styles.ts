@@ -3,11 +3,12 @@ import { SystemStyleObject } from "../../../../styled-system/types";
 import { colorPaletteClass, contentSize, heightStyles, roundedStyles } from "../../design/styles";
 import { TDesignVariant, TPaletteColor } from "../../design/types";
 
-export const buttonLikeClass = cva({
+export const frameBaseClass = cva({
   base: {
-    display: "flex",
+    display: "inline-flex",
     flexDirection: "row",
     alignItems: "center",
+    alignSelf: "start",
     outline: "none",
     position: "relative",
     "& [data-item-main-icon]": {
@@ -24,39 +25,37 @@ export const buttonLikeClass = cva({
   variants: {
     variant: {
       solid: {
+        bg: "colorPalette.600",
         color: "neutral.200",
       },
       surface: {
+        bg: "white/5",
         color: "colorPalette.200",
         _after: {
           borderColor: "white/10",
           borderWidth: "0__x",
         },
       },
-      subtle: { color: "colorPalette.200" },
-      ghost: { color: "colorPalette.200" },
-    } satisfies Record<TDesignVariant, SystemStyleObject>,
-  },
-});
-
-export const buttonLikeBackgroundClass = cva({
-  variants: {
-    variant: {
-      solid: {
-        bg: "colorPalette.600",
-      },
-      surface: {
-        bg: "white/5",
-      },
       subtle: {
         bg: "white/5",
+        color: "colorPalette.200",
       },
-      ghost: {},
+      ghost: {
+        color: "colorPalette.200",
+      },
+      input: {
+        bg: "black/15",
+        color: "colorPalette.200",
+        _after: {
+          borderColor: "black/30",
+          borderWidth: "0_x",
+        },
+      },
     } satisfies Record<TDesignVariant, SystemStyleObject>,
   },
 });
 
-export const buttonClass = cva({
+export const frameInteractiveClass = cva({
   base: {
     _hover: {
       "& [data-item-main-icon]": {
@@ -105,6 +104,12 @@ export const buttonClass = cva({
           color: "colorPalette.200/40",
         },
       },
+      input: {
+        _disabled: {
+          color: "colorPalette.200/40",
+          bg: "black/3",
+        },
+      },
     } satisfies Record<TDesignVariant, SystemStyleObject>,
     hoverVariant: {
       solid: {
@@ -131,13 +136,53 @@ export const buttonClass = cva({
           color: "colorPalette.100",
         },
       },
+      input: {
+        _hover: {
+          bg: "black/5",
+          color: "colorPalette.100",
+        },
+      },
     } satisfies Record<TDesignVariant, SystemStyleObject>,
   },
 });
 
-export const buttonGroupClass = cva({
+interface FrameStylesParams {
+  height: number;
+  contentHeight: number;
+  rounded: number;
+  variant: TDesignVariant;
+  color: TPaletteColor | undefined;
+  hoverVariant: TDesignVariant;
+  interactive: boolean;
+}
+
+export function frameStyles(params: FrameStylesParams): [css: SystemStyleObject, styles: React.CSSProperties] {
+  const { height, contentHeight, rounded, variant, color, interactive, hoverVariant } = params;
+
+  const [heightCss, heightInline] = heightStyles(height);
+  const [roundedCss, roundedInline] = roundedStyles(rounded);
+  const [contentCss, contentInline] = contentSize(contentHeight);
+
+  return [
+    css.raw(
+      heightCss,
+      frameBaseClass.raw({ variant }),
+      interactive && frameInteractiveClass.raw({ hoverVariant, variant }),
+      contentCss,
+      roundedCss,
+      color && colorPaletteClass.raw({ colorPalette: color }),
+    ),
+    {
+      ...heightInline,
+      ...contentInline,
+      ...roundedInline,
+    },
+  ];
+}
+
+export const frameGroupClass = cva({
   base: {
-    display: "flex",
+    display: "inline-flex",
     position: "relative",
     isolation: "isolate",
     _firstChild: { zIndex: 2, position: "relative" },
@@ -177,16 +222,10 @@ export const buttonGroupClass = cva({
         },
       },
     },
-    variant: {
-      solid: {},
-      surface: {},
-      subtle: {},
-      ghost: {},
-    } satisfies Record<TDesignVariant, SystemStyleObject>,
   },
 });
 
-export const separatorBaseClass = cva({
+export const separatorClass = cva({
   base: {
     alignSelf: "stretch",
     position: "relative",
@@ -215,6 +254,12 @@ export const separatorBaseClass = cva({
       },
       subtle: {},
       ghost: {},
+      input: {
+        bg: "black/15",
+        _after: {
+          bg: "black/30",
+        },
+      },
     } satisfies Record<TDesignVariant, SystemStyleObject>,
   },
   compoundVariants: [
@@ -230,35 +275,3 @@ export const separatorBaseClass = cva({
     },
   ],
 });
-
-export function separatorClass(variant: TDesignVariant, direction: "horizontal" | "vertical") {
-  return separatorBaseClass.raw({ direction, variant });
-}
-
-export function buttonLikeStyles(
-  height: number,
-  contentHeight: number,
-  rounded: number,
-  variant: TDesignVariant,
-  color: TPaletteColor | undefined,
-): [css: SystemStyleObject, styles: React.CSSProperties] {
-  const [heightCss, heightInline] = heightStyles(height);
-  const [roundedCss, roundedInline] = roundedStyles(rounded);
-  const [contentCss, contentInline] = contentSize(contentHeight);
-
-  return [
-    css.raw(
-      heightCss,
-      buttonLikeClass.raw({ variant }),
-      buttonLikeBackgroundClass.raw({ variant }),
-      contentCss,
-      roundedCss,
-      color && colorPaletteClass.raw({ colorPalette: color }),
-    ),
-    {
-      ...heightInline,
-      ...contentInline,
-      ...roundedInline,
-    },
-  ];
-}

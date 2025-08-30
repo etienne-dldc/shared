@@ -19,7 +19,7 @@ export const itemContentClass = cva({
 });
 
 export const itemContentLayoutClass = css.raw({
-  display: "flex",
+  display: "inline-flex",
   flexDirection: "row",
   alignItems: "center",
   maxW: "full",

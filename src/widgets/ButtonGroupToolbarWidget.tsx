@@ -1,8 +1,8 @@
 import { GearIcon, HouseIcon, SignOutIcon } from "@phosphor-icons/react";
-import { Grid } from "../../styled-system/jsx";
+import { Grid, Paper } from "../../styled-system/jsx";
 import { CodeHighlight } from "../playground/CodeHighlight";
 import { Button } from "../shared/components/button/Button";
-import { ButtonGroup } from "../shared/components/button/ButtonGroup";
+import { FrameGroup } from "../shared/components/frame/FrameGroup";
 
 export function ButtonGroupToolbarWidget() {
   return (
@@ -14,13 +14,13 @@ export function ButtonGroupToolbarWidget() {
   <Button startIcon={<SignOutIcon />}>Logout</Button>
 </ButtonGroup>`}
       </CodeHighlight>
-      <div>
-        <ButtonGroup height="10" variant="surface">
+      <Paper bg="neutral.900" p="3">
+        <FrameGroup height="10" variant="surface">
           <Button startIcon={<HouseIcon />}>Home</Button>
           <Button startIcon={<GearIcon />}>Settings</Button>
           <Button startIcon={<SignOutIcon />}>Logout</Button>
-        </ButtonGroup>
-      </div>
+        </FrameGroup>
+      </Paper>
     </Grid>
   );
 }

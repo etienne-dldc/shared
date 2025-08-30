@@ -6,7 +6,7 @@
 import { useCallback, useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 import { css } from "../../styled-system/css";
-import { Grid, styled } from "../../styled-system/jsx";
+import { Grid, Paper, styled } from "../../styled-system/jsx";
 import { SystemStyleObject } from "../../styled-system/types";
 import { Scrollbars } from "../shared/components/common/Scrollbars";
 
@@ -53,61 +53,63 @@ export function HighlightedGrid<TRow, TColumn>({
   );
 
   return (
-    <Scrollbars className={css({ h: "full", w: "full" }, cssProp)}>
-      <styled.div p="3" minW="max">
-        <Grid
-          gap="3"
-          position="relative"
-          style={{
-            gridTemplateRows: `${hasColumns ? "4px " : ""} repeat(${safeRows.length}, max-content)`,
-            gridTemplateColumns: `${hasRows ? "4px " : ""} repeat(${safeColumns.length}, max-content)`,
-          }}
-        >
-          {highlighted && hasRows && (
-            <styled.div
-              bg="white/15"
-              alignSelf="stretch"
-              justifySelf="stretch"
-              rounded="0x"
-              my="-1"
-              position="sticky"
-              left="0"
-              style={{ gridColumn: 1, gridRow: rowOffset + highlighted.rowIndex }}
-            />
-          )}
-          {highlighted && hasColumns && (
-            <styled.div
-              bg="white/15"
-              alignSelf="stretch"
-              justifySelf="stretch"
-              rounded="0x"
-              mx="-1"
-              position="sticky"
-              top="0"
-              style={{ gridColumn: columnOffset + highlighted.columnIndex, gridRow: 1 }}
-            />
-          )}
+    <Paper bg="neutral.900">
+      <Scrollbars className={css({ h: "full", w: "full" }, cssProp)}>
+        <styled.div p="3" minW="max">
+          <Grid
+            gap="3"
+            position="relative"
+            style={{
+              gridTemplateRows: `${hasColumns ? "4px " : ""} repeat(${safeRows.length}, max-content)`,
+              gridTemplateColumns: `${hasRows ? "4px " : ""} repeat(${safeColumns.length}, max-content)`,
+            }}
+          >
+            {highlighted && hasRows && (
+              <styled.div
+                bg="white/15"
+                alignSelf="stretch"
+                justifySelf="stretch"
+                rounded="0x"
+                my="-1"
+                position="sticky"
+                left="0"
+                style={{ gridColumn: 1, gridRow: rowOffset + highlighted.rowIndex }}
+              />
+            )}
+            {highlighted && hasColumns && (
+              <styled.div
+                bg="white/15"
+                alignSelf="stretch"
+                justifySelf="stretch"
+                rounded="0x"
+                mx="-1"
+                position="sticky"
+                top="0"
+                style={{ gridColumn: columnOffset + highlighted.columnIndex, gridRow: 1 }}
+              />
+            )}
 
-          {safeColumns.map((column, columnIndex) => (
-            <Fragment key={columnIndex}>
-              {safeRows.map((row, rowIndex) => {
-                const key = `${columnIndex}-${rowIndex}`;
-                const params: HeighligedCellParams<TRow, TColumn> = { key, row, column, rowIndex, columnIndex };
-                return (
-                  <styled.div
-                    style={{ gridColumn: columnOffset + columnIndex, gridRow: rowOffset + rowIndex }}
-                    position="relative"
-                    key={key}
-                    onPointerEnter={() => onHightlighted(params)}
-                  >
-                    {renderCell(params)}
-                  </styled.div>
-                );
-              })}
-            </Fragment>
-          ))}
-        </Grid>
-      </styled.div>
-    </Scrollbars>
+            {safeColumns.map((column, columnIndex) => (
+              <Fragment key={columnIndex}>
+                {safeRows.map((row, rowIndex) => {
+                  const key = `${columnIndex}-${rowIndex}`;
+                  const params: HeighligedCellParams<TRow, TColumn> = { key, row, column, rowIndex, columnIndex };
+                  return (
+                    <styled.div
+                      style={{ gridColumn: columnOffset + columnIndex, gridRow: rowOffset + rowIndex }}
+                      position="relative"
+                      key={key}
+                      onPointerEnter={() => onHightlighted(params)}
+                    >
+                      {renderCell(params)}
+                    </styled.div>
+                  );
+                })}
+              </Fragment>
+            ))}
+          </Grid>
+        </styled.div>
+      </Scrollbars>
+    </Paper>
   );
 }

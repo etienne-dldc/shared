@@ -5,12 +5,12 @@ import { css, cx } from "../../../../styled-system/css";
 import { ComponentProps, SystemStyleObject } from "../../../../styled-system/types";
 import { TDesignProps, TPaletteColor } from "../../design/types";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
-import { buttonClass, buttonLikeStyles } from "../button/styles";
 import { designPropsSplitter, SizeContextProvider, useContainerDesignProps } from "../core/DesignContext";
 import { DisabledContext } from "../core/DisabledContext";
 import { itemlContentStyles } from "../item-content/styles";
 import { TItemContentFragmentProps } from "../item-content/types";
 import { itemContentPropsSplitter, useItemContentFragment } from "../item-content/useItemContentFragment";
+import { frameStyles } from "./styles";
 
 export type FrameProps = Merge<
   Omit<ComponentProps<"div">, "title" | "height" | "color" | "content">,
@@ -49,7 +49,7 @@ export function Frame(inProps: FrameProps) {
     style,
     className,
     interactive = false,
-    ...buttonProps
+    ...htmlProps
   } = props;
 
   const isDisabled = interactive && localDisabled.disabled;
@@ -59,16 +59,23 @@ export function Frame(inProps: FrameProps) {
 
   const { startPadding, endPadding, fragment, noLayout } = useItemContentFragment(localItemContent, children);
 
-  const [btnCss, btnInline] = buttonLikeStyles(height, contentHeight, rounded, variant, color);
+  const [baseCss, baseInline] = frameStyles({
+    height,
+    contentHeight,
+    rounded,
+    variant,
+    color,
+    hoverVariant,
+    interactive,
+  });
   const [contentCss, contentInline] = itemlContentStyles(contentHeight, spacing, startPadding, endPadding, noLayout);
-  const buttonCss = buttonClass.raw({ hoverVariant, variant });
 
   return (
     <Ariakit.Role
-      className={cx(css(btnCss, buttonCss, contentCss, cssProp), className)}
-      style={{ ...style, ...btnInline, ...contentInline }}
+      className={cx(css(baseCss, contentCss, cssProp), className)}
+      style={{ ...style, ...baseInline, ...contentInline }}
       aria-disabled={isDisabled}
-      {...buttonProps}
+      {...htmlProps}
     >
       <SizeContextProvider height={height} contentHeight={contentHeight} rounded={rounded} depth={depth}>
         <DisabledContext.Define disabled={isDisabled ? inProps.disabled : undefined}>{fragment}</DisabledContext.Define>

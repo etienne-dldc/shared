@@ -8,7 +8,7 @@ import { ButtonLike } from "../shared/components/button/ButtonLike";
 import { TDesignVariant } from "../shared/design/types";
 
 export function ButtonLikeComparisonWidget() {
-  const variants: TDesignVariant[] = ["solid", "surface", "subtle", "ghost"];
+  const variants: TDesignVariant[] = ["solid", "surface", "subtle", "ghost", "input"];
   const types = [
     { label: "Button", Component: Button, description: "Interactive with hover states" },
     { label: "ButtonLike", Component: ButtonLike, description: "Static, no hover states" },

@@ -3,7 +3,7 @@ import { Grid } from "../../styled-system/jsx";
 import { CodeHighlight } from "../playground/CodeHighlight";
 import { HighlightedGrid } from "../playground/HighlightedGrid";
 import { Button } from "../shared/components/button/Button";
-import { ButtonGroup } from "../shared/components/button/ButtonGroup";
+import { FrameGroup } from "../shared/components/frame/FrameGroup";
 
 export function ButtonGroupDirectionWidget() {
   const directions = [
@@ -33,11 +33,11 @@ export function ButtonGroupDirectionWidget() {
       <HighlightedGrid
         rowsDims={directions}
         renderCell={({ row: direction, key }) => (
-          <ButtonGroup key={key} direction={direction.direction} height="10">
+          <FrameGroup key={key} direction={direction.direction} height="10">
             <Button>Save</Button>
             <Button>Cancel</Button>
             <Button>Reset</Button>
-          </ButtonGroup>
+          </FrameGroup>
         )}
         onHighlightedCell={(cell) => setHighlighted(cell?.row ?? null)}
       />

@@ -7,7 +7,7 @@ import { Button, ButtonProps } from "../shared/components/button/Button";
 import { TDesignVariant } from "../shared/design/types";
 
 export function ButtonHoverVariantsWidget() {
-  const variants: TDesignVariant[] = ["solid", "surface", "subtle", "ghost"];
+  const variants: TDesignVariant[] = ["solid", "surface", "subtle", "ghost", "input"];
 
   const [highlighted, setHighlighted] = useState<ButtonProps | null>();
 
@@ -15,13 +15,13 @@ export function ButtonHoverVariantsWidget() {
     <Grid gridTemplateColumns="subgrid">
       <CodeHighlight language="jsx" theme="dark-plus">
         {highlighted
-          ? `<Button variant="subtle" hoverVariant="${highlighted.hoverVariant}" />`
+          ? `<Button variant="ghost" hoverVariant="${highlighted.hoverVariant}" />`
           : "// Hover a button to see the code"}
       </CodeHighlight>
       <HighlightedGrid
         rowsDims={variants}
         renderCell={({ row: hoverVariant, key }) => (
-          <Button key={key} variant="subtle" hoverVariant={hoverVariant} height="10">
+          <Button key={key} variant="ghost" hoverVariant={hoverVariant} height="10">
             <em className={css({ fontWeight: "bold" })}>{hoverVariant}</em> on hover
           </Button>
         )}

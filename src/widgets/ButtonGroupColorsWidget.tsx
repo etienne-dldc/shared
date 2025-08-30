@@ -4,7 +4,7 @@ import { Grid } from "../../styled-system/jsx";
 import { CodeHighlight } from "../playground/CodeHighlight";
 import { HighlightedGrid } from "../playground/HighlightedGrid";
 import { Button } from "../shared/components/button/Button";
-import { ButtonGroup } from "../shared/components/button/ButtonGroup";
+import { FrameGroup } from "../shared/components/frame/FrameGroup";
 import { TPaletteColor } from "../shared/design/types";
 
 export function ButtonGroupColorsWidget() {
@@ -32,11 +32,11 @@ export function ButtonGroupColorsWidget() {
         rowsDims={colors}
         columnsDims={variants}
         renderCell={({ row: color, column: variant, key }) => (
-          <ButtonGroup key={key} variant={variant.variant} color={color} height="10">
+          <FrameGroup key={key} variant={variant.variant} color={color} height="10">
             <Button startIcon={<HouseIcon />}>Home</Button>
             <Button>About</Button>
             <Button>Contact</Button>
-          </ButtonGroup>
+          </FrameGroup>
         )}
         onHighlightedCell={(cell) => setHighlighted(cell ? { color: cell.row, variant: cell.column } : null)}
       />

@@ -12,7 +12,7 @@ export function ButtonInteractiveStatesWidget() {
     { label: "Focus State", props: { "data-focus-visible": true }, code: "data-focus-visible={true}" },
   ];
 
-  const variants: TDesignVariant[] = ["solid", "surface", "subtle", "ghost"];
+  const variants: TDesignVariant[] = ["solid", "surface", "subtle", "ghost", "input"];
 
   const [highlighted, setHighlighted] = useState<{
     state: (typeof stateConfigs)[number];

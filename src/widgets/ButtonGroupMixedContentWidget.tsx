@@ -1,8 +1,8 @@
 import { Grid } from "../../styled-system/jsx";
 import { CodeHighlight } from "../playground/CodeHighlight";
 import { Button } from "../shared/components/button/Button";
-import { ButtonGroup } from "../shared/components/button/ButtonGroup";
 import { ButtonLike } from "../shared/components/button/ButtonLike";
+import { FrameGroup } from "../shared/components/frame/FrameGroup";
 
 export function ButtonGroupMixedContentWidget() {
   return (
@@ -15,11 +15,11 @@ export function ButtonGroupMixedContentWidget() {
 </ButtonGroup>`}
       </CodeHighlight>
       <div>
-        <ButtonGroup height="10">
+        <FrameGroup height="10">
           <ButtonLike>Connected</ButtonLike>
           <Button>Settings</Button>
           <Button>Disconnect</Button>
-        </ButtonGroup>
+        </FrameGroup>
       </div>
     </Grid>
   );

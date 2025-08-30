@@ -1,5 +1,5 @@
 import * as Ariakit from "@ariakit/react";
-import { Children, cloneElement, ComponentPropsWithoutRef, ForwardedRef, forwardRef, Fragment } from "react";
+import { Children, cloneElement, ComponentPropsWithoutRef, Fragment } from "react";
 import { Merge } from "type-fest";
 import { css, cx } from "../../../../styled-system/css";
 import { SystemStyleObject } from "../../../../styled-system/types";
@@ -7,9 +7,9 @@ import { colorPaletteClass } from "../../design/styles";
 import { TDesignProps, TPaletteColor } from "../../design/types";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { DefaultDesignProvider, designPropsSplitter, useContainerDesignProps } from "../core/DesignContext";
-import { buttonGroupClass, separatorClass } from "./styles";
+import { frameGroupClass, separatorClass } from "./styles";
 
-export type ButtonGroupProps = Merge<
+export type FrameGroupProps = Merge<
   Omit<ComponentPropsWithoutRef<"div">, "title" | "height" | "color">,
   TDesignProps & {
     disabled?: boolean;
@@ -23,10 +23,7 @@ export type ButtonGroupProps = Merge<
   }
 >;
 
-export const ButtonGroup = forwardRef(function ButtonGroup(
-  inProps: ButtonGroupProps,
-  ref: ForwardedRef<HTMLDivElement>,
-) {
+export function FrameGroup(inProps: FrameGroupProps) {
   const [{ localDesign }, props] = pipePropsSplitters(inProps, {
     localDesign: designPropsSplitter,
   });
@@ -46,21 +43,18 @@ export const ButtonGroup = forwardRef(function ButtonGroup(
   const childrenFiltered = Children.toArray(children).filter((c) => c);
   const childrenLength = Children.count(childrenFiltered);
 
+  if (childrenLength === 0) return null;
+
   const roundedStart = roundedEnds === "start" || roundedEnds === "both";
   const roundedEnd = roundedEnds === "end" || roundedEnds === "both";
 
-  if (childrenLength === 0) return null;
+  const separatorClassName = separatorClass({ direction, variant });
 
   return (
     <DefaultDesignProvider {...localDesign}>
       <Ariakit.Role
-        ref={ref}
         className={cx(
-          css(
-            buttonGroupClass.raw({ direction, variant }),
-            color && colorPaletteClass.raw({ colorPalette: color }),
-            cssProp,
-          ),
+          css(frameGroupClass.raw({ direction }), color && colorPaletteClass.raw({ colorPalette: color }), cssProp),
           className,
         )}
         {...divProps}
@@ -76,7 +70,7 @@ export const ButtonGroup = forwardRef(function ButtonGroup(
 
           return (
             <Fragment>
-              {innerDividers && !isFirst && <span className={css(separatorClass(variant, direction))} />}
+              {innerDividers && !isFirst && <span className={separatorClassName} />}
               {cloneElement(child as any, {
                 ["data-first"]: roundedBase === "start" ? "true" : undefined,
                 ["data-last"]: roundedBase === "end" ? "true" : undefined,
@@ -88,4 +82,4 @@ export const ButtonGroup = forwardRef(function ButtonGroup(
       </Ariakit.Role>
     </DefaultDesignProvider>
   );
-});
+}

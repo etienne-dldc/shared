@@ -21,7 +21,7 @@ export type TDesignSize =
   | "12"
   | number;
 
-export type TDesignVariant = "solid" | "surface" | "subtle" | "ghost";
+export type TDesignVariant = "solid" | "surface" | "subtle" | "ghost" | "input";
 
 export type TPaletteColor =
   | "red"

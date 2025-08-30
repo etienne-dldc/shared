@@ -3,7 +3,7 @@ import { Grid } from "../../styled-system/jsx";
 import { CodeHighlight } from "../playground/CodeHighlight";
 import { HighlightedGrid } from "../playground/HighlightedGrid";
 import { Button } from "../shared/components/button/Button";
-import { ButtonGroup } from "../shared/components/button/ButtonGroup";
+import { FrameGroup } from "../shared/components/frame/FrameGroup";
 
 export function ButtonGroupDividersWidget() {
   const innerDividerOptions = [
@@ -29,11 +29,11 @@ export function ButtonGroupDividersWidget() {
       <HighlightedGrid
         rowsDims={innerDividerOptions}
         renderCell={({ row: inner, key }) => (
-          <ButtonGroup key={key} height="10" innerDividers={inner.value}>
+          <FrameGroup key={key} height="10" innerDividers={inner.value}>
             <Button>First</Button>
             <Button>Second</Button>
             <Button>Third</Button>
-          </ButtonGroup>
+          </FrameGroup>
         )}
         onHighlightedCell={(cell) => setHighlighted(cell ? { inner: cell.row } : null)}
       />

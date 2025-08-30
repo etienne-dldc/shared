@@ -7,7 +7,7 @@ import { Button } from "../shared/components/button/Button";
 import { TDesignVariant } from "../shared/design/types";
 
 export function ButtonDisabledWidget() {
-  const variants: TDesignVariant[] = ["solid", "surface", "subtle", "ghost"];
+  const variants: TDesignVariant[] = ["solid", "surface", "subtle", "ghost", "input"];
   const states = [
     { label: "Normal", disabled: false },
     { label: "Disabled", disabled: true },

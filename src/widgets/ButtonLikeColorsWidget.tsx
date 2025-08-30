@@ -7,7 +7,7 @@ import { ButtonLike } from "../shared/components/button/ButtonLike";
 import { TDesignVariant, TPaletteColor } from "../shared/design/types";
 
 export function ButtonLikeColorsWidget() {
-  const variants: TDesignVariant[] = ["solid", "surface", "subtle", "ghost"];
+  const variants: TDesignVariant[] = ["solid", "surface", "subtle", "ghost", "input"];
   const colors: TPaletteColor[] = ["blue", "green", "red", "orange", "purple", "gray"];
 
   const [highlighted, setHighlighted] = useState<{ variant: TDesignVariant; color: TPaletteColor } | null>();

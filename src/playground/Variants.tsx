@@ -2,8 +2,8 @@ import { ArrowsLeftRightIcon, PlusIcon } from "@phosphor-icons/react";
 import { Fragment, SetStateAction, useCallback, useMemo, type JSX } from "react";
 import { Grid, HStack, styled, VStack } from "../../styled-system/jsx";
 import { Button } from "../shared/components/button/Button";
-import { ButtonGroup } from "../shared/components/button/ButtonGroup";
 import { ButtonLike } from "../shared/components/button/ButtonLike";
+import { FrameGroup } from "../shared/components/frame/FrameGroup";
 import { Select } from "../shared/components/select/Select";
 import { TSelectItem } from "../shared/components/select/types";
 import { useLatestRef } from "../shared/hooks/useLatestRef";
@@ -126,7 +126,7 @@ export function Variants<Dims extends TDimensions>({
           </styled.h2>
         )}
         <HStack gap="4">
-          <ButtonGroup color="blue" variant="solid">
+          <FrameGroup color="blue" variant="solid">
             <ButtonLike css={{ textTransform: "uppercase", fontWeight: "bold" }}>Preset</ButtonLike>
             <Select<string>
               label="preset"
@@ -142,7 +142,7 @@ export function Variants<Dims extends TDimensions>({
               }}
               renderSelect={<Button css={{ minW: "[100px]" }} />}
             />
-          </ButtonGroup>
+          </FrameGroup>
           <MultiSelect<keyof Dims & string>
             label="column"
             selected={colAxis as string[]}
@@ -183,7 +183,7 @@ export function Variants<Dims extends TDimensions>({
                   }))}
                   onChange={(value) => setSelected({ ...selected, [dimKey]: value })}
                   renderSelect={<Button css={{ flex: "1" }} />}
-                  renderWrapper={<ButtonGroup color="teal" />}
+                  renderWrapper={<FrameGroup color="teal" />}
                   renderLabel={
                     <ButtonLike css={{ flex: "1", textTransform: "uppercase", fontWeight: "bold", minW: "[150px]" }}>
                       {dimKey}
@@ -301,7 +301,7 @@ function MultiSelect<T extends string>({ label, onChange, options, selected }: M
   const available = options.filter((option) => !selected.includes(option));
 
   return (
-    <ButtonGroup variant="solid" color="blue">
+    <FrameGroup variant="solid" color="blue">
       <ButtonLike css={{ textTransform: "uppercase", fontWeight: "bold" }}>{label}</ButtonLike>
       {selected.map((selectedItem, index) => {
         return (
@@ -333,7 +333,7 @@ function MultiSelect<T extends string>({ label, onChange, options, selected }: M
           }}
         />
       )}
-    </ButtonGroup>
+    </FrameGroup>
   );
 }
 

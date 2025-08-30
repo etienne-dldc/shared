@@ -3,7 +3,6 @@ import { ComponentPropsWithRef, Fragment, useMemo, useState } from "react";
 import { Merge } from "type-fest";
 import { HStack, styled } from "../../styled-system/jsx";
 import { Button } from "../shared/components/button/Button";
-import { ButtonGroup } from "../shared/components/button/ButtonGroup";
 import { ButtonLike } from "../shared/components/button/ButtonLike";
 import {
   DefaultDesignProvider,
@@ -11,6 +10,7 @@ import {
   designPropsSplitter,
   useContainerDesignProps,
 } from "../shared/components/core/DesignContext";
+import { FrameGroup } from "../shared/components/frame/FrameGroup";
 import { ItemContent } from "../shared/components/item-content/ItemContent";
 import { ItemContentFragment } from "../shared/components/item-content/ItemContentFragment";
 import { TItemContentFragmentProps } from "../shared/components/item-content/types";
@@ -116,16 +116,16 @@ export default function Playground() {
       </ButtonLike>
       <div style={{ height: 20 }} />
 
-      <ButtonGroup direction="vertical">
+      <FrameGroup direction="vertical">
         <Button>Open</Button>
         <Button>Reset</Button>
         <Button>Close</Button>
-      </ButtonGroup>
-      <ButtonGroup direction="horizontal">
+      </FrameGroup>
+      <FrameGroup direction="horizontal">
         <Button>Open</Button>
         <Button>Reset</Button>
         <Button>Close</Button>
-      </ButtonGroup>
+      </FrameGroup>
       <div style={{ height: 20 }} />
 
       <ButtonLike>
@@ -154,7 +154,7 @@ export default function Playground() {
       <PowerSizeDemo />
       <div style={{ height: 20 }} />
 
-      <ButtonGroup height="12">
+      <FrameGroup height="12">
         <Tooltip content="This is a tooltip">
           <Button>Btn 1</Button>
         </Tooltip>
@@ -164,7 +164,7 @@ export default function Playground() {
         <Tooltip content="This is a tooltip">
           <Button>Btn 1</Button>
         </Tooltip>
-      </ButtonGroup>
+      </FrameGroup>
     </styled.div>
   );
 }

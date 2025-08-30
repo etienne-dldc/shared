@@ -31,7 +31,7 @@ export function ButtonColorsVariantsWidget() {
     "neutral",
     "stone",
   ];
-  const variants: TDesignVariant[] = ["solid", "surface", "subtle", "ghost"];
+  const variants: TDesignVariant[] = ["solid", "surface", "subtle", "ghost", "input"];
 
   const [highlighted, setHighlighted] = useState<ButtonProps | null>();
 
