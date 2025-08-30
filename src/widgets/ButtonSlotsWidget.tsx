@@ -10,19 +10,19 @@ export function ButtonSlotsWidget() {
   const slotConfigs = [
     {
       label: "Nested Button Start",
-      startSlot: <ButtonLike variant="solid" startIcon={<PlusIcon />} height="6" />,
-      code: 'startSlot={<ButtonLike variant="solid" startIcon={<PlusIcon />} height="6" />}',
+      startSlot: <ButtonLike variant="solid" startIcon={<PlusIcon />} />,
+      code: 'startSlot={<ButtonLike variant="solid" startIcon={<PlusIcon />} />}',
     },
     {
       label: "Nested Button End",
-      endSlot: <ButtonLike variant="solid" startIcon={<XIcon />} height="6" />,
-      code: 'endSlot={<ButtonLike variant="solid" startIcon={<XIcon />} height="6" />}',
+      endSlot: <ButtonLike variant="solid" startIcon={<XIcon />} />,
+      code: 'endSlot={<ButtonLike variant="solid" startIcon={<XIcon />} />}',
     },
     {
       label: "Both Slots",
-      startSlot: <ButtonLike variant="solid" startIcon={<PlusIcon />} height="6" />,
-      endSlot: <ButtonLike variant="solid" startIcon={<XIcon />} height="6" />,
-      code: 'startSlot={<ButtonLike variant="solid" startIcon={<PlusIcon />} height="6" />} endSlot={<ButtonLike variant="solid" startIcon={<XIcon />} height="6" />}',
+      startSlot: <ButtonLike variant="solid" startIcon={<PlusIcon />} />,
+      endSlot: <ButtonLike variant="solid" startIcon={<XIcon />} />,
+      code: 'startSlot={<ButtonLike variant="solid" startIcon={<PlusIcon />} />} endSlot={<ButtonLike variant="solid" startIcon={<XIcon />} />}',
     },
   ];
 
