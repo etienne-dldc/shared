@@ -16,10 +16,9 @@ export type ButtonGroupProps = Merge<
 
     color?: TPaletteColor;
     css?: SystemStyleObject;
-    // rounded?: boolean;
 
     direction?: "horizontal" | "vertical";
-    outerDividers?: "start" | "end" | "both" | "none";
+    roundedEnds?: "start" | "end" | "both" | "none";
     innerDividers?: boolean;
   }
 >;
@@ -38,9 +37,8 @@ export const ButtonGroup = forwardRef(function ButtonGroup(
     className,
     children,
     direction = "horizontal",
-    outerDividers = "none",
     innerDividers = true,
-    // rounded = true,
+    roundedEnds = "both",
     css: cssProp,
     ...divProps
   } = props;
@@ -48,12 +46,10 @@ export const ButtonGroup = forwardRef(function ButtonGroup(
   const childrenFiltered = Children.toArray(children).filter((c) => c);
   const childrenLength = Children.count(childrenFiltered);
 
-  const dividerBefore = outerDividers === "start" || outerDividers === "both";
-  const dividerAfter = outerDividers === "end" || outerDividers === "both";
+  const roundedStart = roundedEnds === "start" || roundedEnds === "both";
+  const roundedEnd = roundedEnds === "end" || roundedEnds === "both";
 
   if (childrenLength === 0) return null;
-
-  const rounded = true;
 
   return (
     <DefaultDesignProvider {...localDesign}>
@@ -69,14 +65,13 @@ export const ButtonGroup = forwardRef(function ButtonGroup(
         )}
         {...divProps}
       >
-        {dividerBefore && <span className={css(separatorClass(variant, direction))} />}
         {Children.map(childrenFiltered, (child, i) => {
           if (!child) return null;
 
           const isFirst = i === 0;
           const isLast = i === childrenLength - 1;
-          const roundStart = rounded && !dividerBefore && isFirst;
-          const roundEnd = rounded && !dividerAfter && isLast;
+          const roundStart = roundedStart && isFirst;
+          const roundEnd = roundedEnd && isLast;
           const roundedBase = roundStart && roundEnd ? "all" : roundStart ? "start" : roundEnd ? "end" : "none";
 
           return (
@@ -90,7 +85,6 @@ export const ButtonGroup = forwardRef(function ButtonGroup(
             </Fragment>
           );
         })}
-        {dividerAfter && <span className={css(separatorClass(variant, direction))} />}
       </Ariakit.Role>
     </DefaultDesignProvider>
   );
