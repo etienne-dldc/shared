@@ -1,5 +1,5 @@
 import { Fragment } from "react/jsx-runtime";
-import { Variants } from "../playground/LegacyVariants";
+import { Variants } from "../playground/Variants";
 import { Select } from "../shared/components/select/Select";
 import { TSelectItem } from "../shared/components/select/types";
 
