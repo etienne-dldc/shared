@@ -4,11 +4,11 @@ import { Grid } from "../../styled-system/jsx";
 import { CodeHighlight } from "../playground/CodeHighlight";
 import { HighlightedGrid } from "../playground/HighlightedGrid";
 import { Button } from "../shared/components/button/Button";
-import { TDesignSize } from "../shared/design/types";
+import { TDesignSpacing } from "../shared/design/types";
 
 export function ButtonSpacingWidget() {
-  const spacings: TDesignSize[] = ["4", "6", "8", "10", "12"];
-  const [highlighted, setHighlighted] = useState<TDesignSize | null>();
+  const spacings: TDesignSpacing[] = ["2", "4", "6", "8"];
+  const [highlighted, setHighlighted] = useState<TDesignSpacing | null>();
 
   return (
     <Grid gridTemplateColumns="subgrid">
@@ -20,7 +20,7 @@ export function ButtonSpacingWidget() {
       <HighlightedGrid
         rowsDims={spacings}
         renderCell={({ row: spacing, key }) => (
-          <Button key={key} spacing={spacing} startIcon={<UserIcon />} endIcon={<CaretDownIcon />} height="10">
+          <Button key={key} spacing={spacing} startIcon={<UserIcon />} endIcon={<CaretDownIcon />}>
             Spacing {spacing}
           </Button>
         )}

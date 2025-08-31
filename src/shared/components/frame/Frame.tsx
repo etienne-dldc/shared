@@ -73,7 +73,7 @@ export function Frame(inProps: FrameProps) {
   return (
     <Ariakit.Role
       className={cx(css(baseCss, contentCss, cssProp), className)}
-      style={{ ...style, ...baseInline, ...contentInline }}
+      style={{ ...baseInline, ...contentInline, ...style }}
       aria-disabled={isDisabled}
       {...htmlProps}
     >

@@ -29,7 +29,7 @@ export function ButtonLikeComparisonWidget() {
         renderCell={({ row: variant, column: type, key }) => {
           const { Component } = type;
           return (
-            <Component key={key} variant={variant} height="10" startIcon={<UserIcon />}>
+            <Component key={key} variant={variant} startIcon={<UserIcon />}>
               {type.label}
             </Component>
           );

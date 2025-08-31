@@ -30,7 +30,7 @@ export function ButtonInteractiveStatesWidget() {
         rowsDims={variants}
         columnsDims={stateConfigs}
         renderCell={({ row: variant, column: config, key }) => (
-          <Button key={key} {...config.props} height="10" variant={variant}>
+          <Button key={key} {...config.props} variant={variant}>
             {config.label}
           </Button>
         )}

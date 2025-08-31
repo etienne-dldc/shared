@@ -2,32 +2,27 @@ import { Grid } from "../../styled-system/jsx";
 import { CodeHighlight } from "../playground/CodeHighlight";
 import { Button } from "../shared/components/button/Button";
 import { FrameGroup } from "../shared/components/frame/FrameGroup";
+import { printElement } from "./utils/printElement";
 
 export function ButtonGroupNestedWidget() {
+  const element = (
+    <FrameGroup>
+      <Button>File</Button>
+      <FrameGroup roundedEnds="none">
+        <Button>New</Button>
+        <Button>Open</Button>
+        <Button>Save</Button>
+      </FrameGroup>
+      <Button>Edit</Button>
+    </FrameGroup>
+  );
+
   return (
     <Grid gridTemplateColumns="subgrid">
       <CodeHighlight language="jsx" theme="dark-plus">
-        {`<ButtonGroup>
-            <Button>File</Button>
-            <ButtonGroup roundedEnds="none">
-              <Button>New</Button>
-              <Button>Open</Button>
-              <Button>Save</Button>
-            </ButtonGroup>
-            <Button>Edit</Button>
-          </ButtonGroup>`}
+        {printElement(element)}
       </CodeHighlight>
-      <div>
-        <FrameGroup height="10">
-          <Button>File</Button>
-          <FrameGroup roundedEnds="none">
-            <Button>New</Button>
-            <Button>Open</Button>
-            <Button>Save</Button>
-          </FrameGroup>
-          <Button>Edit</Button>
-        </FrameGroup>
-      </div>
+      <div>{element}</div>
     </Grid>
   );
 }

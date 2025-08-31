@@ -4,16 +4,16 @@ import { Grid } from "../../styled-system/jsx";
 import { CodeHighlight } from "../playground/CodeHighlight";
 import { HighlightedGrid } from "../playground/HighlightedGrid";
 import { ButtonLike } from "../shared/components/button/ButtonLike";
-import { TDesignSize } from "../shared/design/types";
+import { TDesignHeight } from "../shared/design/types";
 
 export function ButtonLikeHeightsWidget() {
-  const sizes: TDesignSize[] = ["3", "4", "5", "6", "7", "8", "10", "12"];
+  const sizes: TDesignHeight[] = ["3", "4", "5", "6", "7", "8", "10", "12"];
   const contents = [
     { label: "Text", props: {} },
     { label: "With Icon", props: { startIcon: <UserIcon /> } },
   ];
 
-  const [highlighted, setHighlighted] = useState<{ size: TDesignSize; content: (typeof contents)[number] } | null>();
+  const [highlighted, setHighlighted] = useState<{ size: TDesignHeight; content: (typeof contents)[number] } | null>();
 
   return (
     <Grid gridTemplateColumns="subgrid">

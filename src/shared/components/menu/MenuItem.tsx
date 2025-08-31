@@ -3,7 +3,7 @@ import { Merge } from "type-fest";
 import { css, cx } from "../../../../styled-system/css";
 import { SystemStyleObject } from "../../../../styled-system/types";
 import { colorPaletteClass, heightStyles } from "../../design/styles";
-import { TDesignSize, TPaletteColor } from "../../design/types";
+import { TDesignHeight, TDesignSpacing, TPaletteColor } from "../../design/types";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { DefaultDesignProvider, designPropsSplitter, useContainerDesignProps } from "../core/DesignContext";
 import { DisabledContext } from "../core/DisabledContext";
@@ -16,9 +16,9 @@ export type MenuItemProps = Merge<
   Omit<Ariakit.MenuItemProps, "title" | "color" | "height" | "content">,
   TItemContentFragmentProps & {
     // Design
-    height?: TDesignSize;
+    height?: TDesignHeight;
     heightRatio?: number;
-    spacing?: TDesignSize;
+    spacing?: TDesignSpacing;
 
     color?: TPaletteColor;
     css?: SystemStyleObject;

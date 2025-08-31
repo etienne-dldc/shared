@@ -29,7 +29,7 @@ export function ButtonLikeBasicWidget() {
         rowsDims={variants}
         columnsDims={examples}
         renderCell={({ row: variant, column: example, key }) => (
-          <ButtonLike key={key} variant={variant} height="10" {...example.props}>
+          <ButtonLike key={key} variant={variant} {...example.props}>
             {example.label}
           </ButtonLike>
         )}

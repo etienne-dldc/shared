@@ -34,9 +34,6 @@ export function CodeHighlight({ language, theme, children, className }: CodeHigh
   useEffect(() => {
     if (!language) return;
 
-    // Reset highlighted code when dependencies change
-    setHighlightedCode(null);
-
     const abortController = new AbortController();
 
     const highlightCode = async () => {
@@ -89,6 +86,11 @@ export function CodeHighlight({ language, theme, children, className }: CodeHigh
 
         setHighlightedCode(result);
       } catch (error) {
+        if (abortController.signal.aborted) {
+          return;
+        }
+        // unset highlighted code
+        setHighlightedCode(null);
         console.error(error);
       }
     };

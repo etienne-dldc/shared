@@ -15,7 +15,7 @@ import { ItemContent } from "../shared/components/item-content/ItemContent";
 import { ItemContentFragment } from "../shared/components/item-content/ItemContentFragment";
 import { TItemContentFragmentProps } from "../shared/components/item-content/types";
 import { Tooltip } from "../shared/components/popovers/Tooltip";
-import { ROUNDED } from "../shared/design/sizes";
+import { BASE_ROUNDED } from "../shared/design/sizes";
 import { TNestedDesignValues } from "../shared/design/types";
 import { pipePropsSplitters } from "../shared/utils/propsSplitters";
 
@@ -576,7 +576,7 @@ function PowerButtonContent(inProps: PowerButtonContentProps) {
 function NestedButtonPlayground() {
   const [height, setHeight] = useState(6);
   const [contentHeight, setContentHeight] = useState(4);
-  const [rounded, setRounded] = useState(ROUNDED.base);
+  const [rounded, setRounded] = useState(BASE_ROUNDED);
 
   return (
     <styled.div display="flex" flexDirection="column" gap="1" alignItems="start">

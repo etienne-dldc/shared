@@ -33,7 +33,7 @@ export function ButtonGroupDirectionWidget() {
       <HighlightedGrid
         rowsDims={directions}
         renderCell={({ row: direction, key }) => (
-          <FrameGroup key={key} direction={direction.direction} height="10">
+          <FrameGroup key={key} direction={direction.direction}>
             <Button>Save</Button>
             <Button>Cancel</Button>
             <Button>Reset</Button>

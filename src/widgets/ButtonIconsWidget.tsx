@@ -35,7 +35,7 @@ export function ButtonIconsWidget() {
       <HighlightedGrid
         rowsDims={iconConfigs}
         renderCell={({ row: config, key }) => (
-          <Button key={key} startIcon={config.startIcon} endIcon={config.endIcon} height="10">
+          <Button key={key} startIcon={config.startIcon} endIcon={config.endIcon}>
             {config.children}
           </Button>
         )}

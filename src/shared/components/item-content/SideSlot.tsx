@@ -1,5 +1,5 @@
 import { Fragment } from "react/jsx-runtime";
-import { css } from "../../../../styled-system/css";
+import { SystemStyleObject } from "../../../../styled-system/types";
 import { IconBox } from "../common/IconBox";
 import { LoadingIcon } from "../common/LoadingIcon";
 
@@ -9,10 +9,11 @@ interface SideSlotProps {
   slot?: React.ReactNode;
   isItemMainIcon?: boolean;
   isIconOnly?: boolean;
+  css?: SystemStyleObject;
 }
 
 export function SideSlot(props: SideSlotProps) {
-  const { icon, loading, slot, isItemMainIcon, isIconOnly } = props;
+  const { icon, loading, slot, isItemMainIcon, isIconOnly, css: cssProp } = props;
 
   if (slot) {
     return <Fragment>{slot}</Fragment>;
@@ -22,7 +23,7 @@ export function SideSlot(props: SideSlotProps) {
     return (
       <IconBox
         data-item-main-icon={isItemMainIcon && !isIconOnly ? "true" : undefined}
-        css={css.raw({ ml: "auto" }, isIconOnly && { mx: "auto" })}
+        css={cssProp}
         icon={loading ? <LoadingIcon /> : icon}
       />
     );

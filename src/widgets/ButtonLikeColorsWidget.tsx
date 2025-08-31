@@ -23,7 +23,7 @@ export function ButtonLikeColorsWidget() {
         rowsDims={variants}
         columnsDims={colors}
         renderCell={({ row: variant, column: color, key }) => (
-          <ButtonLike key={key} variant={variant} color={color} height="10" startIcon={<UserIcon />}>
+          <ButtonLike key={key} variant={variant} color={color} startIcon={<UserIcon />}>
             {color}
           </ButtonLike>
         )}

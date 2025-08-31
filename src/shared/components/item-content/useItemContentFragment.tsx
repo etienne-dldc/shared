@@ -33,11 +33,11 @@ export function useItemContentFragment(
   // Special case for start icon/slot only
   const iconOnly = (hasStartSlot && !hasChildren && !hasEndSlot) || (hasEndSlot && !hasStartSlot && !hasChildren);
 
-  const defaultStartPadding = iconOnly || noLayout ? "none" : hasStartSlot ? "icon" : "text";
+  const defaultStartPadding = noLayout ? "none" : iconOnly ? "icon" : hasStartSlot ? "icon" : "text";
   const startPaddingResolved: TItemlContentPaddingResolved =
     startPadding === "auto" ? defaultStartPadding : startPadding;
 
-  const defaultEndPadding = iconOnly || noLayout ? "none" : hasEndSlot ? "icon" : "text";
+  const defaultEndPadding = noLayout ? "none" : iconOnly ? "icon" : hasEndSlot ? "icon" : "text";
   const endPaddingResolved: TItemlContentPaddingResolved = endPadding === "auto" ? defaultEndPadding : endPadding;
 
   const fragment = (
@@ -53,7 +53,9 @@ export function useItemContentFragment(
         ) : (
           content
         ))}
-      {hasEndSlot && <SideSlot icon={endIcon} slot={endSlot} isItemMainIcon={false} isIconOnly={iconOnly} />}
+      {hasEndSlot && (
+        <SideSlot icon={endIcon} slot={endSlot} isItemMainIcon={false} isIconOnly={iconOnly} css={{ ml: "auto" }} />
+      )}
     </Fragment>
   );
 

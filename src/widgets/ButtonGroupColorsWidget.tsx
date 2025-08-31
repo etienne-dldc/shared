@@ -32,7 +32,7 @@ export function ButtonGroupColorsWidget() {
         rowsDims={colors}
         columnsDims={variants}
         renderCell={({ row: color, column: variant, key }) => (
-          <FrameGroup key={key} variant={variant.variant} color={color} height="10">
+          <FrameGroup key={key} variant={variant.variant} color={color}>
             <Button startIcon={<HouseIcon />}>Home</Button>
             <Button>About</Button>
             <Button>Contact</Button>

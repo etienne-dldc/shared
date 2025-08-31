@@ -1,25 +1,14 @@
-export type TDesignSize =
-  | "2x"
-  | "3"
-  | "3x"
-  | "4"
-  | "4x"
-  | "5"
-  | "5x"
-  | "6"
-  | "6x"
-  | "7"
-  | "7x"
-  | "8"
-  | "8x"
-  | "9"
-  | "9x"
-  | "10"
-  | "10x"
-  | "11"
-  | "11x"
-  | "12"
-  | number;
+import { IntRange } from "type-fest";
+
+type L1 = "x";
+type L2 = `x${L1 | ""}` | `_${L1}`;
+type L3 = `x${L2 | ""}` | `_${L2}`;
+
+export type TDesignHeight = `${IntRange<2, 13>}${"" | L1}` | number;
+export type TDesignRounded = `${IntRange<0, 5>}${"" | L3}` | `${IntRange<5, 10>}${"" | L1}` | number;
+export type TDesignSpacing = `${IntRange<0, 5>}${"" | L2}` | `${IntRange<5, 10>}${"" | L1}` | number;
+
+export type TDesignSize = `${"" | "-"}${IntRange<0, 100>}${"" | L3}` | number;
 
 export type TDesignVariant = "solid" | "surface" | "subtle" | "ghost" | "input";
 
@@ -48,19 +37,19 @@ export type TPaletteColor =
   | "stone";
 
 export interface TDesignProps {
-  height?: TDesignSize | null;
-  contentHeight?: TDesignSize | null;
-  rounded?: TDesignSize | null;
-  spacing?: TDesignSize | null;
+  height?: TDesignHeight | null;
+  contentHeight?: TDesignHeight | null;
+  rounded?: TDesignRounded | null;
+  spacing?: TDesignSpacing | null;
   variant?: TDesignVariant;
   hoverVariant?: TDesignVariant | null;
 }
 
 export interface TDefaultDesignContext {
-  height: TDesignSize | null;
-  contentHeight: TDesignSize | null;
-  rounded: TDesignSize | null;
-  spacing: TDesignSize | null;
+  height: TDesignHeight | null;
+  contentHeight: TDesignHeight | null;
+  rounded: TDesignRounded | null;
+  spacing: TDesignSpacing | null;
   variant: TDesignVariant;
   hoverVariant: TDesignVariant | null;
 }

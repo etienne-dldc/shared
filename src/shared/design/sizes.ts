@@ -4,6 +4,7 @@ import { withoutUndefined } from "../utils/withoutUndefined";
 import {
   TDefaultDesignContext,
   TDesignContextResolved,
+  TDesignHeight,
   TDesignSize,
   TNestedDefaultDesignContext,
   TParentDesignContext,
@@ -12,12 +13,7 @@ import {
 export const BASE_HEIGHT = 7;
 export const MIN_HEIGHT = 2.5;
 export const BASE_HEIGHT_RATIO = 0.7;
-
-export const ROUNDED = {
-  small: parseSize("0x"),
-  base: parseSize("1_x"),
-  medium: parseSize("1"),
-};
+export const BASE_ROUNDED = parseSize("1_x");
 
 export function resolveSmallRounded(height: number): boolean {
   return height <= 4;
@@ -32,7 +28,7 @@ export function clampHeightRatio(value: number): number {
   return clamp(value, 0.1, 1);
 }
 
-export function parseSize(size: string | number): number {
+export function parseSize(size: TDesignSize | (string & {})): number {
   if (typeof size === "number") {
     return size;
   }
@@ -47,23 +43,23 @@ export function parseSize(size: string | number): number {
   return base + (base < 0 ? -rest : rest);
 }
 
-export function parseMaybeSize(size: string | number | null | undefined): number | null {
+export function parseMaybeSize(size: TDesignSize | (string & {}) | null | undefined): number | null {
   if (size === null || size === undefined) {
     return null;
   }
   return parseSize(size);
 }
 
-export function sizeToRem(size: string | number): number {
+export function sizeToRem(size: TDesignSize | (string & {})): number {
   const parsedSize = typeof size === "number" ? size : parseSize(size);
   return (parsedSize * 4) / 16;
 }
 
-export function sizeToRemString(size: string | number): string {
+export function sizeToRemString(size: TDesignSize | (string & {})): string {
   return `${sizeToRem(size)}rem`;
 }
 
-export function sizeToFontSize(size: string | number) {
+export function sizeToFontSize(size: TDesignSize | (string & {})) {
   const lineHeightRem = sizeToRem(size);
   const fontSizeRem = lineHeightRem - 0.56 * Math.exp(-Math.pow(1.76 - lineHeightRem, 2) / Math.pow(0.8, 2));
   const fontSizeRemRounded = Math.round(fontSizeRem * 16) / 16; // Round to 2px
@@ -94,7 +90,7 @@ export function resolveContainerDesignProps(
   if (!parentCtx) {
     // We are in a root context
     const height = parseSize(props.height ?? BASE_HEIGHT);
-    const rounded = parseSize(props.rounded ?? ROUNDED.base);
+    const rounded = parseSize(props.rounded ?? BASE_ROUNDED);
     const contentHeight = resolveContentHeight(height, contentHeightProp);
 
     return { height, contentHeight, variant: props.variant, hoverVariant, spacing, rounded, depth };
@@ -140,7 +136,7 @@ function resolveDefaultProps(nestedCtx: TNestedDefaultDesignContext | null, dept
   };
 }
 
-function resolveContentHeight(height: number, contentHeight: TDesignSize | null): number {
+function resolveContentHeight(height: number, contentHeight: TDesignHeight | null): number {
   if (contentHeight !== null) {
     return clamp(parseSize(contentHeight), MIN_HEIGHT, height);
   }

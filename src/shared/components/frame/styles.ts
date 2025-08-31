@@ -8,7 +8,6 @@ export const frameBaseClass = cva({
     display: "inline-flex",
     flexDirection: "row",
     alignItems: "center",
-    alignSelf: "start",
     outline: "none",
     position: "relative",
     "& [data-item-main-icon]": {

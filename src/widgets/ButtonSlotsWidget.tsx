@@ -38,7 +38,7 @@ export function ButtonSlotsWidget() {
       <HighlightedGrid
         rowsDims={slotConfigs}
         renderCell={({ row: config, key }) => (
-          <Button key={key} startSlot={config.startSlot} endSlot={config.endSlot} height="10">
+          <Button key={key} startSlot={config.startSlot} endSlot={config.endSlot}>
             {config.label}
           </Button>
         )}

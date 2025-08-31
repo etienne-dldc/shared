@@ -5,7 +5,7 @@ import { NodeApi } from "react-arborist";
 import { css, cx } from "../../../../styled-system/css";
 import { ComponentProps, SystemStyleObject } from "../../../../styled-system/types";
 import { colorPaletteClass } from "../../design/styles";
-import { TDesignSize, TPaletteColor } from "../../design/types";
+import { TDesignHeight, TDesignSpacing, TPaletteColor } from "../../design/types";
 import { useMergeRefs } from "../../hooks/useMergeRefs";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { DefaultDesignProvider, designPropsSplitter, useContainerDesignProps } from "../core/DesignContext";
@@ -21,9 +21,9 @@ export type TreeItemProps = Merge<
     dragHandleMode?: "none" | "handle" | "row";
 
     // Design
-    height?: TDesignSize;
+    height?: TDesignHeight;
     heightRatio?: number;
-    spacing?: TDesignSize;
+    spacing?: TDesignSpacing;
 
     css?: SystemStyleObject;
     color?: TPaletteColor;

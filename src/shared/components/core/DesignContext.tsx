@@ -46,25 +46,6 @@ export function designPropsSplitter(props: BaseRecord): Partial<TDefaultDesignCo
   return result;
 }
 
-// export const DefaultDesignContext = createPropsContext<TDefaultDesignContext>("Design", {
-//   height: null,
-//   contentHeight: null,
-//   rounded: null,
-//   spacing: null,
-//   variant: "surface",
-//   hoverVariant: null,
-// });
-
-// export function designPropsSplitter(props: Partial<TDefaultDesignContext>) {
-//   const base = DefaultDesignContext.propsSplitter(props);
-//   return withoutUndefined({
-//     ...base,
-//     // Use null as default value for height and contentHeight
-//     // height: base.height === null ? BASE_HEIGHT : base.height,
-//     // contentHeight: base.contentHeight === null ? BASE_HEIGHT_RATIO : base.contentHeight,
-//   });
-// }
-
 export function useContainerDesignProps(localProps: Partial<TDefaultDesignContext>): TDesignContextResolved {
   const sizeCtx = useContext(ParentDesignContext);
   const deepCtx = useContext(NestedDefaultDesignContext);

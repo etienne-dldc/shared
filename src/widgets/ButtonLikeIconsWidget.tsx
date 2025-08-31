@@ -39,13 +39,7 @@ export function ButtonLikeIconsWidget() {
         rowsDims={iconConfigs}
         columnsDims={examples}
         renderCell={({ row: iconConfig, column: example, key }) => (
-          <ButtonLike
-            key={key}
-            variant={example.variant}
-            height="10"
-            startIcon={iconConfig.startIcon}
-            endIcon={iconConfig.endIcon}
-          >
+          <ButtonLike key={key} variant={example.variant} startIcon={iconConfig.startIcon} endIcon={iconConfig.endIcon}>
             {example.label}
           </ButtonLike>
         )}

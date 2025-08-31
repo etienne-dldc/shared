@@ -4,7 +4,7 @@ import { Merge } from "type-fest";
 import { css, cx } from "../../../../styled-system/css";
 import { SystemStyleObject } from "../../../../styled-system/types";
 import { sizeToRemString } from "../../design/sizes";
-import { TDesignSize } from "../../design/types";
+import { TDesignHeight } from "../../design/types";
 
 type IconBoxProps = Merge<
   Omit<ComponentProps<"div">, "title" | "height">,
@@ -14,7 +14,7 @@ type IconBoxProps = Merge<
     color?: string;
     weight?: IconWeight;
     mirrored?: boolean;
-    size?: TDesignSize;
+    size?: TDesignHeight;
     className?: string;
     css?: SystemStyleObject;
   }

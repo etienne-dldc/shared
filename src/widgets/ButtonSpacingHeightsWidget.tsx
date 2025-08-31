@@ -3,16 +3,23 @@ import { Grid } from "../../styled-system/jsx";
 import { CodeHighlight } from "../playground/CodeHighlight";
 import { HighlightedGrid } from "../playground/HighlightedGrid";
 import { Button } from "../shared/components/button/Button";
-import { TDesignSize } from "../shared/design/types";
+import { TDesignHeight } from "../shared/design/types";
+import { printElement } from "./utils/printElement";
 
 export function ButtonSpacingHeightsWidget() {
-  const heights: TDesignSize[] = ["6", "8", "10", "12"];
-  const [highlighted, setHighlighted] = useState<TDesignSize | null>();
+  const heights: TDesignHeight[] = ["6", "8", "10", "12"];
+  const [highlighted, setHighlighted] = useState<TDesignHeight | null>();
 
   return (
     <Grid gridTemplateColumns="subgrid">
       <CodeHighlight language="jsx" theme="dark-plus">
-        {highlighted ? `<Button spacing="8" height="${highlighted}" />` : "// Hover a button to see the code"}
+        {highlighted
+          ? printElement(
+              <Button spacing="8" height={highlighted}>
+                Height {highlighted}
+              </Button>,
+            )
+          : "// Hover a button to see the code"}
       </CodeHighlight>
       <HighlightedGrid
         rowsDims={heights}

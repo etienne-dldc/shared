@@ -29,7 +29,7 @@ export function ButtonGroupDividersWidget() {
       <HighlightedGrid
         rowsDims={innerDividerOptions}
         renderCell={({ row: inner, key }) => (
-          <FrameGroup key={key} height="10" innerDividers={inner.value}>
+          <FrameGroup key={key} innerDividers={inner.value}>
             <Button>First</Button>
             <Button>Second</Button>
             <Button>Third</Button>

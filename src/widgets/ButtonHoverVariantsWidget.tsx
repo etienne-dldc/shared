@@ -21,7 +21,7 @@ export function ButtonHoverVariantsWidget() {
       <HighlightedGrid
         rowsDims={variants}
         renderCell={({ row: hoverVariant, key }) => (
-          <Button key={key} variant="ghost" hoverVariant={hoverVariant} height="10">
+          <Button key={key} variant="ghost" hoverVariant={hoverVariant}>
             <em className={css({ fontWeight: "bold" })}>{hoverVariant}</em> on hover
           </Button>
         )}

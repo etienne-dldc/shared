@@ -2,14 +2,14 @@ import { CaretRightIcon, DotsSixVerticalIcon } from "@phosphor-icons/react";
 import { ComponentProps } from "react";
 import { Merge } from "type-fest";
 import { HStack } from "../../../../styled-system/jsx";
-import { TDesignSize } from "../../design/types";
+import { TDesignSpacing } from "../../design/types";
 import { Button } from "../button/Button";
 import { ItemContent } from "../item-content/ItemContent";
 
 export type TreeItemContentProps = Merge<
   Omit<ComponentProps<"div">, "title" | "height">,
   {
-    spacing?: TDesignSize;
+    spacing?: TDesignSpacing;
   }
 >;
 

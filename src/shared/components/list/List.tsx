@@ -1,14 +1,14 @@
 import * as Ariakit from "@ariakit/react";
 import { ComponentPropsWithRef } from "react";
 import { Merge } from "type-fest";
-import { TDesignSize } from "../../design/types";
+import { TDesignHeight } from "../../design/types";
 import { DefaultDesignProvider } from "../core/DesignContext";
 import { DynamicColorProvider, TDynamicColor } from "../core/DynamicColorProvider";
 
 export type ListProps = Merge<
   ComponentPropsWithRef<"div">,
   {
-    size?: TDesignSize;
+    height?: TDesignHeight;
     color?: TDynamicColor;
     disabled?: boolean;
 

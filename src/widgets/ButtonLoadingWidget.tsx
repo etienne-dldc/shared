@@ -44,13 +44,7 @@ export function ButtonLoadingWidget() {
         rowsDims={contentVariations}
         columnsDims={loadingStates}
         renderCell={({ row: content, column: loadingState, key }) => (
-          <Button
-            key={key}
-            loading={loadingState.loading}
-            startIcon={content.startIcon}
-            endIcon={content.endIcon}
-            height="10"
-          >
+          <Button key={key} loading={loadingState.loading} startIcon={content.startIcon} endIcon={content.endIcon}>
             {content.children}
           </Button>
         )}

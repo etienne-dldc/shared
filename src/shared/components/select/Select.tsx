@@ -7,7 +7,7 @@ import { styled } from "../../../../styled-system/jsx";
 import { vstack } from "../../../../styled-system/patterns";
 import { SystemStyleObject } from "../../../../styled-system/types";
 import { colorPaletteClass } from "../../design/styles";
-import { TDesignSize, TDesignVariant, TPaletteColor } from "../../design/types";
+import { TDesignHeight, TDesignSpacing, TDesignVariant, TPaletteColor } from "../../design/types";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { Button } from "../button/Button";
 import { DefaultDesignProvider, designPropsSplitter } from "../core/DesignContext";
@@ -22,9 +22,9 @@ export type SelectProps<Value extends string> = Merge<
   {
     // Design
     disabled?: boolean;
-    height?: TDesignSize;
+    height?: TDesignHeight;
     heightRatio?: number;
-    spacing?: TDesignSize;
+    spacing?: TDesignSpacing;
     variant?: TDesignVariant;
     hoverVariant?: TDesignVariant;
 

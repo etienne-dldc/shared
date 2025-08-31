@@ -26,7 +26,7 @@ export function ButtonDisabledWidget() {
         rowsDims={variants}
         columnsDims={states}
         renderCell={({ row: variant, column: state, key }) => (
-          <Button key={key} variant={variant} disabled={state.disabled} height="10" startIcon={<UserIcon />}>
+          <Button key={key} variant={variant} disabled={state.disabled} startIcon={<UserIcon />}>
             {state.label}
           </Button>
         )}
