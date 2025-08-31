@@ -32,12 +32,13 @@ export function useItemContentFragment(
   const hasChildren = Boolean(content);
   // Special case for start icon/slot only
   const iconOnly = (hasStartSlot && !hasChildren && !hasEndSlot) || (hasEndSlot && !hasStartSlot && !hasChildren);
+  const isEmpty = !hasStartSlot && !hasChildren && !hasEndSlot;
 
-  const defaultStartPadding = noLayout ? "none" : iconOnly ? "icon" : hasStartSlot ? "icon" : "text";
+  const defaultStartPadding = noLayout ? "none" : isEmpty ? "icon" : iconOnly ? "icon" : hasStartSlot ? "icon" : "text";
   const startPaddingResolved: TItemlContentPaddingResolved =
     startPadding === "auto" ? defaultStartPadding : startPadding;
 
-  const defaultEndPadding = noLayout ? "none" : iconOnly ? "icon" : hasEndSlot ? "icon" : "text";
+  const defaultEndPadding = noLayout ? "none" : isEmpty ? "icon" : iconOnly ? "icon" : hasEndSlot ? "icon" : "text";
   const endPaddingResolved: TItemlContentPaddingResolved = endPadding === "auto" ? defaultEndPadding : endPadding;
 
   const fragment = (

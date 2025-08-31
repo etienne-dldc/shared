@@ -9,7 +9,7 @@ import { printElement } from "./utils/printElement";
 export function FrameRoundedWidget() {
   const roundedValues: TDesignRounded[] = ["0", "0x", "1", "2", "3", "4", "5"];
 
-  const [highlighted, setHighlighted] = useState<TDesignRounded | null>();
+  const [highlighted, setHighlighted] = useState<TDesignRounded | null>(null);
 
   return (
     <Grid gridTemplateColumns="subgrid">

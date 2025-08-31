@@ -21,7 +21,7 @@ import {
 } from "react";
 import { Merge } from "type-fest";
 import { css } from "../../styled-system/css";
-import { HStack, Paper, styled } from "../../styled-system/jsx";
+import { Grid, HStack, Paper, styled, VStack } from "../../styled-system/jsx";
 import { Button } from "../shared/components/button/Button";
 import { ButtonLike } from "../shared/components/button/ButtonLike";
 import { IconBox } from "../shared/components/common/IconBox";
@@ -78,7 +78,7 @@ export function Playground() {
   }, [location.pathname]);
 
   return (
-    <styled.div display="grid" gridTemplateRows="auto 1fr" gridTemplateColumns="100%" gap="4" p="4" minH="screen">
+    <Grid gridTemplateRows="auto 1fr" gridTemplateColumns="100%" gap="4" p="4" minH="screen" pb="8">
       <HStack gap="2">
         <FrameGroup variant="solid" height="10" color="blue">
           <RouteMenu items={routes} icon={<ListIcon />} />
@@ -112,7 +112,7 @@ export function Playground() {
           )}
         </Suspense>
       </styled.div>
-    </styled.div>
+    </Grid>
   );
 }
 
@@ -135,8 +135,10 @@ function RouteMenu({ items, title, icon, endIcon, ...buttonProps }: RouteMenuPro
         {title}
       </Ariakit.MenuButton>
       <Ariakit.Menu gutter={8} ref={topMenuRef} render={menuPaper} portal={true} unmountOnHide>
-        <Scrollbars className={css({ inset: "0", position: "absolute", p: "1" })}>
-          {items.map((item) => renderItem(item, topMenuRef))}
+        <Scrollbars className={css({ inset: "0", position: "absolute" })}>
+          <VStack alignItems="stretch" gap="0" p="1">
+            {items.map((item) => renderItem(item, topMenuRef))}
+          </VStack>
         </Scrollbars>
       </Ariakit.Menu>
     </Ariakit.MenuProvider>
@@ -163,8 +165,10 @@ function NestedMenu({ item, parentRef }: NestedMenuProps) {
         ref={menuRef}
         portal={true}
       >
-        <Scrollbars className={css({ inset: "0", position: "absolute", p: "1" })}>
-          {item.routes.map((item) => renderItem(item, menuRef))}
+        <Scrollbars className={css({ inset: "0", position: "absolute" })}>
+          <VStack alignItems="stretch" gap="0" p="1">
+            {item.routes.map((item) => renderItem(item, menuRef))}
+          </VStack>
         </Scrollbars>
       </Ariakit.Menu>
     </Ariakit.MenuProvider>

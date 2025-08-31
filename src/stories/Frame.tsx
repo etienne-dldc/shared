@@ -295,10 +295,6 @@ export default function FrameStory() {
           By default, <code>Frame</code> will automatically detect and apply the appropriate padding size based on its
           content. This means you usually don't need to specify the <code>padding</code> prop manually.
         </p>
-        <p>
-          <strong>Note</strong>: Frame have a minimum width equal to the height which explain why the icon with{" "}
-          <code>padding="none"</code> is not smaller than a square.
-        </p>
       </div>
       <FramePaddingWidget />
       <div className={cx(prose())}>

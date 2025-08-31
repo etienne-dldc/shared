@@ -12,7 +12,6 @@ export function FramePaddingWidget() {
   const examples = [
     { props: { children: "Hello World" } },
     { props: { startIcon: <UserIcon /> } },
-    { props: { endIcon: <UserIcon /> } },
     { props: { children: "Hey", endIcon: <UserIcon /> } },
   ];
 

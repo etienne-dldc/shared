@@ -1,6 +1,6 @@
 import * as Ariakit from "@ariakit/react";
 import { forwardRef } from "react";
-import { Backdrop, Paper, styled } from "../../../../styled-system/jsx";
+import { Backdrop, Paper, VStack } from "../../../../styled-system/jsx";
 
 export interface MenuProps extends Ariakit.MenuProviderProps {
   trigger: React.ReactElement<any> | ((open: boolean) => React.ReactElement<any>);
@@ -34,15 +34,16 @@ export const Menu = forwardRef<HTMLDivElement, MenuProps>(function Menu(
         sameWidth={sameWidth}
         backdrop={backdrop ? <Backdrop /> : undefined}
       >
-        <styled.div
+        <VStack
           p="1"
           minW="var(--popover-anchor-width)"
           maxW="var(--popover-available-width)"
           maxH="var(--popover-available-height)"
           overflowY="auto"
+          alignItems="stretch"
         >
           {content}
-        </styled.div>
+        </VStack>
       </Ariakit.Menu>
     </Ariakit.MenuProvider>
   );
