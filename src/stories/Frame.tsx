@@ -1,6 +1,7 @@
 import { css, cx } from "../../styled-system/css";
 import { Grid } from "../../styled-system/jsx";
 import { prose } from "../../styled-system/recipes";
+import { FrameAutoRoundedWidget } from "../widgets/FrameAutoRoundedWidget";
 import { FrameAutoSpacingWidget } from "../widgets/FrameAutoSpacingWidget";
 import { FrameBasicWidget } from "../widgets/FrameBasicWidget";
 import { FrameColorsWidget } from "../widgets/FrameColorsWidget";
@@ -225,6 +226,25 @@ export default function FrameStory() {
         </p>
       </div>
       <FrameRoundedWidget />
+      <div className={cx(prose())}>
+        <h2>Auto Rounded</h2>
+        <p>
+          When nesting Frame components, the rounded values are automatically computed to create harmonious visual
+          relationships. The inner Frame's radius is calculated based on the outer Frame's radius and the spacing
+          between them.
+        </p>
+        <p>
+          In the example below, you can see how different <code>rounded</code> values on the outer Frame (height 12)
+          automatically affect the inner Frames (heights 10 and 8). Notice how the nested radii scale proportionally to
+          maintain visual consistency.
+        </p>
+        <p>
+          <strong>Note:</strong> For automatic rounded calculations to work, the parent Frame must know the size of its
+          content. This means you should use the <code>contentHeight</code> prop (not <code>height</code>) on nested
+          Frames to ensure correct radius scaling.
+        </p>
+      </div>
+      <FrameAutoRoundedWidget />
       <div className={cx(prose())}>
         <h2>Content</h2>
         <p>
