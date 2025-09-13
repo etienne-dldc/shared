@@ -1,6 +1,11 @@
 import { atom, useSetAtom } from "jotai";
 import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
 
+/**
+ *
+ * @param value Cannot be a function, see useAtomFromFunctionValue
+ * @returns
+ */
 export function useAtomFromValue<T>(value: T) {
   useEffect(() => {
     if (import.meta.env.DEV && typeof value === "function") {
@@ -22,6 +27,12 @@ export function useAtomFromValue<T>(value: T) {
   return $readonlyAtom;
 }
 
+/**
+ * useAtomFromValue with a function does not work,
+ * so this is a helper to wrap the function in an object.
+ * @param value
+ * @returns
+ */
 export function useAtomFromFunctionValue<T>(value: T) {
   const $atom = useAtomFromValue(useMemo(() => ({ fn: value }), [value]));
   return useMemo(() => atom((get) => get($atom).fn), [$atom]);
