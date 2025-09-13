@@ -6,35 +6,41 @@ export default function PaperPlayground() {
   return (
     <VStack>
       <Paper
-        display="flex"
-        flexDir="column"
-        p="20"
-        bg="neutral.925"
-        rounded="2"
-        borderWidth="0__x"
-        borderColor="white/10"
+        css={{
+          display: "flex",
+          flexDir: "column",
+          p: "20",
+          bg: "neutral.925",
+          rounded: "2",
+          borderWidth: "0__x",
+          borderColor: "white/10",
+        }}
       >
         925
         <PaperContent />
         <Paper
-          display="flex"
-          flexDir="column"
-          p="20"
-          bg="neutral.900"
-          rounded="2"
-          borderWidth="0__x"
-          borderColor="white/10"
+          css={{
+            display: "flex",
+            flexDir: "column",
+            p: "20",
+            bg: "neutral.900",
+            rounded: "2",
+            borderWidth: "0__x",
+            borderColor: "white/10",
+          }}
         >
           900
           <PaperContent />
           <Paper
-            display="flex"
-            flexDir="column"
-            p="20"
-            bg="neutral.875"
-            rounded="2"
-            borderWidth="0__x"
-            borderColor="white/10"
+            css={{
+              display: "flex",
+              flexDir: "column",
+              p: "20",
+              bg: "neutral.875",
+              rounded: "2",
+              borderWidth: "0__x",
+              borderColor: "white/10",
+            }}
           >
             875
             <PaperContent />

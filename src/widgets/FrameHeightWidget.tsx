@@ -12,7 +12,7 @@ export function FrameHeightWidget() {
   const [highlighted, setHighlighted] = useState<TDesignHeight | null>();
 
   return (
-    <Grid gridTemplateColumns="subgrid">
+    <Grid css={{ gridTemplateColumns: "subgrid" }}>
       <CodeHighlight language="jsx" theme="dark-plus">
         {highlighted
           ? printElement(<Frame height={highlighted}>Height {highlighted}</Frame>)

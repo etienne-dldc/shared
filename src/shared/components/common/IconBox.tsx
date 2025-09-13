@@ -31,7 +31,7 @@ const iconClass = css.raw({
 });
 
 export function IconBox(props: IconBoxProps) {
-  const { icon, alt, color, weight, size, mirrored, className, css: cssProp, style, ...htmlProps } = props;
+  const { icon, alt, color, weight, size, mirrored, className, css: cssProps, style, ...htmlProps } = props;
   const parentIconProps = useContext(IconContext);
 
   const mergedProps = useMemo(
@@ -49,7 +49,7 @@ export function IconBox(props: IconBoxProps) {
   return (
     <IconContext.Provider value={mergedProps}>
       <div
-        className={cx(css(iconClass, cssProp), className)}
+        className={cx(css(iconClass, cssProps), className)}
         style={size ? { ["--content-size" as string]: sizeToRemString(size), ...style } : style}
         {...htmlProps}
       >

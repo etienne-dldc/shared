@@ -27,7 +27,7 @@ export const Menu = forwardRef<HTMLDivElement, MenuProps>(function Menu(
       <Ariakit.Menu
         gutter={4}
         ref={ref}
-        render={<Paper bg="neutral.900" outline="none" />}
+        render={<Paper css={{ bg: "neutral.900", outline: "none" }} />}
         className={className}
         portal={portal}
         unmountOnHide
@@ -35,12 +35,14 @@ export const Menu = forwardRef<HTMLDivElement, MenuProps>(function Menu(
         backdrop={backdrop ? <Backdrop /> : undefined}
       >
         <VStack
-          p="1"
-          minW="var(--popover-anchor-width)"
-          maxW="var(--popover-available-width)"
-          maxH="var(--popover-available-height)"
-          overflowY="auto"
-          alignItems="stretch"
+          css={{
+            p: "1",
+            minW: "var(--popover-anchor-width)",
+            maxW: "var(--popover-available-width)",
+            maxH: "var(--popover-available-height)",
+            overflowY: "auto",
+            alignItems: "stretch",
+          }}
         >
           {content}
         </VStack>

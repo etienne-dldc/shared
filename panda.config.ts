@@ -8,6 +8,7 @@ export default defineConfig({
   strictTokens: true,
   strictPropertyValues: true,
   jsxFramework: "react",
+  jsxStyleProps: "minimal",
   presets: ["@dldc/panda-preset"],
   globalCss: {
     extend: {

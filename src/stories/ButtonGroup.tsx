@@ -15,9 +15,9 @@ import { ButtonGroupVariantsWidget } from "../widgets/ButtonGroupVariantsWidget"
 export default function ButtonGroupStory() {
   return (
     <Grid
-      mx="auto"
-      maxW="960px"
       css={{
+        mx: "auto",
+        maxW: "960px",
         gridTemplateColumns: "1fr 1fr",
         "& > *": {
           gridColumn: "span 2",

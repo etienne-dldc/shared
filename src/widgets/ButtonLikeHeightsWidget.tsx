@@ -16,7 +16,7 @@ export function ButtonLikeHeightsWidget() {
   const [highlighted, setHighlighted] = useState<{ size: TDesignHeight; content: (typeof contents)[number] } | null>();
 
   return (
-    <Grid gridTemplateColumns="subgrid">
+    <Grid css={{ gridTemplateColumns: "subgrid" }}>
       <CodeHighlight language="jsx" theme="dark-plus">
         {highlighted
           ? `<ButtonLike height="${highlighted.size}"${highlighted.content.props.startIcon ? " startIcon={<UserIcon />}" : ""}>${highlighted.content.label}</ButtonLike>`

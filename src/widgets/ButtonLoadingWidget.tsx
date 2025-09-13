@@ -34,7 +34,7 @@ export function ButtonLoadingWidget() {
   } | null>();
 
   return (
-    <Grid gridTemplateColumns="subgrid">
+    <Grid css={{ gridTemplateColumns: "subgrid" }}>
       <CodeHighlight language="jsx" theme="dark-plus">
         {highlighted
           ? `<Button ${highlighted.content.code} ${highlighted.loading.code} ${highlighted.content.children !== undefined ? `>${highlighted.content.children}</Button>` : "/>"}`

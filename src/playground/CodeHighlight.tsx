@@ -13,7 +13,7 @@ import {
   StringLiteralUnion,
   ThemeRegistrationAny,
 } from "shiki/bundle/web";
-import { css, cx } from "../../styled-system/css";
+import { css } from "../../styled-system/css";
 import { styled } from "../../styled-system/jsx";
 import { Scrollbars } from "../shared/components/common/Scrollbars";
 
@@ -25,10 +25,9 @@ interface CodeHighlightProps {
   language: TShikiLanguage;
   theme: TShikiTheme;
   children: string;
-  className?: string;
 }
 
-export function CodeHighlight({ language, theme, children, className }: CodeHighlightProps) {
+export function CodeHighlight({ language, theme, children }: CodeHighlightProps) {
   const [highlightedCode, setHighlightedCode] = useState<React.ReactNode | null>(null);
 
   useEffect(() => {
@@ -105,31 +104,21 @@ export function CodeHighlight({ language, theme, children, className }: CodeHigh
 
   return (
     <styled.div
-      className={cx(
-        css({
-          minH: "full",
-          minW: "full",
-          rounded: "2",
-          backgroundColor: "neutral.800",
-          overflow: "hidden",
-        }),
-        className,
-      )}
+      css={{
+        minH: "full",
+        minW: "full",
+        rounded: "2",
+        backgroundColor: "neutral.800",
+        overflow: "hidden",
+      }}
     >
       <Scrollbars className={css({ h: "full", w: "full" })}>
         <styled.div
-          className={cx(
-            css({
-              minH: "full",
-              minW: "full",
-              "& > *": {
-                h: "full",
-                textStyle: "6",
-                p: "4",
-              },
-            }),
-            className,
-          )}
+          css={{
+            minH: "full",
+            minW: "full",
+            "& > *": { h: "full", textStyle: "6", p: "4" },
+          }}
         >
           {highlightedCode}
         </styled.div>

@@ -32,8 +32,11 @@ export default function FinderPlayground() {
       <Finder css={{ h: "full", w: "full", rounded: "2", shadow: "lg", position: "absolute", inset: "0" }}>
         {keys.map((key, i) => (
           <FinderPanel key={key} css={{ w: "full", md: { w: "[600px]" } }} isActive={i === keys.length - 1}>
-            <VStack gap="4" p="4" alignItems="stretch">
-              <VStack alignItems="stretch" className={paper()} p="2" gap="1" bg="neutral.850">
+            <VStack
+              // gap="4" p="4" alignItems="stretch"
+              css={{ gap: "4", p: "4", alignItems: "stretch" }}
+            >
+              <VStack css={{ ...paper.raw(), alignItems: "stretch", p: "2", gap: "1", bg: "neutral.850" }}>
                 <DefaultDesignProvider variant="subtle" height="8">
                   <Button onClick={open(i)} startIcon={<PlusIcon />} hoverVariant="solid">
                     Open

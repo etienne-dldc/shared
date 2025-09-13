@@ -57,11 +57,11 @@ Stories live in `src/stories/` with associated widgets in `src/widgets/`:
 // Standard widget pattern
 export function FrameBasicWidget() {
   return (
-    <Grid gridTemplateColumns="subgrid">
+    <Grid css={{ gridTemplateColumns: "subgrid" }}>
       <CodeHighlight language="jsx" theme="dark-plus">
         {printElement(<Frame>Basic Frame</Frame>)}
       </CodeHighlight>
-      <Paper bg="neutral.900" p="3">
+      <Paper css={{ bg: "neutral.900", p: "3" }}>
         <Frame>Basic Frame</Frame>
       </Paper>
     </Grid>

@@ -118,13 +118,9 @@ export function Variants<Dims extends TDimensions>({
   }, [presets]);
 
   return (
-    <VStack gap="2" alignItems="stretch">
+    <VStack css={{ gap: "2", alignItems: "stretch" }}>
       <HStack gap="4">
-        {title && (
-          <styled.h2 textStyle="7" px="6">
-            {title}
-          </styled.h2>
-        )}
+        {title && <styled.h2 css={{ textStyle: "7", px: "6" }}>{title}</styled.h2>}
         <HStack gap="4">
           <FrameGroup color="blue" variant="solid">
             <ButtonLike css={{ textTransform: "uppercase", fontWeight: "bold" }}>Preset</ButtonLike>
@@ -167,8 +163,8 @@ export function Variants<Dims extends TDimensions>({
           </Button>
         </HStack>
       </HStack>
-      <HStack gap="8" alignItems="start">
-        <VStack gap="3" pt="4" alignItems="stretch">
+      <HStack css={{ gap: "8", alignItems: "start" }}>
+        <VStack css={{ gap: "3", pt: "4", alignItems: "stretch" }}>
           {Object.entries(dimensions)
             .filter(([key]) => !colAxis.includes(key) && !rowAxis.includes(key))
             .map(([dimKey, dim]) => {
@@ -196,8 +192,8 @@ export function Variants<Dims extends TDimensions>({
             Reset
           </Button>
         </VStack>
-        <styled.div maxH="[90vh]" overflow="auto" flex="1">
-          <Grid gap="4" py="4">
+        <styled.div css={{ maxH: "[90vh]", overflow: "auto", flex: "1" }}>
+          <Grid css={{ gap: "4", py: "4" }}>
             {cols.length > 1 &&
               cols.map((col, colIndex) => {
                 const colName = Object.values(col).join(" & ");
@@ -205,13 +201,15 @@ export function Variants<Dims extends TDimensions>({
                   <styled.div
                     key={`col-${colIndex}`}
                     style={{ gridColumn: 1 + colOffset + colIndex, gridRow: 1 }}
-                    textAlign="center"
-                    bg="white/5"
-                    rounded="1_x"
-                    textTransform="uppercase"
-                    fontWeight="bold"
-                    p="1"
-                    textStyle="4"
+                    css={{
+                      textAlign: "center",
+                      bg: "white/5",
+                      rounded: "1_x",
+                      textTransform: "uppercase",
+                      fontWeight: "bold",
+                      p: "1",
+                      textStyle: "4",
+                    }}
                   >
                     {colName}
                   </styled.div>
@@ -224,16 +222,17 @@ export function Variants<Dims extends TDimensions>({
                   <styled.div
                     key={`row-${rowIndex}`}
                     style={{ gridColumn: 1, gridRow: 1 + rowOffset + rowIndex }}
-                    textAlign="center"
-                    bg="white/5"
-                    rounded="1_x"
-                    textTransform="uppercase"
-                    fontWeight="bold"
-                    p="1"
-                    textStyle="4"
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
+                    css={{
+                      display: "flex",
+                      bg: "white/5",
+                      rounded: "1_x",
+                      textTransform: "uppercase",
+                      fontWeight: "bold",
+                      p: "1",
+                      textStyle: "4",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
                   >
                     {rowName}
                   </styled.div>
@@ -257,9 +256,7 @@ export function Variants<Dims extends TDimensions>({
                         gridRow: 1 + rowOffset + rowIndex,
                         minWidth: cellMinWidth,
                       }}
-                      display="flex"
-                      flexDirection="column"
-                      alignItems="center"
+                      css={{ display: "flex", flexDirection: "column", alignItems: "center" }}
                       key={key}
                     >
                       {render(data as any, key)}

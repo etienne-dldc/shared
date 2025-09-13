@@ -85,14 +85,14 @@ export function FrameSlotsAlignementWidget() {
   const [highlighted, setHighlighted] = useState<(typeof examples)[number] | null>();
 
   return (
-    <Grid gridTemplateColumns="subgrid">
+    <Grid css={{ gridTemplateColumns: "subgrid" }}>
       <CodeHighlight language="jsx" theme="dark-plus">
         {highlighted ? printElement(highlighted.element) : "// Hover a Frame to see the code"}
       </CodeHighlight>
       <HighlightedGrid
         rowsDims={examples}
         renderCell={({ row: example, key }) => (
-          <VStack key={key} alignItems="start" gap="1">
+          <VStack key={key} css={{ alignItems: "start", gap: "1" }}>
             <div className={prose()}>{example.description}</div>
             {example.element}
           </VStack>

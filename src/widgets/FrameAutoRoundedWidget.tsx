@@ -20,7 +20,7 @@ export function FrameAutoRoundedWidget() {
   );
 
   return (
-    <Grid gridTemplateColumns="subgrid">
+    <Grid css={{ gridTemplateColumns: "subgrid" }}>
       <CodeHighlight language="jsx" theme="dark-plus">
         {highlighted ? printElement(renderNestedFrames(highlighted)) : "// Hover a frame to see the code"}
       </CodeHighlight>

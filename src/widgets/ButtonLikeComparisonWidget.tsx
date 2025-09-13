@@ -17,7 +17,7 @@ export function ButtonLikeComparisonWidget() {
   const [highlighted, setHighlighted] = useState<{ variant: TDesignVariant; type: (typeof types)[number] } | null>();
 
   return (
-    <Grid gridTemplateColumns="subgrid">
+    <Grid css={{ gridTemplateColumns: "subgrid" }}>
       <CodeHighlight language="jsx" theme="dark-plus">
         {highlighted
           ? `<${highlighted.type.label} variant="${highlighted.variant}" startIcon={<UserIcon />}>Label</${highlighted.type.label}>`

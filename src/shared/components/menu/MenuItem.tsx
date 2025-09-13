@@ -34,7 +34,7 @@ export function MenuItem(inProps: MenuItemProps) {
 
   const {
     color,
-    css: cssProp,
+    css: cssProps,
 
     children,
 
@@ -62,7 +62,7 @@ export function MenuItem(inProps: MenuItemProps) {
               inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
               contentCss,
               // itemContentSizeClass.raw({ height }),
-              cssProp,
+              cssProps,
             ),
             className,
           )}

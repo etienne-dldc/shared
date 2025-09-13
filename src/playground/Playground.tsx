@@ -36,13 +36,15 @@ const history = createBrowserHistory();
 
 const menuPaper = (
   <Paper
-    bg="neutral.900"
-    outline="none"
-    w="[150px]"
-    maxW="var(--popover-available-width)"
-    maxH="var(--popover-available-height)"
-    height="[300px]"
-    position="relative"
+    css={{
+      bg: "neutral.900",
+      outline: "none",
+      w: "[150px]",
+      maxW: "var(--popover-available-width)",
+      maxH: "var(--popover-available-height)",
+      height: "[300px]",
+      position: "relative",
+    }}
   />
 );
 
@@ -78,7 +80,9 @@ export function Playground() {
   }, [location.pathname]);
 
   return (
-    <Grid gridTemplateRows="auto 1fr" gridTemplateColumns="100%" gap="4" p="4" minH="screen" pb="8">
+    <Grid
+      css={{ gridTemplateRows: "auto 1fr", gridTemplateColumns: "100%", gap: "4", p: "4", minH: "screen", pb: "8" }}
+    >
       <HStack gap="2">
         <FrameGroup variant="solid" height="10" color="blue">
           <RouteMenu items={routes} icon={<ListIcon />} />
@@ -103,7 +107,7 @@ export function Playground() {
           </Fragment>
         )}
       </HStack>
-      <styled.div position="relative">
+      <styled.div css={{ position: "relative" }}>
         <Suspense fallback={<LoadingBlock />}>
           {routeMatch ? (
             <routeMatch.match.component />
@@ -136,7 +140,7 @@ function RouteMenu({ items, title, icon, endIcon, ...buttonProps }: RouteMenuPro
       </Ariakit.MenuButton>
       <Ariakit.Menu gutter={8} ref={topMenuRef} render={menuPaper} portal={true} unmountOnHide>
         <Scrollbars className={css({ inset: "0", position: "absolute" })}>
-          <VStack alignItems="stretch" gap="0" p="1">
+          <VStack css={{ alignItems: "stretch", gap: "0", p: "1" }}>
             {items.map((item) => renderItem(item, topMenuRef))}
           </VStack>
         </Scrollbars>
@@ -166,7 +170,7 @@ function NestedMenu({ item, parentRef }: NestedMenuProps) {
         portal={true}
       >
         <Scrollbars className={css({ inset: "0", position: "absolute" })}>
-          <VStack alignItems="stretch" gap="0" p="1">
+          <VStack css={{ alignItems: "stretch", gap: "0", p: "1" }}>
             {item.routes.map((item) => renderItem(item, menuRef))}
           </VStack>
         </Scrollbars>

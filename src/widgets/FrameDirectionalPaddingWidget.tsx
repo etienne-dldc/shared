@@ -16,7 +16,7 @@ export function FrameDirectionalPaddingWidget() {
   } | null>();
 
   return (
-    <Grid gridTemplateColumns="subgrid">
+    <Grid css={{ gridTemplateColumns: "subgrid" }}>
       <CodeHighlight language="jsx" theme="dark-plus">
         {highlighted
           ? printElement(<Frame {...{ [highlighted.propName]: highlighted.padding }}>Text</Frame>)

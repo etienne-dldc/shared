@@ -1,7 +1,7 @@
 import * as Ariakit from "@ariakit/react";
 import { XIcon } from "@phosphor-icons/react";
 import { Fragment, forwardRef, useCallback } from "react";
-import { css, cx } from "../../../../styled-system/css";
+import { css } from "../../../../styled-system/css";
 import { Backdrop, Paper } from "../../../../styled-system/jsx";
 import { pick } from "../../utils/pick";
 import { Button } from "../button/Button";
@@ -71,6 +71,23 @@ export const Modal = forwardRef<HTMLButtonElement, ModalProps>(
       [onClose, setOpen],
     );
 
+    const paperCss = css.raw(
+      {
+        bg: "neutral.900",
+        display: "flex",
+        flexDirection: "column",
+        gap: "4",
+        outline: "none",
+        padding: "4",
+        placeSelf: "center",
+        width: "full",
+        overflow: "hidden",
+      },
+      widthClass,
+      heightClass,
+      innerScroll ? { height: "full" } : null,
+    );
+
     return (
       <Ariakit.DialogProvider open={open} setOpen={setOpenInternal}>
         {children && <Ariakit.DialogDisclosure ref={ref} render={children} />}
@@ -98,27 +115,7 @@ export const Modal = forwardRef<HTMLButtonElement, ModalProps>(
               })}
               style={{ gridTemplateRows: `1fr`, gridTemplateColumns: `auto` }}
             >
-              <Paper
-                bg="neutral.900"
-                className={cx(
-                  css(
-                    {
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "4",
-                      outline: "none",
-                      padding: "4",
-                      placeSelf: "center",
-                      width: "full",
-                      overflow: "hidden",
-                    },
-                    widthClass,
-                    heightClass,
-                    innerScroll && { height: "full" },
-                  ),
-                  className,
-                )}
-              >
+              <Paper css={paperCss} className={className}>
                 <PageTitle
                   title={<Ariakit.DialogHeading render={<span />}>{title}</Ariakit.DialogHeading>}
                   endActions={

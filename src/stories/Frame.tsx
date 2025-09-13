@@ -21,9 +21,9 @@ import { FrameVariantsWidget } from "../widgets/FrameVariantsWidget";
 export default function FrameStory() {
   return (
     <Grid
-      mx="auto"
-      maxW="960px"
       css={{
+        mx: "auto",
+        maxW: "960px",
         gridTemplateColumns: "1fr 1fr",
         "& > *": {
           gridColumn: "span 2",

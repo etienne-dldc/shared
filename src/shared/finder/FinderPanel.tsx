@@ -50,7 +50,15 @@ export interface FinderPanelProps extends React.ComponentPropsWithoutRef<"div"> 
 }
 
 export const FinderPanel = forwardRef(function FinderPanel(
-  { children, className, isActive = false, onActivate, resizeLocalStorageKey, css: cssProp, ...rest }: FinderPanelProps,
+  {
+    children,
+    className,
+    isActive = false,
+    onActivate,
+    resizeLocalStorageKey,
+    css: cssProps,
+    ...rest
+  }: FinderPanelProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
   const panelRef = useRef<HTMLDivElement | null>(null);
@@ -120,7 +128,7 @@ export const FinderPanel = forwardRef(function FinderPanel(
               },
             },
           },
-          cssProp,
+          cssProps,
         ),
         className,
       )}
@@ -152,13 +160,15 @@ export const FinderPanel = forwardRef(function FinderPanel(
         </PanelSizeContext.Provider>
       </PanelRefContext.Provider>
       <styled.div
-        position="absolute"
-        insetY="0"
-        right="0"
-        width="[var(--gutter-width)]"
-        pointerEvents="none"
-        bg="black/25"
-        zIndex={10}
+        css={{
+          position: "absolute",
+          insetY: "0",
+          right: "0",
+          width: "[var(--gutter-width)]",
+          pointerEvents: "none",
+          bg: "black/25",
+          zIndex: 10,
+        }}
       />
       <MiniHandle
         onPointerDown={resizer.onPointerDown}

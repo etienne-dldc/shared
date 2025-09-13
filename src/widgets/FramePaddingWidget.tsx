@@ -21,7 +21,7 @@ export function FramePaddingWidget() {
   } | null>();
 
   return (
-    <Grid gridTemplateColumns="subgrid">
+    <Grid css={{ gridTemplateColumns: "subgrid" }}>
       <CodeHighlight language="jsx" theme="dark-plus">
         {highlighted
           ? printElement(<Frame padding={highlighted.padding} {...highlighted.example.props} />)

@@ -40,7 +40,7 @@ export function ItemContent(inProps: ItemContentProps) {
 
     style,
     className,
-    css: cssProp,
+    css: cssProps,
 
     ...htmlProps
   } = props;
@@ -55,7 +55,7 @@ export function ItemContent(inProps: ItemContentProps) {
 
   return (
     <div
-      className={cx(css(itemContentCss, heightCss, contentCss, cssProp), className)}
+      className={cx(css(itemContentCss, heightCss, contentCss, cssProps), className)}
       style={{ ...style, ...heightInline, ...contentInline }}
       {...htmlProps}
     >

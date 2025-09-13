@@ -18,7 +18,7 @@ export function FrameFractionalHeightWidget() {
   const [highlighted, setHighlighted] = useState<{ value: string; label: string } | null>();
 
   return (
-    <Grid gridTemplateColumns="subgrid">
+    <Grid css={{ gridTemplateColumns: "subgrid" }}>
       <CodeHighlight language="jsx" theme="dark-plus">
         {highlighted
           ? `<Frame height="${highlighted.value}">Height ${highlighted.value}</Frame>`

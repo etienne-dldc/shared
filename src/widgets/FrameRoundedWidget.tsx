@@ -12,7 +12,7 @@ export function FrameRoundedWidget() {
   const [highlighted, setHighlighted] = useState<TDesignRounded | null>(null);
 
   return (
-    <Grid gridTemplateColumns="subgrid">
+    <Grid css={{ gridTemplateColumns: "subgrid" }}>
       <CodeHighlight language="jsx" theme="dark-plus">
         {highlighted !== null
           ? printElement(<Frame rounded={highlighted}>Rounded {highlighted}</Frame>)

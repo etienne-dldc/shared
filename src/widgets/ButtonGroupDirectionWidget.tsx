@@ -26,7 +26,7 @@ export function ButtonGroupDirectionWidget() {
   const [highlighted, setHighlighted] = useState<(typeof directions)[number] | null>();
 
   return (
-    <Grid gridTemplateColumns="subgrid">
+    <Grid css={{ gridTemplateColumns: "subgrid" }}>
       <CodeHighlight language="jsx" theme="dark-plus">
         {highlighted?.code || "// Hover a button group to see the code"}
       </CodeHighlight>

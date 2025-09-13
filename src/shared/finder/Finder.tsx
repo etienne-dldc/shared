@@ -58,10 +58,12 @@ export function Finder({ children, className, css: cssProp }: FinderProps) {
         style={{
           ["--scroll-content-min-width" as string]: `var(${contentMinSizeVarName})`,
         }}
-        display="flex"
-        flexDirection="row"
-        height="full"
-        minWidth="[var(--scroll-content-min-width)]"
+        css={{
+          display: "flex",
+          flexDirection: "row",
+          height: "full",
+          minWidth: "[var(--scroll-content-min-width)]",
+        }}
       >
         {children}
       </styled.div>

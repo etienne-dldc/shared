@@ -1,4 +1,3 @@
-import { css, cx } from "../../../../styled-system/css";
 import { HStack, styled } from "../../../../styled-system/jsx";
 import { SystemStyleObject } from "../../../../styled-system/types";
 import { IconBox } from "../common/IconBox";
@@ -24,35 +23,25 @@ export function PageTitle({
   startActions,
   middleActions,
   endActions,
-  css: cssProp,
+  css: cssProps,
 }: PageTitleProps) {
   return (
-    <HStack gap="2" className={cx(css(cssProp), className)}>
-      {startActions && <HStack gap="2">{startActions}</HStack>}
-      <HStack gap="2" pl="1">
+    <HStack css={{ gap: "2", ...cssProps }} className={className}>
+      {startActions && <HStack css={{ gap: "2" }}>{startActions}</HStack>}
+      <HStack css={{ gap: "2", pl: "1" }}>
         {icon && <IconBox size={7} icon={icon} css={{ p: "0x" }} weight="bold" />}
-        <styled.h1 textStyle="7" fontWeight="semibold" onClick={onTitleClick}>
+        <styled.h1 css={{ textStyle: "7", fontWeight: "semibold" }} onClick={onTitleClick}>
           {title}
           {Boolean(details) && (
             <>
               {" "}
-              <styled.span fontWeight="normal" color="white/60">
-                {details}
-              </styled.span>
+              <styled.span css={{ fontWeight: "normal", color: "white/60" }}>{details}</styled.span>
             </>
           )}
         </styled.h1>
       </HStack>
-      {middleActions && (
-        <HStack gap="2" mr="auto">
-          {middleActions}
-        </HStack>
-      )}
-      {endActions && (
-        <HStack gap="2" ml="auto">
-          {endActions}
-        </HStack>
-      )}
+      {middleActions && <HStack css={{ gap: "2", mr: "auto" }}>{middleActions}</HStack>}
+      {endActions && <HStack css={{ gap: "2", ml: "auto" }}>{endActions}</HStack>}
     </HStack>
   );
 }

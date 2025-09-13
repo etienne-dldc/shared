@@ -26,7 +26,7 @@ export function ButtonIconsWidget() {
   const [highlighted, setHighlighted] = useState<(typeof iconConfigs)[number] | null>();
 
   return (
-    <Grid gridTemplateColumns="subgrid">
+    <Grid css={{ gridTemplateColumns: "subgrid" }}>
       <CodeHighlight language="jsx" theme="dark-plus">
         {highlighted
           ? `<Button ${highlighted.code} ${highlighted.children !== undefined ? `>${highlighted.children}</Button>` : " />"}`

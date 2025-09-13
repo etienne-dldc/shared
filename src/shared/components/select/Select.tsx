@@ -1,6 +1,6 @@
 import * as Ariakit from "@ariakit/react";
 import { CaretDownIcon } from "@phosphor-icons/react";
-import { ComponentPropsWithRef, useMemo } from "react";
+import { ComponentPropsWithRef, Ref, useMemo } from "react";
 import { Merge } from "type-fest";
 import { css, cx } from "../../../../styled-system/css";
 import { styled } from "../../../../styled-system/jsx";
@@ -62,7 +62,7 @@ export function Select<Value extends string>(inProps: SelectProps<Value>) {
 
   const {
     color,
-    css: cssProp,
+    css: cssProps,
 
     items,
     label,
@@ -102,11 +102,13 @@ export function Select<Value extends string>(inProps: SelectProps<Value>) {
       <DisabledContext.Define disabled={inProps.disabled}>
         <Ariakit.SelectProvider store={selectStore}>
           <Ariakit.Role
+            ref={ref as Ref<HTMLDivElement>}
             render={renderWrapper ?? <div />}
             className={cx(
               css(
                 vstack.raw({ alignItems: "start", gap: "0" }),
                 inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
+                cssProps,
               ),
               className,
             )}
@@ -152,24 +154,28 @@ export function Select<Value extends string>(inProps: SelectProps<Value>) {
             portal
             render={
               <styled.div
-                overflow="hidden"
-                background="neutral.800"
-                rounded="2"
-                borderWidth="0__x"
-                borderColor="white/10"
-                boxShadow="md"
-                outline="none"
+                css={{
+                  overflow: "hidden",
+                  background: "neutral.800",
+                  rounded: "2",
+                  borderWidth: "0__x",
+                  borderColor: "white/10",
+                  boxShadow: "md",
+                  outline: "none",
+                }}
               />
             }
             sameWidth={sameWidth}
             unmountOnHide
           >
             <styled.div
-              p="1"
-              minW="var(--popover-anchor-width)"
-              maxW="var(--popover-available-width)"
-              maxH="var(--popover-available-height)"
-              overflowY="auto"
+              css={{
+                p: "1",
+                minW: "var(--popover-anchor-width)",
+                maxW: "var(--popover-available-width)",
+                maxH: "var(--popover-available-height)",
+                overflowY: "auto",
+              }}
             >
               {items.map((item) => (
                 <SelectItem

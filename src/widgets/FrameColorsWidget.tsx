@@ -36,7 +36,7 @@ export function FrameColorsWidget() {
   const [highlighted, setHighlighted] = useState<FrameProps | null>();
 
   return (
-    <Grid gridTemplateColumns="subgrid">
+    <Grid css={{ gridTemplateColumns: "subgrid" }}>
       <CodeHighlight language="jsx" theme="dark-plus">
         {highlighted
           ? printElement(

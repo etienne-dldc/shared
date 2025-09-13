@@ -21,9 +21,9 @@ import { ButtonSpacingWidget } from "../widgets/ButtonSpacingWidget";
 export default function ButtonStory() {
   return (
     <Grid
-      mx="auto"
-      maxW="960px"
       css={{
+        mx: "auto",
+        maxW: "960px",
         gridTemplateColumns: "1fr 1fr",
         "& > *": {
           gridColumn: "span 2",

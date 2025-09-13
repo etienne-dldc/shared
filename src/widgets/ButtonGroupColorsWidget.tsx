@@ -20,7 +20,7 @@ export function ButtonGroupColorsWidget() {
   } | null>();
 
   return (
-    <Grid gridTemplateColumns="subgrid">
+    <Grid css={{ gridTemplateColumns: "subgrid" }}>
       <CodeHighlight language="jsx" theme="dark-plus">
         {highlighted
           ? `<ButtonGroup variant="${highlighted.variant.variant}" color="${highlighted.color}">

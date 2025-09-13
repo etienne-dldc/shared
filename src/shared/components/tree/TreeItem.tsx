@@ -52,7 +52,7 @@ export function TreeItem(inProps: TreeItemProps) {
     dragHandleMode = "row",
 
     color,
-    css: cssProp,
+    css: cssProps,
 
     startIcon,
     loading,
@@ -89,7 +89,7 @@ export function TreeItem(inProps: TreeItemProps) {
           treeItemClass.raw(),
           inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
           // itemContentSizeClass.raw({ height }),
-          cssProp,
+          cssProps,
         ),
         className,
       )}

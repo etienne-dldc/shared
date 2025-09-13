@@ -23,7 +23,7 @@ export default function Playground() {
   const [_state, setState] = useState(0);
 
   return (
-    <styled.div display="flex" flexDirection="column" gap="1" alignItems="start">
+    <styled.div css={{ display: "flex", flexDirection: "column", gap: "1", alignItems: "start" }}>
       <button onClick={() => setState((s) => s + 1)}>Re-render</button>
       <NestedButtonPlayground />
       <div style={{ height: 20 }} />
@@ -198,10 +198,7 @@ function ButtonPlayground() {
       />
 
       <styled.div
-        display="flex"
-        flexDirection="column"
-        gap="1"
-        alignItems="start"
+        css={{ display: "flex", flexDirection: "column", gap: "1", alignItems: "start" }}
         // className={colorPaletteClass({ colorPalette: "blue" })}
         // css={{ "& *": { outline: "[1px solid blue]" } }}
       >
@@ -254,7 +251,7 @@ function TreePlayground() {
         style={{ width: 300 }}
       />
 
-      <styled.div display="flex" flexDirection="column" alignItems="stretch" w="320px">
+      <styled.div css={{ display: "flex", flexDirection: "column", alignItems: "stretch", width: "320px" }}>
         <DefaultDesignProvider height={height}>
           <PlaygroundItem endSlot={<Button variant="ghost" startIcon={<PenIcon />} />}>Hey</PlaygroundItem>
           <PlaygroundItem
@@ -437,7 +434,7 @@ function PowerSizeDemo() {
     <DefaultDesignProvider
     // heightRatio={power}
     >
-      <styled.div display="flex" flexDirection="column" gap="1" alignItems="start">
+      <styled.div css={{ display: "flex", flexDirection: "column", gap: "1", alignItems: "start" }}>
         {/* Power slider */}
         <input
           type="range"
@@ -579,7 +576,7 @@ function NestedButtonPlayground() {
   const [rounded, setRounded] = useState(BASE_ROUNDED);
 
   return (
-    <styled.div display="flex" flexDirection="column" gap="1" alignItems="start">
+    <styled.div css={{ display: "flex", flexDirection: "column", gap: "1", alignItems: "start" }}>
       <p>Height {height}</p>
       <input
         type="range"

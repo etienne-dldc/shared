@@ -36,7 +36,7 @@ export function FrameGroup(inProps: FrameGroupProps) {
     direction = "horizontal",
     innerDividers = true,
     roundedEnds = "both",
-    css: cssProp,
+    css: cssProps,
     ...divProps
   } = props;
 
@@ -54,7 +54,7 @@ export function FrameGroup(inProps: FrameGroupProps) {
     <DefaultDesignProvider {...localDesign}>
       <Ariakit.Role
         className={cx(
-          css(frameGroupClass.raw({ direction }), color && colorPaletteClass.raw({ colorPalette: color }), cssProp),
+          css(frameGroupClass.raw({ direction }), color && colorPaletteClass.raw({ colorPalette: color }), cssProps),
           className,
         )}
         {...divProps}

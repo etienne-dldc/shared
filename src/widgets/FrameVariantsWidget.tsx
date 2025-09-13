@@ -12,7 +12,7 @@ export function FrameVariantsWidget() {
   const [highlighted, setHighlighted] = useState<TDesignVariant | null>();
 
   return (
-    <Grid gridTemplateColumns="subgrid">
+    <Grid css={{ gridTemplateColumns: "subgrid" }}>
       <CodeHighlight language="jsx" theme="dark-plus">
         {highlighted
           ? printElement(<Frame variant={highlighted}>{highlighted}</Frame>)

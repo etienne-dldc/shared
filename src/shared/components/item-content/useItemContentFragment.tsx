@@ -47,13 +47,7 @@ export function useItemContentFragment(
         <SideSlot icon={startIcon} loading={loading} slot={startSlot} isItemMainIcon isIconOnly={iconOnly} />
       )}
       {hasChildren &&
-        (typeof content === "string" ? (
-          <Ellipsis flex="1" textAlign="left">
-            {content}
-          </Ellipsis>
-        ) : (
-          content
-        ))}
+        (typeof content === "string" ? <Ellipsis css={{ flex: "1", textAlign: "left" }}>{content}</Ellipsis> : content)}
       {hasEndSlot && (
         <SideSlot icon={endIcon} slot={endSlot} isItemMainIcon={false} isIconOnly={iconOnly} css={{ ml: "auto" }} />
       )}

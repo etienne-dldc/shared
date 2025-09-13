@@ -31,7 +31,7 @@ export function HighlightedGrid<TRow, TColumn>({
   columnsDims,
   renderCell,
   onHighlightedCell,
-  css: cssProp,
+  css: cssProps,
 }: HighlightedGridProps<TRow, TColumn>) {
   const hasRows = rowsDims && rowsDims.length > 0;
   const hasColumns = columnsDims && columnsDims.length > 0;
@@ -53,38 +53,44 @@ export function HighlightedGrid<TRow, TColumn>({
   );
 
   return (
-    <Paper bg="neutral.900">
-      <Scrollbars className={css({ h: "full", w: "full" }, cssProp)}>
-        <styled.div p="3" minW="max">
+    <Paper css={{ bg: "neutral.900" }}>
+      <Scrollbars className={css({ h: "full", w: "full" }, cssProps)}>
+        <styled.div css={{ p: "3", minW: "max" }}>
           <Grid
-            gap="3"
-            position="relative"
             style={{
               gridTemplateRows: `${hasColumns ? "4px " : ""} repeat(${safeRows.length}, max-content)`,
               gridTemplateColumns: `${hasRows ? "4px " : ""} repeat(${safeColumns.length}, max-content)`,
             }}
+            css={{
+              gap: "3",
+              position: "relative",
+            }}
           >
             {highlighted && hasRows && (
               <styled.div
-                bg="white/15"
-                alignSelf="stretch"
-                justifySelf="stretch"
-                rounded="0x"
-                my="-1"
-                position="sticky"
-                left="0"
+                css={{
+                  bg: "white/15",
+                  alignSelf: "stretch",
+                  justifySelf: "stretch",
+                  rounded: "0x",
+                  my: "-1",
+                  position: "sticky",
+                  left: "0",
+                }}
                 style={{ gridColumn: 1, gridRow: rowOffset + highlighted.rowIndex }}
               />
             )}
             {highlighted && hasColumns && (
               <styled.div
-                bg="white/15"
-                alignSelf="stretch"
-                justifySelf="stretch"
-                rounded="0x"
-                mx="-1"
-                position="sticky"
-                top="0"
+                css={{
+                  bg: "white/15",
+                  alignSelf: "stretch",
+                  justifySelf: "stretch",
+                  rounded: "0x",
+                  mx: "-1",
+                  position: "sticky",
+                  top: "0",
+                }}
                 style={{ gridColumn: columnOffset + highlighted.columnIndex, gridRow: 1 }}
               />
             )}
@@ -97,7 +103,7 @@ export function HighlightedGrid<TRow, TColumn>({
                   return (
                     <styled.div
                       style={{ gridColumn: columnOffset + columnIndex, gridRow: rowOffset + rowIndex }}
-                      position="relative"
+                      css={{ position: "relative" }}
                       key={key}
                       onPointerEnter={() => onHightlighted(params)}
                     >

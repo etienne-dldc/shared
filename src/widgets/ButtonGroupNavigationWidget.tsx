@@ -15,13 +15,11 @@ export function ButtonGroupNavigationWidget() {
   );
 
   return (
-    <Grid gridTemplateColumns="subgrid">
+    <Grid css={{ gridTemplateColumns: "subgrid" }}>
       <CodeHighlight language="jsx" theme="dark-plus">
         {printElement(element)}
       </CodeHighlight>
-      <Paper bg="neutral.900" p="3">
-        {element}
-      </Paper>
+      <Paper css={{ bg: "neutral.900", p: "3" }}>{element}</Paper>
     </Grid>
   );
 }

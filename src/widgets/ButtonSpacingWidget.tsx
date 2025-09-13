@@ -11,7 +11,7 @@ export function ButtonSpacingWidget() {
   const [highlighted, setHighlighted] = useState<TDesignSpacing | null>();
 
   return (
-    <Grid gridTemplateColumns="subgrid">
+    <Grid css={{ gridTemplateColumns: "subgrid" }}>
       <CodeHighlight language="jsx" theme="dark-plus">
         {highlighted
           ? `<Button spacing="${highlighted}" startIcon={<UserIcon />} endIcon={<CaretDownIcon />}>Spacing ${highlighted}</Button>`

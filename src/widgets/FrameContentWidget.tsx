@@ -24,7 +24,7 @@ export function FrameContentWidget() {
   const [highlighted, setHighlighted] = useState<(typeof examples)[number] | null>();
 
   return (
-    <Grid gridTemplateColumns="subgrid">
+    <Grid css={{ gridTemplateColumns: "subgrid" }}>
       <CodeHighlight language="jsx" theme="dark-plus">
         {highlighted ? printElement(highlighted) : "// Hover a Frame to see the code"}
       </CodeHighlight>

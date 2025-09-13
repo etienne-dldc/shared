@@ -42,7 +42,7 @@ export function Frame(inProps: FrameProps) {
 
   const {
     color,
-    css: cssProp,
+    css: cssProps,
 
     children,
 
@@ -72,7 +72,7 @@ export function Frame(inProps: FrameProps) {
 
   return (
     <Ariakit.Role
-      className={cx(css(baseCss, contentCss, cssProp), className)}
+      className={cx(css(baseCss, contentCss, cssProps), className)}
       style={{ ...baseInline, ...contentInline, ...style }}
       aria-disabled={isDisabled}
       {...htmlProps}

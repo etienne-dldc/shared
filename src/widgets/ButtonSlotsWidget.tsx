@@ -29,7 +29,7 @@ export function ButtonSlotsWidget() {
   const [highlighted, setHighlighted] = useState<(typeof slotConfigs)[number] | null>();
 
   return (
-    <Grid gridTemplateColumns="subgrid">
+    <Grid css={{ gridTemplateColumns: "subgrid" }}>
       <CodeHighlight language="jsx" theme="dark-plus">
         {highlighted
           ? `<Button ${highlighted.code}>${highlighted.label}</Button>`

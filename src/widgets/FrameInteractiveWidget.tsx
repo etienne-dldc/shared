@@ -14,7 +14,7 @@ export function FrameInteractiveWidget() {
   const [highlighted, setHighlighted] = useState<{ state: (typeof states)[number] } | null>();
 
   return (
-    <Grid gridTemplateColumns="subgrid">
+    <Grid css={{ gridTemplateColumns: "subgrid" }}>
       <CodeHighlight language="jsx" theme="dark-plus">
         {highlighted
           ? printElement(

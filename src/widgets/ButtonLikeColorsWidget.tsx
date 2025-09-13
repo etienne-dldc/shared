@@ -13,7 +13,7 @@ export function ButtonLikeColorsWidget() {
   const [highlighted, setHighlighted] = useState<{ variant: TDesignVariant; color: TPaletteColor } | null>();
 
   return (
-    <Grid gridTemplateColumns="subgrid">
+    <Grid css={{ gridTemplateColumns: "subgrid" }}>
       <CodeHighlight language="jsx" theme="dark-plus">
         {highlighted
           ? `<ButtonLike variant="${highlighted.variant}" color="${highlighted.color}" startIcon={<UserIcon />}>${highlighted.color}</ButtonLike>`
