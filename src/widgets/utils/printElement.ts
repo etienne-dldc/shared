@@ -16,11 +16,19 @@ export function printElement(element: React.ReactElement): string {
   const props = element.props || {};
   const { children, ...otherProps } = props as any;
 
+  // Special handling for React Fragment
+  const isFragment = element.type === React.Fragment || (element.type as any) === Symbol.for("react.fragment");
+
   // Format props
   const propsString = formatProps(otherProps);
 
   // Format children
   const childrenString = formatChildren(children);
+
+  // Handle Fragment with short syntax if no props
+  if (isFragment && Object.keys(otherProps).length === 0) {
+    return `<>${childrenString}</>`;
+  }
 
   // Return the formatted element
   if (childrenString) {
@@ -34,6 +42,9 @@ function getComponentName(type: any): string {
   if (typeof type === "string") {
     // HTML element
     return type;
+  } else if (type === React.Fragment || type === Symbol.for("react.fragment")) {
+    // React Fragment
+    return "Fragment";
   } else if (typeof type === "function") {
     // React component
     return type.displayName || type.name || "Component";
