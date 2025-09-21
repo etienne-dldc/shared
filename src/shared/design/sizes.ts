@@ -4,7 +4,6 @@ import { withoutUndefined } from "../utils/withoutUndefined";
 import {
   TDefaultDesignContext,
   TDesignContextResolved,
-  TDesignHeight,
   TDesignSize,
   TNestedDefaultDesignContext,
   TParentDesignContext,
@@ -82,7 +81,7 @@ export function resolveContainerDesignProps(
   const depth = !parentCtx ? 0 : parentCtx.depth + 1;
   const props = resolveProps(nestedCtx, localProps, depth);
   const contentHeightFromNestedHeight = resolveProps(nestedCtx, {}, depth + 1).height;
-  const contentHeightProp = props.contentHeight ?? contentHeightFromNestedHeight;
+  const contentHeightProp = parseMaybeSize(props.contentHeight ?? contentHeightFromNestedHeight);
 
   const hoverVariant = props.hoverVariant ?? props.variant;
   const spacing = parseMaybeSize(props.spacing);
@@ -143,12 +142,12 @@ function resolveDefaultProps(nestedCtx: TNestedDefaultDesignContext | null, dept
   };
 }
 
-function resolveContentHeight(height: number, contentHeight: TDesignHeight | null): number {
+function resolveContentHeight(height: number, contentHeight: number | null): number {
   if (contentHeight !== null) {
-    return clamp(parseSize(contentHeight), MIN_HEIGHT, height);
+    return clamp(contentHeight, MIN_HEIGHT, height);
   }
   // Auto content height based on the height
-  return clamp(powerSize(height, BASE_HEIGHT_RATIO), MIN_HEIGHT, height);
+  return autoContentHeight(height);
 }
 
 function radiusScale(parentRadius: number, distance: number, scale = 1): number {
@@ -166,4 +165,8 @@ export function powerSize(size: number, power: number = 0.68): number {
   }
   const val = powerValue(size, power);
   return roundToSize(val);
+}
+
+export function autoContentHeight(height: number, heightRatio = BASE_HEIGHT_RATIO): number {
+  return clamp(powerSize(height, heightRatio), MIN_HEIGHT, height);
 }

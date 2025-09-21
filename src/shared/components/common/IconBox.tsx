@@ -1,13 +1,12 @@
 import { IconContext, IconWeight } from "@phosphor-icons/react";
-import { ComponentProps, useContext, useMemo } from "react";
-import { Merge } from "type-fest";
+import { useContext, useMemo } from "react";
 import { css, cx } from "../../../../styled-system/css";
-import { SystemStyleObject } from "../../../../styled-system/types";
 import { sizeToRemString } from "../../design/sizes";
 import { TDesignHeight } from "../../design/types";
+import { ComponentPropsBase } from "../../utils/componentProps";
 
-type IconBoxProps = Merge<
-  Omit<ComponentProps<"div">, "title" | "height">,
+type IconBoxProps = ComponentPropsBase<
+  "div",
   {
     icon: React.ReactNode;
     alt?: string;
@@ -15,8 +14,6 @@ type IconBoxProps = Merge<
     weight?: IconWeight;
     mirrored?: boolean;
     size?: TDesignHeight;
-    className?: string;
-    css?: SystemStyleObject;
   }
 >;
 

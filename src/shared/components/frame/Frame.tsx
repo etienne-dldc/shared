@@ -1,9 +1,8 @@
 import * as Ariakit from "@ariakit/react";
-import { Merge } from "type-fest";
 
 import { css, cx } from "../../../../styled-system/css";
-import { ComponentProps, SystemStyleObject } from "../../../../styled-system/types";
 import { TDesignProps, TPaletteColor } from "../../design/types";
+import { ComponentPropsBase } from "../../utils/componentProps";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { designPropsSplitter, SizeContextProvider, useContainerDesignProps } from "../core/DesignContext";
 import { DisabledContext } from "../core/DisabledContext";
@@ -12,14 +11,13 @@ import { TItemContentFragmentProps } from "../item-content/types";
 import { itemContentPropsSplitter, useItemContentFragment } from "../item-content/useItemContentFragment";
 import { frameStyles } from "./styles";
 
-export type FrameProps = Merge<
-  Omit<ComponentProps<"div">, "title" | "height" | "color" | "content">,
+export type FrameProps = ComponentPropsBase<
+  "div",
   TItemContentFragmentProps &
     TDesignProps & {
       disabled?: boolean;
 
       color?: TPaletteColor;
-      css?: SystemStyleObject;
 
       // Forward to Element
       render?: Ariakit.RoleProps["render"];
@@ -28,7 +26,6 @@ export type FrameProps = Merge<
 
       // Data attributes
       "data-hover"?: boolean;
-      "aria-disabled"?: boolean;
       "data-focus-visible"?: boolean;
     }
 >;

@@ -1,9 +1,7 @@
-import { ComponentPropsWithRef } from "react";
-import { Merge } from "type-fest";
 import { css, cx } from "../../../../styled-system/css";
-import { SystemStyleObject } from "../../../../styled-system/types";
 import { heightStyles } from "../../design/styles";
 import { TDesignProps } from "../../design/types";
+import { ComponentPropsBase } from "../../utils/componentProps";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import {
   DefaultDesignProvider,
@@ -15,13 +13,7 @@ import { itemContentClass, itemlContentStyles } from "./styles";
 import { TItemContentFragmentProps } from "./types";
 import { itemContentPropsSplitter, useItemContentFragment } from "./useItemContentFragment";
 
-type ItemContentProps = Merge<
-  Omit<ComponentPropsWithRef<"div">, "content">,
-  TItemContentFragmentProps &
-    TDesignProps & {
-      css?: SystemStyleObject;
-    }
->;
+type ItemContentProps = ComponentPropsBase<"div", TItemContentFragmentProps & TDesignProps>;
 
 /**
  * Render items horizontally

@@ -1,9 +1,8 @@
 import * as Ariakit from "@ariakit/react";
-import { Merge } from "type-fest";
 import { css, cx } from "../../../../styled-system/css";
-import { SystemStyleObject } from "../../../../styled-system/types";
 import { colorPaletteClass, heightStyles } from "../../design/styles";
 import { TDesignHeight, TDesignSpacing, TPaletteColor } from "../../design/types";
+import { ComponentPropsBase } from "../../utils/componentProps";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { DefaultDesignProvider, designPropsSplitter, useContainerDesignProps } from "../core/DesignContext";
 import { DisabledContext } from "../core/DisabledContext";
@@ -12,17 +11,16 @@ import { TItemContentFragmentProps } from "../item-content/types";
 import { itemContentPropsSplitter, useItemContentFragment } from "../item-content/useItemContentFragment";
 import { menuItemClass } from "./styles";
 
-export type MenuItemProps = Merge<
-  Omit<Ariakit.MenuItemProps, "title" | "color" | "height" | "content">,
-  TItemContentFragmentProps & {
-    // Design
-    height?: TDesignHeight;
-    heightRatio?: number;
-    spacing?: TDesignSpacing;
-
-    color?: TPaletteColor;
-    css?: SystemStyleObject;
-  }
+export type MenuItemProps = ComponentPropsBase<
+  "div",
+  Ariakit.MenuItemProps &
+    TItemContentFragmentProps & {
+      // Design
+      height?: TDesignHeight;
+      heightRatio?: number;
+      spacing?: TDesignSpacing;
+      color?: TPaletteColor;
+    }
 >;
 
 export function MenuItem(inProps: MenuItemProps) {
@@ -33,7 +31,7 @@ export function MenuItem(inProps: MenuItemProps) {
   });
 
   const {
-    color,
+    color: _color,
     css: cssProps,
 
     children,

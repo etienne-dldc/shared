@@ -1,19 +1,17 @@
 import * as Ariakit from "@ariakit/react";
-import { Merge } from "type-fest";
 
-import { ComponentProps, SystemStyleObject } from "../../../../styled-system/types";
 import { TDesignProps, TPaletteColor } from "../../design/types";
+import { ComponentPropsBase } from "../../utils/componentProps";
 import { Frame } from "../frame/Frame";
 import { TItemContentFragmentProps } from "../item-content/types";
 
-export type ButtonProps = Merge<
-  Omit<ComponentProps<"button">, "title" | "height" | "color" | "content">,
+export type ButtonProps = ComponentPropsBase<
+  "button",
   TItemContentFragmentProps &
     TDesignProps & {
       disabled?: boolean;
 
       color?: TPaletteColor;
-      css?: SystemStyleObject;
 
       // Forward to Button
       render?: Ariakit.ButtonProps["render"];

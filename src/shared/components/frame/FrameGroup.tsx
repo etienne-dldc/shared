@@ -1,21 +1,19 @@
 import * as Ariakit from "@ariakit/react";
-import { Children, cloneElement, ComponentPropsWithoutRef, Fragment } from "react";
-import { Merge } from "type-fest";
+import { Children, cloneElement, Fragment } from "react";
 import { css, cx } from "../../../../styled-system/css";
-import { SystemStyleObject } from "../../../../styled-system/types";
 import { colorPaletteClass } from "../../design/styles";
 import { TDesignProps, TPaletteColor } from "../../design/types";
+import { ComponentPropsBase } from "../../utils/componentProps";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { DefaultDesignProvider, designPropsSplitter, useContainerDesignProps } from "../core/DesignContext";
 import { frameGroupClass, separatorClass } from "./styles";
 
-export type FrameGroupProps = Merge<
-  Omit<ComponentPropsWithoutRef<"div">, "title" | "height" | "color">,
+export type FrameGroupProps = ComponentPropsBase<
+  "div",
   TDesignProps & {
     disabled?: boolean;
 
     color?: TPaletteColor;
-    css?: SystemStyleObject;
 
     direction?: "horizontal" | "vertical";
     roundedEnds?: "start" | "end" | "both" | "none";
