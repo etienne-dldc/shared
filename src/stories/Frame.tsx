@@ -243,6 +243,10 @@ export default function FrameStory() {
           content. This means you should use the <code>contentHeight</code> prop (not <code>height</code>) on nested
           Frames to ensure correct radius scaling.
         </p>
+        <p>
+          <strong>Note:</strong> The auto rounded calculation has a minimum of <code>0x</code> (2px), except if the
+          parent radius is <code>0</code> in which case the child radius will also be <code>0</code>.
+        </p>
       </div>
       <FrameAutoRoundedWidget />
       <div className={cx(prose())}>

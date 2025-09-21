@@ -102,10 +102,17 @@ export function resolveContainerDesignProps(
 
   const padding = (parentCtx.height - height) / 2;
 
-  const autoRounded = clamp(roundToSize(radiusScale(parentCtx.rounded, padding)), 0.5, Infinity);
+  const autoRounded = resolvedAutoRounded(parentCtx.rounded, padding);
   const rounded = parseSize(props.rounded ?? autoRounded);
 
   return { height, contentHeight, variant: props.variant, hoverVariant, spacing, rounded, depth };
+}
+
+function resolvedAutoRounded(parentRadius: number, padding: number): number {
+  if (parentRadius === 0) {
+    return 0;
+  }
+  return clamp(roundToSize(radiusScale(parentRadius, padding)), 0.5, Infinity);
 }
 
 function resolveProps(

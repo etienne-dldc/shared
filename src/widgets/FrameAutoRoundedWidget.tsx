@@ -7,7 +7,7 @@ import { TDesignRounded } from "../shared/design/types";
 import { printElement } from "./utils/printElement";
 
 export function FrameAutoRoundedWidget() {
-  const roundedVariants: TDesignRounded[] = ["1", "2", "3", "4", "5"];
+  const roundedVariants: TDesignRounded[] = ["0", "1", "2", "3", "4", "5"];
 
   const [highlighted, setHighlighted] = useState<TDesignRounded | null>();
 
