@@ -9,10 +9,10 @@ import { printElement } from "./utils/printElement";
 
 export function FrameSpacingEquivalentWidget() {
   const examples = [
-    { spacing: "6" as TDesignSpacing, height: 10 },
-    { spacing: "8" as TDesignSpacing, height: 10 },
-    { spacing: "10" as TDesignSpacing, height: 10 },
-    { spacing: "12" as TDesignSpacing, height: 10 },
+    { spacing: "6" as TDesignSpacing, height: "10" },
+    { spacing: "8" as TDesignSpacing, height: "10" },
+    { spacing: "10" as TDesignSpacing, height: "10" },
+    { spacing: "12" as TDesignSpacing, height: "10" },
   ];
 
   const [highlighted, setHighlighted] = useState<(typeof examples)[number] | null>();

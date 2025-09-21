@@ -1,3 +1,4 @@
+import { HouseIcon } from "@phosphor-icons/react";
 import { useState } from "react";
 import { Grid } from "../../styled-system/jsx";
 import { CodeHighlight } from "../playground/CodeHighlight";
@@ -15,7 +16,7 @@ export function FrameSpacingAlignWidget() {
       <CodeHighlight language="jsx" theme="dark-plus">
         {highlighted
           ? printElement(
-              <Frame spacing="8" height={highlighted}>
+              <Frame spacing="6" height={highlighted} contentHeight="3x">
                 Height {highlighted}
               </Frame>,
             )
@@ -24,7 +25,7 @@ export function FrameSpacingAlignWidget() {
       <HighlightedGrid
         rowsDims={heights}
         renderCell={({ row: height, key }) => (
-          <Frame key={key} height={height} spacing="8" css={{ w: "full" }}>
+          <Frame key={key} height={height} spacing="6" css={{ w: "full" }} contentHeight="3x" startIcon={<HouseIcon />}>
             Height {height}
           </Frame>
         )}

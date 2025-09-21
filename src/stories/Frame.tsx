@@ -330,14 +330,15 @@ export default function FrameStory() {
         <p>
           The <code>spacing</code> prop allows you to override the automatic spacing calculation. Note that this prop
           doesn't control the actual pixel size directly—instead, <code>spacing="8"</code> means "use the same spacing
-          as a Frame with height 8 and default contentHeight."
+          as a Frame with height 8 and default contentHeight.".
         </p>
       </div>
       <FrameSpacingEquivalentWidget />
       <div className={cx(prose())}>
         <p>
           This is particularly useful when you want to adjust the spacing for Frames with different heights to maintain
-          a consistent visual rhythm.
+          a consistent visual rhythm. For this to work you need all the Frames to have the same{" "}
+          <code>contentHeight</code>.
         </p>
       </div>
       <FrameSpacingAlignWidget />

@@ -28,10 +28,10 @@ export default function Playground() {
       <NestedButtonPlayground />
       <div style={{ height: 20 }} />
 
-      <NestedDefaultDesignProvider values={[{ height: 20, rounded: 4, contentHeight: 16 }, { contentHeight: 12 }]}>
+      <NestedDefaultDesignProvider values={[{ height: 20, rounded: 4, contentHeight: 14 }, { contentHeight: 10 }]}>
         <ButtonLike padding="icon">
           <ButtonLike padding="icon">
-            <ButtonLike padding="icon">Hey</ButtonLike>
+            <ButtonLike padding="icon">Nested 1</ButtonLike>
           </ButtonLike>
         </ButtonLike>
       </NestedDefaultDesignProvider>
@@ -39,7 +39,7 @@ export default function Playground() {
       <NestedDefaultDesignProvider values={[{ height: 20, rounded: 4 }, { height: 14 }, { height: 10 }]}>
         <ButtonLike padding="icon">
           <ButtonLike padding="icon">
-            <ButtonLike padding="icon">Hey</ButtonLike>
+            <ButtonLike padding="icon">Nested 2</ButtonLike>
           </ButtonLike>
         </ButtonLike>
       </NestedDefaultDesignProvider>
