@@ -93,7 +93,6 @@ function PlaygroundItem({
     ],
     [resolvedHeight],
   );
-  console.log(nestedDesign);
 
   return (
     <NestedDefaultDesignProvider values={nestedDesign}>
