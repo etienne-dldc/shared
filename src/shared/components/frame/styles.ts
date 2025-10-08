@@ -161,16 +161,57 @@ export const frameInteractiveClass = cva({
           bg: "black/5",
           color: "colorPalette.100",
         },
+        _after: {
+          borderColor: "colorPalette.300",
+          borderWidth: "0",
+        },
         _focusWithin: {
           bg: "black/5",
           color: "colorPalette.100",
           _after: {
-            borderColor: "colorPalette.300",
             borderWidth: "0_x",
           },
         },
       },
     } satisfies Record<TDesignVariant, SystemStyleObject>,
+  },
+});
+
+const frameHighlightClass = cva({
+  base: {
+    _after: {
+      borderWidth: "0x",
+    },
+    _focusWithin: {
+      _after: { borderWidth: "0x" },
+    },
+  },
+  variants: {
+    highlightColor: {
+      red: { _after: { borderColor: "red.600" } },
+      orange: { _after: { borderColor: "orange.600" } },
+      amber: { _after: { borderColor: "amber.600" } },
+      yellow: { _after: { borderColor: "yellow.600" } },
+      lime: { _after: { borderColor: "lime.600" } },
+      green: { _after: { borderColor: "green.600" } },
+      emerald: { _after: { borderColor: "emerald.600" } },
+      teal: { _after: { borderColor: "teal.600" } },
+      cyan: { _after: { borderColor: "cyan.600" } },
+      sky: { _after: { borderColor: "sky.600" } },
+      blue: { _after: { borderColor: "blue.600" } },
+      indigo: { _after: { borderColor: "indigo.600" } },
+      violet: { _after: { borderColor: "violet.600" } },
+      purple: { _after: { borderColor: "purple.600" } },
+      fuchsia: { _after: { borderColor: "fuchsia.600" } },
+      pink: { _after: { borderColor: "pink.600" } },
+      rose: { _after: { borderColor: "rose.600" } },
+
+      gray: { _after: { borderColor: "gray.600" } },
+      slate: { _after: { borderColor: "slate.600" } },
+      neutral: { _after: { borderColor: "neutral.600" } },
+      stone: { _after: { borderColor: "stone.600" } },
+      zinc: { _after: { borderColor: "zinc.600" } },
+    } satisfies Record<TPaletteColor, SystemStyleObject>,
   },
 });
 
@@ -182,10 +223,13 @@ interface FrameStylesParams {
   color: TPaletteColor | undefined;
   hoverVariant: TDesignVariant;
   interactive: boolean;
+  highlightColor: TPaletteColor;
+  highlighted: boolean;
 }
 
 export function frameStyles(params: FrameStylesParams): [css: SystemStyleObject, styles: React.CSSProperties] {
-  const { height, contentHeight, rounded, variant, color, interactive, hoverVariant } = params;
+  const { height, contentHeight, rounded, variant, color, interactive, hoverVariant, highlightColor, highlighted } =
+    params;
 
   const [heightCss, heightInline] = heightStyles(height);
   const [roundedCss, roundedInline] = roundedStyles(rounded);
@@ -199,6 +243,7 @@ export function frameStyles(params: FrameStylesParams): [css: SystemStyleObject,
       contentCss,
       roundedCss,
       color && colorPaletteClass.raw({ colorPalette: color }),
+      highlighted && frameHighlightClass.raw({ highlightColor }),
     ),
     {
       ...heightInline,

@@ -1,10 +1,9 @@
-import { CaretRightIcon, HouseIcon, PenIcon } from "@phosphor-icons/react";
+import { CaretRightIcon, PenIcon } from "@phosphor-icons/react";
 import { Fragment, useCallback, useMemo, useRef, useState } from "react";
 import { Merge } from "type-fest";
 import { HTMLStyledProps, Paper, styled } from "../../styled-system/jsx";
 import { OmittedHTMLProps } from "../../styled-system/types";
 import { Button } from "../shared/components/button/Button";
-import { ButtonLike } from "../shared/components/button/ButtonLike";
 import {
   DefaultDesignProvider,
   NestedDefaultDesignProvider,
@@ -24,20 +23,17 @@ export default function Playground() {
     <styled.div css={{ display: "flex", flexDirection: "column", gap: "1", alignItems: "start" }}>
       <TreePlayground />
       <div style={{ height: 20 }} />
-      <Paper css={{ padding: "2", bg: "neutral.900", display: "flex", flexDirection: "column", gap: "2" }}>
-        <Input color="red" startIcon={<HouseIcon />} placeholder="Type something..." />
-        <Input height="10" placeholder="Type something..." />
-        <Input height="10" color="blue" placeholder="Type something..." />
-        <Input variant="ghost" startIcon={<HouseIcon />} placeholder="Type something..." />
-        <Input variant="surface" height="10" placeholder="Type something..." />
-        <Input variant="solid" height="10" color="blue" placeholder="Type something..." />
-        <Button variant="solid" height="10" color="blue">
-          Hello
-        </Button>
-        <Button variant="solid" color="blue">
-          Submit
-        </Button>
-        <ButtonLike>Hey</ButtonLike>
+      <Paper
+        css={{ padding: "2", bg: "neutral.900", display: "grid", gap: "2", gridTemplateColumns: "1fr 1fr 1fr 1fr" }}
+      >
+        {(["input", "surface", "subtle", "solid", "ghost"] as const).map((variant) => (
+          <Fragment key={variant}>
+            <Input color="neutral" variant={variant} highlighted highlightColor="red" placeholder={`${variant} 400`} />
+            <Input color="blue" variant={variant} highlighted highlightColor="red" placeholder={`${variant} 500`} />
+            <Input color="red" variant={variant} highlighted highlightColor="yellow" placeholder={`${variant} 600`} />
+            <Input color="yellow" variant={variant} highlighted highlightColor="red" placeholder={`${variant} 700`} />
+          </Fragment>
+        ))}
       </Paper>
     </styled.div>
   );
@@ -145,6 +141,8 @@ type InputProps = ComponentPropsBase<
       disabled?: boolean;
 
       color?: TPaletteColor;
+      highlightColor?: TPaletteColor;
+      highlighted?: boolean;
 
       // Data attributes
       "data-hover"?: boolean;
