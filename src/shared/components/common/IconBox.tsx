@@ -1,8 +1,8 @@
 import { IconContext, IconWeight } from "@phosphor-icons/react";
 import { useContext, useMemo } from "react";
 import { css, cx } from "../../../../styled-system/css";
-import { sizeToRemString } from "../../design/sizes";
 import { TDesignHeight } from "../../design/types";
+import { sizeToRemString } from "../../design/utils";
 import { ComponentPropsBase } from "../../utils/componentProps";
 
 type IconBoxProps = ComponentPropsBase<

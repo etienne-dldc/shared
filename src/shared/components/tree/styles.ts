@@ -1,8 +1,8 @@
 import { css, cva } from "../../../../styled-system/css";
 import { SystemStyleObject } from "../../../../styled-system/types";
-import { resolveSmallRounded } from "../../design/sizes";
 import { colorPaletteClass, contentSize, heightStyles } from "../../design/styles";
 import { TPaletteColor } from "../../design/types";
+import { resolveSmallRounded } from "../../design/utils";
 
 // const className = cn(
 //   tw`h-full mx-2`,

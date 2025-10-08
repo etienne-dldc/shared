@@ -1,6 +1,6 @@
 import { css, cva } from "../../../../styled-system/css";
 import { SystemStyleObject } from "../../../../styled-system/types";
-import { sizeToRemString, spacingToGapRem } from "../../design/sizes";
+import { sizeToRemString, spacingToGapRem } from "../../design/utils";
 import { TItemlContentPaddingResolved } from "./types";
 
 export const itemContentClass = cva({

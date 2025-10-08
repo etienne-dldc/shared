@@ -1,5 +1,5 @@
 import { prose } from "../../styled-system/recipes";
-import { sizeToRemString } from "../shared/design/sizes";
+import { sizeToRemString } from "../shared/design/utils";
 
 export default function Prose() {
   return (

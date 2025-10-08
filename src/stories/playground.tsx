@@ -1,9 +1,10 @@
-import { CaretRightIcon, PenIcon } from "@phosphor-icons/react";
-import { Fragment, useMemo, useState } from "react";
+import { CaretRightIcon, HouseIcon, PenIcon } from "@phosphor-icons/react";
+import { Fragment, useCallback, useMemo, useRef, useState } from "react";
 import { Merge } from "type-fest";
-import { HTMLStyledProps, styled } from "../../styled-system/jsx";
+import { HTMLStyledProps, Paper, styled } from "../../styled-system/jsx";
 import { OmittedHTMLProps } from "../../styled-system/types";
 import { Button } from "../shared/components/button/Button";
+import { ButtonLike } from "../shared/components/button/ButtonLike";
 import {
   DefaultDesignProvider,
   NestedDefaultDesignProvider,
@@ -13,14 +14,31 @@ import { Frame } from "../shared/components/frame/Frame";
 import { ItemContent } from "../shared/components/item-content/ItemContent";
 import { ItemContentFragment } from "../shared/components/item-content/ItemContentFragment";
 import { TItemContentFragmentProps } from "../shared/components/item-content/types";
-import { autoContentHeight } from "../shared/design/sizes";
-import { TNestedDesignValues } from "../shared/design/types";
+import { TDesignProps, TNestedDesignValues, TPaletteColor } from "../shared/design/types";
+import { autoContentHeight } from "../shared/design/utils";
+import { useMergeRefs } from "../shared/hooks/useMergeRefs";
+import { ComponentPropsBase } from "../shared/utils/componentProps";
 
 export default function Playground() {
   return (
     <styled.div css={{ display: "flex", flexDirection: "column", gap: "1", alignItems: "start" }}>
       <TreePlayground />
       <div style={{ height: 20 }} />
+      <Paper css={{ padding: "2", bg: "neutral.900", display: "flex", flexDirection: "column", gap: "2" }}>
+        <Input color="red" startIcon={<HouseIcon />} placeholder="Type something..." />
+        <Input height="10" placeholder="Type something..." />
+        <Input height="10" color="blue" placeholder="Type something..." />
+        <Input variant="ghost" startIcon={<HouseIcon />} placeholder="Type something..." />
+        <Input variant="surface" height="10" placeholder="Type something..." />
+        <Input variant="solid" height="10" color="blue" placeholder="Type something..." />
+        <Button variant="solid" height="10" color="blue">
+          Hello
+        </Button>
+        <Button variant="solid" color="blue">
+          Submit
+        </Button>
+        <ButtonLike>Hey</ButtonLike>
+      </Paper>
     </styled.div>
   );
 }
@@ -117,5 +135,48 @@ function PlaygroundItem({
         </ItemContentFragment>
       </Frame>
     </NestedDefaultDesignProvider>
+  );
+}
+
+type InputProps = ComponentPropsBase<
+  "input",
+  TItemContentFragmentProps &
+    TDesignProps & {
+      disabled?: boolean;
+
+      color?: TPaletteColor;
+
+      // Data attributes
+      "data-hover"?: boolean;
+      "data-focus-visible"?: boolean;
+    }
+>;
+
+function Input(inProps: InputProps) {
+  const { value, onChange, placeholder, onPointerDown: onPointerDownProps, ...frameProps } = inProps;
+
+  const localRef = useRef<HTMLInputElement>(null);
+  const ref = useMergeRefs(localRef, inProps.ref);
+
+  const onPointerDown = useCallback(
+    (event: React.PointerEvent<HTMLElement>) => {
+      onPointerDownProps?.(event as React.PointerEvent<HTMLInputElement>);
+      if (event.defaultPrevented) return;
+      if (event.target === localRef.current) return;
+      setTimeout(() => localRef.current?.focus(), 0);
+    },
+    [onPointerDownProps],
+  );
+
+  return (
+    <Frame variant="input" interactive onPointerDown={onPointerDown} {...frameProps}>
+      <styled.input
+        css={{ outline: "none", alignSelf: "stretch" }}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        ref={ref}
+      />
+    </Frame>
   );
 }

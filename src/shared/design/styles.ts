@@ -1,7 +1,7 @@
 import { css, cva } from "../../../styled-system/css";
 import { SystemStyleObject } from "../../../styled-system/types";
-import { sizeToRemString } from "./sizes";
 import { TPaletteColor } from "./types";
+import { sizeToRemString } from "./utils";
 
 export const colorPaletteClass = cva({
   variants: {

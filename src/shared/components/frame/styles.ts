@@ -61,6 +61,11 @@ export const frameInteractiveClass = cva({
         opacity: 1,
       },
     },
+    _focusWithin: {
+      "& [data-item-main-icon]": {
+        opacity: 1,
+      },
+    },
     _focusVisible: {
       _after: {
         borderColor: "neutral.300",
@@ -116,9 +121,17 @@ export const frameInteractiveClass = cva({
           bg: "colorPalette.500",
           color: "neutral.100",
         },
+        _focusWithin: {
+          bg: "colorPalette.500",
+          color: "neutral.100",
+        },
       },
       surface: {
         _hover: {
+          bg: "white/10",
+          color: "colorPalette.100",
+        },
+        _focusWithin: {
           bg: "white/10",
           color: "colorPalette.100",
         },
@@ -128,9 +141,17 @@ export const frameInteractiveClass = cva({
           bg: "white/10",
           color: "colorPalette.100",
         },
+        _focusWithin: {
+          bg: "white/10",
+          color: "colorPalette.100",
+        },
       },
       ghost: {
         _hover: {
+          bg: "white/5",
+          color: "colorPalette.100",
+        },
+        _focusWithin: {
           bg: "white/5",
           color: "colorPalette.100",
         },
@@ -139,6 +160,14 @@ export const frameInteractiveClass = cva({
         _hover: {
           bg: "black/5",
           color: "colorPalette.100",
+        },
+        _focusWithin: {
+          bg: "black/5",
+          color: "colorPalette.100",
+          _after: {
+            borderColor: "colorPalette.300",
+            borderWidth: "0_x",
+          },
         },
       },
     } satisfies Record<TDesignVariant, SystemStyleObject>,

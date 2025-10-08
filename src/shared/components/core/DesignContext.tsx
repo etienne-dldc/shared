@@ -1,7 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 
 import { createContext, PropsWithChildren, useContext, useMemo } from "react";
-import { resolveContainerDesignProps } from "../../design/sizes";
 import {
   TDefaultDesignContext,
   TDesignContextResolved,
@@ -9,6 +8,7 @@ import {
   TNestedDesignValues,
   TParentDesignContext,
 } from "../../design/types";
+import { resolveContainerDesignProps } from "../../design/utils";
 import { BaseRecord } from "../../utils/propsSplitters";
 import { withoutUndefined } from "../../utils/withoutUndefined";
 
