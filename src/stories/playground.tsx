@@ -1,5 +1,5 @@
 import { CaretRightIcon, PenIcon } from "@phosphor-icons/react";
-import { Fragment, useCallback, useMemo, useRef, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import { Merge } from "type-fest";
 import { HTMLStyledProps, Paper, styled } from "../../styled-system/jsx";
 import { OmittedHTMLProps } from "../../styled-system/types";
@@ -10,13 +10,12 @@ import {
   useContainerDesignProps,
 } from "../shared/components/core/DesignContext";
 import { Frame } from "../shared/components/frame/Frame";
+import { Input } from "../shared/components/input/Input";
 import { ItemContent } from "../shared/components/item-content/ItemContent";
 import { ItemContentFragment } from "../shared/components/item-content/ItemContentFragment";
 import { TItemContentFragmentProps } from "../shared/components/item-content/types";
-import { TDesignProps, TNestedDesignValues, TPaletteColor } from "../shared/design/types";
+import { TNestedDesignValues } from "../shared/design/types";
 import { autoContentHeight } from "../shared/design/utils";
-import { useMergeRefs } from "../shared/hooks/useMergeRefs";
-import { ComponentPropsBase } from "../shared/utils/componentProps";
 
 export default function Playground() {
   return (
@@ -142,50 +141,5 @@ function PlaygroundItem({
         </ItemContentFragment>
       </Frame>
     </NestedDefaultDesignProvider>
-  );
-}
-
-type InputProps = ComponentPropsBase<
-  "input",
-  TItemContentFragmentProps &
-    TDesignProps & {
-      disabled?: boolean;
-
-      color?: TPaletteColor;
-      highlightColor?: TPaletteColor;
-      highlighted?: boolean;
-
-      // Data attributes
-      "data-hover"?: boolean;
-      "data-focus-visible"?: boolean;
-    }
->;
-
-function Input(inProps: InputProps) {
-  const { value, onChange, placeholder, onPointerDown: onPointerDownProps, ...frameProps } = inProps;
-
-  const localRef = useRef<HTMLInputElement>(null);
-  const ref = useMergeRefs(localRef, inProps.ref);
-
-  const onPointerDown = useCallback(
-    (event: React.PointerEvent<HTMLElement>) => {
-      onPointerDownProps?.(event as React.PointerEvent<HTMLInputElement>);
-      if (event.defaultPrevented) return;
-      if (event.target === localRef.current) return;
-      setTimeout(() => localRef.current?.focus(), 0);
-    },
-    [onPointerDownProps],
-  );
-
-  return (
-    <Frame variant="input" interactive onPointerDown={onPointerDown} {...frameProps}>
-      <styled.input
-        css={{ outline: "none", alignSelf: "stretch" }}
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        ref={ref}
-      />
-    </Frame>
   );
 }
