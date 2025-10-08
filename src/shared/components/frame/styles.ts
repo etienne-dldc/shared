@@ -13,6 +13,15 @@ export const frameBaseClass = cva({
     "& [data-item-main-icon]": {
       opacity: 0.6,
     },
+    // Used for visual border for input and surface variants
+    _before: {
+      rounded: "[inherit]",
+      pointerEvents: "none",
+      content: "''",
+      position: "absolute",
+      inset: "0",
+    },
+    // Used for focus and highlight border
     _after: {
       rounded: "[inherit]",
       pointerEvents: "none",
@@ -30,7 +39,7 @@ export const frameBaseClass = cva({
       surface: {
         bg: "white/5",
         color: "colorPalette.200",
-        _after: {
+        _before: {
           borderColor: "white/10",
           borderWidth: "0__x",
         },
@@ -45,7 +54,7 @@ export const frameBaseClass = cva({
       input: {
         bg: "black/15",
         color: "colorPalette.200",
-        _after: {
+        _before: {
           borderColor: "black/30",
           borderWidth: "0_x",
         },
@@ -74,17 +83,11 @@ export const frameInteractiveClass = cva({
     },
   },
   variants: {
+    // Disabled styles based on variant
     variant: {
       solid: {
-        _focusVisible: {
-          bg: "colorPalette.800",
-          _after: {
-            borderColor: "neutral.200",
-            borderWidth: "0x",
-          },
-        },
         _disabled: {
-          bg: "colorPalette.900",
+          bg: "colorPalette.800",
           color: "neutral.200/60",
         },
       },
@@ -92,9 +95,6 @@ export const frameInteractiveClass = cva({
         _disabled: {
           color: "colorPalette.200/40",
           bg: "white/3",
-          _after: {
-            borderColor: "neutral.900",
-          },
         },
       },
       subtle: {
@@ -115,60 +115,87 @@ export const frameInteractiveClass = cva({
         },
       },
     } satisfies Record<TDesignVariant, SystemStyleObject>,
+    // Hover styles based on hoverVariant
+    // Also apply hover style on focusWithin for input-like variants
+    // Focus styles extends hover styles hence is also defined here
     hoverVariant: {
       solid: {
         _hover: {
           bg: "colorPalette.500",
           color: "neutral.100",
+          _before: { borderWidth: "0" },
         },
         _focusWithin: {
           bg: "colorPalette.500",
           color: "neutral.100",
+          _before: { borderWidth: "0" },
+        },
+        // Special focus style for solid variant
+        _focusVisible: {
+          bg: "colorPalette.700",
+          color: "neutral.100",
+          _after: {
+            borderColor: "neutral.200",
+            borderWidth: "0x",
+          },
         },
       },
       surface: {
         _hover: {
           bg: "white/10",
           color: "colorPalette.100",
+          _before: {
+            borderColor: "white/10",
+            borderWidth: "0__x",
+          },
         },
         _focusWithin: {
           bg: "white/10",
           color: "colorPalette.100",
+          _before: {
+            borderColor: "white/10",
+            borderWidth: "0__x",
+          },
         },
       },
       subtle: {
         _hover: {
           bg: "white/10",
           color: "colorPalette.100",
+          _before: { borderWidth: "0" },
         },
         _focusWithin: {
           bg: "white/10",
           color: "colorPalette.100",
+          _before: { borderWidth: "0" },
         },
       },
       ghost: {
         _hover: {
           bg: "white/5",
           color: "colorPalette.100",
+          _before: { borderWidth: "0" },
         },
         _focusWithin: {
           bg: "white/5",
           color: "colorPalette.100",
+          _before: { borderWidth: "0" },
         },
       },
       input: {
         _hover: {
           bg: "black/5",
           color: "colorPalette.100",
-        },
-        _after: {
-          borderColor: "colorPalette.300",
-          borderWidth: "0",
+          _before: {
+            borderColor: "black/30",
+            borderWidth: "0_x",
+          },
         },
         _focusWithin: {
           bg: "black/5",
           color: "colorPalette.100",
-          _after: {
+          _before: {
+            borderColor: "black/30",
             borderWidth: "0_x",
           },
         },
@@ -181,9 +208,6 @@ const frameHighlightClass = cva({
   base: {
     _after: {
       borderWidth: "0x",
-    },
-    _focusWithin: {
-      _after: { borderWidth: "0x" },
     },
   },
   variants: {
@@ -268,30 +292,39 @@ export const frameGroupClass = cva({
         flexDirection: "row",
         _firstChild: {
           borderEndRadius: "0",
-          _after: { borderEndWidth: "0" },
+          _before: { borderEndWidth: "0" },
+          _after: { right: "-0_x" },
+          _hover: { _before: { borderEndWidth: "0" } },
         },
         _betweenChild: {
           rounded: "0",
-          _after: { borderXWidth: "0" },
+          _before: { borderXWidth: "0" },
+          _after: { insetInline: "-0_x" },
+          _hover: { _before: { borderXWidth: "0" } },
         },
         _lastChild: {
           borderStartRadius: "0",
-          _after: { borderStartWidth: "0" },
+          _before: { borderStartWidth: "0" },
+          _after: { left: "-0_x" },
+          _hover: { _before: { borderStartWidth: "0" } },
         },
       },
       vertical: {
         flexDirection: "column",
         _firstChild: {
           borderBottomRadius: "0",
-          _after: { borderBottomWidth: "0" },
+          _before: { borderBottomWidth: "0" },
+          _hover: { _before: { borderBottomWidth: "0" } },
         },
         _betweenChild: {
           rounded: "0",
-          _after: { borderYWidth: "0" },
+          _before: { borderYWidth: "0" },
+          _hover: { _before: { borderYWidth: "0" } },
         },
         _lastChild: {
           borderTopRadius: "0",
-          _after: { borderTopWidth: "0" },
+          _before: { borderTopWidth: "0" },
+          _hover: { _before: { borderTopWidth: "0" } },
         },
       },
     },

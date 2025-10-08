@@ -23,6 +23,17 @@ export default function Playground() {
     <styled.div css={{ display: "flex", flexDirection: "column", gap: "1", alignItems: "start" }}>
       <TreePlayground />
       <div style={{ height: 20 }} />
+
+      <Paper
+        css={{ padding: "2", bg: "neutral.900", display: "grid", gap: "2", gridTemplateColumns: "1fr 1fr 1fr 1fr" }}
+      >
+        <styled.div
+          css={{
+            "--test-var": "[demo]",
+          }}
+        />
+      </Paper>
+
       <Paper
         css={{ padding: "2", bg: "neutral.900", display: "grid", gap: "2", gridTemplateColumns: "1fr 1fr 1fr 1fr" }}
       >

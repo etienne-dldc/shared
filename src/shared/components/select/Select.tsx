@@ -162,6 +162,7 @@ export function Select<Value extends string>(inProps: SelectProps<Value>) {
                   borderColor: "white/10",
                   boxShadow: "md",
                   outline: "none",
+                  width: "[min-content]",
                 }}
               />
             }
