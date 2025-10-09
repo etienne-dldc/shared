@@ -6,7 +6,7 @@ import { Button } from "../shared/components/button/Button";
 import { FrameGroup } from "../shared/components/frame/FrameGroup";
 import { TDesignVariant } from "../shared/design/types";
 
-export function ButtonGroupVariantsWidget() {
+export function FrameGroupVariantsWidget() {
   const variants: TDesignVariant[] = ["solid", "surface", "subtle", "ghost", "input"];
 
   const [highlighted, setHighlighted] = useState<TDesignVariant | null>();
@@ -15,9 +15,9 @@ export function ButtonGroupVariantsWidget() {
     <Grid css={{ gridTemplateColumns: "subgrid" }}>
       <CodeHighlight language="jsx" theme="dark-plus">
         {highlighted
-          ? `<ButtonGroup variant="${highlighted}">
+          ? `<FrameGroup variant="${highlighted}">
   {/* Button children */}
-</ButtonGroup>`
+</FrameGroup>`
           : "// Hover a button group to see the code"}
       </CodeHighlight>
       <HighlightedGrid

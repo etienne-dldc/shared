@@ -7,7 +7,7 @@ import { Button } from "../shared/components/button/Button";
 import { FrameGroup } from "../shared/components/frame/FrameGroup";
 import { TPaletteColor } from "../shared/design/types";
 
-export function ButtonGroupColorsWidget() {
+export function FrameGroupColorsWidget() {
   const colors: TPaletteColor[] = ["blue", "green", "red", "orange", "purple", "gray"];
   const variants = [
     { label: "Solid", variant: "solid" as const },
@@ -23,9 +23,9 @@ export function ButtonGroupColorsWidget() {
     <Grid css={{ gridTemplateColumns: "subgrid" }}>
       <CodeHighlight language="jsx" theme="dark-plus">
         {highlighted
-          ? `<ButtonGroup variant="${highlighted.variant.variant}" color="${highlighted.color}">
+          ? `<FrameGroup variant="${highlighted.variant.variant}" color="${highlighted.color}">
   {/* Button children */}
-</ButtonGroup>`
+</FrameGroup>`
           : "// Hover a button group to see the code"}
       </CodeHighlight>
       <HighlightedGrid

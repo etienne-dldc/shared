@@ -4,7 +4,7 @@ import { Button } from "../shared/components/button/Button";
 import { FrameGroup } from "../shared/components/frame/FrameGroup";
 import { printElement } from "./utils/printElement";
 
-export function ButtonGroupNestedWidget() {
+export function FrameGroupNestedWidget() {
   const element = (
     <FrameGroup>
       <Button>File</Button>

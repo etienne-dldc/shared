@@ -4,14 +4,12 @@ import { Button } from "../shared/components/button/Button";
 import { FrameGroup } from "../shared/components/frame/FrameGroup";
 import { printElement } from "./utils/printElement";
 
-export function ButtonGroupFormWidget() {
+export function FrameGroupBasicWidget() {
   const element = (
     <FrameGroup>
-      <Button variant="solid" color="blue">
-        Save
-      </Button>
-      <Button>Cancel</Button>
-      <Button color="gray">Reset</Button>
+      <Button>Open</Button>
+      <Button>Edit</Button>
+      <Button>Close</Button>
     </FrameGroup>
   );
 

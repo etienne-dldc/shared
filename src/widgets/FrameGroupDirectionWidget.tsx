@@ -5,21 +5,21 @@ import { HighlightedGrid } from "../playground/HighlightedGrid";
 import { Button } from "../shared/components/button/Button";
 import { FrameGroup } from "../shared/components/frame/FrameGroup";
 
-export function ButtonGroupDirectionWidget() {
+export function FrameGroupDirectionWidget() {
   const directions = [
     {
       label: "Horizontal",
       direction: "horizontal" as const,
-      code: `<ButtonGroup direction="horizontal">
+      code: `<FrameGroup direction="horizontal">
   {/* Button children */}
-</ButtonGroup>`,
+</FrameGroup>`,
     },
     {
       label: "Vertical",
       direction: "vertical" as const,
-      code: `<ButtonGroup direction="vertical">
+      code: `<FrameGroup direction="vertical">
   {/* Button children */}
-</ButtonGroup>`,
+</FrameGroup>`,
     },
   ];
 

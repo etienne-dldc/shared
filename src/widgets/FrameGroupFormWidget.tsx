@@ -1,16 +1,17 @@
-import { Grid } from "../../styled-system/jsx";
+import { Grid, Paper } from "../../styled-system/jsx";
 import { CodeHighlight } from "../playground/CodeHighlight";
 import { Button } from "../shared/components/button/Button";
-import { ButtonLike } from "../shared/components/button/ButtonLike";
 import { FrameGroup } from "../shared/components/frame/FrameGroup";
 import { printElement } from "./utils/printElement";
 
-export function ButtonGroupMixedContentWidget() {
+export function FrameGroupFormWidget() {
   const element = (
     <FrameGroup>
-      <ButtonLike>Connected</ButtonLike>
-      <Button>Settings</Button>
-      <Button>Disconnect</Button>
+      <Button variant="solid" color="blue">
+        Save
+      </Button>
+      <Button>Cancel</Button>
+      <Button color="gray">Reset</Button>
     </FrameGroup>
   );
 
@@ -19,7 +20,7 @@ export function ButtonGroupMixedContentWidget() {
       <CodeHighlight language="jsx" theme="dark-plus">
         {printElement(element)}
       </CodeHighlight>
-      <div>{element}</div>
+      <Paper css={{ bg: "neutral.900", p: "3" }}>{element}</Paper>
     </Grid>
   );
 }

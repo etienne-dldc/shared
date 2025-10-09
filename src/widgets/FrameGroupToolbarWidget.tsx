@@ -1,16 +1,16 @@
-import { ChartBarIcon, FileTextIcon, UserIcon } from "@phosphor-icons/react";
+import { GearIcon, HouseIcon, SignOutIcon } from "@phosphor-icons/react";
 import { Grid, Paper } from "../../styled-system/jsx";
 import { CodeHighlight } from "../playground/CodeHighlight";
 import { Button } from "../shared/components/button/Button";
 import { FrameGroup } from "../shared/components/frame/FrameGroup";
 import { printElement } from "./utils/printElement";
 
-export function ButtonGroupNavigationWidget() {
+export function FrameGroupToolbarWidget() {
   const element = (
-    <FrameGroup direction="vertical" variant="subtle">
-      <Button startIcon={<UserIcon />}>Profile</Button>
-      <Button startIcon={<FileTextIcon />}>Documents</Button>
-      <Button startIcon={<ChartBarIcon />}>Analytics</Button>
+    <FrameGroup variant="surface">
+      <Button startIcon={<HouseIcon />}>Home</Button>
+      <Button startIcon={<GearIcon />}>Settings</Button>
+      <Button startIcon={<SignOutIcon />}>Logout</Button>
     </FrameGroup>
   );
 

@@ -5,7 +5,7 @@ import { HighlightedGrid } from "../playground/HighlightedGrid";
 import { Button } from "../shared/components/button/Button";
 import { FrameGroup } from "../shared/components/frame/FrameGroup";
 
-export function ButtonGroupDividersWidget() {
+export function FrameGroupDividersWidget() {
   const innerDividerOptions = [
     { label: "With Inner Dividers", value: true },
     { label: "No Inner Dividers", value: false },
@@ -19,11 +19,11 @@ export function ButtonGroupDividersWidget() {
     <Grid css={{ gridTemplateColumns: "subgrid" }}>
       <CodeHighlight language="jsx" theme="dark-plus">
         {highlighted
-          ? `<ButtonGroup 
+          ? `<FrameGroup 
   innerDividers={${highlighted.inner.value}}
 >
   {/* Button children */}
-</ButtonGroup>`
+</FrameGroup>`
           : "// Hover a button group to see the code"}
       </CodeHighlight>
       <HighlightedGrid

@@ -45,6 +45,14 @@ export default function Playground() {
           </Fragment>
         ))}
       </Paper>
+      <div style={{ height: 20 }} />
+      <Paper css={{ padding: "2", bg: "neutral.900" }}>
+        <Input>With content</Input>
+
+        <Input>
+          <span>With content</span>
+        </Input>
+      </Paper>
     </styled.div>
   );
 }

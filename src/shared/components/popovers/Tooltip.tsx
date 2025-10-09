@@ -3,7 +3,7 @@ import { forwardRef } from "react";
 import { css } from "../../../../styled-system/css";
 import { Paper } from "../../../../styled-system/jsx";
 import { SystemStyleObject } from "../../../../styled-system/types";
-import { forwardButtonGroupAttributes } from "../../utils/forwardButtonGroupAttributes";
+import { forwardFrameGroupAttributes } from "../../utils/forwardFrameGroupAttributes";
 
 interface TooltipProps extends Omit<Ariakit.TooltipProviderProps, "children"> {
   children: React.ReactElement<any>;
@@ -15,7 +15,7 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip
   { children, showTimeout = 300, content, css: cssProps, ...props },
   ref,
 ) {
-  const childrenWithAttrs = forwardButtonGroupAttributes(props, children);
+  const childrenWithAttrs = forwardFrameGroupAttributes(props, children);
 
   if (!content) {
     return <>{childrenWithAttrs}</>;
