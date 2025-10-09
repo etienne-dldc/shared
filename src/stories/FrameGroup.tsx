@@ -12,7 +12,7 @@ import { ButtonGroupNestedWidget } from "../widgets/ButtonGroupNestedWidget";
 import { ButtonGroupToolbarWidget } from "../widgets/ButtonGroupToolbarWidget";
 import { ButtonGroupVariantsWidget } from "../widgets/ButtonGroupVariantsWidget";
 
-export default function ButtonGroupStory() {
+export default function FrameGroupStory() {
   return (
     <Grid
       css={{
@@ -25,16 +25,16 @@ export default function ButtonGroupStory() {
       }}
     >
       <div className={cx(prose())}>
-        <h1>ButtonGroup</h1>
+        <h1>FrameGroup</h1>
         <p>
-          The <code>ButtonGroup</code> component is a container that visually connects multiple buttons into a cohesive
+          The <code>FrameGroup</code> component is a container that visually connects multiple frames into a cohesive
           unit. It automatically handles border radius adjustments and spacing to create seamless visual connections
-          between buttons.
+          between frames.
         </p>
         <h2>Basic Usage</h2>
         <p>
-          Wrap multiple <code>Button</code> or <code>ButtonLike</code> components in a <code>ButtonGroup</code> to
-          create connected button interfaces like toolbars or action groups.
+          Wrap multiple <code>Frame</code> components in a <code>FrameGroup</code> to create connected frame interfaces
+          like toolbars or action groups.
         </p>
       </div>
       <ButtonGroupBasicWidget />
@@ -49,8 +49,8 @@ export default function ButtonGroupStory() {
       <div className={cx(prose())}>
         <h2>Mixed Content</h2>
         <p>
-          <code>ButtonGroup</code> can contain both <code>Button</code> and <code>ButtonLike</code> components. This is
-          useful when you need interactive buttons alongside static button-styled elements.
+          <code>FrameGroup</code> can contain both <code>Frame</code> and <code>FrameLike</code> components. This is
+          useful when you need interactive frames alongside static frame-styled elements.
         </p>
       </div>
       <ButtonGroupMixedContentWidget />
@@ -63,9 +63,9 @@ export default function ButtonGroupStory() {
       </div>
       <ButtonGroupDividersWidget />
       <div className={cx(prose())}>
-        <h3>Nested Button Groups</h3>
+        <h3>Nested Frame Groups</h3>
         <p>
-          ButtonGroups can be nested within each other. When nesting, use <code>roundedEnds="none"</code> on the inner
+          FrameGroups can be nested within each other. When nesting, use <code>roundedEnds="none"</code> on the inner
           group to blend the visual styles seamlessly.
         </p>
       </div>
@@ -73,8 +73,8 @@ export default function ButtonGroupStory() {
       <div className={cx(prose())}>
         <h2>Variants</h2>
         <p>
-          The <code>variant</code> prop on ButtonGroup affects both the buttons' appearance and the dividers' styling.
-          All variants work consistently across the group.
+          The <code>variant</code> prop on FrameGroup affects both the frames' appearance and the dividers' styling. All
+          variants work consistently across the group.
         </p>
       </div>
       <ButtonGroupVariantsWidget />
@@ -88,7 +88,7 @@ export default function ButtonGroupStory() {
       <ButtonGroupColorsWidget />
       <div className={cx(prose())}>
         <h2>Use Cases</h2>
-        <p>ButtonGroup is perfect for creating cohesive interface elements. Here are some common patterns:</p>
+        <p>FrameGroup is perfect for creating cohesive interface elements. Here are some common patterns:</p>
         <h3>Toolbar Interfaces</h3>
         <p>Group related actions together for toolbars and action bars:</p>
       </div>

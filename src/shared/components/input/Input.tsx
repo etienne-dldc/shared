@@ -41,7 +41,7 @@ export function Input(inProps: InputProps) {
   return (
     <Frame variant="input" interactive onPointerDown={onPointerDown} {...frameProps}>
       <styled.input
-        css={{ outline: "none", alignSelf: "stretch" }}
+        css={{ outline: "none", alignSelf: "stretch", flex: "1" }}
         value={value}
         onChange={onChange}
         placeholder={placeholder}
