@@ -1,6 +1,6 @@
-import { HStack, Paper, VStack } from "../../styled-system/jsx";
-import { Button } from "../shared/components/button/Button";
-import { Select } from "../shared/components/select/Select";
+import { HStack, Paper, VStack } from "../../../styled-system/jsx";
+import { Button } from "../../shared/components/button/Button";
+import { Select } from "../../shared/components/select/Select";
 
 export default function PaperPlayground() {
   return (

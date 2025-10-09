@@ -40,6 +40,7 @@ const menuPaper = (
       bg: "neutral.900",
       outline: "none",
       w: "[150px]",
+      minW: "[min-content]",
       maxW: "var(--popover-available-width)",
       maxH: "var(--popover-available-height)",
       height: "[300px]",

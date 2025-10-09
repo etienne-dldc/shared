@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Fragment } from "react/jsx-runtime";
-import { Button } from "../shared/components/button/Button";
-import { Modal } from "../shared/components/popovers/Modal";
+import { Button } from "../../shared/components/button/Button";
+import { Modal } from "../../shared/components/popovers/Modal";
 
 export default function ModalPlayground() {
   const [open, setOpen] = useState(true);

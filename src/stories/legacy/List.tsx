@@ -1,11 +1,11 @@
 import * as Ariakit from "@ariakit/react";
 import { CaretRightIcon, FileIcon, SignOutIcon, SquareIcon } from "@phosphor-icons/react";
-import { Variants } from "../playground/Variants";
-import { Button } from "../shared/components/button/Button";
-import { DefaultDesignProvider } from "../shared/components/core/DesignContext";
-import { List } from "../shared/components/list/List";
-import { ListGroup } from "../shared/components/list/ListGroup";
-import { ListItem } from "../shared/components/list/ListItem";
+import { Variants } from "../../playground/Variants";
+import { Button } from "../../shared/components/button/Button";
+import { DefaultDesignProvider } from "../../shared/components/core/DesignContext";
+import { List } from "../../shared/components/list/List";
+import { ListGroup } from "../../shared/components/list/ListGroup";
+import { ListItem } from "../../shared/components/list/ListItem";
 
 export default function ButtonPlayground() {
   return (
