@@ -48,6 +48,10 @@ export default function FrameStory() {
           <li>Interactive states (or not): hover, focus, disabled</li>
           <li>Content padding and gap</li>
         </ul>
+        <p>
+          You are not supposed to use <code>Frame</code> directly but rather use one of the components built on top of
+          it.
+        </p>
         <h2>Basic</h2>
       </div>
       <FrameBasicWidget />
@@ -137,16 +141,17 @@ export default function FrameStory() {
         </p>
         <ul>
           <li>
-            <strong>Base units:</strong> Each number represents multiples of 4px (6 = 24px, 7 = 28px, 8 = 32px)
+            <strong>Base units:</strong> Each number represents multiples of 4px (<code>6 = 24px</code>,{" "}
+            <code>7 = 28px</code>, <code>8 = 32px</code>)
           </li>
           <li>
-            <strong>Half units (x):</strong> Add 2px to the base unit (7x = 28px + 2px = 30px)
+            <strong>Half units (x):</strong> Add 2px to the base unit (<code>7x = 28px + 2px = 30px</code>)
           </li>
           <li>
-            <strong>Quarter units (_x):</strong> Add 1px to the base unit (7_x = 28px + 1px = 29px)
+            <strong>Quarter units (_x):</strong> Add 1px to the base unit (<code>7_x = 28px + 1px = 29px</code>)
           </li>
           <li>
-            <strong>Eighth units (__x):</strong> Add 0.5px to the base unit (7__x = 28px + 0.5px = 28.5px)
+            <strong>Eighth units (__x):</strong> Add 0.5px to the base unit (<code>7__x = 28px + 0.5px = 28.5px</code>)
           </li>
         </ul>
         <p>Examples:</p>
@@ -222,7 +227,7 @@ export default function FrameStory() {
           follows the same 4px-based unit system with support for fractional values.
         </p>
         <p>
-          The default rounded value is <code>1_x</code> (5px).
+          The default rounded value is <code>1</code> (4px).
         </p>
       </div>
       <FrameRoundedWidget />

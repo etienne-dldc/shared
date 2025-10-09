@@ -12,7 +12,7 @@ import {
 export const BASE_HEIGHT = 7;
 export const MIN_HEIGHT = 2.5;
 export const BASE_HEIGHT_RATIO = 0.7;
-export const BASE_ROUNDED = parseSize("1_x");
+export const BASE_ROUNDED = parseSize("1");
 
 export function resolveSmallRounded(height: number): boolean {
   return height <= 4;
