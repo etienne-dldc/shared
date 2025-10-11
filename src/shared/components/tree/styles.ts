@@ -27,10 +27,10 @@ export const treeItemClass = cva({
       opacity: 0.6,
     },
     _roundedStart: {
-      roundedTop: "1_x",
+      roundedTop: "1",
     },
     _roundedEnd: {
-      roundedBottom: "1_x",
+      roundedBottom: "1",
     },
     // Hover
     _hover: {

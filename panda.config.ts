@@ -17,11 +17,4 @@ export default defineConfig({
       },
     },
   },
-  conditions: {
-    extend: {
-      // Set both disabled and disabled:hover styles
-      disabledHover:
-        "&:is(:disabled, [disabled], [data-disabled], [aria-disabled=true]), &:is(:disabled, [disabled], [data-disabled], [aria-disabled=true]):is(:hover, [data-hover])",
-    },
-  },
 });
