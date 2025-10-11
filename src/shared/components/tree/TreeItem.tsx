@@ -68,10 +68,13 @@ export function TreeItem(inProps: TreeItemProps) {
     ...buttonProps
   } = props;
 
-  const { height, contentHeight } = useContainerDesignProps({
-    // heightRatio: 0.8,
-    ...localDesign,
-  });
+  const { height, contentHeight } = useContainerDesignProps(
+    {
+      // heightRatio: 0.8,
+      ...localDesign,
+    },
+    "subtle",
+  );
   const [itemCss, itemInline] = treeItemStyles(height, contentHeight, color);
 
   const childrenResolved = children ?? <TreeItemContent>{content}</TreeItemContent>;

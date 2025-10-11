@@ -44,7 +44,7 @@ export function MenuItem(inProps: MenuItemProps) {
     ...htmlProps
   } = props;
 
-  const { height, contentHeight, spacing } = useContainerDesignProps(localDesign);
+  const { height, contentHeight, spacing } = useContainerDesignProps(localDesign, "subtle");
 
   const { startPadding, endPadding, fragment, noLayout } = useFrameContentFragment(localFrameContent, children);
 

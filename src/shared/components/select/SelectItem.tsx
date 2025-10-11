@@ -34,7 +34,7 @@ export function SelectItem(inProps: SelectItemProps) {
     item.content,
   );
 
-  const { height, contentHeight, spacing } = useContainerDesignProps(localDesign);
+  const { height, contentHeight, spacing } = useContainerDesignProps(localDesign, "subtle");
   const [heightCss, heightInline] = heightStyles(height);
   const [contentCss, contentInline] = frameContentStyles(contentHeight, spacing, startPadding, endPadding, noLayout);
 

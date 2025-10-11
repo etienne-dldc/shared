@@ -114,7 +114,7 @@ function PlaygroundItem({
   startSlot,
   ...htmlProps
 }: PlaygroundItemProps) {
-  const { height: resolvedHeight } = useContainerDesignProps({ height });
+  const { height: resolvedHeight } = useContainerDesignProps({ height }, "subtle");
 
   const nestedDesign = useMemo(
     (): TNestedDesignValues => [

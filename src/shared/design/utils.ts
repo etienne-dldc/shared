@@ -78,11 +78,11 @@ export function resolveContainerDesignProps(
   parentCtx: TParentDesignContext | null,
   nestedCtx: TNestedDefaultDesignContext | null,
   localProps: Partial<TDefaultDesignContext>,
-  overrideDefaultVariant?: TDesignVariant,
+  baseVariant: TDesignVariant,
 ): TDesignContextResolved {
   const depth = !parentCtx ? 0 : parentCtx.depth + 1;
-  const props = resolveProps(nestedCtx, localProps, depth, overrideDefaultVariant);
-  const contentHeightFromNestedHeight = resolveProps(nestedCtx, {}, depth + 1).height;
+  const props = resolveProps(nestedCtx, localProps, depth, baseVariant);
+  const contentHeightFromNestedHeight = resolveProps(nestedCtx, {}, depth + 1, baseVariant).height;
   const contentHeightProp = parseMaybeSize(props.contentHeight ?? contentHeightFromNestedHeight);
 
   const hoverVariant = props.hoverVariant ?? props.variant;
@@ -120,28 +120,32 @@ function resolveProps(
   nestedCtx: TNestedDefaultDesignContext | null,
   localProps: Partial<TDefaultDesignContext>,
   depth: number,
-  overrideDefaultVariant?: TDesignVariant,
+  baseVariant: TDesignVariant,
 ): TDefaultDesignContext {
-  const resolvedDefault = resolveDefaultProps(nestedCtx, depth);
+  const resolvedDefault = resolveDefaultProps(nestedCtx, depth, baseVariant);
   return {
     ...resolvedDefault,
-    ...(overrideDefaultVariant ? { variant: overrideDefaultVariant } : {}),
     ...withoutUndefined(localProps),
   };
 }
 
-function resolveDefaultProps(nestedCtx: TNestedDefaultDesignContext | null, depth: number): TDefaultDesignContext {
+function resolveDefaultProps(
+  nestedCtx: TNestedDefaultDesignContext | null,
+  depth: number,
+  baseVariant: TDesignVariant,
+): TDefaultDesignContext {
+  const defaultDesignWithBaseVariant = { ...DEFAULT_DESIGN, variant: baseVariant };
   if (!nestedCtx) {
-    return DEFAULT_DESIGN;
+    return defaultDesignWithBaseVariant;
   }
   const parentDepth = nestedCtx.depth;
   if (depth < parentDepth) {
-    return DEFAULT_DESIGN;
+    return defaultDesignWithBaseVariant;
   }
   const diff = depth - parentDepth;
   const values = nestedCtx.values[diff] ?? {};
   return {
-    ...DEFAULT_DESIGN,
+    ...defaultDesignWithBaseVariant,
     ...withoutUndefined(values),
   };
 }

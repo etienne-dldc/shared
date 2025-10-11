@@ -2,8 +2,6 @@ import { useCallback, useRef } from "react";
 import { TDesignProps, TPaletteColor } from "../../design/types";
 import { useMergeRefs } from "../../hooks/useMergeRefs";
 import { ComponentPropsBase } from "../../utils/componentProps";
-import { pipePropsSplitters } from "../../utils/propsSplitters";
-import { designPropsSplitter, useContainerDesignProps } from "../core/DesignContext";
 import { Frame } from "../frame/Frame";
 import { TFrameContentFragmentProps } from "../frame/FrameContentFragment";
 import { FrameInputContent } from "../frame/FrameInputContent";
@@ -32,10 +30,6 @@ export type InputProps = ComponentPropsBase<
 >;
 
 export function Input(inProps: InputProps) {
-  const [{ localDesign }, props] = pipePropsSplitters(inProps, {
-    localDesign: designPropsSplitter,
-  });
-
   const {
     onPointerDown: onPointerDownProps,
     children,
@@ -47,9 +41,7 @@ export function Input(inProps: InputProps) {
     type,
 
     ...frameProps
-  } = props;
-
-  const { variant } = useContainerDesignProps(localDesign);
+  } = inProps;
 
   const localRef = useRef<HTMLDivElement>(null);
   const ref = useMergeRefs(localRef, inProps.ref);
@@ -73,7 +65,7 @@ export function Input(inProps: InputProps) {
   );
 
   return (
-    <Frame variant={variant} interactive onPointerDown={onPointerDown} {...frameProps} ref={ref}>
+    <Frame baseVariant="input" interactive onPointerDown={onPointerDown} {...frameProps} ref={ref}>
       {childrenResolved}
     </Frame>
   );

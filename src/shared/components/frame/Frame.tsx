@@ -2,7 +2,7 @@ import * as Ariakit from "@ariakit/react";
 
 import { useMemo } from "react";
 import { css, cx } from "../../../../styled-system/css";
-import { TDesignProps, TPaletteColor } from "../../design/types";
+import { TDesignProps, TDesignVariant, TPaletteColor } from "../../design/types";
 import { ComponentPropsBase } from "../../utils/componentProps";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { designPropsSplitter, SizeContextProvider, useContainerDesignProps } from "../core/DesignContext";
@@ -19,6 +19,12 @@ export type FrameProps = ComponentPropsBase<
       color?: TPaletteColor;
       highlightColor?: TPaletteColor;
       highlighted?: boolean;
+
+      /**
+       * Defines the variant used as the base for this Frame.
+       * For example, Input components use the "input" variant by default.
+       */
+      baseVariant?: TDesignVariant;
 
       // Forward to Element
       render?: Ariakit.RoleProps["render"];
@@ -43,6 +49,8 @@ export function Frame(inProps: FrameProps) {
     highlightColor = "red",
     highlighted = false,
 
+    baseVariant = "surface",
+
     css: cssProps,
 
     children,
@@ -56,8 +64,10 @@ export function Frame(inProps: FrameProps) {
   const isDisabled = useDisabled(localDisabled);
   const isDisabledAndInteractive = isDisabled && interactive;
 
-  const { hoverVariant, variant, height, contentHeight, spacing, rounded, depth } =
-    useContainerDesignProps(localDesign);
+  const { hoverVariant, variant, height, contentHeight, spacing, rounded, depth } = useContainerDesignProps(
+    localDesign,
+    baseVariant,
+  );
 
   const { startPadding, endPadding, fragment, noLayout } = useFrameContentFragment(localFrameContent, children);
 

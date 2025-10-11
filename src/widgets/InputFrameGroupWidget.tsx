@@ -1,6 +1,6 @@
 import { MagnifyingGlassIcon, PaperPlaneIcon, UserIcon } from "@phosphor-icons/react";
 import { useState } from "react";
-import { Grid, VStack } from "../../styled-system/jsx";
+import { Grid } from "../../styled-system/jsx";
 import { CodeHighlight } from "../playground/CodeHighlight";
 import { HighlightedGrid } from "../playground/HighlightedGrid";
 import { Button } from "../shared/components/button/Button";
@@ -30,28 +30,21 @@ export function InputFrameGroupWidget() {
     {
       label: "Message Form",
       element: (
-        <FrameGroup variant="solid" color="green">
+        <FrameGroup variant="surface" color="green">
           <Input placeholder="Type a message..." startIcon={<UserIcon />} />
-          <Button startIcon={<PaperPlaneIcon />}>Send</Button>
+          <Button variant="solid" startIcon={<PaperPlaneIcon />}>
+            Send
+          </Button>
         </FrameGroup>
       ),
     },
     {
-      label: "Form with Labels",
+      label: "Form item",
       element: (
-        <VStack css={{ gap: "2" }}>
-          <FrameGroup>
-            <ButtonLike css={{ flexShrink: 0, w: "20" }}>Username</ButtonLike>
-            <Input placeholder="Enter username" css={{ flex: "1" }} />
-          </FrameGroup>
-          <FrameGroup>
-            <ButtonLike css={{ flexShrink: 0, w: "20" }}>Email</ButtonLike>
-            <Input placeholder="Enter email" css={{ flex: "1" }} />
-            <Button variant="solid" color="blue">
-              Save
-            </Button>
-          </FrameGroup>
-        </VStack>
+        <FrameGroup variant="input">
+          <ButtonLike>Username</ButtonLike>
+          <Input placeholder="Enter username" />
+        </FrameGroup>
       ),
     },
   ];

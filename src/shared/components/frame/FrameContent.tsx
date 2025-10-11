@@ -36,7 +36,7 @@ export function FrameContent(inProps: FrameContentProps) {
     ...htmlProps
   } = props;
 
-  const { spacing, contentHeight, height, rounded, depth } = useContainerDesignProps(localDesign);
+  const { spacing, contentHeight, height, rounded, depth } = useContainerDesignProps(localDesign, "subtle");
 
   const { startPadding, endPadding, fragment } = useFrameContentFragment(localFrameContent, children);
 

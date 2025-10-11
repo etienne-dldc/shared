@@ -23,7 +23,9 @@ export type ButtonProps = ComponentPropsBase<
 >;
 
 export function Button(inProps: ButtonProps) {
-  const { type = "button", ...frameProps } = inProps;
+  const { type = "button", render, ...frameProps } = inProps;
 
-  return <Ariakit.Button type={type} render={<Frame render={<button />} />} interactive {...(frameProps as any)} />;
+  return (
+    <Ariakit.Button type={type} render={<Frame render={render ?? <button />} />} interactive {...(frameProps as any)} />
+  );
 }

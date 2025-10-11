@@ -4,6 +4,7 @@ import { createContext, PropsWithChildren, useContext, useMemo } from "react";
 import {
   TDefaultDesignContext,
   TDesignContextResolved,
+  TDesignVariant,
   TNestedDefaultDesignContext,
   TNestedDesignValues,
   TParentDesignContext,
@@ -46,10 +47,13 @@ export function designPropsSplitter(props: BaseRecord): Partial<TDefaultDesignCo
   return result;
 }
 
-export function useContainerDesignProps(localProps: Partial<TDefaultDesignContext>): TDesignContextResolved {
+export function useContainerDesignProps(
+  localProps: Partial<TDefaultDesignContext>,
+  baseVariant: TDesignVariant,
+): TDesignContextResolved {
   const sizeCtx = useContext(ParentDesignContext);
   const deepCtx = useContext(NestedDefaultDesignContext);
-  return resolveContainerDesignProps(sizeCtx, deepCtx, localProps);
+  return resolveContainerDesignProps(sizeCtx, deepCtx, localProps, baseVariant);
 }
 
 export const NestedDefaultDesignContext = createContext<TNestedDefaultDesignContext | null>(null);

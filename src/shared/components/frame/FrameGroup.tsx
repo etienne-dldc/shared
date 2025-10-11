@@ -26,7 +26,7 @@ export function FrameGroup(inProps: FrameGroupProps) {
     localDesign: designPropsSplitter,
   });
 
-  const { variant } = useContainerDesignProps(localDesign);
+  const { variant } = useContainerDesignProps(localDesign, "subtle");
   const {
     color,
     className,
