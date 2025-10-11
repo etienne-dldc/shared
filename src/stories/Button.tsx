@@ -48,7 +48,7 @@ export default function ButtonStory() {
       <ButtonContentHeightsWidget />
       <div className={cx(prose())}>
         <h2>Colors and Variants</h2>
-        <p>By default, buttons are using the `surface` variant. You have 3 other variants available:</p>
+        <p>By default, buttons are using the `surface` variant. You have 4 other variants available:</p>
       </div>
       <ButtonColorsVariantsWidget />
       <div className={cx(prose())}>

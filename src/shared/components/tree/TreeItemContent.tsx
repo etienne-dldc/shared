@@ -4,7 +4,7 @@ import { Merge } from "type-fest";
 import { HStack } from "../../../../styled-system/jsx";
 import { TDesignSpacing } from "../../design/types";
 import { Button } from "../button/Button";
-import { ItemContent } from "../item-content/ItemContent";
+import { FrameContent } from "../frame/FrameContent";
 
 export type TreeItemContentProps = Merge<
   Omit<ComponentProps<"div">, "title" | "height">,
@@ -15,7 +15,7 @@ export type TreeItemContentProps = Merge<
 
 export function TreeItemContent({ spacing, children }: TreeItemContentProps) {
   return (
-    <ItemContent
+    <FrameContent
       // nestedHeight={nestedHeight}
       spacing={spacing}
       // nestedHeight={dynamicNestedHeight(0.65)}
@@ -41,6 +41,6 @@ export function TreeItemContent({ spacing, children }: TreeItemContentProps) {
       {/* <ItemContent endSlot={<Button variant="ghost" startIcon={<PenIcon />} />} startPadding="none" endPadding="none">
         <DefineNestedHeight nestedHeight={dynamicNestedHeight(0.5)}></DefineNestedHeight>
       </ItemContent> */}
-    </ItemContent>
+    </FrameContent>
   );
 }

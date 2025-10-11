@@ -5,6 +5,7 @@ import {
   TDefaultDesignContext,
   TDesignContextResolved,
   TDesignSize,
+  TDesignVariant,
   TNestedDefaultDesignContext,
   TParentDesignContext,
 } from "./types";
@@ -77,9 +78,10 @@ export function resolveContainerDesignProps(
   parentCtx: TParentDesignContext | null,
   nestedCtx: TNestedDefaultDesignContext | null,
   localProps: Partial<TDefaultDesignContext>,
+  overrideDefaultVariant?: TDesignVariant,
 ): TDesignContextResolved {
   const depth = !parentCtx ? 0 : parentCtx.depth + 1;
-  const props = resolveProps(nestedCtx, localProps, depth);
+  const props = resolveProps(nestedCtx, localProps, depth, overrideDefaultVariant);
   const contentHeightFromNestedHeight = resolveProps(nestedCtx, {}, depth + 1).height;
   const contentHeightProp = parseMaybeSize(props.contentHeight ?? contentHeightFromNestedHeight);
 
@@ -118,10 +120,12 @@ function resolveProps(
   nestedCtx: TNestedDefaultDesignContext | null,
   localProps: Partial<TDefaultDesignContext>,
   depth: number,
+  overrideDefaultVariant?: TDesignVariant,
 ): TDefaultDesignContext {
   const resolvedDefault = resolveDefaultProps(nestedCtx, depth);
   return {
     ...resolvedDefault,
+    ...(overrideDefaultVariant ? { variant: overrideDefaultVariant } : {}),
     ...withoutUndefined(localProps),
   };
 }

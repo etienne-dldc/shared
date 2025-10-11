@@ -10,10 +10,10 @@ export function InputBasicWidget() {
   return (
     <Grid css={{ gridTemplateColumns: "subgrid" }}>
       <CodeHighlight language="jsx" theme="dark-plus">
-        {printElement(<Input value={value} onChange={(e) => setValue(e.target.value)} placeholder="Enter text..." />)}
+        {printElement(<Input />)}
       </CodeHighlight>
       <Paper css={{ bg: "neutral.900", p: "3" }}>
-        <Input value={value} onChange={(e) => setValue(e.target.value)} placeholder="Enter text..." />
+        <Input value={value} onChange={(e) => setValue(e.target.value)} />
       </Paper>
     </Grid>
   );

@@ -8,7 +8,7 @@ import { Button } from "../button/Button";
 import { DynamicColorProvider } from "../core/DynamicColorProvider";
 import { FieldError } from "../form/FieldError";
 import { Label } from "../form/Label";
-import { ItemContent } from "../item-content/ItemContent";
+import { FrameContent } from "../frame/FrameContent";
 import { StringLike } from "./utils";
 
 interface ColorFieldProps {
@@ -64,7 +64,7 @@ export function ColorField({
             required={required}
             render={
               <Ariakit.Select render={<Button className="cursor-pointer" />} disabled={disabled}>
-                <ItemContent
+                <FrameContent
                   startIcon={
                     <span
                       className="w-5 h-5 rounded-sm"
@@ -78,7 +78,7 @@ export function ColorField({
                   endIcon={<Ariakit.SelectArrow render={selectOpen ? <CaretUpIcon /> : <CaretDownIcon />} />}
                 >
                   {COLOR_NAMES[valueColor]}
-                </ItemContent>
+                </FrameContent>
               </Ariakit.Select>
             }
           />

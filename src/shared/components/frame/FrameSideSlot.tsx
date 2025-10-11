@@ -3,7 +3,7 @@ import { SystemStyleObject } from "../../../../styled-system/types";
 import { IconBox } from "../common/IconBox";
 import { LoadingIcon } from "../common/LoadingIcon";
 
-interface SideSlotProps {
+interface FrameSideSlotProps {
   icon?: React.ReactNode;
   loading?: boolean;
   slot?: React.ReactNode;
@@ -12,7 +12,7 @@ interface SideSlotProps {
   css?: SystemStyleObject;
 }
 
-export function SideSlot(props: SideSlotProps) {
+export function FrameSideSlot(props: FrameSideSlotProps) {
   const { icon, loading, slot, isItemMainIcon, isIconOnly, css: cssProp } = props;
 
   if (slot) {

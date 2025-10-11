@@ -4,11 +4,11 @@ import { Grid } from "../../styled-system/jsx";
 import { CodeHighlight } from "../playground/CodeHighlight";
 import { HighlightedGrid } from "../playground/HighlightedGrid";
 import { Frame } from "../shared/components/frame/Frame";
-import { TItemlContentPadding } from "../shared/components/item-content/types";
+import { TFrameContentPadding } from "../shared/components/frame/FrameContentFragment";
 import { printElement } from "./utils/printElement";
 
 export function FramePaddingWidget() {
-  const paddings: TItemlContentPadding[] = ["auto", "text", "icon", "none"];
+  const paddings: TFrameContentPadding[] = ["auto", "text", "icon", "none"];
   const examples = [
     { props: { children: "Hello World" } },
     { props: { startIcon: <UserIcon /> } },
@@ -16,7 +16,7 @@ export function FramePaddingWidget() {
   ];
 
   const [highlighted, setHighlighted] = useState<{
-    padding: TItemlContentPadding;
+    padding: TFrameContentPadding;
     example: (typeof examples)[number];
   } | null>();
 

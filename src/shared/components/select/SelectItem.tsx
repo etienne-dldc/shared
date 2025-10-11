@@ -4,8 +4,8 @@ import { css, cx } from "../../../../styled-system/css";
 import { heightStyles } from "../../design/styles";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { DefaultDesignProvider, designPropsSplitter, useContainerDesignProps } from "../core/DesignContext";
-import { itemlContentStyles } from "../item-content/styles";
-import { useItemContentFragment } from "../item-content/useItemContentFragment";
+import { useFrameContentFragment } from "../frame/FrameContentFragment";
+import { frameContentStyles } from "../frame/styles";
 import { selectItemClass } from "./styles";
 import { TSelectItem } from "./types";
 
@@ -26,7 +26,7 @@ export function SelectItem(inProps: SelectItemProps) {
   }
   const checked = Ariakit.useStoreState(store, (state) => state.value === item.value);
 
-  const { startPadding, endPadding, fragment, noLayout } = useItemContentFragment(
+  const { startPadding, endPadding, fragment, noLayout } = useFrameContentFragment(
     {
       endIcon: checked ? <Ariakit.SelectItemCheck render={<CheckIcon children={null} />} /> : item.endIcon,
       startIcon: item.icon,
@@ -36,7 +36,7 @@ export function SelectItem(inProps: SelectItemProps) {
 
   const { height, contentHeight, spacing } = useContainerDesignProps(localDesign);
   const [heightCss, heightInline] = heightStyles(height);
-  const [contentCss, contentInline] = itemlContentStyles(contentHeight, spacing, startPadding, endPadding, noLayout);
+  const [contentCss, contentInline] = frameContentStyles(contentHeight, spacing, startPadding, endPadding, noLayout);
 
   return (
     <Ariakit.SelectItem

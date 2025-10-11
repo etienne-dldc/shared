@@ -3,11 +3,11 @@ import * as Ariakit from "@ariakit/react";
 import { TDesignProps, TPaletteColor } from "../../design/types";
 import { ComponentPropsBase } from "../../utils/componentProps";
 import { Frame } from "../frame/Frame";
-import { TItemContentFragmentProps } from "../item-content/types";
+import { TFrameContentFragmentProps } from "../frame/FrameContentFragment";
 
 export type ButtonLinkProps = ComponentPropsBase<
   "a",
-  TItemContentFragmentProps &
+  TFrameContentFragmentProps &
     TDesignProps & {
       disabled?: boolean;
 

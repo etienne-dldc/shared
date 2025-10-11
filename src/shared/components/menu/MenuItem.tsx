@@ -6,15 +6,18 @@ import { ComponentPropsBase } from "../../utils/componentProps";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { DefaultDesignProvider, designPropsSplitter, useContainerDesignProps } from "../core/DesignContext";
 import { DisabledContext } from "../core/DisabledContext";
-import { itemlContentStyles } from "../item-content/styles";
-import { TItemContentFragmentProps } from "../item-content/types";
-import { itemContentPropsSplitter, useItemContentFragment } from "../item-content/useItemContentFragment";
+import {
+  TFrameContentFragmentProps,
+  frameContentPropsSplitter,
+  useFrameContentFragment,
+} from "../frame/FrameContentFragment";
+import { frameContentStyles } from "../frame/styles";
 import { menuItemClass } from "./styles";
 
 export type MenuItemProps = ComponentPropsBase<
   "div",
   Ariakit.MenuItemProps &
-    TItemContentFragmentProps & {
+    TFrameContentFragmentProps & {
       // Design
       height?: TDesignHeight;
       heightRatio?: number;
@@ -24,10 +27,10 @@ export type MenuItemProps = ComponentPropsBase<
 >;
 
 export function MenuItem(inProps: MenuItemProps) {
-  const [{ localDesign, localDisabled, localItemContent }, props] = pipePropsSplitters(inProps, {
+  const [{ localDesign, localDisabled, localFrameContent }, props] = pipePropsSplitters(inProps, {
     localDesign: designPropsSplitter,
     localDisabled: DisabledContext.propsSplitter,
-    localItemContent: itemContentPropsSplitter,
+    localFrameContent: frameContentPropsSplitter,
   });
 
   const {
@@ -43,10 +46,10 @@ export function MenuItem(inProps: MenuItemProps) {
 
   const { height, contentHeight, spacing } = useContainerDesignProps(localDesign);
 
-  const { startPadding, endPadding, fragment, noLayout } = useItemContentFragment(localItemContent, children);
+  const { startPadding, endPadding, fragment, noLayout } = useFrameContentFragment(localFrameContent, children);
 
   const [heightCss, heightInline] = heightStyles(height);
-  const [contentCss, contentInline] = itemlContentStyles(contentHeight, spacing, startPadding, endPadding, noLayout);
+  const [contentCss, contentInline] = frameContentStyles(contentHeight, spacing, startPadding, endPadding, noLayout);
 
   return (
     <DefaultDesignProvider height={contentHeight} spacing={inProps.spacing}>
@@ -59,7 +62,7 @@ export function MenuItem(inProps: MenuItemProps) {
               menuItemClass,
               inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
               contentCss,
-              // itemContentSizeClass.raw({ height }),
+              // frameContentSizeClass.raw({ height }),
               cssProps,
             ),
             className,

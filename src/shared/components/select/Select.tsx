@@ -13,7 +13,7 @@ import { Button } from "../button/Button";
 import { DefaultDesignProvider, designPropsSplitter } from "../core/DesignContext";
 import { DisabledContext } from "../core/DisabledContext";
 import { Label } from "../form/Label";
-import { ItemContentFragment } from "../item-content/ItemContentFragment";
+import { FrameContentFragment } from "../frame/FrameContentFragment";
 import { SelectItem } from "./SelectItem";
 import { TSelectItem } from "./types";
 
@@ -134,7 +134,7 @@ export function Select<Value extends string>(inProps: SelectProps<Value>) {
                 renderSelected ? (
                   renderSelected(selectedItem)
                 ) : (
-                  <ItemContentFragment
+                  <FrameContentFragment
                     endIcon={caret && <Ariakit.SelectArrow render={<CaretDownIcon children={null} />} />}
                     startIcon={selectedItem.icon}
                   >
@@ -143,7 +143,7 @@ export function Select<Value extends string>(inProps: SelectProps<Value>) {
                     ) : (
                       selectedItem.content
                     )}
-                  </ItemContentFragment>
+                  </FrameContentFragment>
                 )
               ) : null}
             </Ariakit.Select>

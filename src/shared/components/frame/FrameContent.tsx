@@ -9,11 +9,10 @@ import {
   SizeContextProvider,
   useContainerDesignProps,
 } from "../core/DesignContext";
-import { itemContentClass, itemlContentStyles } from "./styles";
-import { TItemContentFragmentProps } from "./types";
-import { itemContentPropsSplitter, useItemContentFragment } from "./useItemContentFragment";
+import { frameContentPropsSplitter, TFrameContentFragmentProps, useFrameContentFragment } from "./FrameContentFragment";
+import { frameContentClass, frameContentStyles } from "./styles";
 
-type ItemContentProps = ComponentPropsBase<"div", TItemContentFragmentProps & TDesignProps>;
+type FrameContentProps = ComponentPropsBase<"div", TFrameContentFragmentProps & TDesignProps>;
 
 /**
  * Render items horizontally
@@ -21,10 +20,10 @@ type ItemContentProps = ComponentPropsBase<"div", TItemContentFragmentProps & TD
  * - Set font size
  * - Provide nested content size
  */
-export function ItemContent(inProps: ItemContentProps) {
-  const [{ localDesign, localItemContent }, props] = pipePropsSplitters(inProps, {
+export function FrameContent(inProps: FrameContentProps) {
+  const [{ localDesign, localFrameContent }, props] = pipePropsSplitters(inProps, {
     localDesign: designPropsSplitter,
-    localItemContent: itemContentPropsSplitter,
+    localFrameContent: frameContentPropsSplitter,
   });
 
   const {
@@ -39,15 +38,15 @@ export function ItemContent(inProps: ItemContentProps) {
 
   const { spacing, contentHeight, height, rounded, depth } = useContainerDesignProps(localDesign);
 
-  const { startPadding, endPadding, fragment } = useItemContentFragment(localItemContent, children);
+  const { startPadding, endPadding, fragment } = useFrameContentFragment(localFrameContent, children);
 
   const [heightCss, heightInline] = heightStyles(height);
-  const [contentCss, contentInline] = itemlContentStyles(contentHeight, spacing, startPadding, endPadding, false);
-  const itemContentCss = itemContentClass.raw({ startPadding, endPadding });
+  const [contentCss, contentInline] = frameContentStyles(contentHeight, spacing, startPadding, endPadding, false);
+  const frameContentCss = frameContentClass.raw({ startPadding, endPadding });
 
   return (
     <div
-      className={cx(css(itemContentCss, heightCss, contentCss, cssProps), className)}
+      className={cx(css(frameContentCss, heightCss, contentCss, cssProps), className)}
       style={{ ...style, ...heightInline, ...contentInline }}
       {...htmlProps}
     >

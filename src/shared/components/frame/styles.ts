@@ -2,6 +2,8 @@ import { css, cva } from "../../../../styled-system/css";
 import { SystemStyleObject } from "../../../../styled-system/types";
 import { colorPaletteClass, contentSize, heightStyles, roundedStyles } from "../../design/styles";
 import { TDesignVariant, TPaletteColor } from "../../design/types";
+import { sizeToRemString, spacingToGapRem } from "../../design/utils";
+import { TFrameContentPaddingResolved } from "./FrameContentFragment";
 
 export const frameBaseClass = cva({
   base: {
@@ -69,6 +71,11 @@ export const frameInteractiveClass = cva({
       "& [data-item-main-icon]": {
         opacity: 1,
       },
+      _disabled: {
+        "& [data-item-main-icon]": {
+          opacity: 0.6,
+        },
+      },
     },
     _focusWithin: {
       "& [data-item-main-icon]": {
@@ -83,38 +90,6 @@ export const frameInteractiveClass = cva({
     },
   },
   variants: {
-    // Disabled styles based on variant
-    variant: {
-      solid: {
-        _disabled: {
-          bg: "colorPalette.800",
-          color: "neutral.200/60",
-        },
-      },
-      surface: {
-        _disabled: {
-          color: "colorPalette.200/40",
-          bg: "white/3",
-        },
-      },
-      subtle: {
-        _disabled: {
-          color: "colorPalette.200/40",
-          bg: "white/3",
-        },
-      },
-      ghost: {
-        _disabled: {
-          color: "colorPalette.200/40",
-        },
-      },
-      input: {
-        _disabled: {
-          color: "colorPalette.200/40",
-          bg: "black/3",
-        },
-      },
-    } satisfies Record<TDesignVariant, SystemStyleObject>,
     // Hover styles based on hoverVariant
     // Also apply hover style on focusWithin for input-like variants
     // Focus styles extends hover styles hence is also defined here
@@ -198,6 +173,40 @@ export const frameInteractiveClass = cva({
             borderColor: "black/30",
             borderWidth: "0_x",
           },
+        },
+      },
+    } satisfies Record<TDesignVariant, SystemStyleObject>,
+
+    // Disabled styles based on variant
+    variant: {
+      solid: {
+        _disabledHover: {
+          bg: "colorPalette.800",
+          color: "neutral.200/60",
+        },
+      },
+      surface: {
+        _disabledHover: {
+          color: "colorPalette.200/40",
+          bg: "white/3",
+        },
+      },
+      subtle: {
+        _disabledHover: {
+          color: "colorPalette.200/40",
+          bg: "white/3",
+        },
+      },
+      ghost: {
+        _disabledHover: {
+          color: "colorPalette.200/40",
+          bg: "transparent",
+        },
+      },
+      input: {
+        _disabledHover: {
+          color: "colorPalette.200/40",
+          bg: "black/3",
         },
       },
     } satisfies Record<TDesignVariant, SystemStyleObject>,
@@ -380,4 +389,61 @@ export const separatorClass = cva({
       css: { h: "0__x" },
     },
   ],
+});
+
+export const frameContentClass = cva({
+  variants: {
+    startPadding: {
+      icon: {},
+      text: { paddingLeft: "[calc(var(--spacing-gap) * 1.5)]" },
+      none: { paddingLeft: "0" },
+    },
+    endPadding: {
+      icon: {},
+      text: { paddingRight: "[calc(var(--spacing-gap) * 1.5)]" },
+      none: { paddingRight: "0" },
+    },
+  },
+});
+
+export const frameContentLayoutClass = css.raw({
+  display: "inline-flex",
+  flexDirection: "row",
+  alignItems: "center",
+  maxW: "full",
+  gap: "[calc(min(var(--spacing-gap), var(--content-size)))]",
+  px: "var(--spacing-gap)",
+});
+
+export function frameContentStyles(
+  contentHeight: number,
+  spacing: number | null,
+  startPadding: TFrameContentPaddingResolved,
+  endPadding: TFrameContentPaddingResolved,
+  noLayout: boolean,
+): [css: SystemStyleObject, styles: React.CSSProperties] {
+  return [
+    css.raw(
+      { textStyle: "dynamic" },
+      frameContentClass.raw({ startPadding, endPadding }),
+      !noLayout && frameContentLayoutClass,
+    ),
+    {
+      ["--content-size" as string]: sizeToRemString(contentHeight),
+      ["--spacing-gap" as string]: spacing
+        ? spacingToGapRem(spacing)
+        : "calc((var(--design-height) - var(--content-size)) / 2)",
+    },
+  ];
+}
+
+export const frameInputClass = cva({
+  base: {
+    outline: "none",
+    alignSelf: "stretch",
+    flex: "1",
+    _placeholder: {
+      opacity: 0.6,
+    },
+  },
 });

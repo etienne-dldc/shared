@@ -5,6 +5,7 @@ import { InputBasicWidget } from "../widgets/InputBasicWidget";
 import { InputColorsWidget } from "../widgets/InputColorsWidget";
 import { InputContentHeightsWidget } from "../widgets/InputContentHeightsWidget";
 import { InputDisabledWidget } from "../widgets/InputDisabledWidget";
+import { InputFrameGroupWidget } from "../widgets/InputFrameGroupWidget";
 import { InputHeightsWidget } from "../widgets/InputHeightsWidget";
 import { InputHighlightedWidget } from "../widgets/InputHighlightedWidget";
 import { InputIconsWidget } from "../widgets/InputIconsWidget";
@@ -91,7 +92,7 @@ export default function InputStory() {
         <h2>Icons</h2>
         <p>
           Inputs support icons on either side using <code>startIcon</code> and <code>endIcon</code> props, inherited
-          from the <code>TItemContentFragmentProps</code>. Icons are automatically sized and spaced appropriately.
+          from the <code>TFrameContentFragmentProps</code>. Icons are automatically sized and spaced appropriately.
         </p>
       </div>
       <InputIconsWidget />
@@ -103,6 +104,15 @@ export default function InputStory() {
         </p>
       </div>
       <InputDisabledWidget />
+      <div className={cx(prose())}>
+        <h2>Combining with Other Components</h2>
+        <p>
+          Input works seamlessly inside <code>FrameGroup</code> alongside other Frame-based components like{" "}
+          <code>Button</code> and <code>ButtonLike</code>. This is useful for creating search bars, form inputs with
+          labels, and other composite UI patterns.
+        </p>
+      </div>
+      <InputFrameGroupWidget />
       <div className={cx(prose())}>
         <h2>Integration with Forms</h2>
         <p>

@@ -12,15 +12,18 @@ import {
 } from "../core/DesignContext";
 import { DisabledContext } from "../core/DisabledContext";
 import { DynamicColorProvider, TDynamicColor } from "../core/DynamicColorProvider";
-import { itemlContentStyles } from "../item-content/styles";
-import { TItemContentFragmentProps } from "../item-content/types";
-import { itemContentPropsSplitter, useItemContentFragment } from "../item-content/useItemContentFragment";
+import {
+  frameContentPropsSplitter,
+  TFrameContentFragmentProps,
+  useFrameContentFragment,
+} from "../frame/FrameContentFragment";
+import { frameContentStyles } from "../frame/styles";
 
 export type TListItemSelected = "none" | "secondary" | "primary";
 
 export type ListItemProps = Merge<
   ComponentPropsWithRef<"div">,
-  TItemContentFragmentProps &
+  TFrameContentFragmentProps &
     TDesignProps & {
       color?: TDynamicColor;
       selected?: TListItemSelected;
@@ -30,18 +33,18 @@ export type ListItemProps = Merge<
 >;
 
 export function ListItem(inProps: ListItemProps) {
-  const [{ localDisabled, localItemContent, localDesign }, props] = pipePropsSplitters(inProps, {
+  const [{ localDisabled, localFrameContent, localDesign }, props] = pipePropsSplitters(inProps, {
     localDesign: designPropsSplitter,
     localDisabled: DisabledContext.propsSplitter,
-    localItemContent: itemContentPropsSplitter,
+    localFrameContent: frameContentPropsSplitter,
   });
 
   const { color, children, style, className, render, ref, ...htmlProps } = props;
 
   const { height, contentHeight, spacing, rounded, depth } = useContainerDesignProps(localDesign);
-  const { startPadding, endPadding, fragment, noLayout } = useItemContentFragment(localItemContent, children);
+  const { startPadding, endPadding, fragment, noLayout } = useFrameContentFragment(localFrameContent, children);
 
-  const [contentCss, contentInline] = itemlContentStyles(contentHeight, spacing, startPadding, endPadding, noLayout);
+  const [contentCss, contentInline] = frameContentStyles(contentHeight, spacing, startPadding, endPadding, noLayout);
 
   const compositeStore = Ariakit.useCompositeContext();
   const renderResolved = compositeStore ? (

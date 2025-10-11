@@ -10,10 +10,9 @@ import {
   useContainerDesignProps,
 } from "../shared/components/core/DesignContext";
 import { Frame } from "../shared/components/frame/Frame";
+import { FrameContent } from "../shared/components/frame/FrameContent";
+import { FrameContentFragment, TFrameContentFragmentProps } from "../shared/components/frame/FrameContentFragment";
 import { Input } from "../shared/components/input/Input";
-import { ItemContent } from "../shared/components/item-content/ItemContent";
-import { ItemContentFragment } from "../shared/components/item-content/ItemContentFragment";
-import { TItemContentFragmentProps } from "../shared/components/item-content/types";
 import { TNestedDesignValues } from "../shared/design/types";
 import { autoContentHeight } from "../shared/design/utils";
 
@@ -98,7 +97,7 @@ function TreePlayground() {
 
 type PlaygroundItemProps = Merge<
   Omit<HTMLStyledProps<"div">, "title" | OmittedHTMLProps>,
-  { height?: number; children?: React.ReactNode } & TItemContentFragmentProps
+  { height?: number; children?: React.ReactNode } & TFrameContentFragmentProps
 >;
 
 function PlaygroundItem({
@@ -142,11 +141,11 @@ function PlaygroundItem({
         padding={padding}
         {...htmlProps}
       >
-        <ItemContentFragment {...{ startIcon, startPadding, startSlot }}>
-          <ItemContent css={{ flex: "1" }} padding="none">
+        <FrameContentFragment {...{ startIcon, startPadding, startSlot }}>
+          <FrameContent css={{ flex: "1" }} padding="none">
             {children}
-          </ItemContent>
-        </ItemContentFragment>
+          </FrameContent>
+        </FrameContentFragment>
       </Frame>
     </NestedDefaultDesignProvider>
   );

@@ -4,13 +4,6 @@
 
 This is a **PandaCSS-based React design system** with an interactive playground for component documentation. The architecture follows a Frame-centric design where most UI components (Button, ListItem, Input, MenuItem) extend the base `Frame` component.
 
-### Core Components Hierarchy
-
-- **Frame** (`src/shared/components/frame/Frame.tsx`) - Base component providing styling, sizing, and layout
-- **Button/ButtonLike/ButtonLink** - Interactive elements built on Frame
-- **FrameGroup** - Container for grouped Frame-based components with automatic dividers
-- **ItemContent/ItemContentFragment** - Content layout system for icons, text, and slots
-
 ### Key Design Systems
 
 **4px-Based Sizing with Fractional Support:**
@@ -75,7 +68,7 @@ export function FrameBasicWidget() {
 
 When creating Frame-based components:
 
-1. Import `Frame` and extend with `TItemContentFragmentProps` & `TDesignProps`
+1. Import `Frame` and extend with `TFrameContentFragmentProps` & `TDesignProps`
 2. Use `pipePropsSplitters` to separate design, content, and HTML props
 3. Wrap with appropriate Ariakit components for accessibility
 4. Pass design props to `useContainerDesignProps()` for resolution

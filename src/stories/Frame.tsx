@@ -8,6 +8,7 @@ import { FrameColorsWidget } from "../widgets/FrameColorsWidget";
 import { FrameContentHeightWidget } from "../widgets/FrameContentHeightWidget";
 import { FrameContentWidget } from "../widgets/FrameContentWidget";
 import { FrameDirectionalPaddingWidget } from "../widgets/FrameDirectionalPaddingWidget";
+import { FrameDisabledWidget } from "../widgets/FrameDisabledWidget";
 import { FrameHeightWidget } from "../widgets/FrameHeightWidget";
 import { FrameInteractiveWidget } from "../widgets/FrameInteractiveWidget";
 import { FramePaddingWidget } from "../widgets/FramePaddingWidget";
@@ -70,6 +71,24 @@ export default function FrameStory() {
         </p>
       </div>
       <FrameInteractiveWidget />
+      <div className={cx(prose())}>
+        <h2>Disabled</h2>
+        <p>
+          The <code>disabled</code> prop controls the disabled state of Frame components. When{" "}
+          <code>disabled={`{true}`}</code>, the Frame will have reduced opacity and pointer events will be disabled,
+          providing clear visual feedback that the element is not interactive.
+        </p>
+        <p>
+          <strong>Important:</strong> The <code>disabled</code> prop only takes effect when <code>interactive</code> is
+          set to <code>true</code>. Non-interactive Frames cannot be disabled as they are not meant to respond to user
+          interactions in the first place.
+        </p>
+        <p>
+          The disabled state works consistently across all color variants and maintains accessibility by setting
+          appropriate ARIA attributes.
+        </p>
+      </div>
+      <FrameDisabledWidget />
       <div className={cx(prose())}>
         <h2>Variants</h2>
         <p>Frame comes with different visual variants to serve different purposes:</p>

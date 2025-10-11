@@ -3,15 +3,15 @@ import { Grid } from "../../styled-system/jsx";
 import { CodeHighlight } from "../playground/CodeHighlight";
 import { HighlightedGrid } from "../playground/HighlightedGrid";
 import { Frame } from "../shared/components/frame/Frame";
-import { TItemlContentPaddingResolved } from "../shared/components/item-content/types";
+import { TFrameContentPaddingResolved } from "../shared/components/frame/FrameContentFragment";
 import { printElement } from "./utils/printElement";
 
 export function FrameDirectionalPaddingWidget() {
-  const paddings: TItemlContentPaddingResolved[] = ["text", "icon", "none"];
+  const paddings: TFrameContentPaddingResolved[] = ["text", "icon", "none"];
   const propName = ["startPadding", "endPadding"];
 
   const [highlighted, setHighlighted] = useState<{
-    padding: TItemlContentPaddingResolved;
+    padding: TFrameContentPaddingResolved;
     propName: (typeof propName)[number];
   } | null>();
 

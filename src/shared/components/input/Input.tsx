@@ -1,14 +1,16 @@
 import { useCallback, useRef } from "react";
-import { styled } from "../../../../styled-system/jsx";
 import { TDesignProps, TPaletteColor } from "../../design/types";
 import { useMergeRefs } from "../../hooks/useMergeRefs";
 import { ComponentPropsBase } from "../../utils/componentProps";
+import { pipePropsSplitters } from "../../utils/propsSplitters";
+import { designPropsSplitter, useContainerDesignProps } from "../core/DesignContext";
 import { Frame } from "../frame/Frame";
-import { TItemContentFragmentProps } from "../item-content/types";
+import { TFrameContentFragmentProps } from "../frame/FrameContentFragment";
+import { FrameInputContent } from "../frame/FrameInputContent";
 
 export type InputProps = ComponentPropsBase<
   "div",
-  TItemContentFragmentProps &
+  TFrameContentFragmentProps &
     TDesignProps & {
       disabled?: boolean;
 
@@ -20,6 +22,8 @@ export type InputProps = ComponentPropsBase<
       value?: string;
       onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
       placeholder?: string;
+      name?: string;
+      type?: string;
 
       // Data attributes
       "data-hover"?: boolean;
@@ -28,7 +32,24 @@ export type InputProps = ComponentPropsBase<
 >;
 
 export function Input(inProps: InputProps) {
-  const { value, onChange, placeholder, onPointerDown: onPointerDownProps, ...frameProps } = inProps;
+  const [{ localDesign }, props] = pipePropsSplitters(inProps, {
+    localDesign: designPropsSplitter,
+  });
+
+  const {
+    onPointerDown: onPointerDownProps,
+    children,
+    // Input props
+    value,
+    onChange,
+    placeholder,
+    name,
+    type,
+
+    ...frameProps
+  } = props;
+
+  const { variant } = useContainerDesignProps(localDesign);
 
   const localRef = useRef<HTMLDivElement>(null);
   const ref = useMergeRefs(localRef, inProps.ref);
@@ -47,14 +68,13 @@ export function Input(inProps: InputProps) {
     [onPointerDownProps],
   );
 
+  const childrenResolved = children ?? (
+    <FrameInputContent value={value} onChange={onChange} placeholder={placeholder} name={name} type={type} />
+  );
+
   return (
-    <Frame variant="input" interactive onPointerDown={onPointerDown} {...frameProps} ref={ref}>
-      <styled.input
-        css={{ outline: "none", alignSelf: "stretch", flex: "1" }}
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-      />
+    <Frame variant={variant} interactive onPointerDown={onPointerDown} {...frameProps} ref={ref}>
+      {childrenResolved}
     </Frame>
   );
 }

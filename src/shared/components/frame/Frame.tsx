@@ -6,15 +6,13 @@ import { TDesignProps, TPaletteColor } from "../../design/types";
 import { ComponentPropsBase } from "../../utils/componentProps";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { designPropsSplitter, SizeContextProvider, useContainerDesignProps } from "../core/DesignContext";
-import { DisabledContext } from "../core/DisabledContext";
-import { itemlContentStyles } from "../item-content/styles";
-import { TItemContentFragmentProps } from "../item-content/types";
-import { itemContentPropsSplitter, useItemContentFragment } from "../item-content/useItemContentFragment";
-import { frameStyles } from "./styles";
+import { DisabledContext, useDisabled } from "../core/DisabledContext";
+import { frameContentPropsSplitter, TFrameContentFragmentProps, useFrameContentFragment } from "./FrameContentFragment";
+import { frameContentStyles, frameStyles } from "./styles";
 
 export type FrameProps = ComponentPropsBase<
   "div",
-  TItemContentFragmentProps &
+  TFrameContentFragmentProps &
     TDesignProps & {
       disabled?: boolean;
 
@@ -34,10 +32,10 @@ export type FrameProps = ComponentPropsBase<
 >;
 
 export function Frame(inProps: FrameProps) {
-  const [{ localDesign, localDisabled, localItemContent }, props] = pipePropsSplitters(inProps, {
+  const [{ localDesign, localDisabled, localFrameContent }, props] = pipePropsSplitters(inProps, {
     localDesign: designPropsSplitter,
     localDisabled: DisabledContext.propsSplitter,
-    localItemContent: itemContentPropsSplitter,
+    localFrameContent: frameContentPropsSplitter,
   });
 
   const {
@@ -55,12 +53,13 @@ export function Frame(inProps: FrameProps) {
     ...htmlProps
   } = props;
 
-  const isDisabled = interactive && localDisabled.disabled;
+  const isDisabled = useDisabled(localDisabled);
+  const isDisabledAndInteractive = isDisabled && interactive;
 
   const { hoverVariant, variant, height, contentHeight, spacing, rounded, depth } =
     useContainerDesignProps(localDesign);
 
-  const { startPadding, endPadding, fragment, noLayout } = useItemContentFragment(localItemContent, children);
+  const { startPadding, endPadding, fragment, noLayout } = useFrameContentFragment(localFrameContent, children);
 
   const [baseCss, baseInline] = useMemo(
     () =>
@@ -78,7 +77,7 @@ export function Frame(inProps: FrameProps) {
     [color, contentHeight, height, highlightColor, highlighted, hoverVariant, interactive, rounded, variant],
   );
   const [contentCss, contentInline] = useMemo(
-    () => itemlContentStyles(contentHeight, spacing, startPadding, endPadding, noLayout),
+    () => frameContentStyles(contentHeight, spacing, startPadding, endPadding, noLayout),
     [contentHeight, endPadding, noLayout, spacing, startPadding],
   );
 
@@ -86,7 +85,7 @@ export function Frame(inProps: FrameProps) {
     <Ariakit.Role
       className={cx(css(baseCss, contentCss, cssProps), className)}
       style={{ ...baseInline, ...contentInline, ...style }}
-      aria-disabled={isDisabled}
+      aria-disabled={isDisabledAndInteractive}
       {...htmlProps}
     >
       <SizeContextProvider height={height} contentHeight={contentHeight} rounded={rounded} depth={depth}>
