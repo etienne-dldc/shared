@@ -3,6 +3,7 @@ import { prose } from "../../styled-system/recipes";
 import { StoryLayout } from "../playground/StoryLayout";
 import { DefaultDesignProviderBasicWidget } from "../widgets/DefaultDesignProviderBasicWidget";
 import { DefaultDesignProviderNestedWidget } from "../widgets/DefaultDesignProviderNestedWidget";
+import { ProvideColorPaletteWidget } from "../widgets/ProvideColorPaletteWidget";
 
 export default function DefaultDesignProviderStory() {
   return (
@@ -69,6 +70,13 @@ export default function DefaultDesignProviderStory() {
           4px-based sizing system with fractional support (e.g., "7", "7_x", "7x").
         </p>
       </div>
+      <div className={cx(prose())}>
+        <h2>Setting color</h2>
+        <p>
+          To provide color to a group of elements, use the <code>colorPaletteClass</code> styles
+        </p>
+      </div>
+      <ProvideColorPaletteWidget />
     </StoryLayout>
   );
 }
