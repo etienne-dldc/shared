@@ -90,6 +90,7 @@ export function Select<Value extends string>(inProps: SelectProps<Value>) {
 
   const storeValue = Ariakit.useStoreState(selectStore, (s) => s.value);
 
+  // eslint-disable-next-line react-hooks/preserve-manual-memoization
   const selectedItem = useMemo(() => items.find((item) => item.value === storeValue), [items, storeValue]);
   if (!selectedItem) {
     console.warn(`Select: value "${storeValue}" not found in items`);

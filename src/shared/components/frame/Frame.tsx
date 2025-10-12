@@ -1,6 +1,5 @@
 import * as Ariakit from "@ariakit/react";
 
-import { useMemo } from "react";
 import { css, cx } from "../../../../styled-system/css";
 import { TDesignProps, TDesignVariant, TPaletteColor } from "../../design/types";
 import { ComponentPropsBase } from "../../utils/componentProps";
@@ -71,25 +70,19 @@ export function Frame(inProps: FrameProps) {
 
   const { startPadding, endPadding, fragment, noLayout } = useFrameContentFragment(localFrameContent, children);
 
-  const [baseCss, baseInline] = useMemo(
-    () =>
-      frameStyles({
-        height,
-        contentHeight,
-        rounded,
-        variant,
-        color,
-        hoverVariant,
-        interactive,
-        highlightColor,
-        highlighted,
-      }),
-    [color, contentHeight, height, highlightColor, highlighted, hoverVariant, interactive, rounded, variant],
-  );
-  const [contentCss, contentInline] = useMemo(
-    () => frameContentStyles(contentHeight, spacing, startPadding, endPadding, noLayout),
-    [contentHeight, endPadding, noLayout, spacing, startPadding],
-  );
+  const [baseCss, baseInline] = frameStyles({
+    height,
+    contentHeight,
+    rounded,
+    variant,
+    color,
+    hoverVariant,
+    interactive,
+    highlightColor,
+    highlighted,
+  });
+
+  const [contentCss, contentInline] = frameContentStyles(contentHeight, spacing, startPadding, endPadding, noLayout);
 
   return (
     <Ariakit.Role

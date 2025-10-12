@@ -5,6 +5,7 @@ import { HighlightedGrid } from "../playground/HighlightedGrid";
 import { Button } from "../shared/components/button/Button";
 import { DefaultDesignProvider } from "../shared/components/core/DesignContext";
 import { Frame } from "../shared/components/frame/Frame";
+import { Input } from "../shared/components/input/Input";
 import { printElement } from "./utils/printElement";
 
 export function DefaultDesignProviderBasicWidget() {
@@ -16,6 +17,7 @@ export function DefaultDesignProviderBasicWidget() {
         <Fragment>
           <Frame>Default Frame</Frame>
           <Button>Default Button</Button>
+          <Input placeholder="Default Input" />
         </Fragment>
       ),
     },
@@ -26,6 +28,7 @@ export function DefaultDesignProviderBasicWidget() {
         <DefaultDesignProvider variant="solid" height="9">
           <Frame>Solid Frame</Frame>
           <Button>Solid Button</Button>
+          <Input placeholder="Solid Input" />
         </DefaultDesignProvider>
       ),
     },

@@ -44,6 +44,7 @@ export function Input(inProps: InputProps) {
   } = inProps;
 
   const localRef = useRef<HTMLDivElement>(null);
+  // eslint-disable-next-line react-hooks/refs
   const ref = useMergeRefs(localRef, inProps.ref);
 
   const onPointerDown = useCallback(

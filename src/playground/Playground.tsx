@@ -7,7 +7,6 @@ import {
   ListIcon,
   SquaresFourIcon,
 } from "@phosphor-icons/react";
-import { createBrowserHistory } from "history";
 import {
   ComponentPropsWithRef,
   Fragment,
@@ -30,30 +29,29 @@ import { Scrollbars } from "../shared/components/common/Scrollbars";
 import { FrameGroup } from "../shared/components/frame/FrameGroup";
 import { EmptyState } from "../shared/components/layouts/EmptyState";
 import { MenuItem } from "../shared/components/menu/MenuItem";
+import { appHistory } from "./history";
 import { routes, TRoute, TRouteFolder, TRouteItem } from "./routes";
-
-const history = createBrowserHistory();
 
 const menuPaper = (
   <Paper
     css={{
       bg: "neutral.900",
       outline: "none",
-      w: "[150px]",
-      minW: "[min-content]",
+      width: "[200px]",
+      height: "[300px]",
+      minW: "[200px]",
       maxW: "var(--popover-available-width)",
       maxH: "var(--popover-available-height)",
-      height: "[300px]",
       position: "relative",
     }}
   />
 );
 
 export function Playground() {
-  const [location, setLocation] = useState(() => history.location);
+  const [location, setLocation] = useState(() => appHistory.location);
 
   useEffect(() => {
-    return history.listen((e) => setLocation(e.location));
+    return appHistory.listen((e) => setLocation(e.location));
   }, []);
 
   const routeMatch = useMemo(() => {
@@ -81,10 +79,8 @@ export function Playground() {
   }, [location.pathname]);
 
   return (
-    <Grid
-      css={{ gridTemplateRows: "auto 1fr", gridTemplateColumns: "100%", gap: "4", p: "4", minH: "screen", pb: "8" }}
-    >
-      <HStack gap="2">
+    <Grid css={{ gridTemplateRows: "auto 1fr", gridTemplateColumns: "100%", minH: "screen", pb: "8" }}>
+      <HStack gap="2" css={{ p: "4" }}>
         <FrameGroup variant="solid" height="10" color="blue">
           <RouteMenu items={routes} icon={<ListIcon />} />
           {routeMatch?.parents.map((parent) => {
@@ -108,7 +104,7 @@ export function Playground() {
           </Fragment>
         )}
       </HStack>
-      <styled.div css={{ position: "relative" }}>
+      <styled.div css={{ position: "relative", px: "4" }}>
         <Suspense fallback={<LoadingBlock />}>
           {routeMatch ? (
             <routeMatch.match.component />
@@ -134,6 +130,9 @@ type RouteMenuProps = Merge<
 function RouteMenu({ items, title, icon, endIcon, ...buttonProps }: RouteMenuProps) {
   const topMenuRef = useRef<HTMLDivElement | null>(null);
 
+  // eslint-disable-next-line react-hooks/refs
+  const renderedItems = items.map((item) => renderItem(item, topMenuRef));
+
   return (
     <Ariakit.MenuProvider>
       <Ariakit.MenuButton render={<Button startIcon={icon} endIcon={endIcon} />} {...buttonProps}>
@@ -141,9 +140,7 @@ function RouteMenu({ items, title, icon, endIcon, ...buttonProps }: RouteMenuPro
       </Ariakit.MenuButton>
       <Ariakit.Menu gutter={8} ref={topMenuRef} render={menuPaper} portal={true} unmountOnHide>
         <Scrollbars className={css({ inset: "0", position: "absolute" })}>
-          <VStack css={{ alignItems: "stretch", gap: "0", p: "1" }}>
-            {items.map((item) => renderItem(item, topMenuRef))}
-          </VStack>
+          <VStack css={{ alignItems: "stretch", gap: "0", p: "1" }}>{renderedItems}</VStack>
         </Scrollbars>
       </Ariakit.Menu>
     </Ariakit.MenuProvider>
@@ -158,6 +155,9 @@ interface NestedMenuProps {
 function NestedMenu({ item, parentRef }: NestedMenuProps) {
   const menuRef = useRef<HTMLDivElement | null>(null);
 
+  // eslint-disable-next-line react-hooks/refs
+  const renderedItems = item.routes.map((item) => renderItem(item, menuRef));
+
   return (
     <Ariakit.MenuProvider>
       <MenuItem render={<Ariakit.MenuButton />} startIcon={<FolderIcon />} endIcon={<CaretRightIcon />}>
@@ -171,9 +171,7 @@ function NestedMenu({ item, parentRef }: NestedMenuProps) {
         portal={true}
       >
         <Scrollbars className={css({ inset: "0", position: "absolute" })}>
-          <VStack css={{ alignItems: "stretch", gap: "0", p: "1" }}>
-            {item.routes.map((item) => renderItem(item, menuRef))}
-          </VStack>
+          <VStack css={{ alignItems: "stretch", gap: "0", p: "1" }}>{renderedItems}</VStack>
         </Scrollbars>
       </Ariakit.Menu>
     </Ariakit.MenuProvider>
@@ -193,7 +191,7 @@ function NavItem({ item }: NavItemProps) {
         return;
       }
       event.preventDefault();
-      history.push(item.path);
+      appHistory.push(item.path);
       menuStore?.hideAll();
     },
     [item.path, menuStore],
