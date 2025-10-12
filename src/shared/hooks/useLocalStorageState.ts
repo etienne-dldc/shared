@@ -28,6 +28,7 @@ export function useLocalStorageState<T>(
     return restored;
   });
 
+  // eslint-disable-next-line react-hooks/refs
   const [value, setValue] = useState<T>(() => restoreRef.current());
 
   // Restore from localStorage when key changes

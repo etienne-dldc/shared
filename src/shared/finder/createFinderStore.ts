@@ -352,6 +352,7 @@ export function createFinderStore<Panel, PanelContext>() {
       ...props,
     };
 
+    // eslint-disable-next-line react-hooks/refs
     return createElement(PanelBase, { ...nextProps, ref }, children);
   });
 
@@ -361,6 +362,7 @@ export function createFinderStore<Panel, PanelContext>() {
   ): ReactNode {
     const panelsStable = useMemoEqual(panels);
     const props = usePanelLinkProps({ panels: panelsStable, replace, fromIndex }, rest);
+    // eslint-disable-next-line react-hooks/refs
     return createElement("a", { ...rest, ...props, ref });
   });
 
