@@ -3,11 +3,10 @@ import { Grid } from "../../styled-system/jsx";
 import { CodeHighlight } from "../playground/CodeHighlight";
 import { HighlightedGrid } from "../playground/HighlightedGrid";
 import { Button, ButtonProps } from "../shared/components/button/Button";
-import { TDynamicColor } from "../shared/components/core/DynamicColorProvider";
-import { TDesignVariant } from "../shared/design/types";
+import { TDesignVariant, TPaletteColor } from "../shared/design/types";
 
 export function ButtonColorsVariantsWidget() {
-  const colors: TDynamicColor[] = [
+  const colors: TPaletteColor[] = [
     "red",
     "orange",
     "amber",

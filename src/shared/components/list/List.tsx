@@ -1,15 +1,14 @@
 import * as Ariakit from "@ariakit/react";
 import { ComponentPropsWithRef } from "react";
 import { Merge } from "type-fest";
-import { TDesignHeight } from "../../design/types";
+import { TDesignHeight, TPaletteColor } from "../../design/types";
 import { DefaultDesignProvider } from "../core/DesignContext";
-import { DynamicColorProvider, TDynamicColor } from "../core/DynamicColorProvider";
 
 export type ListProps = Merge<
   ComponentPropsWithRef<"div">,
   {
     height?: TDesignHeight;
-    color?: TDynamicColor;
+    color?: TPaletteColor;
     disabled?: boolean;
 
     direction?: "horizontal" | "vertical";
@@ -46,16 +45,14 @@ export function List(inProps: ListProps) {
     // variant={localDesign.variant}
     // hoverVariant={localDesign.hoverVariant}
     >
-      <DynamicColorProvider color={color}>
-        <Ariakit.Role
-          ref={ref}
-          // className={groupClass}
-          {...divProps}
-          render={render}
-        >
-          {children}
-        </Ariakit.Role>
-      </DynamicColorProvider>
+      <Ariakit.Role
+        ref={ref}
+        // className={groupClass}
+        {...divProps}
+        render={render}
+      >
+        {children}
+      </Ariakit.Role>
     </DefaultDesignProvider>
   );
 }

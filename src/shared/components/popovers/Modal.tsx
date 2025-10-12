@@ -5,7 +5,6 @@ import { css } from "../../../../styled-system/css";
 import { Backdrop, Paper } from "../../../../styled-system/jsx";
 import { pick } from "../../utils/pick";
 import { Button } from "../button/Button";
-import { DynamicColorProvider } from "../core/DynamicColorProvider";
 import { PageTitle } from "../layouts/PageTitle";
 
 interface ModalProps {
@@ -105,34 +104,32 @@ export const Modal = forwardRef<HTMLButtonElement, ModalProps>(
           modal
           portal
         >
-          <DynamicColorProvider force>
-            <div
-              className={css({
-                width: "full",
-                display: "grid",
-                padding: "5",
-                ...(innerScroll ? { height: "full" } : { minHeight: "full" }),
-              })}
-              style={{ gridTemplateRows: `1fr`, gridTemplateColumns: `auto` }}
-            >
-              <Paper css={paperCss} className={className}>
-                <PageTitle
-                  title={<Ariakit.DialogHeading render={<span />}>{title}</Ariakit.DialogHeading>}
-                  endActions={
-                    <Fragment>
-                      {endActions}
-                      {!noCloseButton && (
-                        <Ariakit.DialogDismiss
-                          render={<Button variant="subtle" startIcon={<XIcon />} children={null} />}
-                        />
-                      )}
-                    </Fragment>
-                  }
-                />
-                {content}
-              </Paper>
-            </div>
-          </DynamicColorProvider>
+          <div
+            className={css({
+              width: "full",
+              display: "grid",
+              padding: "5",
+              ...(innerScroll ? { height: "full" } : { minHeight: "full" }),
+            })}
+            style={{ gridTemplateRows: `1fr`, gridTemplateColumns: `auto` }}
+          >
+            <Paper css={paperCss} className={className}>
+              <PageTitle
+                title={<Ariakit.DialogHeading render={<span />}>{title}</Ariakit.DialogHeading>}
+                endActions={
+                  <Fragment>
+                    {endActions}
+                    {!noCloseButton && (
+                      <Ariakit.DialogDismiss
+                        render={<Button variant="subtle" startIcon={<XIcon />} children={null} />}
+                      />
+                    )}
+                  </Fragment>
+                }
+              />
+              {content}
+            </Paper>
+          </div>
         </Ariakit.Dialog>
       </Ariakit.DialogProvider>
     );

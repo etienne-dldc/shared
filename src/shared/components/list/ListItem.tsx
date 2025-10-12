@@ -2,7 +2,7 @@ import * as Ariakit from "@ariakit/react";
 import { ComponentPropsWithRef } from "react";
 import { Merge } from "type-fest";
 import { css, cx } from "../../../../styled-system/css";
-import { TDesignProps } from "../../design/types";
+import { TDesignProps, TPaletteColor } from "../../design/types";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import {
   DefaultDesignProvider,
@@ -11,7 +11,6 @@ import {
   useContainerDesignProps,
 } from "../core/DesignContext";
 import { DisabledContext } from "../core/DisabledContext";
-import { DynamicColorProvider, TDynamicColor } from "../core/DynamicColorProvider";
 import {
   frameContentPropsSplitter,
   TFrameContentFragmentProps,
@@ -25,7 +24,7 @@ export type ListItemProps = Merge<
   ComponentPropsWithRef<"div">,
   TFrameContentFragmentProps &
     TDesignProps & {
-      color?: TDynamicColor;
+      color?: TPaletteColor;
       selected?: TListItemSelected;
       disabled?: boolean;
       render?: React.ReactElement<any>;
@@ -57,20 +56,18 @@ export function ListItem(inProps: ListItemProps) {
   );
 
   return (
-    <DynamicColorProvider color={color}>
-      <Ariakit.Role
-        className={cx(css(contentCss), className)}
-        style={{ ...style, ...contentInline }}
-        render={renderResolved}
-        ref={ref}
-        {...htmlProps}
-      >
-        <DefaultDesignProvider {...localDesign} height={null}>
-          <SizeContextProvider height={height} contentHeight={contentHeight} rounded={rounded} depth={depth}>
-            {fragment}
-          </SizeContextProvider>
-        </DefaultDesignProvider>
-      </Ariakit.Role>
-    </DynamicColorProvider>
+    <Ariakit.Role
+      className={cx(css(contentCss), className)}
+      style={{ ...style, ...contentInline }}
+      render={renderResolved}
+      ref={ref}
+      {...htmlProps}
+    >
+      <DefaultDesignProvider {...localDesign} height={null}>
+        <SizeContextProvider height={height} contentHeight={contentHeight} rounded={rounded} depth={depth}>
+          {fragment}
+        </SizeContextProvider>
+      </DefaultDesignProvider>
+    </Ariakit.Role>
   );
 }
