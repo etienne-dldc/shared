@@ -1,6 +1,6 @@
 import { cx } from "../../styled-system/css";
-import { Grid } from "../../styled-system/jsx";
 import { prose } from "../../styled-system/recipes";
+import { StoryLayout } from "../playground/StoryLayout";
 import { ButtonColorsVariantsWidget } from "../widgets/ButtonColorsVariantsWidget";
 import { ButtonContentHeightsWidget } from "../widgets/ButtonContentHeightsWidget";
 import { ButtonDisabledWidget } from "../widgets/ButtonDisabledWidget";
@@ -20,16 +20,7 @@ import { ButtonSpacingWidget } from "../widgets/ButtonSpacingWidget";
 
 export default function ButtonStory() {
   return (
-    <Grid
-      css={{
-        mx: "auto",
-        maxW: "960px",
-        gridTemplateColumns: "1fr 1fr",
-        "& > *": {
-          gridColumn: "span 2",
-        },
-      }}
-    >
+    <StoryLayout>
       <div className={cx(prose())}>
         <h1>Button</h1>
         <h2>Button Sizes</h2>
@@ -175,6 +166,6 @@ export default function ButtonStory() {
           feedback.
         </p>
       </div>
-    </Grid>
+    </StoryLayout>
   );
 }

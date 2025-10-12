@@ -1,6 +1,6 @@
 import { cx } from "../../styled-system/css";
-import { Grid } from "../../styled-system/jsx";
 import { prose } from "../../styled-system/recipes";
+import { StoryLayout } from "../playground/StoryLayout";
 import { InputAutoFocusWidget } from "../widgets/InputAutoFocusWidget";
 import { InputBasicWidget } from "../widgets/InputBasicWidget";
 import { InputColorsWidget } from "../widgets/InputColorsWidget";
@@ -16,16 +16,7 @@ import { InputVariantsWidget } from "../widgets/InputVariantsWidget";
 
 export default function InputStory() {
   return (
-    <Grid
-      css={{
-        mx: "auto",
-        maxW: "960px",
-        gridTemplateColumns: "1fr 1fr",
-        "& > *": {
-          gridColumn: "span 2",
-        },
-      }}
-    >
+    <StoryLayout>
       <div className={cx(prose())}>
         <h1>Input</h1>
         <p>
@@ -174,6 +165,6 @@ export default function InputStory() {
           use ARIA labels when needed.
         </p>
       </div>
-    </Grid>
+    </StoryLayout>
   );
 }

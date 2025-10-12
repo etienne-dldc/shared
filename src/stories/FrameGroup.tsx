@@ -1,6 +1,6 @@
 import { cx } from "../../styled-system/css";
-import { Grid } from "../../styled-system/jsx";
 import { prose } from "../../styled-system/recipes";
+import { StoryLayout } from "../playground/StoryLayout";
 import { FrameGroupBasicWidget } from "../widgets/FrameGroupBasicWidget";
 import { FrameGroupColorsWidget } from "../widgets/FrameGroupColorsWidget";
 import { FrameGroupDirectionWidget } from "../widgets/FrameGroupDirectionWidget";
@@ -14,16 +14,7 @@ import { FrameGroupVariantsWidget } from "../widgets/FrameGroupVariantsWidget";
 
 export default function FrameGroupStory() {
   return (
-    <Grid
-      css={{
-        mx: "auto",
-        maxW: "960px",
-        gridTemplateColumns: "1fr 1fr",
-        "& > *": {
-          gridColumn: "span 2",
-        },
-      }}
-    >
+    <StoryLayout>
       <div className={cx(prose())}>
         <h1>FrameGroup</h1>
         <p>
@@ -109,6 +100,6 @@ export default function FrameGroupStory() {
           throughout the group, making it easy to create professional-looking interface elements.
         </p>
       </div>
-    </Grid>
+    </StoryLayout>
   );
 }

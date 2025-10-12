@@ -1,21 +1,12 @@
 import { cx } from "../../styled-system/css";
-import { Grid } from "../../styled-system/jsx";
 import { prose } from "../../styled-system/recipes";
+import { StoryLayout } from "../playground/StoryLayout";
 import { DefaultDesignProviderBasicWidget } from "../widgets/DefaultDesignProviderBasicWidget";
 import { DefaultDesignProviderNestedWidget } from "../widgets/DefaultDesignProviderNestedWidget";
 
 export default function DefaultDesignProviderStory() {
   return (
-    <Grid
-      css={{
-        mx: "auto",
-        maxW: "960px",
-        gridTemplateColumns: "1fr 1fr",
-        "& > *": {
-          gridColumn: "span 2",
-        },
-      }}
-    >
+    <StoryLayout>
       <div className={cx(prose())}>
         <h1>DefaultDesignProvider</h1>
         <p>
@@ -78,6 +69,6 @@ export default function DefaultDesignProviderStory() {
           4px-based sizing system with fractional support (e.g., "7", "7_x", "7x").
         </p>
       </div>
-    </Grid>
+    </StoryLayout>
   );
 }
