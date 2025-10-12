@@ -51,7 +51,6 @@ export function Input(inProps: InputProps) {
     (event: React.PointerEvent<HTMLElement>) => {
       onPointerDownProps?.(event as React.PointerEvent<HTMLInputElement>);
       if (event.defaultPrevented) return;
-      if (event.target === localRef.current) return;
       setTimeout(() => {
         // Find input in children and focus it
         const input = localRef.current?.querySelector("input");

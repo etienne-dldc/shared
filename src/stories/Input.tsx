@@ -1,9 +1,11 @@
 import { cx } from "../../styled-system/css";
 import { Grid } from "../../styled-system/jsx";
 import { prose } from "../../styled-system/recipes";
+import { InputAutoFocusWidget } from "../widgets/InputAutoFocusWidget";
 import { InputBasicWidget } from "../widgets/InputBasicWidget";
 import { InputColorsWidget } from "../widgets/InputColorsWidget";
 import { InputContentHeightsWidget } from "../widgets/InputContentHeightsWidget";
+import { InputCustomInputChildrenWidget } from "../widgets/InputCustomInputChildrenWidget";
 import { InputDisabledWidget } from "../widgets/InputDisabledWidget";
 import { InputFrameGroupWidget } from "../widgets/InputFrameGroupWidget";
 import { InputHeightsWidget } from "../widgets/InputHeightsWidget";
@@ -35,19 +37,64 @@ export default function InputStory() {
           it easy to create cohesive form layouts.
         </p>
         <h2>Basic Usage</h2>
-        <p>
-          At its simplest, Input is a controlled component that accepts <code>value</code>, <code>onChange</code>, and{" "}
-          <code>placeholder</code> props.
-        </p>
       </div>
       <InputBasicWidget />
       <div className={cx(prose())}>
-        <h2>Placeholder</h2>
+        <h2>Input props</h2>
         <p>
-          Use the <code>placeholder</code> prop to provide hint text when the input is empty.
+          The Input component renders an <code>&lt;input&gt;</code> element inside a styled Frame. The following props
+          are forwarded to the native input element:
         </p>
+        <ul>
+          <li>
+            <code>value</code>
+          </li>
+          <li>
+            <code>onChange</code>
+          </li>
+          <li>
+            <code>placeholder</code>
+          </li>
+          <li>
+            <code>name</code>
+          </li>
+          <li>
+            <code>type</code>
+          </li>
+        </ul>
+        <p>All other props are passed to the outer Frame container.</p>
       </div>
       <InputPlaceholderWidget />
+      <div className={cx(prose())}>
+        <h2>
+          Custom <code>&lt;input&gt;</code>
+        </h2>
+        <p>
+          You can also provide your own <code>&lt;input&gt;</code> element as children to the Input component. This is
+          useful for adding custom attributes like <code>maxLength</code>, <code>autoComplete</code>, etc.
+        </p>
+        <p>
+          To get the proper styling and behavior, make sure to use the <code>FrameInputContent</code> component.
+        </p>
+      </div>
+      <InputCustomInputChildrenWidget />
+      <div className={cx(prose())}>
+        <h2>Click to focus Behavior</h2>
+        <p>
+          The <code>Input</code> component has a special behavior: when you click anywhere inside the Frame (including
+          on icons or padding areas), it will automatically focus the first <code>&lt;input&gt;</code> element inside.
+        </p>
+        <p>
+          This makes the entire Frame behave as a clickable input area, improving usability. For example, clicking on a{" "}
+          <code>startIcon</code> or <code>endIcon</code> will focus the input, just as if you had clicked directly on
+          the text field itself.
+        </p>
+        <p>
+          In the example below, clicking on the magnifying glass icon or anywhere in the input area will focus the
+          input.
+        </p>
+      </div>
+      <InputAutoFocusWidget />
       <div className={cx(prose())}>
         <h2>Input Sizes</h2>
         <p>
