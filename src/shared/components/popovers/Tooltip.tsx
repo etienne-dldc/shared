@@ -36,3 +36,5 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip
     </Ariakit.TooltipProvider>
   );
 });
+
+Tooltip.displayName = "Tooltip";

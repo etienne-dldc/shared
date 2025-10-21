@@ -22,3 +22,5 @@ export function FrameInputContent(inProps: FrameInputContentProps) {
 
   return <input className={cx(css(frameInputClass.raw(), cssProps), className)} disabled={disabled} {...inputProps} />;
 }
+
+FrameInputContent.displayName = "FrameInputContent";

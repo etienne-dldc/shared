@@ -26,3 +26,5 @@ export const NonEmptyList = function NonEmptyList<T>({
     </Fragment>
   );
 };
+
+NonEmptyList.displayName = "NonEmptyList";

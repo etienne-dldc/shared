@@ -135,3 +135,5 @@ export const Modal = forwardRef<HTMLButtonElement, ModalProps>(
     );
   },
 );
+
+Modal.displayName = "Modal";

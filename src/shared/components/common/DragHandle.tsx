@@ -69,3 +69,5 @@ export function DragHandle({ className, innerClassName, direction, active = fals
     </div>
   );
 }
+
+DragHandle.displayName = "DragHandle";

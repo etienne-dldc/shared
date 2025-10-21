@@ -97,3 +97,5 @@ export function Frame(inProps: FrameProps) {
     </Ariakit.Role>
   );
 }
+
+Frame.displayName = "Frame";

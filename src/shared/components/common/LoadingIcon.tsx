@@ -48,3 +48,5 @@ export function LoadingIcon(props: IconProps) {
     </div>
   );
 }
+
+LoadingIcon.displayName = "LoadingIcon";

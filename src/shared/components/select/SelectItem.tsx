@@ -50,3 +50,5 @@ export function SelectItem(inProps: SelectItemProps) {
     </Ariakit.SelectItem>
   );
 }
+
+SelectItem.displayName = "SelectItem";

@@ -132,3 +132,5 @@ export const frameContentPropsSplitter: TPropsSplitter<TFrameContentFragmentProp
 export function FrameContentFragment(props: TFrameContentFragmentProps & { children?: React.ReactNode }) {
   return useFrameContentFragment(props, props.children).fragment;
 }
+
+FrameContentFragment.displayName = "FrameContentFragment";

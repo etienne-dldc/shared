@@ -19,3 +19,5 @@ export function LoadingBlock() {
     </div>
   );
 }
+
+LoadingBlock.displayName = "LoadingBlock";

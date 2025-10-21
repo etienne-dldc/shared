@@ -58,3 +58,5 @@ export function FrameContent(inProps: FrameContentProps) {
     </div>
   );
 }
+
+FrameContent.displayName = "FrameContent";

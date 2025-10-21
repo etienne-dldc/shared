@@ -193,3 +193,5 @@ export function Select<Value extends string>(inProps: SelectProps<Value>) {
     </DefaultDesignProvider>
   );
 }
+
+Select.displayName = "Select";
