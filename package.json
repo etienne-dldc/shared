@@ -45,7 +45,6 @@
     "@pandacss/preset-base": "^1.4.3",
     "@pandacss/preset-panda": "^1.4.3",
     "@pandacss/types": "^1.4.3",
-    "@tailwindcss/vite": "^4.1.14",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "@vitejs/plugin-react-swc": "^4.1.0",
@@ -55,8 +54,8 @@
     "globals": "^16.4.0",
     "prettier": "^3.6.2",
     "typescript": "~5.9.3",
-    "typescript-eslint": "^8.46.1",
-    "vite": "^7.1.10"
+    "typescript-eslint": "^8.46.2",
+    "vite": "^7.1.11"
   },
   "packageManager": "pnpm@10.18.2+sha512.9fb969fa749b3ade6035e0f109f0b8a60b5d08a1a87fdf72e337da90dcc93336e2280ca4e44f2358a649b83c17959e9993e777c2080879f3801e6f0d999ad3dd",
   "pnpm": {
