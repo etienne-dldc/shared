@@ -5,14 +5,14 @@ import { CodeHighlight } from "../playground/CodeHighlight";
 import { Button } from "../shared/components/button/Button";
 import { ButtonLike } from "../shared/components/button/ButtonLike";
 import { Input } from "../shared/components/input/Input";
-import { colorPaletteClass } from "../shared/design/styles";
+import { colorPaletteClass } from "../shared/design/colors";
 
 export function ProvideColorPaletteWidget() {
   return (
     <Grid css={{ gridTemplateColumns: "subgrid" }}>
       <CodeHighlight language="jsx" theme="dark-plus">
         {[
-          `<div className={colorPaletteClass({ colorPalette: "red" })}>`,
+          `<div className={css(colorPaletteClass.red)}>`,
           `  <Button variant="solid">Button</Button>`,
           `  <ButtonLike>ButtonLike</ButtonLike>`,
           `  <Input variant="solid" placeholder='Type here' />`,
@@ -20,7 +20,7 @@ export function ProvideColorPaletteWidget() {
         ].join("\n")}
       </CodeHighlight>
       <Paper css={{ bg: "neutral.900", p: "3" }}>
-        <div className={css(colorPaletteClass.raw({ colorPalette: "red" }), hstack.raw())}>
+        <div className={css(colorPaletteClass.red, hstack.raw())}>
           <Button variant="solid">Button</Button>
           <ButtonLike variant="solid">ButtonLike</ButtonLike>
           <Input variant="solid" placeholder="Type here" />

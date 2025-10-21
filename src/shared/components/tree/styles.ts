@@ -1,16 +1,9 @@
 import { css, cva } from "../../../../styled-system/css";
 import { SystemStyleObject } from "../../../../styled-system/types";
-import { colorPaletteClass, contentSize, heightStyles } from "../../design/styles";
+import { colorPaletteClass } from "../../design/colors";
+import { contentSize, heightStyles } from "../../design/styles";
 import { TPaletteColor } from "../../design/types";
 import { resolveSmallRounded } from "../../design/utils";
-
-// const className = cn(
-//   tw`h-full mx-2`,
-//   tw`group-aria-selected:bg-teal-900 group-focus-visible:bg-teal-950 group-hover:bg-teal-950 cursor-pointer`,
-//   !node.isSelected || node.isSelectedStart ? tw`rounded-t-2xl` : tw`rounded-t-none`,
-//   !node.isSelected || node.isSelectedEnd ? tw`rounded-b-2xl` : tw`rounded-b-none`,
-//   (node.isEditing || (node.willReceiveDrop && !preview)) && tw`ring-2 ring-teal-500 z-10 relative`,
-// );
 
 export const treeRowItemClass = css({
   outline: "none",
@@ -86,7 +79,7 @@ export function treeItemStyles(
       heightCss,
       treeItemClass.raw(),
       contentCss,
-      color && colorPaletteClass.raw({ colorPalette: color }),
+      color && colorPaletteClass[color],
       smallRounded && { rounded: "0x" },
     ),
     {

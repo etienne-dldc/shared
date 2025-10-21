@@ -1,6 +1,8 @@
 import * as Ariakit from "@ariakit/react";
 import { css, cx } from "../../../../../styled-system/css";
-import { colorPaletteClass, heightStyles } from "../../../design/styles";
+import { colorPaletteClass } from "../../../design/colors";
+import { frameContentStyles } from "../../../design/frameContent";
+import { heightStyles } from "../../../design/styles";
 import { TDesignHeight, TDesignSpacing, TPaletteColor } from "../../../design/types";
 import { ComponentPropsBase } from "../../../utils/componentProps";
 import { pipePropsSplitters } from "../../../utils/propsSplitters";
@@ -11,7 +13,6 @@ import {
   frameContentPropsSplitter,
   useFrameContentFragment,
 } from "../../frame/FrameContentFragment";
-import { frameContentStyles } from "../../frame/styles";
 import { menuItemClass } from "./styles";
 
 export type MenuItemProps = ComponentPropsBase<
@@ -60,7 +61,7 @@ export function MenuItem(inProps: MenuItemProps) {
             css(
               heightCss,
               menuItemClass,
-              inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
+              inProps.color && colorPaletteClass[inProps.color],
               contentCss,
               // frameContentSizeClass.raw({ height }),
               cssProps,

@@ -1,12 +1,12 @@
 import * as Ariakit from "@ariakit/react";
 import { Children, cloneElement, Fragment } from "react";
 import { css, cx } from "../../../../styled-system/css";
-import { colorPaletteClass } from "../../design/styles";
+import { colorPaletteClass } from "../../design/colors";
+import { frameGroupClass, separatorClass } from "../../design/frameGroup";
 import { TDesignProps, TPaletteColor } from "../../design/types";
 import { ComponentPropsBase } from "../../utils/componentProps";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { DefaultDesignProvider, designPropsSplitter, useContainerDesignProps } from "../core/DesignContext";
-import { frameGroupClass, separatorClass } from "./styles";
 
 export type FrameGroupProps = ComponentPropsBase<
   "div",
@@ -51,10 +51,7 @@ export function FrameGroup(inProps: FrameGroupProps) {
   return (
     <DefaultDesignProvider {...localDesign}>
       <Ariakit.Role
-        className={cx(
-          css(frameGroupClass.raw({ direction }), color && colorPaletteClass.raw({ colorPalette: color }), cssProps),
-          className,
-        )}
+        className={cx(css(frameGroupClass.raw({ direction }), color && colorPaletteClass[color], cssProps), className)}
         {...divProps}
       >
         {Children.map(childrenFiltered, (child, i) => {

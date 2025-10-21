@@ -6,7 +6,7 @@ import { css, cx } from "../../../../styled-system/css";
 import { styled } from "../../../../styled-system/jsx";
 import { vstack } from "../../../../styled-system/patterns";
 import { SystemStyleObject } from "../../../../styled-system/types";
-import { colorPaletteClass } from "../../design/styles";
+import { colorPaletteClass } from "../../design/colors";
 import { TDesignHeight, TDesignSpacing, TDesignVariant, TPaletteColor } from "../../design/types";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { Label } from "../_LEGACY/form/Label";
@@ -106,11 +106,7 @@ export function Select<Value extends string>(inProps: SelectProps<Value>) {
             ref={ref as Ref<HTMLDivElement>}
             render={renderWrapper ?? <div />}
             className={cx(
-              css(
-                vstack.raw({ alignItems: "start", gap: "0" }),
-                inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
-                cssProps,
-              ),
+              css(vstack.raw({ alignItems: "start", gap: "0" }), color && colorPaletteClass[color], cssProps),
               className,
             )}
           >

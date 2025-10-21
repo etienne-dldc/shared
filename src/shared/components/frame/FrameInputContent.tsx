@@ -1,8 +1,8 @@
 import { css, cx } from "../../../../styled-system/css";
+import { frameInputContentClass } from "../../design/frameInputContent";
 import { ComponentPropsBase } from "../../utils/componentProps";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { DisabledContext, useDisabled } from "../core/DisabledContext";
-import { frameInputClass } from "./styles";
 
 export type FrameInputContentProps = ComponentPropsBase<
   "input",
@@ -20,7 +20,9 @@ export function FrameInputContent(inProps: FrameInputContentProps) {
 
   const disabled = useDisabled(localDisabled);
 
-  return <input className={cx(css(frameInputClass.raw(), cssProps), className)} disabled={disabled} {...inputProps} />;
+  return (
+    <input className={cx(css(frameInputContentClass.raw(), cssProps), className)} disabled={disabled} {...inputProps} />
+  );
 }
 
 FrameInputContent.displayName = "FrameInputContent";

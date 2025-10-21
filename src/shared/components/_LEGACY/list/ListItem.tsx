@@ -2,6 +2,7 @@ import * as Ariakit from "@ariakit/react";
 import { ComponentPropsWithRef } from "react";
 import { Merge } from "type-fest";
 import { css, cx } from "../../../../../styled-system/css";
+import { frameContentStyles } from "../../../design/frameContent";
 import { TDesignProps, TPaletteColor } from "../../../design/types";
 import { pipePropsSplitters } from "../../../utils/propsSplitters";
 import {
@@ -16,7 +17,6 @@ import {
   TFrameContentFragmentProps,
   useFrameContentFragment,
 } from "../../frame/FrameContentFragment";
-import { frameContentStyles } from "../../frame/styles";
 
 export type TListItemSelected = "none" | "secondary" | "primary";
 

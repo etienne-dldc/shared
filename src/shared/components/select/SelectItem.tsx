@@ -1,11 +1,11 @@
 import * as Ariakit from "@ariakit/react";
 import { CheckIcon } from "@phosphor-icons/react";
 import { css, cx } from "../../../../styled-system/css";
+import { frameContentStyles } from "../../design/frameContent";
 import { heightStyles } from "../../design/styles";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { DefaultDesignProvider, designPropsSplitter, useContainerDesignProps } from "../core/DesignContext";
 import { useFrameContentFragment } from "../frame/FrameContentFragment";
-import { frameContentStyles } from "../frame/styles";
 import { selectItemClass } from "./styles";
 import { TSelectItem } from "./types";
 

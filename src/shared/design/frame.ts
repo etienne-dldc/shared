@@ -1,9 +1,8 @@
-import { css, cva } from "../../../../styled-system/css";
-import { SystemStyleObject } from "../../../../styled-system/types";
-import { colorPaletteClass, contentSize, heightStyles, roundedStyles } from "../../design/styles";
-import { TDesignVariant, TPaletteColor } from "../../design/types";
-import { sizeToRemString, spacingToGapRem } from "../../design/utils";
-import { TFrameContentPaddingResolved } from "./FrameContentFragment";
+import { css, cva } from "../../../styled-system/css";
+import { SystemStyleObject } from "../../../styled-system/types";
+import { colorPaletteClass } from "./colors";
+import { contentSize, heightStyles, roundedStyles } from "./styles";
+import { TDesignVariant, TPaletteColor } from "./types";
 
 export const frameBaseClass = cva({
   base: {
@@ -213,7 +212,7 @@ export const frameInteractiveClass = cva({
   },
 });
 
-const frameHighlightClass = cva({
+export const frameHighlightClass = cva({
   base: {
     _after: {
       borderWidth: "0x",
@@ -275,7 +274,7 @@ export function frameStyles(params: FrameStylesParams): [css: SystemStyleObject,
       interactive && frameInteractiveClass.raw({ hoverVariant, variant }),
       contentCss,
       roundedCss,
-      color && colorPaletteClass.raw({ colorPalette: color }),
+      color && colorPaletteClass[color],
       highlighted && frameHighlightClass.raw({ highlightColor }),
     ),
     {
@@ -285,165 +284,3 @@ export function frameStyles(params: FrameStylesParams): [css: SystemStyleObject,
     },
   ];
 }
-
-export const frameGroupClass = cva({
-  base: {
-    display: "inline-flex",
-    position: "relative",
-    isolation: "isolate",
-    _firstChild: { zIndex: 2, position: "relative" },
-    _betweenChild: { zIndex: 2, position: "relative" },
-    _lastChild: { zIndex: 2, position: "relative" },
-  },
-  variants: {
-    direction: {
-      horizontal: {
-        flexDirection: "row",
-        _firstChild: {
-          borderEndRadius: "0",
-          _before: { borderEndWidth: "0" },
-          _after: { right: "-0_x" },
-          _hover: { _before: { borderEndWidth: "0" } },
-        },
-        _betweenChild: {
-          rounded: "0",
-          _before: { borderXWidth: "0" },
-          _after: { insetInline: "-0_x" },
-          _hover: { _before: { borderXWidth: "0" } },
-        },
-        _lastChild: {
-          borderStartRadius: "0",
-          _before: { borderStartWidth: "0" },
-          _after: { left: "-0_x" },
-          _hover: { _before: { borderStartWidth: "0" } },
-        },
-      },
-      vertical: {
-        flexDirection: "column",
-        _firstChild: {
-          borderBottomRadius: "0",
-          _before: { borderBottomWidth: "0" },
-          _hover: { _before: { borderBottomWidth: "0" } },
-        },
-        _betweenChild: {
-          rounded: "0",
-          _before: { borderYWidth: "0" },
-          _hover: { _before: { borderYWidth: "0" } },
-        },
-        _lastChild: {
-          borderTopRadius: "0",
-          _before: { borderTopWidth: "0" },
-          _hover: { _before: { borderTopWidth: "0" } },
-        },
-      },
-    },
-  },
-});
-
-export const separatorClass = cva({
-  base: {
-    alignSelf: "stretch",
-    position: "relative",
-    zIndex: 1,
-    _after: {
-      pointerEvents: "none",
-      content: "''",
-      position: "absolute",
-      inset: "0",
-    },
-  },
-  variants: {
-    direction: {
-      horizontal: { w: "0_x" },
-      vertical: { h: "0_x" },
-    },
-    variant: {
-      solid: {
-        bg: "colorPalette.700",
-      },
-      surface: {
-        bg: "white/5",
-        _after: {
-          bg: "white/10",
-        },
-      },
-      subtle: {},
-      ghost: {},
-      input: {
-        bg: "black/15",
-        _after: {
-          bg: "black/30",
-        },
-      },
-    } satisfies Record<TDesignVariant, SystemStyleObject>,
-  },
-  compoundVariants: [
-    {
-      variant: "surface",
-      direction: "horizontal",
-      css: { w: "0__x" },
-    },
-    {
-      variant: "surface",
-      direction: "vertical",
-      css: { h: "0__x" },
-    },
-  ],
-});
-
-export const frameContentClass = cva({
-  variants: {
-    startPadding: {
-      icon: {},
-      text: { paddingLeft: "[calc(var(--spacing-gap) * 1.5)]" },
-      none: { paddingLeft: "0" },
-    },
-    endPadding: {
-      icon: {},
-      text: { paddingRight: "[calc(var(--spacing-gap) * 1.5)]" },
-      none: { paddingRight: "0" },
-    },
-  },
-});
-
-export const frameContentLayoutClass = css.raw({
-  display: "inline-flex",
-  flexDirection: "row",
-  alignItems: "center",
-  maxW: "full",
-  gap: "[calc(min(var(--spacing-gap), var(--content-size)))]",
-  px: "var(--spacing-gap)",
-});
-
-export function frameContentStyles(
-  contentHeight: number,
-  spacing: number | null,
-  startPadding: TFrameContentPaddingResolved,
-  endPadding: TFrameContentPaddingResolved,
-  noLayout: boolean,
-): [css: SystemStyleObject, styles: React.CSSProperties] {
-  return [
-    css.raw(
-      { textStyle: "dynamic" },
-      frameContentClass.raw({ startPadding, endPadding }),
-      !noLayout && frameContentLayoutClass,
-    ),
-    {
-      ["--content-size" as string]: sizeToRemString(contentHeight),
-      ["--spacing-gap" as string]: spacing
-        ? spacingToGapRem(spacing)
-        : "calc((var(--design-height) - var(--content-size)) / 2)",
-    },
-  ];
-}
-
-export const frameInputClass = cva({
-  base: {
-    outline: "none",
-    alignSelf: "stretch",
-    flex: "1",
-    _placeholder: {
-      opacity: 0.6,
-    },
-  },
-});

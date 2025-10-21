@@ -1,13 +1,14 @@
 import * as Ariakit from "@ariakit/react";
 
 import { css, cx } from "../../../../styled-system/css";
+import { frameStyles } from "../../design/frame";
+import { frameContentStyles } from "../../design/frameContent";
 import { TDesignProps, TDesignVariant, TPaletteColor } from "../../design/types";
 import { ComponentPropsBase } from "../../utils/componentProps";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { designPropsSplitter, SizeContextProvider, useContainerDesignProps } from "../core/DesignContext";
 import { DisabledContext, useDisabled } from "../core/DisabledContext";
 import { frameContentPropsSplitter, TFrameContentFragmentProps, useFrameContentFragment } from "./FrameContentFragment";
-import { frameContentStyles, frameStyles } from "./styles";
 
 export type FrameProps = ComponentPropsBase<
   "div",

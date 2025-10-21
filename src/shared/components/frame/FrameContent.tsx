@@ -1,4 +1,5 @@
 import { css, cx } from "../../../../styled-system/css";
+import { frameContentClass, frameContentStyles } from "../../design/frameContent";
 import { heightStyles } from "../../design/styles";
 import { TDesignProps } from "../../design/types";
 import { ComponentPropsBase } from "../../utils/componentProps";
@@ -10,7 +11,6 @@ import {
   useContainerDesignProps,
 } from "../core/DesignContext";
 import { frameContentPropsSplitter, TFrameContentFragmentProps, useFrameContentFragment } from "./FrameContentFragment";
-import { frameContentClass, frameContentStyles } from "./styles";
 
 type FrameContentProps = ComponentPropsBase<"div", TFrameContentFragmentProps & TDesignProps>;
 

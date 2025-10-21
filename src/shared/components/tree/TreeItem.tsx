@@ -4,7 +4,7 @@ import { Merge } from "type-fest";
 import { NodeApi } from "react-arborist";
 import { css, cx } from "../../../../styled-system/css";
 import { ComponentProps, SystemStyleObject } from "../../../../styled-system/types";
-import { colorPaletteClass } from "../../design/styles";
+import { colorPaletteClass } from "../../design/colors";
 import { TDesignHeight, TDesignSpacing, TPaletteColor } from "../../design/types";
 import { useMergeRefs } from "../../hooks/useMergeRefs";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
@@ -90,7 +90,7 @@ export function TreeItem(inProps: TreeItemProps) {
         css(
           itemCss,
           treeItemClass.raw(),
-          inProps.color && colorPaletteClass.raw({ colorPalette: inProps.color }),
+          inProps.color && colorPaletteClass[inProps.color],
           // itemContentSizeClass.raw({ height }),
           cssProps,
         ),
