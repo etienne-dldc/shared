@@ -4,29 +4,21 @@ import { Grid } from "../../styled-system/jsx";
 import { CodeHighlight } from "../playground/CodeHighlight";
 import { HighlightedGrid } from "../playground/HighlightedGrid";
 import { LoadingIcon } from "../shared/components/common/LoadingIcon";
+import { printElement } from "./utils/printElement";
 
 export function LoadingIconWeightsWidget() {
-  const weights: { label: string; weight: IconWeight }[] = [
-    { label: "Thin", weight: "thin" },
-    { label: "Light", weight: "light" },
-    { label: "Regular", weight: "regular" },
-    { label: "Bold", weight: "bold" },
-    { label: "Duotone", weight: "duotone" },
-    { label: "Fill", weight: "fill" },
-  ];
+  const weights: IconWeight[] = ["thin", "light", "regular", "bold", "duotone", "fill"];
 
-  const [highlighted, setHighlighted] = useState<(typeof weights)[number] | null>(null);
+  const [highlighted, setHighlighted] = useState<IconWeight | null>(null);
 
   return (
     <Grid css={{ gridTemplateColumns: "subgrid" }}>
       <CodeHighlight language="jsx" theme="dark-plus">
-        {highlighted
-          ? `<LoadingIcon size={60} weight="${highlighted.weight}" />`
-          : "// Hover an icon to see the code"}
+        {highlighted ? printElement(<LoadingIcon size={60} weight={highlighted} />) : "// Hover an icon to see the code"}
       </CodeHighlight>
       <HighlightedGrid
         rowsDims={weights}
-        renderCell={({ row }) => <LoadingIcon size={60} weight={row.weight} />}
+        renderCell={({ row: weight }) => <LoadingIcon size={60} weight={weight} />}
         onHighlightedCell={(cell) => setHighlighted(cell?.row ?? null)}
       />
     </Grid>

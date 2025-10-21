@@ -33,8 +33,9 @@ export default function LoadingIconStory() {
       <div className={cx(prose())}>
         <h2>Weights</h2>
         <p>
-          The <code>weight</code> prop controls the visual weight of the loading icon. Available weights include thin,
-          light, regular, bold, duotone, and fill.
+          The <code>weight</code> prop controls the visual weight of the loading icon. Available weights include{" "}
+          <code>thin</code>, <code>light</code>, <code>regular</code>, <code>bold</code>, <code>duotone</code>, and{" "}
+          <code>fill</code>.
         </p>
       </div>
       <LoadingIconWeightsWidget />
