@@ -29,3 +29,5 @@ export function Button(inProps: ButtonProps) {
     <Ariakit.Button type={type} render={<Frame render={render ?? <button />} />} interactive {...(frameProps as any)} />
   );
 }
+
+Button.displayName = "Button";

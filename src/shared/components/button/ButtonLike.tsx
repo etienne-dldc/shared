@@ -21,3 +21,5 @@ export type ButtonLikeProps = ComponentPropsBase<
 export function ButtonLike(inProps: ButtonLikeProps) {
   return <Ariakit.Role render={<Frame {...(inProps as any)} />} />;
 }
+
+ButtonLike.displayName = "ButtonLike";

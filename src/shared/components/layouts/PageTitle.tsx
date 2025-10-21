@@ -45,3 +45,5 @@ export function PageTitle({
     </HStack>
   );
 }
+
+PageTitle.displayName = "PageTitle";

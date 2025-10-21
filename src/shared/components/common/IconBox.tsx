@@ -55,3 +55,5 @@ export function IconBox(props: IconBoxProps) {
     </IconContext.Provider>
   );
 }
+
+IconBox.displayName = "IconBox";

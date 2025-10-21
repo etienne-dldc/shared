@@ -106,3 +106,5 @@ export function TreeItem(inProps: TreeItemProps) {
     </Ariakit.Role>
   );
 }
+
+TreeItem.displayName = "TreeItem";

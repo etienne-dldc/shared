@@ -26,6 +26,8 @@ export function SizeContextProvider({
   return <ParentDesignContext.Provider value={value}>{children}</ParentDesignContext.Provider>;
 }
 
+SizeContextProvider.displayName = "SizeContextProvider";
+
 export const DEFAULT_DESIGN: TDefaultDesignContext = {
   height: null,
   contentHeight: null,

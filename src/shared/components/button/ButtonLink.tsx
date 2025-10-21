@@ -27,3 +27,5 @@ export function ButtonLink(inProps: ButtonLinkProps) {
 
   return <Ariakit.Role href={href} render={<Frame render={<a />} />} interactive {...(frameProps as any)} />;
 }
+
+ButtonLink.displayName = "ButtonLink";

@@ -44,3 +44,5 @@ export function TreeItemContent({ spacing, children }: TreeItemContentProps) {
     </FrameContent>
   );
 }
+
+TreeItemContent.displayName = "TreeItemContent";

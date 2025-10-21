@@ -31,3 +31,5 @@ export function FrameSideSlot(props: FrameSideSlotProps) {
 
   return null;
 }
+
+FrameSideSlot.displayName = "FrameSideSlot";

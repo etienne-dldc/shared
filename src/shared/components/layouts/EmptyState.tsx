@@ -18,3 +18,5 @@ export function EmptyState({ icon, text, action }: EmptyStateProps) {
     </VStack>
   );
 }
+
+EmptyState.displayName = "EmptyState";

@@ -81,3 +81,5 @@ export function FrameGroup(inProps: FrameGroupProps) {
     </DefaultDesignProvider>
   );
 }
+
+FrameGroup.displayName = "FrameGroup";

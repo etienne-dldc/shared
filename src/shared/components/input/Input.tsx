@@ -70,3 +70,5 @@ export function Input(inProps: InputProps) {
     </Frame>
   );
 }
+
+Input.displayName = "Input";
