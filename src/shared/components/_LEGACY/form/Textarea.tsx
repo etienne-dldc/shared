@@ -1,8 +1,8 @@
 import * as Ariakit from "@ariakit/react";
 import type { ComponentPropsWithoutRef, ForwardedRef } from "react";
 import { forwardRef, useId, useMemo, useRef } from "react";
-import { useMergeRefs } from "../../hooks/useMergeRefs";
-import { pick } from "../../utils/pick";
+import { useMergeRefs } from "../../../hooks/useMergeRefs";
+import { pick } from "../../../utils/pick";
 
 interface TextareaProps extends Omit<ComponentPropsWithoutRef<"textarea">, "size"> {
   renderTextarea?: React.ReactElement<any>;

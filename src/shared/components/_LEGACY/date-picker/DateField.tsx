@@ -2,15 +2,13 @@ import * as Ariakit from "@ariakit/react";
 import { fr } from "date-fns/locale/fr";
 import { ForwardedRef, forwardRef, useState } from "react";
 import { DayPicker as ReactDayPicker } from "react-day-picker";
-
-import { formatNativeDateStr } from "../../utils/dates";
+import "react-day-picker/dist/style.css";
+import { Paper } from "../../../../../styled-system/jsx";
+import { formatNativeDateStr } from "../../../utils/dates";
 import { StringLike } from "../fields/utils";
 import { FieldError } from "../form/FieldError";
 import { Label } from "../form/Label";
 import { TextInput } from "../form/TextInput";
-
-import "react-day-picker/dist/style.css";
-import { Paper } from "../../../../styled-system/jsx";
 
 interface DateFieldProps {
   name: StringLike;

@@ -1,17 +1,17 @@
 import * as Ariakit from "@ariakit/react";
-import { css, cx } from "../../../../styled-system/css";
-import { colorPaletteClass, heightStyles } from "../../design/styles";
-import { TDesignHeight, TDesignSpacing, TPaletteColor } from "../../design/types";
-import { ComponentPropsBase } from "../../utils/componentProps";
-import { pipePropsSplitters } from "../../utils/propsSplitters";
-import { DefaultDesignProvider, designPropsSplitter, useContainerDesignProps } from "../core/DesignContext";
-import { DisabledContext } from "../core/DisabledContext";
+import { css, cx } from "../../../../../styled-system/css";
+import { colorPaletteClass, heightStyles } from "../../../design/styles";
+import { TDesignHeight, TDesignSpacing, TPaletteColor } from "../../../design/types";
+import { ComponentPropsBase } from "../../../utils/componentProps";
+import { pipePropsSplitters } from "../../../utils/propsSplitters";
+import { DefaultDesignProvider, designPropsSplitter, useContainerDesignProps } from "../../core/DesignContext";
+import { DisabledContext } from "../../core/DisabledContext";
 import {
   TFrameContentFragmentProps,
   frameContentPropsSplitter,
   useFrameContentFragment,
-} from "../frame/FrameContentFragment";
-import { frameContentStyles } from "../frame/styles";
+} from "../../frame/FrameContentFragment";
+import { frameContentStyles } from "../../frame/styles";
 import { menuItemClass } from "./styles";
 
 export type MenuItemProps = ComponentPropsBase<

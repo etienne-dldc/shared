@@ -1,8 +1,8 @@
 import * as Ariakit from "@ariakit/react";
 import { ComponentPropsWithRef } from "react";
 import { Merge } from "type-fest";
-import { TDesignHeight, TPaletteColor } from "../../design/types";
-import { DefaultDesignProvider } from "../core/DesignContext";
+import { TDesignHeight, TPaletteColor } from "../../../design/types";
+import { DefaultDesignProvider } from "../../core/DesignContext";
 
 export type ListProps = Merge<
   ComponentPropsWithRef<"div">,

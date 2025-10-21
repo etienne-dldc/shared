@@ -21,13 +21,15 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip
     return <>{childrenWithAttrs}</>;
   }
 
+  const paperCss = css.raw({ bg: "neutral.950", px: "3", py: "1x", userSelect: "none" }, cssProps);
+
   return (
     <Ariakit.TooltipProvider showTimeout={showTimeout} {...props}>
       <Ariakit.TooltipAnchor ref={ref} render={childrenWithAttrs} />
       <Ariakit.Tooltip
         unmountOnHide
-        // eslint-disable-next-line @pandacss/no-dynamic-styling
-        render={<Paper css={css.raw({ bg: "neutral.950", px: "3", py: "1x", userSelect: "none" }, cssProps)} />}
+        // eslint-disable-next-line @pandacss/no-dynamic-styling, @pandacss/no-property-renaming
+        render={<Paper css={paperCss} />}
       >
         {content}
       </Ariakit.Tooltip>

@@ -21,6 +21,7 @@ import {
 import { Merge } from "type-fest";
 import { css } from "../../styled-system/css";
 import { Grid, HStack, Paper, styled, VStack } from "../../styled-system/jsx";
+import { MenuItem } from "../shared/components/_LEGACY/menu/MenuItem";
 import { Button } from "../shared/components/button/Button";
 import { ButtonLike } from "../shared/components/button/ButtonLike";
 import { IconBox } from "../shared/components/common/IconBox";
@@ -28,7 +29,6 @@ import { LoadingBlock } from "../shared/components/common/LoadingBlock";
 import { Scrollbars } from "../shared/components/common/Scrollbars";
 import { FrameGroup } from "../shared/components/frame/FrameGroup";
 import { EmptyState } from "../shared/components/layouts/EmptyState";
-import { MenuItem } from "../shared/components/menu/MenuItem";
 import { appHistory } from "./history";
 import { routes, TRoute, TRouteFolder, TRouteItem } from "./routes";
 

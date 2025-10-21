@@ -1,7 +1,7 @@
 import { BackspaceIcon } from "@phosphor-icons/react";
 import { useRef } from "react";
-import { Button } from "../button/Button";
-import { Tooltip } from "../popovers/Tooltip";
+import { Button } from "../../button/Button";
+import { Tooltip } from "../../popovers/Tooltip";
 import { TextInput } from "./TextInput";
 
 interface SearchInputProps {

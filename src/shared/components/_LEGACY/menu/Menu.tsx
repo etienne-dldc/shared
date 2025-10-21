@@ -1,6 +1,6 @@
 import * as Ariakit from "@ariakit/react";
 import { forwardRef } from "react";
-import { Backdrop, Paper, VStack } from "../../../../styled-system/jsx";
+import { Backdrop, Paper, VStack } from "../../../../../styled-system/jsx";
 
 export interface MenuProps extends Ariakit.MenuProviderProps {
   trigger: React.ReactElement<any> | ((open: boolean) => React.ReactElement<any>);

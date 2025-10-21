@@ -4,7 +4,7 @@
 //   md: 20,
 //   lg: 26,
 
-import { TDefaultDesignContext } from "../../design/types";
+import { TDefaultDesignContext } from "../../../design/types";
 
 //   smInner: 16,
 //   mdInner: 20,

@@ -2,9 +2,9 @@ import * as Ariakit from "@ariakit/react";
 import { IconContext, IconProps } from "@phosphor-icons/react";
 import type { ComponentPropsWithoutRef, ForwardedRef } from "react";
 import { forwardRef, useMemo, useRef } from "react";
-import { useMergeRefs } from "../../hooks/useMergeRefs";
-import { useTextWidth } from "../../hooks/useTextWidth";
-import { pick } from "../../utils/pick";
+import { useMergeRefs } from "../../../hooks/useMergeRefs";
+import { useTextWidth } from "../../../hooks/useTextWidth";
+import { pick } from "../../../utils/pick";
 
 export interface TextInputProps extends Omit<ComponentPropsWithoutRef<"input">, "type" | "size"> {
   renderInput?: React.ReactElement<any>;

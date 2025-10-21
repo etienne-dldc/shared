@@ -1,6 +1,6 @@
 import * as Ariakit from "@ariakit/react";
 import { ComponentPropsWithRef } from "react";
-import { TDesignHeight } from "../../design/types";
+import { TDesignHeight } from "../../../design/types";
 
 export interface ListGroupProps extends ComponentPropsWithRef<"div"> {
   title: string;

@@ -1,13 +1,12 @@
 import * as Ariakit from "@ariakit/react";
 import { CaretDownIcon, CaretUpIcon } from "@phosphor-icons/react";
 import { useEffect } from "react";
-// import colors from "tailwindcss/colors";
-import { Paper } from "../../../../styled-system/jsx";
-import { COLOR_NAMES, toColor, VALID_COLORS } from "../../design/colors";
-import { Button } from "../button/Button";
+import { Paper } from "../../../../../styled-system/jsx";
+import { COLOR_NAMES, toColor, VALID_COLORS } from "../../../design/colors";
+import { Button } from "../../button/Button";
+import { FrameContent } from "../../frame/FrameContent";
 import { FieldError } from "../form/FieldError";
 import { Label } from "../form/Label";
-import { FrameContent } from "../frame/FrameContent";
 import { StringLike } from "./utils";
 
 interface ColorFieldProps {

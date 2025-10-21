@@ -1,7 +1,7 @@
 import * as Ariakit from "@ariakit/react";
 import { CheckSquareIcon, SquareIcon } from "@phosphor-icons/react";
 import { ComponentPropsWithoutRef, forwardRef, useState } from "react";
-import { IconBox } from "../common/IconBox";
+import { IconBox } from "../../common/IconBox";
 
 interface CheckBoxProps extends Omit<ComponentPropsWithoutRef<"input">, "checked" | "onChange" | "size"> {
   checked: boolean;
