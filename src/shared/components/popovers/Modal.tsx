@@ -8,9 +8,9 @@ import { Button } from "../button/Button";
 import { PageTitle } from "../layouts/PageTitle";
 
 interface ModalProps {
-  children?: React.ReactElement<any>;
   title: string;
-  content: React.ReactNode;
+  disclosure?: React.ReactElement<any>;
+  children?: React.ReactElement<any>;
   open?: boolean;
   setOpen?: (open: boolean) => void;
   onClose?: () => void;
@@ -29,7 +29,7 @@ export const Modal = forwardRef<HTMLButtonElement, ModalProps>(
     {
       children,
       title,
-      content,
+      disclosure,
       setOpen,
       onClose,
       open,
@@ -89,7 +89,7 @@ export const Modal = forwardRef<HTMLButtonElement, ModalProps>(
 
     return (
       <Ariakit.DialogProvider open={open} setOpen={setOpenInternal}>
-        {children && <Ariakit.DialogDisclosure ref={ref} render={children} />}
+        {disclosure && <Ariakit.DialogDisclosure ref={ref} render={disclosure} />}
         <Ariakit.Dialog
           backdrop={<Backdrop />}
           hideOnEscape={hideOnEscape}
@@ -113,7 +113,11 @@ export const Modal = forwardRef<HTMLButtonElement, ModalProps>(
             })}
             style={{ gridTemplateRows: `1fr`, gridTemplateColumns: `auto` }}
           >
-            <Paper css={paperCss} className={className}>
+            <Paper
+              // eslint-disable-next-line @pandacss/no-dynamic-styling, @pandacss/no-property-renaming
+              css={paperCss}
+              className={className}
+            >
               <PageTitle
                 title={<Ariakit.DialogHeading render={<span />}>{title}</Ariakit.DialogHeading>}
                 endActions={
@@ -127,7 +131,7 @@ export const Modal = forwardRef<HTMLButtonElement, ModalProps>(
                   </Fragment>
                 }
               />
-              {content}
+              {children}
             </Paper>
           </div>
         </Ariakit.Dialog>
