@@ -1,5 +1,3 @@
-// import colors from "tailwindcss/colors";
-
 export const VALID_COLORS = [
   "red",
   "orange",
