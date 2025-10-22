@@ -1,8 +1,7 @@
 import * as Ariakit from "@ariakit/react";
-import { ForwardedRef, forwardRef } from "react";
 import { FieldError } from "../../form/FieldError";
 import { Label } from "../../form/Label";
-import { NumberInput, NumberInputProps } from "../form/NumberInput";
+import { NumberInputProps } from "../form/NumberInput";
 import { StringLike } from "./utils";
 
 export interface NumberFieldProps extends Omit<NumberInputProps, "name" | "value" | "onChange"> {
@@ -13,17 +12,21 @@ export interface NumberFieldProps extends Omit<NumberInputProps, "name" | "value
   disabled?: boolean;
 }
 
-export const NumberField = forwardRef(function NumberField(
-  { name, label, labelHidden = false, disabled = false, className, ...inputProps }: NumberFieldProps,
-  ref: ForwardedRef<HTMLInputElement>,
-) {
+export function NumberField({
+  name,
+  label,
+  labelHidden = false,
+  disabled = false,
+  // className,
+  // ...inputProps
+}: NumberFieldProps) {
   const store = Ariakit.useFormContext();
   if (!store) {
     throw new Error("DateField must be used inside a Form");
   }
 
-  const value = store.useValue<string>(name);
-  const valueParsed = value ? parseFloat(value) : null;
+  // const value = store.useValue<string>(name);
+  // const valueParsed = value ? parseFloat(value) : null;
 
   const error = Ariakit.useStoreState(store, () => {
     const error = store.getError(name);
@@ -41,20 +44,19 @@ export const NumberField = forwardRef(function NumberField(
       </Label>
       <Ariakit.FormControl
         name={name}
-        render={
-          <NumberInput
-            ref={ref}
-            name={`${name}`}
-            disabled={disabled}
-            {...inputProps}
-            value={valueParsed}
-            onChange={(value) => {
-              store.setValue(name, value?.toString() ?? "");
-            }}
-          />
-        }
+        // render={
+        //   <NumberInput
+        //     // name={`${name}`}
+        //     // disabled={disabled}
+        //     // value={valueParsed}
+        //     // onChange={(value) => {
+        //     //   store.setValue(name, value?.toString() ?? "");
+        //     // }}
+        //     {...inputProps}
+        //   />
+        // }
       />
       <Ariakit.FormError name={name} render={error ? <FieldError /> : <Ariakit.VisuallyHidden />} />
     </div>
   );
-});
+}

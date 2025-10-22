@@ -1,4 +1,3 @@
-import { ForwardedRef, forwardRef } from "react";
 import { StringLike } from "./utils";
 
 export interface TextareaFieldProps {
@@ -22,20 +21,13 @@ export interface TextareaFieldProps {
   // hideIssuesText?: boolean;
 }
 
-export const TextareaField = forwardRef(function TextareaField(
-  { name, label, labelHidden = false, disabled = false, ...inputProps }: TextareaFieldProps,
-  ref: ForwardedRef<HTMLTextAreaElement>,
-) {
-  console.log({
-    name,
-    label,
-    labelHidden,
-    disabled,
-    inputProps,
-    ref,
-  });
-
-  return <div>TODO</div>;
+export function TextareaField({
+  name,
+  // label,
+  // labelHidden = false,
+  // disabled = false,
+  // ...inputProps
+}: TextareaFieldProps) {
   // return (
   //   <div className={cn("flex flex-col", className)}>
   //     <Label hidden={labelHidden} disabled={disabled} render={<Ariakit.FormLabel name={name} />}>
@@ -57,4 +49,5 @@ export const TextareaField = forwardRef(function TextareaField(
   // const name = fieldState?.name;
 
   // return <Textarea ref={ref} name={name} touchedIssues={touchedIssues} {...inputProps} />;
-});
+  return name;
+}

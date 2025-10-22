@@ -23,14 +23,14 @@ export function List(inProps: ListProps) {
   // });
 
   const {
-    color,
+    // color,
 
     // direction = "vertical",
 
     render,
 
     children,
-    className,
+    // className,
     ref,
     ...divProps
   } = inProps;

@@ -1,8 +1,5 @@
-import { BackspaceIcon } from "@phosphor-icons/react";
 import { useRef } from "react";
-import { Button } from "../../button/Button";
-import { Tooltip } from "../../popovers/Tooltip";
-import { TextInput } from "./TextInput";
+import { Input } from "../../form/Input";
 
 interface SearchInputProps {
   value: string;
@@ -11,29 +8,33 @@ interface SearchInputProps {
   placeholder?: string;
 }
 
-export function SearchInput({ value, onValueChange, ...inputProps }: SearchInputProps) {
+export function SearchInput({
+  value,
+  // onValueChange,
+  ...inputProps
+}: SearchInputProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   return (
-    <TextInput
+    <Input
       value={value}
-      onValueChange={onValueChange}
+      // onValueChange={onValueChange}
       ref={inputRef}
-      endActions={
-        value.length > 0 && (
-          <Tooltip content="Effacer">
-            <Button
-              className="mr-1.5"
-              color="red"
-              startIcon={<BackspaceIcon />}
-              onClick={() => {
-                onValueChange("");
-                inputRef.current?.focus();
-              }}
-            />
-          </Tooltip>
-        )
-      }
+      // endActions={
+      //   value.length > 0 && (
+      //     <Tooltip content="Effacer">
+      //       <Button
+      //         className="mr-1.5"
+      //         color="red"
+      //         startIcon={<BackspaceIcon />}
+      //         onClick={() => {
+      //           onValueChange("");
+      //           inputRef.current?.focus();
+      //         }}
+      //       />
+      //     </Tooltip>
+      //   )
+      // }
       {...inputProps}
     />
   );

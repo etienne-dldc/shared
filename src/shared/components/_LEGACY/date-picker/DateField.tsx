@@ -6,9 +6,10 @@ import "react-day-picker/dist/style.css";
 import { Paper } from "../../../../../styled-system/jsx";
 import { formatNativeDateStr } from "../../../utils/dates";
 import { FieldError } from "../../form/FieldError";
+import { Input } from "../../form/Input";
 import { Label } from "../../form/Label";
+import { FrameInputContent } from "../../frame/FrameInputContent";
 import { StringLike } from "../fields/utils";
-import { TextInput } from "../form/TextInput";
 
 interface DateFieldProps {
   name: StringLike;
@@ -48,22 +49,24 @@ export const DateField = forwardRef(function DateField(
           name={name}
           ref={ref}
           render={
-            <Ariakit.PopoverDisclosure
-              render={
-                <TextInput
-                  disabled={disabled}
-                  readOnly
-                  value={value ? formatNativeDateStr(value) : ""}
-                  placeholder="Select a date"
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      setPickerOpen(true);
-                    }
-                  }}
-                />
-              }
-            />
+            <Input>
+              <Ariakit.PopoverDisclosure
+                render={
+                  <FrameInputContent
+                    disabled={disabled}
+                    readOnly
+                    value={value ? formatNativeDateStr(value) : ""}
+                    placeholder="Select a date"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        setPickerOpen(true);
+                      }
+                    }}
+                  />
+                }
+              />
+            </Input>
           }
         />
         <Ariakit.FormError name={name} render={<FieldError />} />

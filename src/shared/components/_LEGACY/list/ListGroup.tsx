@@ -13,7 +13,12 @@ export function ListGroup(props: ListGroupProps) {
   // const [design, { title, children, className, ...htmlProps }] = DesignContext.useProps(props);
   // const { xSize } = resolveDesignProps(design);
 
-  const { title, children, className, ...htmlProps } = props;
+  const {
+    title,
+    children,
+    // className,
+    ...htmlProps
+  } = props;
 
   // const sizeClass = pick(xSize, {
   //   xs: cn("ml-1"),

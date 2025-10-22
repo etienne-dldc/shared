@@ -38,7 +38,15 @@ export function ListItem(inProps: ListItemProps) {
     localFrameContent: frameContentPropsSplitter,
   });
 
-  const { color, children, style, className, render, ref, ...htmlProps } = props;
+  const {
+    // color,
+    children,
+    style,
+    className,
+    render,
+    ref,
+    ...htmlProps
+  } = props;
 
   const { height, contentHeight, spacing, rounded, depth } = useContainerDesignProps(localDesign, "subtle");
   const { startPadding, endPadding, fragment, noLayout } = useFrameContentFragment(localFrameContent, children);

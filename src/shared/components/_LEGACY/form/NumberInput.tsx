@@ -1,13 +1,13 @@
 import * as Ariakit from "@ariakit/react";
-import { ArrowCounterClockwiseIcon, CheckIcon, WarningIcon } from "@phosphor-icons/react";
+import { ArrowCounterClockwiseIcon, CheckIcon } from "@phosphor-icons/react";
 import { ForwardedRef, forwardRef, Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import { Paper } from "../../../../../styled-system/jsx";
 import { Button } from "../../button/Button";
-import { TextInput, TextInputProps } from "./TextInput";
+import { Input, InputProps } from "../../form/Input";
 
 export type TNumberInputParse = (value: string) => number;
 
-export interface NumberInputProps extends Omit<TextInputProps, "value" | "onChange"> {
+export interface NumberInputProps extends Omit<InputProps, "value" | "onChange"> {
   value: number | null;
   onChange?: (value: number | null) => void;
   format?: (value: number) => string;
@@ -132,15 +132,15 @@ export const NumberInput = forwardRef(function NumberInput(
     });
   }, [format, onChange, state]);
 
-  const onInputChange = useCallback(
-    (value: string) => {
-      if (!onChange) {
-        return;
-      }
-      setEditedRaw(value);
-    },
-    [onChange],
-  );
+  // const onInputChange = useCallback(
+  //   (value: string) => {
+  //     if (!onChange) {
+  //       return;
+  //     }
+  //     setEditedRaw(value);
+  //   },
+  //   [onChange],
+  // );
 
   return (
     <Ariakit.PopoverProvider
@@ -154,26 +154,26 @@ export const NumberInput = forwardRef(function NumberInput(
     >
       <Ariakit.PopoverAnchor
         render={
-          <TextInput
+          <Input
             {...inputProps}
             ref={ref}
             value={focused ? editedRaw : valueStr}
-            onValueChange={onInputChange}
+            // onValueChange={onInputChange}
             className={className}
             // innerClassName={tw`font-mono text-right`}
-            inputClassName="text-right"
+            // inputClassName="text-right"
             onFocus={() => setInputFocused(true)}
             onBlur={onBlur}
-            endActions={
-              !focused &&
-              invalidEdit && (
-                <Ariakit.Tooltip content="Valeur modifiée">
-                  <div className="w-10 flex items-center justify-center">
-                    <WarningIcon className="w-5 h-5 text-orange-600" />
-                  </div>
-                </Ariakit.Tooltip>
-              )
-            }
+            // endActions={
+            //   !focused &&
+            //   invalidEdit && (
+            //     <Ariakit.Tooltip content="Valeur modifiée">
+            //       <div className="w-10 flex items-center justify-center">
+            //         <WarningIcon className="w-5 h-5 text-orange-600" />
+            //       </div>
+            //     </Ariakit.Tooltip>
+            //   )
+            // }
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 const accepted = accept();

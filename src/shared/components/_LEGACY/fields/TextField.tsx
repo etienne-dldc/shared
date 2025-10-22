@@ -1,12 +1,13 @@
 import * as Ariakit from "@ariakit/react";
-import { ForwardedRef, forwardRef, useState } from "react";
+import { useState } from "react";
 import * as v from "valibot";
 import { FieldError } from "../../form/FieldError";
+import { Input, InputProps } from "../../form/Input";
 import { Label } from "../../form/Label";
-import { TextInput, TextInputProps } from "../form/TextInput";
+import { FrameInputContent } from "../../frame/FrameInputContent";
 import { StringLike } from "./utils";
 
-export interface TextFieldProps extends Omit<TextInputProps, "name"> {
+export interface TextFieldProps extends Omit<InputProps, "name"> {
   name: StringLike;
   label: string;
   labelHidden?: boolean;
@@ -15,19 +16,16 @@ export interface TextFieldProps extends Omit<TextInputProps, "name"> {
   schema?: v.BaseSchema<any, any, v.BaseIssue<unknown>>;
 }
 
-export const TextField = forwardRef(function TextField(
-  {
-    name,
-    schema,
-    label,
-    labelHidden = false,
-    disabled = false,
-    className,
-    defaultValue,
-    ...inputProps
-  }: TextFieldProps,
-  ref: ForwardedRef<HTMLInputElement>,
-) {
+export function TextField({
+  name,
+  schema,
+  label,
+  labelHidden = false,
+  disabled = false,
+  // className,
+  defaultValue,
+  ...inputProps
+}: TextFieldProps) {
   const store = Ariakit.useFormContext();
   if (!store) {
     throw new Error("TextField must be used inside a Form");
@@ -59,15 +57,15 @@ export const TextField = forwardRef(function TextField(
       <Label hidden={labelHidden} disabled={disabled} render={<Ariakit.FormLabel name={name} />}>
         {label}
       </Label>
-      <TextInput
-        ref={ref}
-        name={`${name}`}
-        disabled={disabled}
-        defaultValue={defaultValue ?? storeDefaultValue}
-        {...inputProps}
-        renderInput={<Ariakit.FormInput name={name} />}
-      />
+      <Input {...inputProps}>
+        <Ariakit.FormInput
+          name={name}
+          render={
+            <FrameInputContent name={`${name}`} disabled={disabled} defaultValue={defaultValue ?? storeDefaultValue} />
+          }
+        />
+      </Input>
       <Ariakit.FormError name={name} render={error ? <FieldError /> : <Ariakit.VisuallyHidden />} />
     </div>
   );
-});
+}

@@ -2,7 +2,10 @@ import * as Ariakit from "@ariakit/react";
 import { forwardRef } from "react";
 
 export const MenuSeparator = forwardRef<HTMLDivElement, Ariakit.MenuSeparatorProps>(function MenuSeparator(
-  { className, ...props },
+  {
+    //className,
+    ...props
+  },
   ref,
 ) {
   return (

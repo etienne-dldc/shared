@@ -19,10 +19,10 @@ interface TextareaProps extends Omit<ComponentPropsWithoutRef<"textarea">, "size
 export const Textarea = forwardRef(function Textarea(
   {
     renderTextarea,
-    className,
+    // className,
     // colored = false,
     disabled,
-    textareaClassName,
+    // textareaClassName,
     // noBackground = false,
     // noHightlight = false,
     noHorizontalPadding = false,
