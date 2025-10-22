@@ -15,9 +15,9 @@ export function DefaultDesignProviderBasicWidget() {
       label: "Without Provider",
       element: (
         <Fragment>
-          <Frame>Default Frame</Frame>
-          <Button>Default Button</Button>
-          <Input placeholder="Default Input" />
+          <Frame>Frame</Frame>
+          <Button>Button</Button>
+          <Input placeholder="Input" />
         </Fragment>
       ),
     },
@@ -26,9 +26,9 @@ export function DefaultDesignProviderBasicWidget() {
       label: "With Provider",
       element: (
         <DefaultDesignProvider variant="solid" height="9">
-          <Frame>Solid Frame</Frame>
-          <Button>Solid Button</Button>
-          <Input placeholder="Solid Input" />
+          <Frame>Frame</Frame>
+          <Button>Button</Button>
+          <Input placeholder="Input" />
         </DefaultDesignProvider>
       ),
     },
