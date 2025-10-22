@@ -1,8 +1,8 @@
 import * as Ariakit from "@ariakit/react";
 import { ForwardedRef, forwardRef, useState } from "react";
 import * as v from "valibot";
+import { FieldError } from "../../form/FieldError";
 import { Label } from "../../form/Label";
-import { FieldError } from "../form/FieldError";
 import { TextInput, TextInputProps } from "../form/TextInput";
 import { StringLike } from "./utils";
 

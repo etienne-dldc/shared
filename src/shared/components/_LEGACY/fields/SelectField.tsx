@@ -1,8 +1,8 @@
 import * as Ariakit from "@ariakit/react";
+import { FieldError } from "../../form/FieldError";
 import { Label } from "../../form/Label";
 import { Select } from "../../select/Select";
 import { TSelectItem } from "../../select/types";
-import { FieldError } from "../form/FieldError";
 import { StringLike } from "./utils";
 
 export interface SelectFieldProps<Value extends string> {
