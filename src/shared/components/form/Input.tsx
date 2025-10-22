@@ -22,6 +22,7 @@ export type InputProps = ComponentPropsBase<
       placeholder?: string;
       name?: string;
       type?: string;
+      readOnly?: boolean;
 
       // Data attributes
       "data-hover"?: boolean;
@@ -39,6 +40,7 @@ export function Input(inProps: InputProps) {
     placeholder,
     name,
     type,
+    readOnly,
 
     ...frameProps
   } = inProps;
@@ -61,7 +63,14 @@ export function Input(inProps: InputProps) {
   );
 
   const childrenResolved = children ?? (
-    <FrameInputContent value={value} onChange={onChange} placeholder={placeholder} name={name} type={type} />
+    <FrameInputContent
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+      name={name}
+      type={type}
+      readOnly={readOnly}
+    />
   );
 
   return (

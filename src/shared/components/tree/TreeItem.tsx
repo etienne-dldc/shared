@@ -54,11 +54,11 @@ export function TreeItem(inProps: TreeItemProps) {
     color,
     css: cssProps,
 
-    startIcon,
-    loading,
-    startSlot,
-    endIcon,
-    endSlot,
+    // startIcon,
+    // loading,
+    // startSlot,
+    // endIcon,
+    // endSlot,
     content,
     children,
 
