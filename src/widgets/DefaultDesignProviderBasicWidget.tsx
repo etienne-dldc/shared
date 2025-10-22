@@ -4,8 +4,8 @@ import { CodeHighlight } from "../playground/CodeHighlight";
 import { HighlightedGrid } from "../playground/HighlightedGrid";
 import { Button } from "../shared/components/button/Button";
 import { DefaultDesignProvider } from "../shared/components/core/DesignContext";
+import { Input } from "../shared/components/form/Input";
 import { Frame } from "../shared/components/frame/Frame";
-import { Input } from "../shared/components/input/Input";
 import { printElement } from "./utils/printElement";
 
 export function DefaultDesignProviderBasicWidget() {

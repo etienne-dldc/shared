@@ -1,7 +1,7 @@
 import * as Ariakit from "@ariakit/react";
 import { ForwardedRef, forwardRef } from "react";
+import { Label } from "../../form/Label";
 import { FieldError } from "../form/FieldError";
-import { Label } from "../form/Label";
 import { NumberInput, NumberInputProps } from "../form/NumberInput";
 import { StringLike } from "./utils";
 

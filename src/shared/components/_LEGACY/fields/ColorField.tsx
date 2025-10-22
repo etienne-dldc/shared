@@ -4,9 +4,9 @@ import { useEffect } from "react";
 import { Paper } from "../../../../../styled-system/jsx";
 import { COLOR_NAMES, toColor, VALID_COLORS } from "../../../design/colors";
 import { Button } from "../../button/Button";
+import { Label } from "../../form/Label";
 import { FrameContent } from "../../frame/FrameContent";
 import { FieldError } from "../form/FieldError";
-import { Label } from "../form/Label";
 import { StringLike } from "./utils";
 
 interface ColorFieldProps {

@@ -1,7 +1,7 @@
 import { Grid, Paper } from "../../styled-system/jsx";
 import { CodeHighlight } from "../playground/CodeHighlight";
+import { Input } from "../shared/components/form/Input";
 import { FrameInputContent } from "../shared/components/frame/FrameInputContent";
-import { Input } from "../shared/components/input/Input";
 import { printElement } from "./utils/printElement";
 
 export function InputCustomInputChildrenWidget() {

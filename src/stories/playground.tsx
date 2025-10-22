@@ -9,10 +9,10 @@ import {
   NestedDefaultDesignProvider,
   useContainerDesignProps,
 } from "../shared/components/core/DesignContext";
+import { Input } from "../shared/components/form/Input";
 import { Frame } from "../shared/components/frame/Frame";
 import { FrameContent } from "../shared/components/frame/FrameContent";
 import { FrameContentFragment, TFrameContentFragmentProps } from "../shared/components/frame/FrameContentFragment";
-import { Input } from "../shared/components/input/Input";
 import { TNestedDesignValues } from "../shared/design/types";
 import { autoContentHeight } from "../shared/design/utils";
 

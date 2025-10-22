@@ -4,7 +4,7 @@ import { hstack } from "../../styled-system/patterns";
 import { CodeHighlight } from "../playground/CodeHighlight";
 import { Button } from "../shared/components/button/Button";
 import { ButtonLike } from "../shared/components/button/ButtonLike";
-import { Input } from "../shared/components/input/Input";
+import { Input } from "../shared/components/form/Input";
 import { colorPaletteClass } from "../shared/design/colors";
 
 export function ProvideColorPaletteWidget() {

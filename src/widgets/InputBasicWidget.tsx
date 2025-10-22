@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Grid, Paper } from "../../styled-system/jsx";
 import { CodeHighlight } from "../playground/CodeHighlight";
-import { Input } from "../shared/components/input/Input";
+import { Input } from "../shared/components/form/Input";
 import { printElement } from "./utils/printElement";
 
 export function InputBasicWidget() {

@@ -5,8 +5,8 @@ import { CodeHighlight } from "../playground/CodeHighlight";
 import { HighlightedGrid } from "../playground/HighlightedGrid";
 import { Button } from "../shared/components/button/Button";
 import { ButtonLike } from "../shared/components/button/ButtonLike";
+import { Input } from "../shared/components/form/Input";
 import { FrameGroup } from "../shared/components/frame/FrameGroup";
-import { Input } from "../shared/components/input/Input";
 import { printElement } from "./utils/printElement";
 
 type Example = {
