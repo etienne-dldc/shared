@@ -1,17 +1,20 @@
 import * as Ariakit from "@ariakit/react";
 
+import { WithCss } from "../../../../styled-system/types";
 import { TDesignProps, TPaletteColor } from "../../design/types";
-import { ComponentPropsBase } from "../../utils/componentProps";
+import { SanitizePropsBase } from "../../utils/componentProps";
 import { Frame } from "../frame/Frame";
 import { TFrameContentFragmentProps } from "../frame/FrameContentFragment";
 
-export type ButtonProps = ComponentPropsBase<
-  "button",
-  TFrameContentFragmentProps &
+export type ButtonProps = SanitizePropsBase<
+  HTMLButtonElement,
+  WithCss &
+    TFrameContentFragmentProps &
     TDesignProps & {
       disabled?: boolean;
 
       color?: TPaletteColor;
+      type?: "button" | "submit" | "reset" | undefined;
 
       // Forward to Button
       render?: Ariakit.ButtonProps["render"];
@@ -23,10 +26,15 @@ export type ButtonProps = ComponentPropsBase<
 >;
 
 export function Button(inProps: ButtonProps) {
-  const { type = "button", render, ...frameProps } = inProps;
+  const { type = "button", render, disabled = false, ref, ...frameProps } = inProps;
 
   return (
-    <Ariakit.Button type={type} render={<Frame render={render ?? <button />} />} interactive {...(frameProps as any)} />
+    <Ariakit.Button
+      type={type}
+      disabled={disabled}
+      ref={ref}
+      render={<Frame disabled={disabled} render={render ?? <button />} interactive {...frameProps} />}
+    />
   );
 }
 

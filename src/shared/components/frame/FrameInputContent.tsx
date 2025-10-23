@@ -1,11 +1,7 @@
-/* eslint-disable react-hooks/preserve-manual-memoization */
-
 import { useMemo } from "react";
 import { css, cx } from "../../../../styled-system/css";
 import { frameInputContentClass } from "../../design/frameInputContent";
 import { ComponentPropsBase } from "../../utils/componentProps";
-import { pipePropsSplitters } from "../../utils/propsSplitters";
-import { DisabledContext, useDisabled } from "../core/DisabledContext";
 
 export type FrameInputContentProps = ComponentPropsBase<
   "input",
@@ -16,13 +12,7 @@ export type FrameInputContentProps = ComponentPropsBase<
 >;
 
 export function FrameInputContent(inProps: FrameInputContentProps) {
-  const [{ localDisabled }, props] = pipePropsSplitters(inProps, {
-    localDisabled: DisabledContext.propsSplitter,
-  });
-
-  const { css: cssProps, className, onValueChange, onChange, ...inputProps } = props;
-
-  const disabled = useDisabled(localDisabled);
+  const { css: cssProps, className, onValueChange, onChange, ...inputProps } = inProps;
 
   const inputOnChange = useMemo(() => {
     if (!onValueChange && !onChange) {
@@ -37,7 +27,6 @@ export function FrameInputContent(inProps: FrameInputContentProps) {
   return (
     <input
       className={cx(css(frameInputContentClass.raw(), cssProps), className)}
-      disabled={disabled}
       onChange={inputOnChange}
       {...inputProps}
     />

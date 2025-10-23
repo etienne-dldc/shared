@@ -1,18 +1,20 @@
 import * as Ariakit from "@ariakit/react";
 
+import { Ref } from "react";
 import { css, cx } from "../../../../styled-system/css";
+import { WithCss } from "../../../../styled-system/types";
 import { frameStyles } from "../../design/frame";
 import { frameContentStyles } from "../../design/frameContent";
 import { TDesignProps, TDesignVariant, TPaletteColor } from "../../design/types";
-import { ComponentPropsBase } from "../../utils/componentProps";
+import { SanitizePropsBase } from "../../utils/componentProps";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { designPropsSplitter, SizeContextProvider, useContainerDesignProps } from "../core/DesignContext";
-import { DisabledContext, useDisabled } from "../core/DisabledContext";
 import { frameContentPropsSplitter, TFrameContentFragmentProps, useFrameContentFragment } from "./FrameContentFragment";
 
-export type FrameProps = ComponentPropsBase<
-  "div",
-  TFrameContentFragmentProps &
+export type FrameProps = SanitizePropsBase<
+  HTMLElement,
+  WithCss &
+    TFrameContentFragmentProps &
     TDesignProps & {
       disabled?: boolean;
 
@@ -38,9 +40,8 @@ export type FrameProps = ComponentPropsBase<
 >;
 
 export function Frame(inProps: FrameProps) {
-  const [{ localDesign, localDisabled, localFrameContent }, props] = pipePropsSplitters(inProps, {
+  const [{ localDesign, localFrameContent }, props] = pipePropsSplitters(inProps, {
     localDesign: designPropsSplitter,
-    localDisabled: DisabledContext.propsSplitter,
     localFrameContent: frameContentPropsSplitter,
   });
 
@@ -50,19 +51,19 @@ export function Frame(inProps: FrameProps) {
     highlighted = false,
 
     baseVariant = "surface",
-
     css: cssProps,
+    interactive = false,
 
     children,
-
+    disabled = false,
     style,
     className,
-    interactive = false,
+    ref,
+
     ...htmlProps
   } = props;
 
-  const isDisabled = useDisabled(localDisabled);
-  const isDisabledAndInteractive = isDisabled && interactive;
+  const isDisabledAndInteractive = disabled && interactive;
 
   const { hoverVariant, variant, height, contentHeight, spacing, rounded, depth } = useContainerDesignProps(
     localDesign,
@@ -90,10 +91,11 @@ export function Frame(inProps: FrameProps) {
       className={cx(css(baseCss, contentCss, cssProps), className)}
       style={{ ...baseInline, ...contentInline, ...style }}
       aria-disabled={isDisabledAndInteractive}
+      ref={ref as Ref<HTMLDivElement>}
       {...htmlProps}
     >
       <SizeContextProvider height={height} contentHeight={contentHeight} rounded={rounded} depth={depth}>
-        <DisabledContext.Define disabled={isDisabled ? inProps.disabled : undefined}>{fragment}</DisabledContext.Define>
+        {fragment}
       </SizeContextProvider>
     </Ariakit.Role>
   );

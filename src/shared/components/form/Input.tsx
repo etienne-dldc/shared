@@ -1,14 +1,16 @@
 import { useCallback, useRef } from "react";
+import { WithCss } from "../../../../styled-system/types";
 import { TDesignProps, TPaletteColor } from "../../design/types";
 import { useMergeRefs } from "../../hooks/useMergeRefs";
-import { ComponentPropsBase } from "../../utils/componentProps";
+import { SanitizePropsBase } from "../../utils/componentProps";
 import { Frame } from "../frame/Frame";
 import { TFrameContentFragmentProps } from "../frame/FrameContentFragment";
 import { FrameInputContent } from "../frame/FrameInputContent";
 
-export type InputProps = ComponentPropsBase<
-  "div",
-  TFrameContentFragmentProps &
+export type InputProps = SanitizePropsBase<
+  HTMLDivElement,
+  WithCss &
+    TFrameContentFragmentProps &
     TDesignProps & {
       disabled?: boolean;
 
@@ -51,7 +53,7 @@ export function Input(inProps: InputProps) {
 
   const onPointerDown = useCallback(
     (event: React.PointerEvent<HTMLElement>) => {
-      onPointerDownProps?.(event as React.PointerEvent<HTMLInputElement>);
+      onPointerDownProps?.(event as React.PointerEvent<HTMLDivElement>);
       if (event.defaultPrevented) return;
       setTimeout(() => {
         // Find input in children and focus it

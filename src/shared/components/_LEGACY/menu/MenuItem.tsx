@@ -7,7 +7,6 @@ import { TDesignHeight, TDesignSpacing, TPaletteColor } from "../../../design/ty
 import { ComponentPropsBase } from "../../../utils/componentProps";
 import { pipePropsSplitters } from "../../../utils/propsSplitters";
 import { DefaultDesignProvider, designPropsSplitter, useContainerDesignProps } from "../../core/DesignContext";
-import { DisabledContext } from "../../core/DisabledContext";
 import {
   TFrameContentFragmentProps,
   frameContentPropsSplitter,
@@ -28,9 +27,8 @@ export type MenuItemProps = ComponentPropsBase<
 >;
 
 export function MenuItem(inProps: MenuItemProps) {
-  const [{ localDesign, localDisabled, localFrameContent }, props] = pipePropsSplitters(inProps, {
+  const [{ localDesign, localFrameContent }, props] = pipePropsSplitters(inProps, {
     localDesign: designPropsSplitter,
-    localDisabled: DisabledContext.propsSplitter,
     localFrameContent: frameContentPropsSplitter,
   });
 
@@ -39,9 +37,10 @@ export function MenuItem(inProps: MenuItemProps) {
     css: cssProps,
 
     children,
-
+    disabled = false,
     style,
     className,
+
     ...htmlProps
   } = props;
 
@@ -54,26 +53,24 @@ export function MenuItem(inProps: MenuItemProps) {
 
   return (
     <DefaultDesignProvider height={contentHeight} spacing={inProps.spacing}>
-      <DisabledContext.Define disabled={inProps.disabled}>
-        <Ariakit.MenuItem
-          disabled={localDisabled.disabled}
-          className={cx(
-            css(
-              heightCss,
-              menuItemClass,
-              inProps.color && colorPaletteClass[inProps.color],
-              contentCss,
-              // frameContentSizeClass.raw({ height }),
-              cssProps,
-            ),
-            className,
-          )}
-          style={{ ...style, ...heightInline, ...contentInline }}
-          {...htmlProps}
-        >
-          {fragment}
-        </Ariakit.MenuItem>
-      </DisabledContext.Define>
+      <Ariakit.MenuItem
+        disabled={disabled}
+        className={cx(
+          css(
+            heightCss,
+            menuItemClass,
+            inProps.color && colorPaletteClass[inProps.color],
+            contentCss,
+            // frameContentSizeClass.raw({ height }),
+            cssProps,
+          ),
+          className,
+        )}
+        style={{ ...style, ...heightInline, ...contentInline }}
+        {...htmlProps}
+      >
+        {fragment}
+      </Ariakit.MenuItem>
     </DefaultDesignProvider>
   );
 }

@@ -1,6 +1,11 @@
-import { ElementType } from "react";
+import { ElementType, HTMLProps } from "react";
 import { Merge } from "type-fest";
-import { HTMLStyledProps } from "../../../styled-system/types";
+import { Assign, HTMLStyledProps, OmittedHTMLProps } from "../../../styled-system/types";
+
+export type SanitizePropsBase<HTMLElemeType, Props extends Record<string, any>> = Assign<
+  Omit<HTMLProps<HTMLElemeType>, OmittedHTMLProps | "title">,
+  Props
+>;
 
 /**
  * Base type for component props that merge HTML element props with custom props.

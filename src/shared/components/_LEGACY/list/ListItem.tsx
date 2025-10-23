@@ -11,7 +11,6 @@ import {
   SizeContextProvider,
   useContainerDesignProps,
 } from "../../core/DesignContext";
-import { DisabledContext } from "../../core/DisabledContext";
 import {
   frameContentPropsSplitter,
   TFrameContentFragmentProps,
@@ -32,9 +31,8 @@ export type ListItemProps = Merge<
 >;
 
 export function ListItem(inProps: ListItemProps) {
-  const [{ localDisabled, localFrameContent, localDesign }, props] = pipePropsSplitters(inProps, {
+  const [{ localFrameContent, localDesign }, props] = pipePropsSplitters(inProps, {
     localDesign: designPropsSplitter,
-    localDisabled: DisabledContext.propsSplitter,
     localFrameContent: frameContentPropsSplitter,
   });
 
@@ -45,6 +43,7 @@ export function ListItem(inProps: ListItemProps) {
     className,
     render,
     ref,
+    disabled = false,
     ...htmlProps
   } = props;
 
@@ -55,10 +54,7 @@ export function ListItem(inProps: ListItemProps) {
 
   const compositeStore = Ariakit.useCompositeContext();
   const renderResolved = compositeStore ? (
-    <Ariakit.CompositeHover
-      render={<Ariakit.CompositeItem render={render} disabled={localDisabled.disabled} />}
-      focusOnHover
-    />
+    <Ariakit.CompositeHover render={<Ariakit.CompositeItem render={render} disabled={disabled} />} focusOnHover />
   ) : (
     render
   );

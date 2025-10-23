@@ -1,8 +1,6 @@
 import { CaretRightIcon, PenIcon } from "@phosphor-icons/react";
 import { Fragment, useMemo, useState } from "react";
-import { Merge } from "type-fest";
-import { HTMLStyledProps, Paper, styled } from "../../styled-system/jsx";
-import { OmittedHTMLProps } from "../../styled-system/types";
+import { Paper, styled } from "../../styled-system/jsx";
 import { Button } from "../shared/components/button/Button";
 import {
   DefaultDesignProvider,
@@ -15,6 +13,7 @@ import { FrameContent } from "../shared/components/frame/FrameContent";
 import { FrameContentFragment, TFrameContentFragmentProps } from "../shared/components/frame/FrameContentFragment";
 import { TNestedDesignValues } from "../shared/design/types";
 import { autoContentHeight } from "../shared/design/utils";
+import { SanitizePropsBase } from "../shared/utils/componentProps";
 
 export default function Playground() {
   return (
@@ -95,8 +94,8 @@ function TreePlayground() {
   );
 }
 
-type PlaygroundItemProps = Merge<
-  Omit<HTMLStyledProps<"div">, "title" | OmittedHTMLProps>,
+type PlaygroundItemProps = SanitizePropsBase<
+  HTMLDivElement,
   { height?: number; children?: React.ReactNode } & TFrameContentFragmentProps
 >;
 

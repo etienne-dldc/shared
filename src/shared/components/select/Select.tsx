@@ -11,7 +11,6 @@ import { TDesignHeight, TDesignSpacing, TDesignVariant, TPaletteColor } from "..
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { Button } from "../button/Button";
 import { DefaultDesignProvider, designPropsSplitter } from "../core/DesignContext";
-import { DisabledContext } from "../core/DisabledContext";
 import { Label } from "../form/Label";
 import { FrameContentFragment } from "../frame/FrameContentFragment";
 import { SelectItem } from "./SelectItem";
@@ -55,14 +54,14 @@ export type SelectProps<Value extends string> = Merge<
 >;
 
 export function Select<Value extends string>(inProps: SelectProps<Value>) {
-  const [{ localDesign, localDisabled }, props] = pipePropsSplitters(inProps, {
+  const [{ localDesign }, props] = pipePropsSplitters(inProps, {
     localDesign: designPropsSplitter,
-    localDisabled: DisabledContext.propsSplitter,
   });
 
   const {
     color,
     css: cssProps,
+    disabled = false,
 
     items,
     label,
@@ -100,92 +99,88 @@ export function Select<Value extends string>(inProps: SelectProps<Value>) {
 
   return (
     <DefaultDesignProvider {...localDesign}>
-      <DisabledContext.Define disabled={inProps.disabled}>
-        <Ariakit.SelectProvider store={selectStore}>
-          <Ariakit.Role
-            ref={ref as Ref<HTMLDivElement>}
-            render={renderWrapper ?? <div />}
-            className={cx(
-              css(vstack.raw({ alignItems: "start", gap: "0" }), color && colorPaletteClass[color], cssProps),
-              className,
-            )}
+      <Ariakit.SelectProvider store={selectStore}>
+        <Ariakit.Role
+          ref={ref as Ref<HTMLDivElement>}
+          render={renderWrapper ?? <div />}
+          className={cx(
+            css(vstack.raw({ alignItems: "start", gap: "0" }), color && colorPaletteClass[color], cssProps),
+            className,
+          )}
+        >
+          <Ariakit.SelectLabel
+            render={labelHidden ? <Ariakit.VisuallyHidden /> : (renderLabel ?? <Label disabled={disabled} />)}
           >
-            <Ariakit.SelectLabel
-              render={
-                labelHidden ? <Ariakit.VisuallyHidden /> : (renderLabel ?? <Label disabled={localDisabled.disabled} />)
-              }
-            >
-              {label}
-            </Ariakit.SelectLabel>
-            <Ariakit.Select
-              disabled={localDisabled.disabled}
-              name={name}
-              {...htmlProps}
-              render={
-                renderSelect ?? (
-                  <Button endPadding="icon" startPadding={selectedItem && selectedItem.icon ? "icon" : "text"} />
-                )
-              }
-            >
-              {selectedItem ? (
-                renderSelected ? (
-                  renderSelected(selectedItem)
-                ) : (
-                  <FrameContentFragment
-                    endIcon={caret && <Ariakit.SelectArrow render={<CaretDownIcon children={null} />} />}
-                    startIcon={selectedItem.icon}
-                  >
-                    {selectedIsEmpty ? (
-                      <span className={css({ opacity: 0.5 })}>{selectedItem.content}</span>
-                    ) : (
-                      selectedItem.content
-                    )}
-                  </FrameContentFragment>
-                )
-              ) : null}
-            </Ariakit.Select>
-            {issues}
-          </Ariakit.Role>
-          <Ariakit.SelectPopover
-            gutter={4}
-            portal
+            {label}
+          </Ariakit.SelectLabel>
+          <Ariakit.Select
+            disabled={disabled}
+            name={name}
+            {...htmlProps}
             render={
-              <styled.div
-                css={{
-                  overflow: "hidden",
-                  background: "neutral.800",
-                  rounded: "2",
-                  borderWidth: "0__x",
-                  borderColor: "white/10",
-                  boxShadow: "md",
-                  outline: "none",
-                  width: "[min-content]",
-                }}
-              />
+              renderSelect ?? (
+                <Button endPadding="icon" startPadding={selectedItem && selectedItem.icon ? "icon" : "text"} />
+              )
             }
-            sameWidth={sameWidth}
-            unmountOnHide
           >
+            {selectedItem ? (
+              renderSelected ? (
+                renderSelected(selectedItem)
+              ) : (
+                <FrameContentFragment
+                  endIcon={caret && <Ariakit.SelectArrow render={<CaretDownIcon children={null} />} />}
+                  startIcon={selectedItem.icon}
+                >
+                  {selectedIsEmpty ? (
+                    <span className={css({ opacity: 0.5 })}>{selectedItem.content}</span>
+                  ) : (
+                    selectedItem.content
+                  )}
+                </FrameContentFragment>
+              )
+            ) : null}
+          </Ariakit.Select>
+          {issues}
+        </Ariakit.Role>
+        <Ariakit.SelectPopover
+          gutter={4}
+          portal
+          render={
             <styled.div
               css={{
-                p: "1",
-                minW: "var(--popover-anchor-width)",
-                maxW: "var(--popover-available-width)",
-                maxH: "var(--popover-available-height)",
-                overflowY: "auto",
+                overflow: "hidden",
+                background: "neutral.800",
+                rounded: "2",
+                borderWidth: "0__x",
+                borderColor: "white/10",
+                boxShadow: "md",
+                outline: "none",
+                width: "[min-content]",
               }}
-            >
-              {items.map((item) => (
-                <SelectItem
-                  item={item}
-                  key={item.value}
-                  // nestedHeight={contentHeight}
-                />
-              ))}
-            </styled.div>
-          </Ariakit.SelectPopover>
-        </Ariakit.SelectProvider>
-      </DisabledContext.Define>
+            />
+          }
+          sameWidth={sameWidth}
+          unmountOnHide
+        >
+          <styled.div
+            css={{
+              p: "1",
+              minW: "var(--popover-anchor-width)",
+              maxW: "var(--popover-available-width)",
+              maxH: "var(--popover-available-height)",
+              overflowY: "auto",
+            }}
+          >
+            {items.map((item) => (
+              <SelectItem
+                item={item}
+                key={item.value}
+                // nestedHeight={contentHeight}
+              />
+            ))}
+          </styled.div>
+        </Ariakit.SelectPopover>
+      </Ariakit.SelectProvider>
     </DefaultDesignProvider>
   );
 }
