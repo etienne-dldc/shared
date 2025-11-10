@@ -1,29 +1,36 @@
+import { StringLike } from "@ariakit/core/form/types";
 import * as Ariakit from "@ariakit/react";
 import { useState } from "react";
 import * as v from "valibot";
-import { FieldError } from "../../form/FieldError";
-import { Input, InputProps } from "../../form/Input";
-import { Label } from "../../form/Label";
-import { FrameInputContent } from "../../frame/FrameInputContent";
-import { StringLike } from "./utils";
+import { css } from "../../../../styled-system/css";
+import { SanitizePropsBase } from "../../utils/componentProps";
+import { FrameInputContent } from "../frame/FrameInputContent";
+import { FieldError } from "./FieldError";
+import { Input, InputProps } from "./Input";
+import { Label } from "./Label";
 
-export interface TextFieldProps extends Omit<InputProps, "name"> {
-  name: StringLike;
-  label: string;
-  labelHidden?: boolean;
-  className?: string;
-  disabled?: boolean;
-  schema?: v.BaseSchema<any, any, v.BaseIssue<unknown>>;
-}
+export type TextFieldProps = SanitizePropsBase<
+  HTMLDivElement,
+  Omit<InputProps, "name" | "value"> & {
+    name: StringLike;
+    label: string;
+    labelHidden?: boolean;
+    schema?: v.BaseSchema<any, any, v.BaseIssue<unknown>>;
+  }
+>;
 
 export function TextField({
   name,
   schema,
   label,
   labelHidden = false,
+
   disabled = false,
-  // className,
   defaultValue,
+  required,
+  placeholder,
+  type,
+
   ...inputProps
 }: TextFieldProps) {
   const store = Ariakit.useFormContext();
@@ -51,9 +58,7 @@ export function TextField({
   });
 
   return (
-    <div
-    // className={cn("flex flex-col", className)}
-    >
+    <div className={css({ display: "flex", flexDirection: "column" })}>
       <Label hidden={labelHidden} disabled={disabled} render={<Ariakit.FormLabel name={name} />}>
         {label}
       </Label>
@@ -61,7 +66,14 @@ export function TextField({
         <Ariakit.FormInput
           name={name}
           render={
-            <FrameInputContent name={`${name}`} disabled={disabled} defaultValue={defaultValue ?? storeDefaultValue} />
+            <FrameInputContent
+              name={`${name}`}
+              disabled={disabled}
+              defaultValue={defaultValue ?? storeDefaultValue}
+              required={required}
+              placeholder={placeholder}
+              type={type}
+            />
           }
         />
       </Input>

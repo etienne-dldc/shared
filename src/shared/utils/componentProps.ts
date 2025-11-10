@@ -3,7 +3,7 @@ import { Merge } from "type-fest";
 import { Assign, HTMLStyledProps, OmittedHTMLProps } from "../../../styled-system/types";
 
 export type SanitizePropsBase<HTMLElemeType, Props extends Record<string, any>> = Assign<
-  Omit<HTMLProps<HTMLElemeType>, OmittedHTMLProps | "title">,
+  Omit<HTMLProps<HTMLElemeType>, OmittedHTMLProps | "title" | "value">,
   Props
 >;
 

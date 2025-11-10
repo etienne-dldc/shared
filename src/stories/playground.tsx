@@ -1,13 +1,15 @@
+import * as Ariakit from "@ariakit/react";
 import { CaretRightIcon, PenIcon } from "@phosphor-icons/react";
 import { Fragment, useMemo, useState } from "react";
-import { Paper, styled } from "../../styled-system/jsx";
+import { styled } from "../../styled-system/jsx";
+import { paper } from "../../styled-system/patterns";
 import { Button } from "../shared/components/button/Button";
 import {
   DefaultDesignProvider,
   NestedDefaultDesignProvider,
   useContainerDesignProps,
 } from "../shared/components/core/DesignContext";
-import { Input } from "../shared/components/form/Input";
+import { TextField } from "../shared/components/form/TextField";
 import { Frame } from "../shared/components/frame/Frame";
 import { FrameContent } from "../shared/components/frame/FrameContent";
 import { FrameContentFragment, TFrameContentFragmentProps } from "../shared/components/frame/FrameContentFragment";
@@ -20,37 +22,7 @@ export default function Playground() {
     <styled.div css={{ display: "flex", flexDirection: "column", gap: "1", alignItems: "start" }}>
       <TreePlayground />
       <div style={{ height: 20 }} />
-
-      <Paper
-        css={{ padding: "2", bg: "neutral.900", display: "grid", gap: "2", gridTemplateColumns: "1fr 1fr 1fr 1fr" }}
-      >
-        <styled.div
-          css={{
-            "--test-var": "[demo]",
-          }}
-        />
-      </Paper>
-
-      <Paper
-        css={{ padding: "2", bg: "neutral.900", display: "grid", gap: "2", gridTemplateColumns: "1fr 1fr 1fr 1fr" }}
-      >
-        {(["input", "surface", "subtle", "solid", "ghost"] as const).map((variant) => (
-          <Fragment key={variant}>
-            <Input color="neutral" variant={variant} highlighted highlightColor="red" placeholder={`${variant} 400`} />
-            <Input color="blue" variant={variant} highlighted highlightColor="red" placeholder={`${variant} 500`} />
-            <Input color="red" variant={variant} highlighted highlightColor="yellow" placeholder={`${variant} 600`} />
-            <Input color="yellow" variant={variant} highlighted highlightColor="red" placeholder={`${variant} 700`} />
-          </Fragment>
-        ))}
-      </Paper>
-      <div style={{ height: 20 }} />
-      <Paper css={{ padding: "2", bg: "neutral.900" }}>
-        <Input>With content</Input>
-
-        <Input>
-          <span>With content</span>
-        </Input>
-      </Paper>
+      <FormPlayground />
     </styled.div>
   );
 }
@@ -147,5 +119,30 @@ function PlaygroundItem({
         </FrameContentFragment>
       </Frame>
     </NestedDefaultDesignProvider>
+  );
+}
+
+function FormPlayground() {
+  const form = Ariakit.useFormStore({
+    defaultValues: { foo: "", bar: "41" },
+  });
+
+  form.useSubmit(({ values }) => {
+    window.alert(JSON.stringify(values, null, 2));
+  });
+
+  return (
+    <Ariakit.Form
+      store={form}
+      className={paper({ bg: "neutral.850", p: "2", display: "flex", flexDir: "column", gap: "2" })}
+    >
+      <p>TODO</p>
+
+      <TextField name={form.names.foo} label="Foo" placeholder="foo" required />
+
+      <Button type="submit" variant="solid" color="blue">
+        Submit
+      </Button>
+    </Ariakit.Form>
   );
 }
