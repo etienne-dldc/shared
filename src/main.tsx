@@ -1,4 +1,5 @@
 import "./index.css";
+import "./shared/css/theme.css";
 
 import { StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";

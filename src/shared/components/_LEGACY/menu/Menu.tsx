@@ -1,6 +1,8 @@
 import * as Ariakit from "@ariakit/react";
 import { forwardRef } from "react";
-import { Backdrop, Paper, VStack } from "../../../../../styled-system/jsx";
+import { VStack } from "../../../../../styled-system/jsx";
+import { Backdrop } from "../../common/Backdrop";
+import { Paper } from "../../common/Paper";
 
 export interface MenuProps extends Ariakit.MenuProviderProps {
   trigger: React.ReactElement<any> | ((open: boolean) => React.ReactElement<any>);
@@ -27,7 +29,11 @@ export const Menu = forwardRef<HTMLDivElement, MenuProps>(function Menu(
       <Ariakit.Menu
         gutter={4}
         ref={ref}
-        render={<Paper css={{ bg: "neutral.900", outline: "none" }} />}
+        render={
+          <Paper
+          // css={{ bg: "neutral.900", outline: "none" }}
+          />
+        }
         className={className}
         portal={portal}
         unmountOnHide

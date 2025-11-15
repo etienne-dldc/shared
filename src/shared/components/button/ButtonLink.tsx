@@ -1,11 +1,11 @@
 import * as Ariakit from "@ariakit/react";
 
 import { TDesignProps, TPaletteColor } from "../../design/types";
-import { ComponentPropsBase } from "../../utils/componentProps";
+import { ComponentPropsBaseWith } from "../../utils/componentProps";
 import { Frame } from "../frame/Frame";
 import { TFrameContentFragmentProps } from "../frame/FrameContentFragment";
 
-export type ButtonLinkProps = ComponentPropsBase<
+export type ButtonLinkProps = ComponentPropsBaseWith<
   "a",
   TFrameContentFragmentProps &
     TDesignProps & {

@@ -52,6 +52,9 @@ export default function InputStory() {
           <li>
             <code>type</code>
           </li>
+          <li>
+            <code>readOnly</code>
+          </li>
         </ul>
         <p>All other props are passed to the outer Frame container.</p>
       </div>
@@ -105,16 +108,15 @@ export default function InputStory() {
       <div className={cx(prose())}>
         <h2>Variants</h2>
         <p>
-          Input supports different visual variants inherited from Frame. By default, inputs use the <code>input</code>{" "}
-          variant, which is specifically designed for form inputs.
+          Input supports different visual variants inherited from <code>Frame</code>. By default, inputs use the{" "}
+          <code>input</code> variant, which is specifically designed for form inputs.
         </p>
       </div>
       <InputVariantsWidget />
       <div className={cx(prose())}>
         <h2>Colors</h2>
         <p>
-          Use the <code>color</code> prop to theme the input with any of the 22 available palette colors. This affects
-          the border and background colors in the input variant.
+          Use the <code>color</code> prop to theme the input with any of the available palette colors.
         </p>
       </div>
       <InputColorsWidget />

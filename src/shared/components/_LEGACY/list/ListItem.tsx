@@ -1,8 +1,8 @@
 import * as Ariakit from "@ariakit/react";
+import clsx from "clsx";
 import { ComponentPropsWithRef } from "react";
 import { Merge } from "type-fest";
-import { css, cx } from "../../../../../styled-system/css";
-import { frameContentStyles } from "../../../design/frameContent";
+import { frameContentStyles } from "../../../css/frameContent";
 import { TDesignProps, TPaletteColor } from "../../../design/types";
 import { pipePropsSplitters } from "../../../utils/propsSplitters";
 import {
@@ -50,7 +50,7 @@ export function ListItem(inProps: ListItemProps) {
   const { height, contentHeight, spacing, rounded, depth } = useContainerDesignProps(localDesign, "subtle");
   const { startPadding, endPadding, fragment, noLayout } = useFrameContentFragment(localFrameContent, children);
 
-  const [contentCss, contentInline] = frameContentStyles(contentHeight, spacing, startPadding, endPadding, noLayout);
+  const [contentClass, contentInline] = frameContentStyles(contentHeight, spacing, startPadding, endPadding, noLayout);
 
   const compositeStore = Ariakit.useCompositeContext();
   const renderResolved = compositeStore ? (
@@ -61,7 +61,7 @@ export function ListItem(inProps: ListItemProps) {
 
   return (
     <Ariakit.Role
-      className={cx(css(contentCss), className)}
+      className={clsx(contentClass, className)}
       style={{ ...style, ...contentInline }}
       render={renderResolved}
       ref={ref}

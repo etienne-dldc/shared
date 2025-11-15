@@ -20,6 +20,11 @@
     "@dldc/safe-search-params": "jsr:^1.1.1",
     "@phosphor-icons/react": "^2.1.10",
     "@react-hookz/deep-equal": "^3.0.4",
+    "@vanilla-extract/css": "^1.17.4",
+    "@vanilla-extract/css-utils": "^0.1.6",
+    "@vanilla-extract/dynamic": "^2.1.5",
+    "@vanilla-extract/recipes": "^0.5.7",
+    "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "hast-util-to-jsx-runtime": "^2.3.6",
     "history": "^5.3.0",
@@ -47,6 +52,7 @@
     "@pandacss/types": "^1.5.0",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
+    "@vanilla-extract/vite-plugin": "^5.1.1",
     "@vitejs/plugin-react-swc": "^4.2.1",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
@@ -57,7 +63,7 @@
     "typescript-eslint": "^8.46.4",
     "vite": "^7.2.2"
   },
-  "packageManager": "pnpm@10.18.2+sha512.9fb969fa749b3ade6035e0f109f0b8a60b5d08a1a87fdf72e337da90dcc93336e2280ca4e44f2358a649b83c17959e9993e777c2080879f3801e6f0d999ad3dd",
+  "packageManager": "pnpm@10.22.0+sha512.bf049efe995b28f527fd2b41ae0474ce29186f7edcb3bf545087bd61fbbebb2bf75362d1307fda09c2d288e1e499787ac12d4fcb617a974718a6051f2eee741c",
   "pnpm": {
     "onlyBuiltDependencies": [
       "@swc/core",

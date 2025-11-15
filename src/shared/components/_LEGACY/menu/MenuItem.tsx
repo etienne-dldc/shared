@@ -1,10 +1,10 @@
 import * as Ariakit from "@ariakit/react";
 import { css, cx } from "../../../../../styled-system/css";
-import { colorPaletteClass } from "../../../design/colors";
-import { frameContentStyles } from "../../../design/frameContent";
-import { heightStyles } from "../../../design/styles";
-import { TDesignHeight, TDesignSpacing, TPaletteColor } from "../../../design/types";
-import { ComponentPropsBase } from "../../../utils/componentProps";
+import { heightStyles } from "../../../css/design";
+import { dynamicColor } from "../../../css/dynamicColor.css";
+import { frameContentStyles } from "../../../css/frameContent";
+import { TDesignHeight, TDesignSpacing, TPaletteColor } from "../../../css/types";
+import { ComponentPropsBaseWith } from "../../../utils/componentProps";
 import { pipePropsSplitters } from "../../../utils/propsSplitters";
 import { DefaultDesignProvider, designPropsSplitter, useContainerDesignProps } from "../../core/DesignContext";
 import {
@@ -14,7 +14,7 @@ import {
 } from "../../frame/FrameContentFragment";
 import { menuItemClass } from "./styles";
 
-export type MenuItemProps = ComponentPropsBase<
+export type MenuItemProps = ComponentPropsBaseWith<
   "div",
   Ariakit.MenuItemProps &
     TFrameContentFragmentProps & {
@@ -48,19 +48,19 @@ export function MenuItem(inProps: MenuItemProps) {
 
   const { startPadding, endPadding, fragment, noLayout } = useFrameContentFragment(localFrameContent, children);
 
-  const [heightCss, heightInline] = heightStyles(height);
-  const [contentCss, contentInline] = frameContentStyles(contentHeight, spacing, startPadding, endPadding, noLayout);
+  const [heightClass, heightInline] = heightStyles(height);
+  const [contentClass, contentInline] = frameContentStyles(contentHeight, spacing, startPadding, endPadding, noLayout);
 
   return (
     <DefaultDesignProvider height={contentHeight} spacing={inProps.spacing}>
       <Ariakit.MenuItem
         disabled={disabled}
         className={cx(
+          heightClass,
+          contentClass,
+          inProps.color && dynamicColor[inProps.color],
           css(
-            heightCss,
             menuItemClass,
-            inProps.color && colorPaletteClass[inProps.color],
-            contentCss,
             // frameContentSizeClass.raw({ height }),
             cssProps,
           ),

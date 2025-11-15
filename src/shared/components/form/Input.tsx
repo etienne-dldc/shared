@@ -1,16 +1,14 @@
 import { useCallback, useRef } from "react";
-import { WithCss } from "../../../../styled-system/types";
 import { TDesignProps, TPaletteColor } from "../../design/types";
 import { useMergeRefs } from "../../hooks/useMergeRefs";
-import { SanitizePropsBase } from "../../utils/componentProps";
+import { ComponentPropsBaseWith } from "../../utils/componentProps";
 import { Frame } from "../frame/Frame";
 import { TFrameContentFragmentProps } from "../frame/FrameContentFragment";
 import { FrameInputContent } from "../frame/FrameInputContent";
 
-export type InputProps = SanitizePropsBase<
-  HTMLDivElement,
-  WithCss &
-    TFrameContentFragmentProps &
+export type InputProps = ComponentPropsBaseWith<
+  "div",
+  TFrameContentFragmentProps &
     TDesignProps & {
       disabled?: boolean;
 
@@ -25,6 +23,7 @@ export type InputProps = SanitizePropsBase<
       name?: string;
       type?: string;
       readOnly?: boolean;
+      required?: boolean;
 
       // Data attributes
       "data-hover"?: boolean;
@@ -43,6 +42,8 @@ export function Input(inProps: InputProps) {
     name,
     type,
     readOnly,
+    disabled,
+    required,
 
     ...frameProps
   } = inProps;
@@ -72,11 +73,13 @@ export function Input(inProps: InputProps) {
       name={name}
       type={type}
       readOnly={readOnly}
+      disabled={disabled}
+      required={required}
     />
   );
 
   return (
-    <Frame baseVariant="input" interactive onPointerDown={onPointerDown} {...frameProps} ref={ref}>
+    <Frame baseVariant="input" interactive onPointerDown={onPointerDown} disabled={disabled} {...frameProps} ref={ref}>
       {childrenResolved}
     </Frame>
   );

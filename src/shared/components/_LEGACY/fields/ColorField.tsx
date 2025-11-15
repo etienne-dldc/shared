@@ -1,9 +1,9 @@
 import * as Ariakit from "@ariakit/react";
 import { CaretDownIcon, CaretUpIcon } from "@phosphor-icons/react";
 import { useEffect } from "react";
-import { Paper } from "../../../../../styled-system/jsx";
 import { COLOR_NAMES, toColor, VALID_COLORS } from "../../../design/colors";
 import { Button } from "../../button/Button";
+import { Paper } from "../../common/Paper";
 import { FieldError } from "../../form/FieldError";
 import { Label } from "../../form/Label";
 import { FrameContent } from "../../frame/FrameContent";
@@ -87,7 +87,7 @@ export function ColorField({
           fitViewport
           overlap
           render={<Paper />}
-          className="max-h-[var(--popover-available-height)] overflow-hidden"
+          className="max-h-(--popover-available-height) overflow-hidden"
         >
           <div className="overflow-auto flex flex-col py-2">
             {VALID_COLORS.map((color) => (

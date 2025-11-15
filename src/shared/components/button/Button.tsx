@@ -1,15 +1,13 @@
 import * as Ariakit from "@ariakit/react";
 
-import { WithCss } from "../../../../styled-system/types";
 import { TDesignProps, TPaletteColor } from "../../design/types";
-import { SanitizePropsBase } from "../../utils/componentProps";
+import { ComponentPropsBaseWith } from "../../utils/componentProps";
 import { Frame } from "../frame/Frame";
 import { TFrameContentFragmentProps } from "../frame/FrameContentFragment";
 
-export type ButtonProps = SanitizePropsBase<
-  HTMLButtonElement,
-  WithCss &
-    TFrameContentFragmentProps &
+export type ButtonProps = ComponentPropsBaseWith<
+  "button",
+  TFrameContentFragmentProps &
     TDesignProps & {
       disabled?: boolean;
 

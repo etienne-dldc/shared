@@ -3,14 +3,14 @@ import * as Ariakit from "@ariakit/react";
 import { useState } from "react";
 import * as v from "valibot";
 import { css } from "../../../../styled-system/css";
-import { SanitizePropsBase } from "../../utils/componentProps";
+import { ComponentPropsBaseWith } from "../../utils/componentProps";
 import { FrameInputContent } from "../frame/FrameInputContent";
 import { FieldError } from "./FieldError";
 import { Input, InputProps } from "./Input";
 import { Label } from "./Label";
 
-export type TextFieldProps = SanitizePropsBase<
-  HTMLDivElement,
+export type TextFieldProps = ComponentPropsBaseWith<
+  "div",
   Omit<InputProps, "name" | "value"> & {
     name: StringLike;
     label: string;

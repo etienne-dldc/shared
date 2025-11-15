@@ -1,8 +1,8 @@
-import { css, cx } from "../../../../styled-system/css";
-import { frameContentClass, frameContentStyles } from "../../design/frameContent";
-import { heightStyles } from "../../design/styles";
-import { TDesignProps } from "../../design/types";
-import { ComponentPropsBase } from "../../utils/componentProps";
+import clsx from "clsx";
+import { heightStyles } from "../../css/design";
+import { frameContentStyles } from "../../css/frameContent";
+import { TDesignProps } from "../../css/types";
+import { ComponentPropsBaseWith } from "../../utils/componentProps";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import {
   DefaultDesignProvider,
@@ -12,7 +12,7 @@ import {
 } from "../core/DesignContext";
 import { frameContentPropsSplitter, TFrameContentFragmentProps, useFrameContentFragment } from "./FrameContentFragment";
 
-type FrameContentProps = ComponentPropsBase<"div", TFrameContentFragmentProps & TDesignProps>;
+type FrameContentProps = ComponentPropsBaseWith<"div", TFrameContentFragmentProps & TDesignProps>;
 
 /**
  * Render items horizontally
@@ -31,7 +31,6 @@ export function FrameContent(inProps: FrameContentProps) {
 
     style,
     className,
-    css: cssProps,
 
     ...htmlProps
   } = props;
@@ -40,13 +39,12 @@ export function FrameContent(inProps: FrameContentProps) {
 
   const { startPadding, endPadding, fragment } = useFrameContentFragment(localFrameContent, children);
 
-  const [heightCss, heightInline] = heightStyles(height);
-  const [contentCss, contentInline] = frameContentStyles(contentHeight, spacing, startPadding, endPadding, false);
-  const frameContentCss = frameContentClass.raw({ startPadding, endPadding });
+  const [heightClass, heightInline] = heightStyles(height);
+  const [contentClass, contentInline] = frameContentStyles(contentHeight, spacing, startPadding, endPadding, false);
 
   return (
     <div
-      className={cx(css(frameContentCss, heightCss, contentCss, cssProps), className)}
+      className={clsx(heightClass, contentClass, className)}
       style={{ ...style, ...heightInline, ...contentInline }}
       {...htmlProps}
     >

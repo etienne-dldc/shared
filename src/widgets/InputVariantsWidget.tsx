@@ -7,7 +7,7 @@ import { TDesignVariant } from "../shared/design/types";
 import { printElement } from "./utils/printElement";
 
 export function InputVariantsWidget() {
-  const variants: TDesignVariant[] = ["input", "surface", "subtle", "ghost"];
+  const variants: TDesignVariant[] = ["input", "solid", "surface", "subtle", "ghost"];
   const [highlighted, setHighlighted] = useState<TDesignVariant | null>();
 
   return (

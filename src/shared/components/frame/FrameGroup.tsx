@@ -1,14 +1,13 @@
 import * as Ariakit from "@ariakit/react";
+import clsx from "clsx";
 import { Children, cloneElement, Fragment } from "react";
-import { css, cx } from "../../../../styled-system/css";
-import { colorPaletteClass } from "../../design/colors";
-import { frameGroupClass, separatorClass } from "../../design/frameGroup";
-import { TDesignProps, TPaletteColor } from "../../design/types";
-import { ComponentPropsBase } from "../../utils/componentProps";
+import { frameGroupSeparatorStyles, frameGroupStyles } from "../../css/frameGroup";
+import { TDesignProps, TPaletteColor } from "../../css/types";
+import { ComponentPropsBaseWith } from "../../utils/componentProps";
 import { pipePropsSplitters } from "../../utils/propsSplitters";
 import { DefaultDesignProvider, designPropsSplitter, useContainerDesignProps } from "../core/DesignContext";
 
-export type FrameGroupProps = ComponentPropsBase<
+export type FrameGroupProps = ComponentPropsBaseWith<
   "div",
   TDesignProps & {
     disabled?: boolean;
@@ -26,7 +25,7 @@ export function FrameGroup(inProps: FrameGroupProps) {
     localDesign: designPropsSplitter,
   });
 
-  const { variant } = useContainerDesignProps(localDesign, "subtle");
+  const { variant } = useContainerDesignProps(localDesign, "surface");
   const {
     color,
     className,
@@ -34,7 +33,7 @@ export function FrameGroup(inProps: FrameGroupProps) {
     direction = "horizontal",
     innerDividers = true,
     roundedEnds = "both",
-    css: cssProps,
+    style,
     ...divProps
   } = props;
 
@@ -46,14 +45,12 @@ export function FrameGroup(inProps: FrameGroupProps) {
   const roundedStart = roundedEnds === "start" || roundedEnds === "both";
   const roundedEnd = roundedEnds === "end" || roundedEnds === "both";
 
-  const separatorClassName = separatorClass({ direction, variant });
+  const [baseClass, baseInline] = frameGroupStyles({ direction, color, variant });
+  const [separatorClass, separatorInline] = frameGroupSeparatorStyles({ direction, variant });
 
   return (
     <DefaultDesignProvider {...localDesign}>
-      <Ariakit.Role
-        className={cx(css(frameGroupClass.raw({ direction }), color && colorPaletteClass[color], cssProps), className)}
-        {...divProps}
-      >
+      <Ariakit.Role className={clsx(baseClass, className)} style={{ ...baseInline, ...style }} {...divProps}>
         {Children.map(childrenFiltered, (child, i) => {
           if (!child) return null;
 
@@ -65,7 +62,7 @@ export function FrameGroup(inProps: FrameGroupProps) {
 
           return (
             <Fragment>
-              {innerDividers && !isFirst && <span className={separatorClassName} />}
+              {innerDividers && !isFirst && <span className={separatorClass} style={separatorInline} />}
               {cloneElement(child as any, {
                 ["data-first"]: roundedBase === "start" ? "true" : undefined,
                 ["data-last"]: roundedBase === "end" ? "true" : undefined,

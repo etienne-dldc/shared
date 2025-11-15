@@ -1,9 +1,9 @@
 import * as Ariakit from "@ariakit/react";
-import { css, cx } from "../../../../styled-system/css";
-import { labelStyles } from "../../design/label";
-import { ComponentPropsBase } from "../../utils/componentProps";
+import clsx from "clsx";
+import { labelStyles } from "../../css/label";
+import { ComponentPropsBaseWith } from "../../utils/componentProps";
 
-export type LabelProps = ComponentPropsBase<
+export type LabelProps = ComponentPropsBaseWith<
   "label",
   {
     disabled?: boolean;
@@ -13,9 +13,9 @@ export type LabelProps = ComponentPropsBase<
 >;
 
 export function Label(inProps: LabelProps) {
-  const { disabled = false, hidden = false, css: cssProps, className, ...props } = inProps;
+  const { disabled = false, hidden = false, className, style, ...props } = inProps;
 
-  const styles = labelStyles({ disabled, hidden });
+  const [baseClass, baseInline] = labelStyles({ disabled, hidden });
 
-  return <Ariakit.Role.label className={cx(css(styles, cssProps), className)} {...props} />;
+  return <Ariakit.Role.label className={clsx(baseClass, className)} style={{ ...baseInline, ...style }} {...props} />;
 }

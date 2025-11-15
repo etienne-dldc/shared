@@ -1,13 +1,21 @@
 import * as Ariakit from "@ariakit/react";
-import { css, cx } from "../../../../styled-system/css";
-import { fieldErrorStyles } from "../../design/fieldError";
-import { ComponentPropsBase } from "../../utils/componentProps";
+import clsx from "clsx";
+import { contentSize } from "../../css/design";
+import { fieldErrorClass } from "../../css/fieldError.css";
+import { ComponentPropsBaseWith } from "../../utils/componentProps";
 
-export type FieldErrorProps = ComponentPropsBase<"p", { render?: Ariakit.RoleProps<"p">["render"] }>;
+export type FieldErrorProps = ComponentPropsBaseWith<"p", { render?: Ariakit.RoleProps<"p">["render"] }>;
 
 export function FieldError(inProps: FieldErrorProps) {
-  const { className, css: cssProps, ...props } = inProps;
-  const styles = fieldErrorStyles();
+  const { className, style, ...props } = inProps;
 
-  return <Ariakit.Role.p className={cx(css(styles, cssProps), className)} {...props} />;
+  const [contentClass, contentInline] = contentSize(4);
+
+  return (
+    <Ariakit.Role.p
+      className={clsx(fieldErrorClass, contentClass, className)}
+      style={{ ...contentInline, ...style }}
+      {...props}
+    />
+  );
 }

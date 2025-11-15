@@ -1,8 +1,8 @@
 import * as Ariakit from "@ariakit/react";
 import { ArrowCounterClockwiseIcon, CheckIcon } from "@phosphor-icons/react";
 import { ForwardedRef, forwardRef, Fragment, useCallback, useEffect, useMemo, useState } from "react";
-import { Paper } from "../../../../../styled-system/jsx";
 import { Button } from "../../button/Button";
+import { Paper } from "../../common/Paper";
 import { Input, InputProps } from "../../form/Input";
 
 export type TNumberInputParse = (value: string) => number;
