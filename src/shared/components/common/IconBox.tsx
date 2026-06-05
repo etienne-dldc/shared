@@ -1,6 +1,6 @@
 import { IconContext, IconWeight } from "@phosphor-icons/react";
 import { useContext, useMemo } from "react";
-import { css, cx } from "../../../../styled-system/css";
+import { cx } from "../../../../styled-system/css";
 import { iconStyles } from "../../css/icon";
 import { TDesignHeight } from "../../design/types";
 import { ComponentPropsBaseWith } from "../../utils/componentProps";
@@ -18,7 +18,7 @@ type IconBoxProps = ComponentPropsBaseWith<
 >;
 
 export function IconBox(props: IconBoxProps) {
-  const { icon, alt, color, weight, size, mirrored, className, css: cssProps, style, ...htmlProps } = props;
+  const { icon, alt, color, weight, size, mirrored, className, style, ...htmlProps } = props;
   const parentIconProps = useContext(IconContext);
 
   const mergedProps = useMemo(
@@ -37,7 +37,7 @@ export function IconBox(props: IconBoxProps) {
 
   return (
     <IconContext.Provider value={mergedProps}>
-      <div className={cx(iconClas, css(cssProps), className)} style={{ ...inlineStyles, ...style }} {...htmlProps}>
+      <div className={cx(iconClas, className)} style={{ ...inlineStyles, ...style }} {...htmlProps}>
         {icon}
       </div>
     </IconContext.Provider>
